@@ -39,19 +39,19 @@ parser code
     }  
 :} 
 
-terminal token importarA1,importarA2,importarF1,importarF2,ventanaA1,ventanaF1,
-               contenedorA1,contenedorA2,contenedorF1,contenedorF2,
-               multimedia,
-               tipo,nombre,id,alto,ancho,fuente,tam,color,x,y,negrita,cursiva,maximo,minimo,accion,
-               referencia,musica,video,imagen,path,autorepro,ID,alla,clla,pyc,explicit,div,string_literal,
+terminal token importarA2,importarF1,ventanaA1,ventanaF1,
+               contenedorA1,contenedorA2,contenedorF1,
+               tipo,nombre,id,alto,ancho,fuente,tam,color,x,y,negrita,cursiva,maximo,minimo,
+               accion,accionini,accionfin,referencia,path,autorepro,ID,alla,clla,pyc,explicit,div,string_literal,
                igual,menq,mayq,textoA1,textoA2,textoF1,controlA1,controlA2,controlF1,datoA1,datoA2,datoF1,
                defectoA1,defectoA2,defectoF1,listadatosA1,listadatosA2,listadatosF1,enviarA1,enviarA2,enviarF1,
-               multimediaA1,multimediaA2,multimediaF1;
+               multimediaA1,multimediaA2,multimediaF1,int_literal,double_literal,bool_literal,borde;
 
-non terminal Nodo INICIO,ENCABEZADO,IMPORTS, IMPORT,L_VENTANAS,VENTANAS,VENTANAX,
-                  LIST_ATTSTART,LIST_ATTS,ATT_ID,ATT_ALTO,ATT_ANCHO,
-                  CONTENIDOVENTANA,CONTENIDOCUERPOS,CONTENIDOCUERPO,L_CONTENEDORES,CONTR1,CONTR2,IM1,IM2,ATT,
-                  ETIQUETASforma1,ETIQUETASforma2,CONTENIDOListaDatos ;
+non terminal Nodo INICIO,ENCABEZADO,IMPORTS,L_VENTANAS,VENTANAS,VENTANAX,
+                  LIST_ATTSTART,LIST_ATTS,
+                  CONTENIDOVENTANA,CONTENIDOCUERPO,IM1,ATT,
+                  ETIQUETASforma1,ETIQUETASforma2,CONTENIDOListaDatos,CONTENIDOControl,CONTENIDOContenedor, 
+                  VALOR,ATRIBUTO ;
 
 start with INICIO;
 
@@ -70,21 +70,10 @@ L_VENTANAS  ::= L_VENTANAS VENTANAX
 VENTANAX    ::= ventanaA1 LIST_ATTSTART explicit CONTENIDOVENTANA ;
                 
 
-CONTENIDOVENTANA ::=   L_CONTENEDORES menq div ventanaF1
+CONTENIDOVENTANA ::=   CONTENIDOCUERPO menq div ventanaF1
                       |div ventanaF1 {: System.out.println("VENTANA:"); :};
 
 /*---------------------Lista de Contenedores-----------------------------------*/
-
-L_CONTENEDORES   ::= L_CONTENEDORES CONTR2
-                    |CONTR1;
-
-CONTR2       ::= contenedorA1  explicit  contenedorF1 ;
-
-CONTR1       ::= contenedorA2  explicit  CONTENIDOCUERPOS  ;
-
-
-CONTENIDOCUERPOS ::= contenedorF1
-                     |CONTENIDOCUERPO menq  contenedorF1;
 
 /*-----------------------------TODAS LAS POSIBLES ETIQUETAS--------------------*/
 
@@ -92,35 +81,44 @@ CONTENIDOCUERPO  ::= CONTENIDOCUERPO ETIQUETASforma2
                    |ETIQUETASforma1;
    
 ETIQUETASforma2  ::= textoA1          LIST_ATTSTART explicit textoF1
-                    |controlA1        LIST_ATTSTART explicit controlF1
+                    |controlA1        LIST_ATTSTART explicit CONTENIDOControl
                     |datoA1           LIST_ATTSTART explicit datoF1
                     |defectoA1        LIST_ATTSTART explicit defectoF1
                     |listadatosA1     LIST_ATTSTART explicit CONTENIDOListaDatos
                     |enviarA1         LIST_ATTSTART explicit enviarF1
-                    |multimediaA1     LIST_ATTSTART explicit multimediaF1; 
+                    |multimediaA1     LIST_ATTSTART explicit multimediaF1
+                    |contenedorA1     LIST_ATTSTART explicit CONTENIDOContenedor; 
 
 ETIQUETASforma1  ::= textoA2          LIST_ATTSTART explicit textoF1
-                    |controlA2        LIST_ATTSTART explicit controlF1
+                    |controlA2        LIST_ATTSTART explicit CONTENIDOControl
                     |datoA2           LIST_ATTSTART explicit datoF1
                     |defectoA2        LIST_ATTSTART explicit defectoF1
                     |listadatosA2     LIST_ATTSTART explicit CONTENIDOListaDatos
                     |enviarA2         LIST_ATTSTART explicit enviarF1
-                    |multimediaA2     LIST_ATTSTART explicit multimediaF1; 
+                    |multimediaA2     LIST_ATTSTART explicit multimediaF1
+                    |contenedorA2     LIST_ATTSTART explicit CONTENIDOContenedor; 
  
 
 /*-----------------CONTENIDO DE LISTA DE DATOS --------------------------------*/
 CONTENIDOListaDatos ::= listadatosF1
                        |CONTENIDOCUERPO menq listadatosF1;
+
+/*-----------------CONTENIDO DE COMPONENTE CONTROL --------------------------------*/
+CONTENIDOControl ::=   controlF1
+                       |CONTENIDOCUERPO menq controlF1;
+
+CONTENIDOContenedor ::=   contenedorF1
+                       |CONTENIDOCUERPO menq contenedorF1;
+
 /*---------------------Lista de Imports----------------------------------------*/
 ENCABEZADO  ::= {::}
                | IMPORTS;
 
-IMPORTS     ::= IMPORTS IM2
+IMPORTS     ::= IMPORTS IM1
                |IM1;
 
 IM1         ::= importarA2 explicit:x div importarF1 {: System.out.println(x.getCadena()); :};
 
-IM2         ::= importarA2 explicit:x  div importarF1 {: System.out.println(x.getCadena()); :};
 
 
 
@@ -128,19 +126,39 @@ LIST_ATTSTART  ::= {::}
                    |LIST_ATTS;
 
 LIST_ATTS      ::= LIST_ATTS ATT
-                  |ATT;
+                  |ATT ;
  
-ATT            ::=   ATT_ID:r       {: RESULT = r;   :}
-                    |ATT_ALTO:r     {: RESULT = r;   :}
-                    |ATT_ANCHO:r    {: RESULT = r;   :};
+ATT            ::= ATRIBUTO:m   igual VALOR:n
+                   {: 
+                        RESULT = parser.crearNodo("atributo","",m.linea,m.columna);   
+                        RESULT.add(m);
+                        RESULT.add(n);
+                   :};
 
+ATRIBUTO   ::= id:m                {:  RESULT = parser.crearNodo("id",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |tipo:m             {:  RESULT = parser.crearNodo("tipo",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |accionini:m        {:  RESULT = parser.crearNodo("accionini",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |accionfin:m        {:  RESULT = parser.crearNodo("accionfin",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |x:m                {:  RESULT = parser.crearNodo("x",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |y:m                {:  RESULT = parser.crearNodo("y",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |alto:m             {:  RESULT = parser.crearNodo("alto",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |ancho:m            {:  RESULT = parser.crearNodo("ancho",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |borde:m            {:  RESULT = parser.crearNodo("borde",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |nombre:m           {:  RESULT = parser.crearNodo("nombre",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |fuente:m           {:  RESULT = parser.crearNodo("fuente",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |tam:m              {:  RESULT = parser.crearNodo("tam",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |color:m            {:  RESULT = parser.crearNodo("color",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |negrita:m          {:  RESULT = parser.crearNodo("negrita",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |cursiva:m          {:  RESULT = parser.crearNodo("cursiva",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |maximo:m           {:  RESULT = parser.crearNodo("maximo",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |minimo:m           {:  RESULT = parser.crearNodo("minimo",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |accion:m           {:  RESULT = parser.crearNodo("accion",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |referencia:m       {:  RESULT = parser.crearNodo("referencia",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |path:m             {:  RESULT = parser.crearNodo("path",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |autorepro:m        {:  RESULT = parser.crearNodo("autorepro",m.getCadena(),m.getLinea(),m.getColumna());  :};
 
-
-
-ATT_ID    ::= id:x    igual string_literal:y              {: System.out.println(y.getCadena()); RESULT = parser.crearNodo("id",y.getCadena(),x.getLinea(),x.getColumna()); :};
-
-
-ATT_ALTO  ::= alto:x  igual string_literal:y              {: RESULT = parser.crearNodo("alto",y.getCadena().substring(1, y.getCadena().length()-1),x.getLinea(),x.getColumna()); :};
-
-ATT_ANCHO ::= ancho:x igual string_literal:y              {: RESULT = parser.crearNodo("ancho",y.getCadena().substring(1, y.getCadena().length()-1),x.getLinea(),x.getColumna()); :};
-
+VALOR      ::=  string_literal:m   {:  RESULT = parser.crearNodo("string_literal",m.getCadena().substring(1, m.getCadena().length()-1),m.getLinea(),m.getColumna());  :}
+               |int_literal:m      {:  RESULT = parser.crearNodo("int_literal",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |double_literal:m   {:  RESULT = parser.crearNodo("double_literal",m.getCadena(),m.getLinea(),m.getColumna());  :}
+               |bool_literal:m     {:  RESULT = parser.crearNodo("bool_literal",m.getCadena(),m.getLinea(),m.getColumna());  :};
+ 

@@ -18,6 +18,8 @@ import java_cup.runtime.*;
 LineTerminator = \r|\n|\r\n|\n\r|\t
 WhiteSpace = {LineTerminator} | [ \t\f]|\t
 Id = [:jletter:]["�"|"�"|"�"|"�"|"�"|[:jletterdigit:]|"_"|]*
+Numero = [:digit:][[:digit:]]* 
+Decimal = ([:digit:][[:digit:]]*)? ([.][:digit:][[:digit:]]*)?
 cadena = [\"] [^(\")]* [\"]
 
 %%
@@ -106,20 +108,24 @@ HAY que preguntar sobre BOTON
 <YYINITIAL> "y"            {return new Symbol(sym.y, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "negrita"      {return new Symbol(sym.negrita, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "cursiva"      {return new Symbol(sym.cursiva, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "borde"        {return new Symbol(sym.borde, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "maximo"       {return new Symbol(sym.maximo, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "minimo"       {return new Symbol(sym.minimo, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "accion"       {return new Symbol(sym.accion, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "referencia"   {return new Symbol(sym.referencia, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "musica"       {return new Symbol(sym.musica, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "video"        {return new Symbol(sym.video, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "imagen"       {return new Symbol(sym.imagen, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "path"         {return new Symbol(sym.path, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "auto-reproduccion" {return new Symbol(sym.autorepro, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "auto-reproduccion"    {return new Symbol(sym.autorepro, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "accioninicial"        {return new Symbol(sym.accionini, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "accionfinal"          {return new Symbol(sym.accionfin, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "accion"       {return new Symbol(sym.accion, new token(yycolumn, yyline, yytext()));}
 
 
 
 
 <YYINITIAL> {Id} {return new Symbol(sym.ID, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> {Numero} {return new Symbol(sym.int_literal, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> {Decimal} {return new Symbol(sym.double_literal, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "verdadero"|"falso" {return new Symbol(sym.bool_literal, new token(yycolumn, yyline, yytext()));}
+
 
 {LineTerminator} {/* ignorar */}
 {WhiteSpace} {/* ignorar */}

@@ -1,10 +1,15 @@
-
+<importar>
+hola perros
+</importar>
+<importar>
+hola perros
+</importar>
+<importar>
+hola perros
+</importar>
 <ventana id="id1" >
  <contenedor>
-<multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
+
     <listadatos>
                 <multimedia>
                 </multimedia>
@@ -12,6 +17,38 @@
                 </enviar>
   
     </listadatos>
+    <multimedia>
+    </multimedia>
+    <enviar>
+    </enviar>
+    <listadatos>
+    </listadatos>
+    <defecto>
+    </defecto>
+    <dato>
+    </dato>
+    <control>
+    </control>
+    <texto>
+    </texto>
+    <texto>
+    </texto>
+    <control>
+                 <multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+    </control>
+    <dato>
+    </dato>
+    <defecto>
+    </defecto>
+    <listadatos>
+    </listadatos>
+    <enviar>
+    </enviar>
+    <multimedia>
+    </multimedia>
     <listadatos>
                 <multimedia>
                 </multimedia>
@@ -19,10 +56,61 @@
                 </enviar>
   
     </listadatos>
-  <multimedia>
+<contenedor>
+   <control>
+                 <multimedia>
                 </multimedia>
                 <enviar>
                 </enviar>
+    </control>
+    <listadatos>
+                <multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+  
+    </listadatos>
+    <multimedia>
+    </multimedia>
+    <enviar>
+    </enviar>
+    <listadatos>
+    </listadatos>
+    <defecto>
+    </defecto>
+    <dato>
+    </dato>
+    <control>
+    </control>
+    <texto>
+    </texto>
+    <texto>
+    </texto>
+    <control>
+                 <multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+    </control>
+    <dato>
+    </dato>
+    <defecto>
+    </defecto>
+    <listadatos>
+    </listadatos>
+    <enviar>
+    </enviar>
+    <multimedia>
+    </multimedia>
+    <listadatos>
+                <multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+  
+    </listadatos>
+ </contenedor>
+
  </contenedor>
 
 </ventana>
