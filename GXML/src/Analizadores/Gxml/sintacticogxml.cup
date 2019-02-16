@@ -1,74 +1,146 @@
-package Analizadores;
+package Analizadores.Gxml; 
 
-
-import java.util.LinkedList;
 import java_cup.runtime.*;
-%%
-%class LexParser
-%public
-%full
-%unicode
-%line
-%column
-%char
-%ignorecase
-%cup
-
-LineTerminator = \r|\n|\r\n|\n\r|\t
-WhiteSpace = {LineTerminator} | [ \t\f]|\t
-Id = [:jletter:]["�"|"�"|"�"|"�"|"�"|[:jletterdigit:]|"_"|]*
-
-%%
-/* SIGNOS */
-<YYINITIAL> "{" {return new Symbol(sym.alla, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "}" {return new Symbol(sym.clla, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> ";" {return new Symbol(sym.pyc, new token(yycolumn, yyline, yytext()));}
-
-/* PALABRAS RESERVADAS - COMPONENTES */
-
-<YYINITIAL> "importar"    {return new Symbol(sym.importar, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "ventana"     {return new Symbol(sym.ventana, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "contenedor"  {return new Symbol(sym.contenedor, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "control"     {return new Symbol(sym.control, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "defecto"     {return new Symbol(sym.defecto, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "enviar"      {return new Symbol(sym.enviar, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "listadatos"  {return new Symbol(sym.listadatos, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "dato"        {return new Symbol(sym.dato, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "texto"       {return new Symbol(sym.texto, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "multimedia"  {return new Symbol(sym.multimedia, new token(yycolumn, yyline, yytext()));}
+import java.util.*;
+import Estructuras.Nodo;
 
 
-/* PALABRAS RESERVADAS - ATRIBUTOS de COMPONENTES */
-<YYINITIAL> "tipo"         {return new Symbol(sym.tipo, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "nombre"       {return new Symbol(sym.tipo, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "id"           {return new Symbol(sym.id, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "alto"         {return new Symbol(sym.alto, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "ancho"        {return new Symbol(sym.ancho, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "fuente"       {return new Symbol(sym.fuente, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "tam"          {return new Symbol(sym.tam, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "color"        {return new Symbol(sym.color, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "x"            {return new Symbol(sym.x, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "y"            {return new Symbol(sym.y, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "negrita"      {return new Symbol(sym.negrita, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "cursiva"      {return new Symbol(sym.cursiva, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "maximo"       {return new Symbol(sym.maximo, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "minimo"       {return new Symbol(sym.minimo, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "accion"       {return new Symbol(sym.accion, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "referencia"   {return new Symbol(sym.referencia, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "musica"       {return new Symbol(sym.musica, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "video"        {return new Symbol(sym.video, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "imagen"       {return new Symbol(sym.imagen, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "path"         {return new Symbol(sym.path, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "auto-reproduccion" {return new Symbol(sym.autorepro, new token(yycolumn, yyline, yytext()));}
+action code {:
+    //se declaran variables globales etc.
+        public int Index=1;
+:}
+
+parser code 
+{:
+    /**
+     * Método al que se llama para crear un nuevo nodo
+     **/ 
+    public Nodo crearNodo(String nombre,String valor,int linea,int columna){
+        Nodo nuevo = new Nodo(nombre,valor,linea,columna,action_obj.Index);
+        action_obj.Index++;
+        return nuevo;
+    }
+    /**
+     * Método al que se llama automáticamente ante algún error sintactico.
+     **/ 
+    public void syntax_error(Symbol s){ 
+        System.out.println("Error Sintáctico en la Línea " + (s.left) +
+        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+    } 
+
+    /**
+     * Método al que se llama automáticamente ante algún error sintáctico 
+     * en el que ya no es posible una recuperación de errores.
+     **/ 
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error síntactico irrecuperable en la Línea " + 
+        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
+        " no reconocido."); 
+    }  
+:} 
+
+terminal token importarA1,importarA2,importarF1,importarF2,ventanaA1,ventanaF1,
+               contenedorA1,contenedorA2,contenedorF1,contenedorF2,
+               multimedia,
+               tipo,nombre,id,alto,ancho,fuente,tam,color,x,y,negrita,cursiva,maximo,minimo,accion,
+               referencia,musica,video,imagen,path,autorepro,ID,alla,clla,pyc,explicit,div,string_literal,
+               igual,menq,mayq,textoA1,textoA2,textoF1,controlA1,controlA2,controlF1,datoA1,datoA2,datoF1,
+               defectoA1,defectoA2,defectoF1,listadatosA1,listadatosA2,listadatosF1,enviarA1,enviarA2,enviarF1,
+               multimediaA1,multimediaA2,multimediaF1;
+
+non terminal Nodo INICIO,ENCABEZADO,IMPORTS, IMPORT,L_VENTANAS,VENTANAS,VENTANAX,
+                  LIST_ATTSTART,LIST_ATTS,ATT_ID,ATT_ALTO,ATT_ANCHO,
+                  CONTENIDOVENTANA,CONTENIDOCUERPOS,CONTENIDOCUERPO,L_CONTENEDORES,CONTR1,CONTR2,IM1,IM2,ATT,
+                  ETIQUETASforma1,ETIQUETASforma2,CONTENIDOListaDatos ;
+
+start with INICIO;
+
+INICIO ::= ENCABEZADO  VENTANAS;
+
+
+/*---------------------Lista de Ventanas---------------------------------------*/
+VENTANAS    ::= {::}
+               |L_VENTANAS;
+
+
+L_VENTANAS  ::= L_VENTANAS VENTANAX
+               |VENTANAX;
+
+
+VENTANAX    ::= ventanaA1 LIST_ATTSTART explicit CONTENIDOVENTANA ;
+                
+
+CONTENIDOVENTANA ::=   L_CONTENEDORES menq div ventanaF1
+                      |div ventanaF1 {: System.out.println("VENTANA:"); :};
+
+/*---------------------Lista de Contenedores-----------------------------------*/
+
+L_CONTENEDORES   ::= L_CONTENEDORES CONTR2
+                    |CONTR1;
+
+CONTR2       ::= contenedorA1  explicit  contenedorF1 ;
+
+CONTR1       ::= contenedorA2  explicit  CONTENIDOCUERPOS  ;
+
+
+CONTENIDOCUERPOS ::= contenedorF1
+                     |CONTENIDOCUERPO menq  contenedorF1;
+
+/*-----------------------------TODAS LAS POSIBLES ETIQUETAS--------------------*/
+
+CONTENIDOCUERPO  ::= CONTENIDOCUERPO ETIQUETASforma2
+                   |ETIQUETASforma1;
+   
+ETIQUETASforma2  ::= textoA1          LIST_ATTSTART explicit textoF1
+                    |controlA1        LIST_ATTSTART explicit controlF1
+                    |datoA1           LIST_ATTSTART explicit datoF1
+                    |defectoA1        LIST_ATTSTART explicit defectoF1
+                    |listadatosA1     LIST_ATTSTART explicit CONTENIDOListaDatos
+                    |enviarA1         LIST_ATTSTART explicit enviarF1
+                    |multimediaA1     LIST_ATTSTART explicit multimediaF1; 
+
+ETIQUETASforma1  ::= textoA2          LIST_ATTSTART explicit textoF1
+                    |controlA2        LIST_ATTSTART explicit controlF1
+                    |datoA2           LIST_ATTSTART explicit datoF1
+                    |defectoA2        LIST_ATTSTART explicit defectoF1
+                    |listadatosA2     LIST_ATTSTART explicit CONTENIDOListaDatos
+                    |enviarA2         LIST_ATTSTART explicit enviarF1
+                    |multimediaA2     LIST_ATTSTART explicit multimediaF1; 
+ 
+
+/*-----------------CONTENIDO DE LISTA DE DATOS --------------------------------*/
+CONTENIDOListaDatos ::= listadatosF1
+                       |CONTENIDOCUERPO menq listadatosF1;
+/*---------------------Lista de Imports----------------------------------------*/
+ENCABEZADO  ::= {::}
+               | IMPORTS;
+
+IMPORTS     ::= IMPORTS IM2
+               |IM1;
+
+IM1         ::= importarA2 explicit:x div importarF1 {: System.out.println(x.getCadena()); :};
+
+IM2         ::= importarA2 explicit:x  div importarF1 {: System.out.println(x.getCadena()); :};
 
 
 
-<YYINITIAL> "int" {return new Symbol(sym.inT, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "char" {return new Symbol(sym.chaR, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "bool" {return new Symbol(sym.booL, new token(yycolumn, yyline, yytext()));}
+LIST_ATTSTART  ::= {::}
+                   |LIST_ATTS;
 
-<YYINITIAL> {Id} {return new Symbol(sym.id, new token(yycolumn, yyline, yytext()));}
+LIST_ATTS      ::= LIST_ATTS ATT
+                  |ATT;
+ 
+ATT            ::=   ATT_ID:r       {: RESULT = r;   :}
+                    |ATT_ALTO:r     {: RESULT = r;   :}
+                    |ATT_ANCHO:r    {: RESULT = r;   :};
 
-{LineTerminator} {/* ignorar */}
-{WhiteSpace} {/* ignorar */}
-. {System.out.println(yyline+","+yycolumn+"=["+yytext()+"],"+yychar); }
+
+
+
+ATT_ID    ::= id:x    igual string_literal:y              {: System.out.println(y.getCadena()); RESULT = parser.crearNodo("id",y.getCadena(),x.getLinea(),x.getColumna()); :};
+
+
+ATT_ALTO  ::= alto:x  igual string_literal:y              {: RESULT = parser.crearNodo("alto",y.getCadena().substring(1, y.getCadena().length()-1),x.getLinea(),x.getColumna()); :};
+
+ATT_ANCHO ::= ancho:x igual string_literal:y              {: RESULT = parser.crearNodo("ancho",y.getCadena().substring(1, y.getCadena().length()-1),x.getLinea(),x.getColumna()); :};
+

@@ -1,0 +1,30 @@
+
+<ventana id="id1" >
+ <contenedor>
+<multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+    <listadatos>
+                <multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+  
+    </listadatos>
+    <listadatos>
+                <multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+  
+    </listadatos>
+  <multimedia>
+                </multimedia>
+                <enviar>
+                </enviar>
+ </contenedor>
+
+</ventana>
+
+
