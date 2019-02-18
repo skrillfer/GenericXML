@@ -57,6 +57,16 @@ start with INICIO;
 
 INICIO ::= ENCABEZADO  VENTANAS;
 
+/*---------------------Lista de Imports----------------------------------------*/
+ENCABEZADO  ::= {::}
+               | IMPORTS;
+
+IMPORTS     ::= IMPORTS IM1
+               |IM1;
+
+IM1         ::= importarA2 explicit:x div importarF1 {: System.out.println(x.getCadena()); :};
+
+
 
 /*---------------------Lista de Ventanas---------------------------------------*/
 VENTANAS    ::= {::}
@@ -89,44 +99,45 @@ ETIQUETASforma2  ::= textoA1          LIST_ATTSTART explicit textoF1
                     |multimediaA1     LIST_ATTSTART explicit multimediaF1
                     |contenedorA1     LIST_ATTSTART explicit CONTENIDOContenedor; 
 
-ETIQUETASforma1  ::= textoA2          LIST_ATTSTART explicit textoF1
-                    |controlA2        LIST_ATTSTART explicit CONTENIDOControl
-                    |datoA2           LIST_ATTSTART explicit datoF1
-                    |defectoA2        LIST_ATTSTART explicit defectoF1
-                    |listadatosA2     LIST_ATTSTART explicit CONTENIDOListaDatos
-                    |enviarA2         LIST_ATTSTART explicit enviarF1
-                    |multimediaA2     LIST_ATTSTART explicit multimediaF1
-                    |contenedorA2     LIST_ATTSTART explicit CONTENIDOContenedor; 
+ETIQUETASforma1  ::= textoA2:m          LIST_ATTSTART:h explicit:e textoF1               {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                    |controlA2:m        LIST_ATTSTART:h explicit:e CONTENIDOControl:R      {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                    |datoA2:m           LIST_ATTSTART:h explicit:e datoF1                {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                    |defectoA2:m        LIST_ATTSTART:h explicit:e defectoF1             {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                    |listadatosA2:m     LIST_ATTSTART:h explicit:e CONTENIDOListaDatos:R   {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                    |enviarA2:m         LIST_ATTSTART:h explicit:e enviarF1              {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                    |multimediaA2:m     LIST_ATTSTART:h explicit:e multimediaF1          {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                    |contenedorA2:m     LIST_ATTSTART:h explicit:e CONTENIDOContenedor:R   {: RESULT = parser.crearNodo("texto",m.getCadena(),m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}; 
  
 
 /*-----------------CONTENIDO DE LISTA DE DATOS --------------------------------*/
-CONTENIDOListaDatos ::= listadatosF1
-                       |CONTENIDOCUERPO menq listadatosF1;
+CONTENIDOListaDatos ::= listadatosF1   {: RESULT = parser.crearNodo("cuerpos","",0,0);  :}
+                       |CONTENIDOCUERPO:m menq listadatosF1 {: RESULT = m;  :};
 
-/*-----------------CONTENIDO DE COMPONENTE CONTROL --------------------------------*/
-CONTENIDOControl ::=   controlF1
-                       |CONTENIDOCUERPO menq controlF1;
 
-CONTENIDOContenedor ::=   contenedorF1
-                       |CONTENIDOCUERPO menq contenedorF1;
+/*-----------------CONTENIDO DE COMPONENTE CONTROL ----------------------------*/
+CONTENIDOControl ::=   controlF1       {: RESULT = parser.crearNodo("cuerpos","",0,0);  :}
+                       |CONTENIDOCUERPO:m menq controlF1    {: RESULT = m;  :};
 
-/*---------------------Lista de Imports----------------------------------------*/
-ENCABEZADO  ::= {::}
-               | IMPORTS;
+/*-----------------CONTENIDO DE COMPONENTE CONTENEDOR -------------------------*/
 
-IMPORTS     ::= IMPORTS IM1
-               |IM1;
-
-IM1         ::= importarA2 explicit:x div importarF1 {: System.out.println(x.getCadena()); :};
+CONTENIDOContenedor ::=   contenedorF1 {: RESULT = parser.crearNodo("cuerpos","",0,0);  :}
+                       |CONTENIDOCUERPO:m menq contenedorF1 {: RESULT = m;  :};
 
 
 
 
-LIST_ATTSTART  ::= {::}
-                   |LIST_ATTS;
+LIST_ATTSTART  ::= {: RESULT = parser.crearNodo("atributos","",0,0);  :}
+                   |LIST_ATTS:m {: RESULT = m; :};
 
-LIST_ATTS      ::= LIST_ATTS ATT
-                  |ATT ;
+LIST_ATTS      ::= LIST_ATTS:m ATT:n
+                  {:
+                        m.add(n); RESULT = m;
+                  :}
+                  |ATT:m
+                  {:  
+                        RESULT = parser.crearNodo("atributos","",m.linea,m.columna); 
+                        RESULT.add(m); 
+                  :};
  
 ATT            ::= ATRIBUTO:m   igual VALOR:n
                    {: 
