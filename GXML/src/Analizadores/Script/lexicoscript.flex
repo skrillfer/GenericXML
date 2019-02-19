@@ -126,6 +126,7 @@ cadena = [\"] [^(\")]* [\"]
 <YYINITIAL> "alcerrar"                  {return new Symbol(sym.alcerrar, new token(yycolumn, yyline, yytext()));}
 
 
+
 <YYINITIAL> {cadena} {return new Symbol(sym.string_literal, new token(yycolumn, yyline, yytext()));}
 
 <YYINITIAL> {Id} {return new Symbol(sym.iden, new token(yycolumn, yyline, yytext()));}

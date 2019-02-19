@@ -56,10 +56,25 @@ terminal token  asigmas,asigmen,asigpor,asigdiv,
                 crearventana,crearcontenedor,creartexto,crearcajatexto,crearareatexto,
                 crearcontrolnumerico,creardesplegable,crearboton,crearimagen,crearreproductor,
                 crearvideo,alclic,alcargar,alcerrar;
-
-non terminal Nodo INICIO,DECLARA,LIST_ID,ASIGN,EXP,DATO,LIST_EXP,CONTARRAY,LIST_ATRI,
-                  PARAM_ENVIAR,IMPRIMIR,IMPORTAR,DETENER;
-
+  
+non terminal Nodo INICIO,DECLARA,LIST_ID,ASIGN,DATO,LIST_EXP,CONTARRAY,LIST_ATRI,
+                  PARAM_ENVIAR,IMPRIMIR,IMPORTAR,DETENER,EXP,EXP_R,EXP_A,
+                  SELECCIONA,CONT_SELECCIONA,LISTA_CASOS,CASO_DEFECTO,RETORNAR,
+                  INSTRUCCIONES,I_NSTRUCCIONES,SENTENCIA,
+                  SI,MUCHOS_SINOSI,FINAL_SINO,LIST_SINOSI,SINO_SI,SINO,FUNCION,PARAMETROS,LISTA_PARAMETROS,
+                  LLAMADA,ENVIO,ACCESO,ACCESOVAR,ACCESOARR,INDICES,INDICE,NATIVAS,
+                  ASIGNACION,TIPOASIG;
+    
+/* PRECEDENCIAS */
+precedence left mas, menos;
+precedence left por, div;
+precedence left pot;
+precedence left add,sub;
+precedence left apar,cpar;
+precedence left ig_ig,mayq,menq,mayiq,meniq,dif;
+precedence left or;
+precedence left and;
+precedence right not;
 
 start with INICIO;
 
@@ -123,7 +138,7 @@ DETENER  ::= detener pyc;
 
 /*      RETORNAR        */
 
-DETENER  ::= retornar EXP pyc;
+RETORNAR  ::= retornar EXP pyc;
 
 /*      Funcion Imprimir        */
 
@@ -133,10 +148,278 @@ PARAM_ENVIAR ::= {::}
                 |LIST_EXP;
 
 
-EXP     ::= DATO;
+
+//*************************Instrucciones****************************************
+INSTRUCCIONES  ::= {:  RESULT = parser.crearNodo("sentencias","",0,0);  :}
+                   |I_NSTRUCCIONES:X {: RESULT = X; :};
+
+I_NSTRUCCIONES ::= I_NSTRUCCIONES:R SENTENCIA:H {:  R.add(H); RESULT = R;  :}
+                 |I_NSTRUCCIONES:H {: RESULT = parser.crearNodo("sentencias","",H.linea,H.columna);  RESULT.add(H); :};
+
+SENTENCIA      ::= SELECCIONA:X         {: RESULT = X; :}
+                   |SI:X                {: RESULT = X; :}
+                   |DETENER:X           {: RESULT = X; :}
+                   |IMPRIMIR:X          {: RESULT = X; :}
+                   |RETORNAR:X          {: RESULT = X; :}
+                   |ASIGNACION:X        {: RESULT = X; :}
+                   |ACCESO:X  pyc       {: RESULT = X; :} ;
+
+//*************************____Asignacion____***********************************
+ASIGNACION     ::= ACCESO TIPOASIG EXP pyc;
+
+
+TIPOASIG       ::= igual
+                   |asigmas
+                   |asigmen
+                   |asigpor
+                   |asigdiv;
+
+//************************Metodos y Funciones***********************************
+FUNCION ::= funcion:w iden:x apar PARAMETROS:y cpar alla INSTRUCCIONES:z clla 
+           {:
+                RESULT = parser.crearNodo("funcion","",w.getLinea(),w.getColumna()); // se crea la raiz FUNCION
+                RESULT.add(parser.crearNodo("id",x.getCadena(),x.getLinea(),x.getColumna()));// agrego el nombre 
+                RESULT.add(y);//agrego los parametros
+                RESULT.add(z);//agrego las instrucciones
+           :};
+
+
+PARAMETROS ::= {:   RESULT = parser.crearNodo("parametros","",0,0);  :}
+              |LISTA_PARAMETROS:x{:     RESULT=x;   :};
+
+LISTA_PARAMETROS ::=LISTA_PARAMETROS:x coma iden:y{:
+                        Nodo param = parser.crearNodo("parametro","",y.getLinea(),y.getColumna());
+                        param.add(parser.crearNodo("id",y.getCadena(),y.getLinea(),y.getColumna()));
+                        x.add(param);
+                        RESULT=x;
+                    :}
+                    |iden:x {:
+                        RESULT = parser.crearNodo("parametros","",x.getLinea(),x.getColumna());
+                        Nodo param = parser.crearNodo("parametro","",x.getLinea(),x.getColumna());
+                        param.add(parser.crearNodo("id",x.getCadena(),x.getLinea(),x.getColumna()));
+                        RESULT.add(param);    
+                    :};
+
+
+
+//**************************Selecciona *****************************************
+
+SELECCIONA ::= selecciona:w apar EXP:X cpar alla CONT_SELECCIONA:Y clla
+            {:
+                RESULT = parser.crearNodo("selecciona","",w.getLinea(),w.getColumna());
+                RESULT.add(X);// se agrega la EXPRESION
+                RESULT.add(Y);// se agrega la lista de CASOS
+            :};
+
+CONT_SELECCIONA ::= {: RESULT = parser.crearNodo("casos","",0,0); :}
+                    |LISTA_CASOS:X{: RESULT= X; :};
+
+
+LISTA_CASOS ::= LISTA_CASOS:R CASO_DEFECTO:X{:
+                    R.add(X);
+                    RESULT = R;
+                :}
+               |CASO_DEFECTO:X{:
+                    RESULT = parser.crearNodo("casos","",X.linea,X.columna);
+                    RESULT.add(X);
+               :};
+
+CASO_DEFECTO  ::= caso:w   EXP_A:X   dspts   INSTRUCCIONES:Y {:
+                    RESULT = parser.crearNodo("caso","",w.getLinea(),w.getColumna());
+                    RESULT.add(X);// se agrega la EXPR
+                    RESULT.add(Y);// se agregan las instrucciones
+                :}
+                |defecto:w           dspts   INSTRUCCIONES:Y {:
+                    RESULT = parser.crearNodo("defecto","",w.getLinea(),w.getColumna());
+                    RESULT.add(Y);// se agregan las instrucciones
+                :};
+
+
+
+//**************************Sentencia SI ***************************************
+
+SI     ::= si:w apar EXP:X cpar alla INSTRUCCIONES:Y clla MUCHOS_SINOSI:Z  FINAL_SINO:B
+          {:
+            RESULT = parser.crearNodo("si","",w.getLinea(),w.getColumna());
+            RESULT.add(X);// se agrega la expresion
+            RESULT.add(Y);// se agrega el conjunto de instrucciones
+            RESULT.add(Z);// se agrega la lista de sinosi
+            RESULT.add(B);// se agrega el sino
+          :};
+
+/*____________________________________________________________________________*/
+MUCHOS_SINOSI ::= {: RESULT = parser.crearNodo("lista_sinosi","",0,0);  :}
+                 |LIST_SINOSI:root {: RESULT = root; :}; 
+
+LIST_SINOSI ::= LIST_SINOSI:r SINO_SI:h
+            {:
+                r.add(h);
+                RESULT = r;
+            :}
+            |SINO_SI:X
+            {:
+                RESULT = parser.crearNodo("lista_sinosi","",X.linea,X.columna);
+                RESULT.add(X);
+            :};
+
+SINO_SI     ::= sino:X si apar EXP:c cpar alla INSTRUCCIONES:i clla
+            {:
+                RESULT = parser.crearNodo("sinosi","",X.getLinea(),X.getColumna());
+                RESULT.add(c); //condicion
+                RESULT.add(i); //instrucciones
+            :};
+
+/*____________________________________________________________________________*/
+FINAL_SINO ::= {:   RESULT = parser.crearNodo("sino","",0,0); :}
+              |SINO:root {:      RESULT=root; :};
+
+SINO   ::= sino:X alla INSTRUCCIONES:i clla {:
+                RESULT = parser.crearNodo("sino","",X.getLinea(),X.getColumna());
+                RESULT.add(i);// se agrega el conjunto de instrucciones
+           :};
+
+
+
+//************************Expresiones Logicas***********************************
+EXP ::= EXP:b and:a EXP:c     {:
+                                          RESULT = parser.crearNodo("and","",a.getLinea(),a.getColumna());
+                                          RESULT.add(b); RESULT.add(c);
+                                       :}
+          |EXP:b or:a  EXP:c     {:
+                                          RESULT = parser.crearNodo("or","",a.getLinea(),a.getColumna());
+                                          RESULT.add(b); RESULT.add(c);
+                                      :}
+          |not:a EXP:b             {:    
+                                          RESULT = parser.crearNodo("not","",a.getLinea(),a.getColumna());
+                                          RESULT.add(b);
+                                      :}
+          |EXP_R:a                   {:  RESULT=a;   :};
+
+//************************Expresiones Relacionales******************************
+EXP_R ::= EXP_A:b menq:a EXP_A:c {:
+                                        RESULT = parser.crearNodo("menq","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                    :}
+          |EXP_A:b meniq:a EXP_A:c{:
+                                        RESULT = parser.crearNodo("meniq","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                    :}
+          |EXP_A:b mayq:a EXP_A:c {:
+                                        RESULT = parser.crearNodo("mayq","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                   :}
+          |EXP_A:b mayiq:a EXP_A:c{:
+                                        RESULT = parser.crearNodo("mayiq","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                   :}
+          |EXP_A:b ig_ig:a EXP_A:c{:
+                                        RESULT = parser.crearNodo("ig_ig","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                   :}
+          |EXP_A:b dif:a EXP_A:c  {:
+                                        RESULT = parser.crearNodo("dif","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                   :}
+          |EXP_A:r                {:  RESULT = r;  :};
+
+
+
+//************************Expresiones Aritmeticas*******************************
+EXP_A ::= EXP_A:b mas:a EXP_A:c    {:
+                                        RESULT = parser.crearNodo("MAS","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                      :}
+          |EXP_A:b menos:a EXP_A:c  {:
+                                        RESULT = parser.crearNodo("MENOS","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                      :}
+          |EXP_A:b por:a EXP_A:c    {:
+                                        RESULT = parser.crearNodo("POR","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                      :}
+          |EXP_A:b div:a EXP_A:c    {:
+                                        RESULT = parser.crearNodo("DIV","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                      :}
+          |EXP_A:b pot:a EXP_A:c    {:
+                                        RESULT = parser.crearNodo("POT","",a.getLinea(),a.getColumna());
+                                        RESULT.add(b);    RESULT.add(c);
+                                      :}
+          |apar EXP:r cpar         {:  RESULT=r;    :}
+          |menos:a EXP_A:H               {:  RESULT = parser.crearNodo("unitario","",a.getLinea(),a.getColumna()); RESULT.add(H); :}
+          |DATO:r                     {:  RESULT=r;    :}
+          |ACCESO;
+
+
+/*-----------------   ACCESO        ------------------------------------------*/
+ACCESO    ::= ACCESO pto ACCESOVAR
+             |ACCESOVAR;
+  
+ACCESOVAR ::= iden
+            |ACCESOARR
+            |LLAMADA;
+
+/*-----------------   ACCESOARR  -----------------------------------*/
+            
+ACCESOARR ::= iden INDICES ;
+
+
+INDICES   ::= INDICES INDICE
+             |INDICE;
+
+INDICE    ::= acorch EXP ccorch;
+
+/*-----------------   LLAMADA A FUNCIONES  -----------------------------------*/
+LLAMADA ::= NATIVAS:a apar ENVIO:H cpar{:
+                        RESULT = parser.crearNodo("llamadaFuncion","",a.linea,a.columna);  
+                        RESULT.add(parser.crearNodo("id",a.nombre,a.linea,a.columna));
+                        RESULT.add(H);
+                    :};
+ENVIO  ::= {: RESULT = parser.crearNodo("envios","",0,0); :}
+           |LIST_EXP:X{: RESULT = X;  :};
+
+/*________NATIVAS________*/
+NATIVAS ::= ascendente
+            |descendente
+            |creararraydesdearchivo
+            |invertir
+            |maximo
+            |minimo
+            |filtrar
+            |buscar
+            |reduce
+            |todos
+            |alguno
+            |map
+            |leergxml
+            |obtenerporetiqueta
+            |obtenerporid
+            |obtenerpornombre
+            |crearventana
+            |crearcontenedor
+            |creartexto
+            |crearcajatexto
+            |crearareatexto
+            |crearcontrolnumerico
+            |creardesplegable
+            |crearboton
+            |crearimagen
+            |crearreproductor
+            |crearvideo
+            |alclic
+            |alcargar
+            |alcerrar
+            |iden;
+            
+
+/*-----------------    Funciones Propias de Funtional Script    --------------*/
+
+
 
 
 DATO    ::=  string_literal
             |double_literal
             |int_literal
-            |bool_literal;
+            |bool_literal
+            |iden
+            |LLAMADA;
