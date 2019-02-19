@@ -57,10 +57,86 @@ terminal token  asigmas,asigmen,asigpor,asigdiv,
                 crearcontrolnumerico,creardesplegable,crearboton,crearimagen,crearreproductor,
                 crearvideo,alclic,alcargar,alcerrar;
 
-non terminal Nodo INICIO;
+non terminal Nodo INICIO,DECLARA,LIST_ID,ASIGN,EXP,DATO,LIST_EXP,CONTARRAY,LIST_ATRI,
+                  PARAM_ENVIAR,IMPRIMIR,IMPORTAR,DETENER;
 
 
 start with INICIO;
 
 
 INICIO ::= string_literal;
+
+
+
+
+
+/*      Declaracion de variables        */
+
+DECLARA ::= var:m LIST_ID:n ASIGN:o pyc
+            {:
+                RESULT = parser.crearNodo("declaracionvar",m.getCadena(),m.getLinea(),m.getColumna());
+                RESULT.add(n);
+                RESULT.add(o);
+            :}
+            |var iden igual alla LIST_ATRI clla pyc;
+
+/* Lista de Atributos de Objeto */
+
+LIST_ATRI   ::= iden dspts EXP;
+
+/*      Lista de identificadores        */
+
+LIST_ID ::=  LIST_ID:n coma iden:m
+            {:
+                n.add(parser.crearNodo("id",m.getCadena(),m.getLinea(),m.getColumna()));
+                RESULT = n;
+            :}
+            |iden:m
+            {:
+                RESULT = parser.crearNodo("list_id",m.getCadena(),m.getLinea(),m.getColumna());
+                RESULT.add(parser.crearNodo("id",m.getCadena(),m.getLinea(),m.getColumna()));
+            :};
+
+
+/*      contenido de arreglos        */
+CONTARRAY  ::= acorch LIST_EXP ccorch;
+
+LIST_EXP   ::= LIST_EXP coma EXP
+            |EXP;
+
+
+ASIGN   ::= igual EXP;
+
+
+
+
+/*      IMPORTAR        */
+
+IMPORTAR  ::= importar apar string_literal cpar pyc;
+
+
+
+/*      DETENER        */
+
+DETENER  ::= detener pyc;
+
+
+/*      RETORNAR        */
+
+DETENER  ::= retornar EXP pyc;
+
+/*      Funcion Imprimir        */
+
+IMPRIMIR   ::= imprimir apar PARAM_ENVIAR cpar;
+
+PARAM_ENVIAR ::= {::}
+                |LIST_EXP;
+
+
+EXP     ::= DATO;
+
+
+DATO    ::=  string_literal
+            |double_literal
+            |int_literal
+            |bool_literal;
