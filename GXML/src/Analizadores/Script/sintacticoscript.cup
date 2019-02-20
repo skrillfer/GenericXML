@@ -326,52 +326,71 @@ EXP_R ::= EXP_A:b menq:a EXP_A:c {:
 
 //************************Expresiones Aritmeticas*******************************
 EXP_A ::= EXP_A:b mas:a EXP_A:c    {:
-                                        RESULT = parser.crearNodo("MAS","",a.getLinea(),a.getColumna());
+                                        RESULT = parser.crearNodo("mas","",a.getLinea(),a.getColumna());
                                         RESULT.add(b);    RESULT.add(c);
                                       :}
           |EXP_A:b menos:a EXP_A:c  {:
-                                        RESULT = parser.crearNodo("MENOS","",a.getLinea(),a.getColumna());
+                                        RESULT = parser.crearNodo("menos","",a.getLinea(),a.getColumna());
                                         RESULT.add(b);    RESULT.add(c);
                                       :}
           |EXP_A:b por:a EXP_A:c    {:
-                                        RESULT = parser.crearNodo("POR","",a.getLinea(),a.getColumna());
+                                        RESULT = parser.crearNodo("por","",a.getLinea(),a.getColumna());
                                         RESULT.add(b);    RESULT.add(c);
                                       :}
           |EXP_A:b div:a EXP_A:c    {:
-                                        RESULT = parser.crearNodo("DIV","",a.getLinea(),a.getColumna());
+                                        RESULT = parser.crearNodo("div","",a.getLinea(),a.getColumna());
                                         RESULT.add(b);    RESULT.add(c);
                                       :}
           |EXP_A:b pot:a EXP_A:c    {:
-                                        RESULT = parser.crearNodo("POT","",a.getLinea(),a.getColumna());
+                                        RESULT = parser.crearNodo("pot","",a.getLinea(),a.getColumna());
                                         RESULT.add(b);    RESULT.add(c);
                                       :}
           |apar EXP:r cpar         {:  RESULT=r;    :}
-          |menos:a EXP_A:H               {:  RESULT = parser.crearNodo("unitario","",a.getLinea(),a.getColumna()); RESULT.add(H); :}
+          |menos:a EXP_A:H               {:  RESULT = parser.crearNodo("unario","",a.getLinea(),a.getColumna()); RESULT.add(H); :}
           |DATO:r                     {:  RESULT=r;    :}
           |ACCESO;
 
 
 /*-----------------   ACCESO        ------------------------------------------*/
-ACCESO    ::= ACCESO pto ACCESOVAR
-             |ACCESOVAR;
+ACCESO    ::= ACCESO:r pto ACCESOVAR:h
+             {:
+                r.add(h);   RESULT = r;  
+             :}
+             |ACCESOVAR:h1
+             {:
+                    RESULT = parser.crearNodo("acceso","",h1.linea,h1.columna);
+                    RESULT.add(h1);
+             :};
   
-ACCESOVAR ::= iden
-            |ACCESOARR
-            |LLAMADA;
+ACCESOVAR ::= iden:h1       {: RESULT = parser.crearNodo("id",h1.getCadena(),h1.getLinea(),h1.getColumna()); :}
+            |ACCESOARR:r    {: RESULT=r;   :}
+            |LLAMADA:r      {: RESULT=r;   :};
 
-/*-----------------   ACCESOARR  -----------------------------------*/
+/*-----------------   ACCESOARR  ----------- ------------------------*/
             
-ACCESOARR ::= iden INDICES ;
+ACCESOARR ::= iden:h1 INDICES:h2
+              {:
+                    RESULT = parser.crearNodo("accesoar",h1.getCadena(),h1.getLinea(),h1.getColumna());
+                    RESULT.add(h2);
+              :};
 
 
-INDICES   ::= INDICES INDICE
-             |INDICE;
+INDICES   ::= INDICES:r INDICE:h
+             {:
+                r.add(h);
+                RESULT = r;
+             :}
+             |INDICE:a
+             {:
+                RESULT = parser.crearNodo("indices","",a.linea,a.columna);  
+                RESULT.add(a);
+            :};
 
-INDICE    ::= acorch EXP ccorch;
+INDICE    ::= acorch EXP:a ccorch {:      RESULT = a;          :};
 
 /*-----------------   LLAMADA A FUNCIONES  -----------------------------------*/
 LLAMADA ::= NATIVAS:a apar ENVIO:H cpar{:
-                        RESULT = parser.crearNodo("llamadaFuncion","",a.linea,a.columna);  
+                        RESULT = parser.crearNodo("llamada","",a.linea,a.columna);  
                         RESULT.add(parser.crearNodo("id",a.nombre,a.linea,a.columna));
                         RESULT.add(H);
                     :};
@@ -379,47 +398,44 @@ ENVIO  ::= {: RESULT = parser.crearNodo("envios","",0,0); :}
            |LIST_EXP:X{: RESULT = X;  :};
 
 /*________NATIVAS________*/
-NATIVAS ::= ascendente
-            |descendente
-            |creararraydesdearchivo
-            |invertir
-            |maximo
-            |minimo
-            |filtrar
-            |buscar
-            |reduce
-            |todos
-            |alguno
-            |map
-            |leergxml
-            |obtenerporetiqueta
-            |obtenerporid
-            |obtenerpornombre
-            |crearventana
-            |crearcontenedor
-            |creartexto
-            |crearcajatexto
-            |crearareatexto
-            |crearcontrolnumerico
-            |creardesplegable
-            |crearboton
-            |crearimagen
-            |crearreproductor
-            |crearvideo
-            |alclic
-            |alcargar
-            |alcerrar
-            |iden;
+NATIVAS ::= ascendente:a                        {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |descendente:a                      {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |creararraydesdearchivo:a           {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |invertir:a                         {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |maximo:a                           {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |minimo:a                           {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |filtrar:a                          {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |buscar:a                           {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |reduce:a                           {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |todos:a                            {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |alguno:a                           {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |map:a                              {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |leergxml:a                         {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |obtenerporetiqueta:a               {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |obtenerporid:a                     {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |obtenerpornombre:a                 {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearventana:a                     {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearcontenedor:a                  {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}        
+            |creartexto:a                       {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearcajatexto:a                   {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearareatexto:a                   {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearcontrolnumerico:a             {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |creardesplegable:a                 {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearboton:a                       {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearimagen:a                      {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearreproductor:a                 {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |crearvideo:a                       {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |alclic:a                           {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |alcargar:a                         {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |alcerrar:a                         {:  RESULT = parser.crearNodo("nativa",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |iden:a                             {:  RESULT = parser.crearNodo("id",a.getCadena(),a.getLinea(),a.getColumna());  :};
             
 
 /*-----------------    Funciones Propias de Funtional Script    --------------*/
 
-
-
-
-DATO    ::=  string_literal
-            |double_literal
-            |int_literal
-            |bool_literal
-            |iden
-            |LLAMADA;
+DATO    ::=  string_literal:a         {:  RESULT = parser.crearNodo("string_literal",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |double_literal:a         {:  RESULT = parser.crearNodo("double_literal",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |int_literal:a            {:  RESULT = parser.crearNodo("int_literal",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |bool_literal:a           {:  RESULT = parser.crearNodo("bool_literal",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |iden:a                   {:  RESULT = parser.crearNodo("id",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |LLAMADA:a                {:  RESULT = a;   :};
