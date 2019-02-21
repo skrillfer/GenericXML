@@ -34,5 +34,14 @@ public class Nodo {
     public void add(Nodo h){
         this.hijos.add(h);
     }
+    
+    public Nodo get(int index)
+    {
+        try {
+            return this.hijos.get(index);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

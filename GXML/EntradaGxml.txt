@@ -7,112 +7,11 @@ hola perros
 <importar>
 hola perros
 </importar>
-<ventana id="id1" >
- <contenedor>
-
-    <listadatos>
-                <multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
-  
-    </listadatos>
-    <multimedia>
-    </multimedia>
-    <enviar>
-    </enviar>
-    <listadatos>
-    </listadatos>
-    <defecto>
-    </defecto>
-    <dato>
-    </dato>
-    <control>
-    </control>
-    <texto>
-    </texto>
-    <texto>
-    </texto>
-    <control>
-                 <multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
-    </control>
-    <dato>
-    </dato>
-    <defecto>
-    </defecto>
-    <listadatos>
-    </listadatos>
-    <enviar>
-    </enviar>
-    <multimedia>
-    </multimedia>
-    <listadatos>
-                <multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
-  
-    </listadatos>
-<contenedor>
-   <control>
-                 <multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
-    </control>
-    <listadatos>
-                <multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
-  
-    </listadatos>
-    <multimedia>
-    </multimedia>
-    <enviar>
-    </enviar>
-    <listadatos>
-    </listadatos>
-    <defecto>
-    </defecto>
-    <dato>
-    </dato>
-    <control>
-    </control>
-    <texto>
-    </texto>
-    <texto>
-    </texto>
-    <control>
-                 <multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
-    </control>
-    <dato>
-    </dato>
-    <defecto>
-    </defecto>
-    <listadatos>
-    </listadatos>
-    <enviar>
-    </enviar>
-    <multimedia>
-    </multimedia>
-    <listadatos>
-                <multimedia>
-                </multimedia>
-                <enviar>
-                </enviar>
-  
-    </listadatos>
- </contenedor>
-
- </contenedor>
-
-</ventana>
+<VENTANA ID="ventana1" TIPO="PRINCIPAL" accioninicial={llamar(15+78+15,78+7,verdadero)} accionfinal={llamar(15+78+15,78+7,verdadero)} >
+	<CONTENEDOR  id="cont1" X=10 Y=20>
+		
+	</CONTENEDOR>
+	##hola
+</VENTANA>
 
 

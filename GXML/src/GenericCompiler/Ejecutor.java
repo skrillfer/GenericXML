@@ -50,6 +50,11 @@ public class Ejecutor {
         SintacticoGxml sin = new SintacticoGxml(lex);
         try {
             sin.parse();
+            TraduccionGxml_Script tra = new TraduccionGxml_Script();
+            tra.IniciarTraduccion(sin.getRoot());
+            /*Nodo raiz = sin.getRoot();
+            AST_Script   genTcjs = new AST_Script();
+            genTcjs.generacion_arbolScript(raiz);*/
         } catch (Exception e) {
             System.err.println("error al compilar:"+e.getMessage());
         }

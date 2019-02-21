@@ -1,31 +1,432 @@
 digraph G {
 node[shape=Mrecord]
-14[label="sentencias | ",style=bold]
-13[label="declaracionobj | ",style=bold]
-{14}->{13}
-1[label="list_id | miobjeto",style=bold]
-{13}->{1}
-2[label="id | miobjeto",style=bold]
-{1}->{2}
-6[label="atributos | ",style=bold]
-{13}->{6}
-4[label="atributo | ",style=bold]
-{6}->{4}
-5[label="m | curso",style=bold]
-{4}->{5}
-3[label="string_literal | compi2",style=bold]
-{4}->{3}
-8[label="atributo | ",style=bold]
-{6}->{8}
-9[label="m | Oportunidad",style=bold]
-{8}->{9}
-7[label="string_literal | 7",style=bold]
+186[label="raiz | ",style=bold]
+2[label="imports | ",style=bold]
+{186}->{2}
+1[label="import | >
+hola perros
+<",style=bold]
+{2}->{1}
+3[label="import | >
+hola perros
+<",style=bold]
+{2}->{3}
+4[label="import | >
+hola perros
+<",style=bold]
+{2}->{4}
+185[label="ventanas | ",style=bold]
+{186}->{185}
+183[label="ventana | ",style=bold]
+{185}->{183}
+8[label="atributos | ",style=bold]
+{183}->{8}
+7[label="atributo | ",style=bold]
 {8}->{7}
-11[label="atributo | ",style=bold]
-{6}->{11}
-12[label="m | Aprobado",style=bold]
-{11}->{12}
-10[label="string_literal | falso",style=bold]
-{11}->{10}
+5[label="id | id",style=bold]
+{7}->{5}
+6[label="string_literal | id1",style=bold]
+{7}->{6}
+184[label="explicit | >
+ <",style=bold]
+{183}->{184}
+182[label="cuerpos | ",style=bold]
+{183}->{182}
+180[label="contenedor | contenedor",style=bold]
+{182}->{180}
+9[label="atributos | ",style=bold]
+{180}->{9}
+181[label="explicit | >
+
+    <",style=bold]
+{180}->{181}
+21[label="cuerpos | ",style=bold]
+{180}->{21}
+19[label="listadatos | listadatos",style=bold]
+{21}->{19}
+10[label="atributos | ",style=bold]
+{19}->{10}
+20[label="explicit | >
+                <",style=bold]
+{19}->{20}
+14[label="cuerpos | ",style=bold]
+{19}->{14}
+12[label="multimedia | multimedia",style=bold]
+{14}->{12}
+11[label="atributos | ",style=bold]
+{12}->{11}
+13[label="explicit | >
+                <",style=bold]
+{12}->{13}
+17[label="<enviar | <enviar",style=bold]
+{14}->{17}
+15[label="atributos | ",style=bold]
+{17}->{15}
+18[label="explicit | >
+                <",style=bold]
+{17}->{18}
+16[label="cuerpos | ",style=bold]
+{17}->{16}
+23[label="<multimedia | <multimedia",style=bold]
+{21}->{23}
+22[label="atributos | ",style=bold]
+{23}->{22}
+24[label="explicit | >
+    <",style=bold]
+{23}->{24}
+27[label="<enviar | <enviar",style=bold]
+{21}->{27}
+25[label="atributos | ",style=bold]
+{27}->{25}
+28[label="explicit | >
+    <",style=bold]
+{27}->{28}
+26[label="cuerpos | ",style=bold]
+{27}->{26}
+31[label="<listadatos | <listadatos",style=bold]
+{21}->{31}
+29[label="atributos | ",style=bold]
+{31}->{29}
+32[label="explicit | >
+    <",style=bold]
+{31}->{32}
+30[label="cuerpos | ",style=bold]
+{31}->{30}
+34[label="<defecto | <defecto",style=bold]
+{21}->{34}
+33[label="atributos | ",style=bold]
+{34}->{33}
+35[label="explicit | >
+    <",style=bold]
+{34}->{35}
+37[label="<dato | <dato",style=bold]
+{21}->{37}
+36[label="atributos | ",style=bold]
+{37}->{36}
+38[label="explicit | >
+    <",style=bold]
+{37}->{38}
+41[label="<control | <control",style=bold]
+{21}->{41}
+39[label="atributos | ",style=bold]
+{41}->{39}
+42[label="explicit | >
+    <",style=bold]
+{41}->{42}
+40[label="cuerpos | ",style=bold]
+{41}->{40}
+44[label="<texto | <texto",style=bold]
+{21}->{44}
+43[label="atributos | ",style=bold]
+{44}->{43}
+45[label="explicit | >
+    <",style=bold]
+{44}->{45}
+47[label="<texto | <texto",style=bold]
+{21}->{47}
+46[label="atributos | ",style=bold]
+{47}->{46}
+48[label="explicit | >
+    <",style=bold]
+{47}->{48}
+58[label="<control | <control",style=bold]
+{21}->{58}
+49[label="atributos | ",style=bold]
+{58}->{49}
+59[label="explicit | >
+                 <",style=bold]
+{58}->{59}
+53[label="cuerpos | ",style=bold]
+{58}->{53}
+51[label="multimedia | multimedia",style=bold]
+{53}->{51}
+50[label="atributos | ",style=bold]
+{51}->{50}
+52[label="explicit | >
+                <",style=bold]
+{51}->{52}
+56[label="<enviar | <enviar",style=bold]
+{53}->{56}
+54[label="atributos | ",style=bold]
+{56}->{54}
+57[label="explicit | >
+                <",style=bold]
+{56}->{57}
+55[label="cuerpos | ",style=bold]
+{56}->{55}
+61[label="<dato | <dato",style=bold]
+{21}->{61}
+60[label="atributos | ",style=bold]
+{61}->{60}
+62[label="explicit | >
+    <",style=bold]
+{61}->{62}
+64[label="<defecto | <defecto",style=bold]
+{21}->{64}
+63[label="atributos | ",style=bold]
+{64}->{63}
+65[label="explicit | >
+    <",style=bold]
+{64}->{65}
+68[label="<listadatos | <listadatos",style=bold]
+{21}->{68}
+66[label="atributos | ",style=bold]
+{68}->{66}
+69[label="explicit | >
+    <",style=bold]
+{68}->{69}
+67[label="cuerpos | ",style=bold]
+{68}->{67}
+72[label="<enviar | <enviar",style=bold]
+{21}->{72}
+70[label="atributos | ",style=bold]
+{72}->{70}
+73[label="explicit | >
+    <",style=bold]
+{72}->{73}
+71[label="cuerpos | ",style=bold]
+{72}->{71}
+75[label="<multimedia | <multimedia",style=bold]
+{21}->{75}
+74[label="atributos | ",style=bold]
+{75}->{74}
+76[label="explicit | >
+    <",style=bold]
+{75}->{76}
+86[label="<listadatos | <listadatos",style=bold]
+{21}->{86}
+77[label="atributos | ",style=bold]
+{86}->{77}
+87[label="explicit | >
+                <",style=bold]
+{86}->{87}
+81[label="cuerpos | ",style=bold]
+{86}->{81}
+79[label="multimedia | multimedia",style=bold]
+{81}->{79}
+78[label="atributos | ",style=bold]
+{79}->{78}
+80[label="explicit | >
+                <",style=bold]
+{79}->{80}
+84[label="<enviar | <enviar",style=bold]
+{81}->{84}
+82[label="atributos | ",style=bold]
+{84}->{82}
+85[label="explicit | >
+                <",style=bold]
+{84}->{85}
+83[label="cuerpos | ",style=bold]
+{84}->{83}
+178[label="<contenedor | <contenedor",style=bold]
+{21}->{178}
+88[label="atributos | ",style=bold]
+{178}->{88}
+179[label="explicit | >
+   <",style=bold]
+{178}->{179}
+100[label="cuerpos | ",style=bold]
+{178}->{100}
+98[label="control | control",style=bold]
+{100}->{98}
+89[label="atributos | ",style=bold]
+{98}->{89}
+99[label="explicit | >
+                 <",style=bold]
+{98}->{99}
+93[label="cuerpos | ",style=bold]
+{98}->{93}
+91[label="multimedia | multimedia",style=bold]
+{93}->{91}
+90[label="atributos | ",style=bold]
+{91}->{90}
+92[label="explicit | >
+                <",style=bold]
+{91}->{92}
+96[label="<enviar | <enviar",style=bold]
+{93}->{96}
+94[label="atributos | ",style=bold]
+{96}->{94}
+97[label="explicit | >
+                <",style=bold]
+{96}->{97}
+95[label="cuerpos | ",style=bold]
+{96}->{95}
+110[label="<listadatos | <listadatos",style=bold]
+{100}->{110}
+101[label="atributos | ",style=bold]
+{110}->{101}
+111[label="explicit | >
+                <",style=bold]
+{110}->{111}
+105[label="cuerpos | ",style=bold]
+{110}->{105}
+103[label="multimedia | multimedia",style=bold]
+{105}->{103}
+102[label="atributos | ",style=bold]
+{103}->{102}
+104[label="explicit | >
+                <",style=bold]
+{103}->{104}
+108[label="<enviar | <enviar",style=bold]
+{105}->{108}
+106[label="atributos | ",style=bold]
+{108}->{106}
+109[label="explicit | >
+                <",style=bold]
+{108}->{109}
+107[label="cuerpos | ",style=bold]
+{108}->{107}
+113[label="<multimedia | <multimedia",style=bold]
+{100}->{113}
+112[label="atributos | ",style=bold]
+{113}->{112}
+114[label="explicit | >
+    <",style=bold]
+{113}->{114}
+117[label="<enviar | <enviar",style=bold]
+{100}->{117}
+115[label="atributos | ",style=bold]
+{117}->{115}
+118[label="explicit | >
+    <",style=bold]
+{117}->{118}
+116[label="cuerpos | ",style=bold]
+{117}->{116}
+121[label="<listadatos | <listadatos",style=bold]
+{100}->{121}
+119[label="atributos | ",style=bold]
+{121}->{119}
+122[label="explicit | >
+    <",style=bold]
+{121}->{122}
+120[label="cuerpos | ",style=bold]
+{121}->{120}
+124[label="<defecto | <defecto",style=bold]
+{100}->{124}
+123[label="atributos | ",style=bold]
+{124}->{123}
+125[label="explicit | >
+    <",style=bold]
+{124}->{125}
+127[label="<dato | <dato",style=bold]
+{100}->{127}
+126[label="atributos | ",style=bold]
+{127}->{126}
+128[label="explicit | >
+    <",style=bold]
+{127}->{128}
+131[label="<control | <control",style=bold]
+{100}->{131}
+129[label="atributos | ",style=bold]
+{131}->{129}
+132[label="explicit | >
+    <",style=bold]
+{131}->{132}
+130[label="cuerpos | ",style=bold]
+{131}->{130}
+134[label="<texto | <texto",style=bold]
+{100}->{134}
+133[label="atributos | ",style=bold]
+{134}->{133}
+135[label="explicit | >
+    <",style=bold]
+{134}->{135}
+137[label="<texto | <texto",style=bold]
+{100}->{137}
+136[label="atributos | ",style=bold]
+{137}->{136}
+138[label="explicit | >
+    <",style=bold]
+{137}->{138}
+148[label="<control | <control",style=bold]
+{100}->{148}
+139[label="atributos | ",style=bold]
+{148}->{139}
+149[label="explicit | >
+                 <",style=bold]
+{148}->{149}
+143[label="cuerpos | ",style=bold]
+{148}->{143}
+141[label="multimedia | multimedia",style=bold]
+{143}->{141}
+140[label="atributos | ",style=bold]
+{141}->{140}
+142[label="explicit | >
+                <",style=bold]
+{141}->{142}
+146[label="<enviar | <enviar",style=bold]
+{143}->{146}
+144[label="atributos | ",style=bold]
+{146}->{144}
+147[label="explicit | >
+                <",style=bold]
+{146}->{147}
+145[label="cuerpos | ",style=bold]
+{146}->{145}
+151[label="<dato | <dato",style=bold]
+{100}->{151}
+150[label="atributos | ",style=bold]
+{151}->{150}
+152[label="explicit | >
+    <",style=bold]
+{151}->{152}
+154[label="<defecto | <defecto",style=bold]
+{100}->{154}
+153[label="atributos | ",style=bold]
+{154}->{153}
+155[label="explicit | >
+    <",style=bold]
+{154}->{155}
+158[label="<listadatos | <listadatos",style=bold]
+{100}->{158}
+156[label="atributos | ",style=bold]
+{158}->{156}
+159[label="explicit | >
+    <",style=bold]
+{158}->{159}
+157[label="cuerpos | ",style=bold]
+{158}->{157}
+162[label="<enviar | <enviar",style=bold]
+{100}->{162}
+160[label="atributos | ",style=bold]
+{162}->{160}
+163[label="explicit | >
+    <",style=bold]
+{162}->{163}
+161[label="cuerpos | ",style=bold]
+{162}->{161}
+165[label="<multimedia | <multimedia",style=bold]
+{100}->{165}
+164[label="atributos | ",style=bold]
+{165}->{164}
+166[label="explicit | >
+    <",style=bold]
+{165}->{166}
+176[label="<listadatos | <listadatos",style=bold]
+{100}->{176}
+167[label="atributos | ",style=bold]
+{176}->{167}
+177[label="explicit | >
+                <",style=bold]
+{176}->{177}
+171[label="cuerpos | ",style=bold]
+{176}->{171}
+169[label="multimedia | multimedia",style=bold]
+{171}->{169}
+168[label="atributos | ",style=bold]
+{169}->{168}
+170[label="explicit | >
+                <",style=bold]
+{169}->{170}
+174[label="<enviar | <enviar",style=bold]
+{171}->{174}
+172[label="atributos | ",style=bold]
+{174}->{172}
+175[label="explicit | >
+                <",style=bold]
+{174}->{175}
+173[label="cuerpos | ",style=bold]
+{174}->{173}
 
 }
