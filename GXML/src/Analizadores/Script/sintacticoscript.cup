@@ -92,8 +92,8 @@ start with INICIO;
 INICIO ::=  S_IMPORT:h1 INSTRUCCIONES_FUERA:h2  
             {:  
                 root = parser.crearNodo("raiz","",h1.linea,h1.columna);  
-                RESULT.add(h1);
-                RESULT.add(h2);
+                root.add(h1);
+                root.add(h2);
             :};
 
 S_IMPORT ::= {:     RESULT = parser.crearNodo("imports","",0,0);      :}

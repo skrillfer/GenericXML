@@ -22,6 +22,11 @@ Numero = [:digit:][[:digit:]]*
 Decimal = ([:digit:][[:digit:]]*)? ([.][:digit:][[:digit:]]*)?
 cadena = [\"] [^(\")]* [\"]
 
+
+comm_multilinea = "#$" ["$"]* [^$] ~"$#" | "#$" ["$"]* "$#"
+
+comm_linea = ["#"] ["#"] [^\r\n]* [^\r\n]
+
 %%
 /* SIGNOS */
 <YYINITIAL> {cadena} {return new Symbol(sym.string_literal, new token(yycolumn, yyline, yytext()));}
@@ -36,6 +41,7 @@ cadena = [\"] [^(\")]* [\"]
 <YYINITIAL> ";" {return new Symbol(sym.pyc, new token(yycolumn, yyline, yytext()));}
 
 >([^<]*)< {System.out.println("tk:"+yytext()); return new Symbol(sym.explicit, new token(yycolumn, yyline, yytext()));}
+"{"([^}]*)"}" {System.out.println("Yk:"+yytext()); return new Symbol(sym.event, new token(yycolumn, yyline, yytext()));}
 
 <YYINITIAL> "<" {System.out.println("tk:"+yytext()); return new Symbol(sym.menq, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> ">" {System.out.println("tk:"+yytext()); return new Symbol(sym.mayq, new token(yycolumn, yyline, yytext()));}
@@ -55,6 +61,12 @@ cadena = [\"] [^(\")]* [\"]
 <YYINITIAL> "contenedor"   {System.out.println("tk:"+yytext()); return new Symbol(sym.contenedorA2, new token(yycolumn, yyline, yytext()));}
 
 <YYINITIAL> "/contenedor>"  {System.out.println("tk:"+yytext()); return new Symbol(sym.contenedorF1, new token(yycolumn, yyline, yytext()));}
+
+
+<YYINITIAL> "<boton"        {System.out.println("tk:"+yytext()); return new Symbol(sym.botonA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "boton"         {System.out.println("tk:"+yytext()); return new Symbol(sym.botonA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/boton>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.botonF1, new token(yycolumn, yyline, yytext()));}
+
 
 
 <YYINITIAL> "<texto"        {System.out.println("tk:"+yytext()); return new Symbol(sym.textoA1, new token(yycolumn, yyline, yytext()));}
@@ -126,6 +138,8 @@ HAY que preguntar sobre BOTON
 <YYINITIAL> {Decimal} {return new Symbol(sym.double_literal, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "verdadero"|"falso" {return new Symbol(sym.bool_literal, new token(yycolumn, yyline, yytext()));}
 
+<YYINITIAL> {comm_multilinea} {}
+<YYINITIAL> {comm_linea}      {}
 
 {LineTerminator} {/* ignorar */}
 {WhiteSpace} {/* ignorar */}

@@ -31,6 +31,7 @@ public class Ejecutor {
     
     public void compilar() throws FileNotFoundException
     {
+        /*
         LexScript lex = new LexScript(new FileReader("EntradaScript.txt"));
         SintacticoScript sin = new SintacticoScript(lex);
         try {
@@ -42,14 +43,15 @@ public class Ejecutor {
         } catch (Exception e) {
             System.err.println("error al compilar:"+e.getMessage());
         }
+        */
         
-        /*
+               
         LexGxml lex = new LexGxml(new FileReader("EntradaGxml.txt"));
         SintacticoGxml sin = new SintacticoGxml(lex);
         try {
             sin.parse();
         } catch (Exception e) {
             System.err.println("error al compilar:"+e.getMessage());
-        }*/
+        }
     }
 }
