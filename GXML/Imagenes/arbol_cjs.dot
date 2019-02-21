@@ -1,0 +1,31 @@
+digraph G {
+node[shape=Mrecord]
+14[label="sentencias | ",style=bold]
+13[label="declaracionobj | ",style=bold]
+{14}->{13}
+1[label="list_id | miobjeto",style=bold]
+{13}->{1}
+2[label="id | miobjeto",style=bold]
+{1}->{2}
+6[label="atributos | ",style=bold]
+{13}->{6}
+4[label="atributo | ",style=bold]
+{6}->{4}
+5[label="m | curso",style=bold]
+{4}->{5}
+3[label="string_literal | compi2",style=bold]
+{4}->{3}
+8[label="atributo | ",style=bold]
+{6}->{8}
+9[label="m | Oportunidad",style=bold]
+{8}->{9}
+7[label="string_literal | 7",style=bold]
+{8}->{7}
+11[label="atributo | ",style=bold]
+{6}->{11}
+12[label="m | Aprobado",style=bold]
+{11}->{12}
+10[label="string_literal | falso",style=bold]
+{11}->{10}
+
+}

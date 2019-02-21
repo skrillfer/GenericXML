@@ -21,6 +21,10 @@ Numero = [:digit:][[:digit:]]*
 Decimal = ([:digit:][[:digit:]]*)? ([.][:digit:][[:digit:]]*)?
 cadena = [\"] [^(\")]* [\"]
 
+comm_multilinea = "/*" ["/"]* [^/] ~"*/" | "/*" ["/"]* "*/"
+
+comm_linea = ["/"] ["/"] [^\r\n]* [^\r\n]
+
 %%
 /* SIGNOS */
 
@@ -72,6 +76,8 @@ cadena = [\"] [^(\")]* [\"]
 
 /* PALABRAS RESERVADAS - FunctionalScript */
 <YYINITIAL> "var"               {return new Symbol(sym.var, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "nulo"               {return new Symbol(sym.nulo, new token(yycolumn, yyline, yytext()));}
+
 <YYINITIAL> "imprimir"          {return new Symbol(sym.imprimir, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "importar"          {return new Symbol(sym.importar, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "funcion"           {return new Symbol(sym.funcion, new token(yycolumn, yyline, yytext()));}
@@ -134,6 +140,8 @@ cadena = [\"] [^(\")]* [\"]
 <YYINITIAL> {Decimal} {return new Symbol(sym.double_literal, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "verdadero"|"falso" {return new Symbol(sym.bool_literal, new token(yycolumn, yyline, yytext()));}
 
+<YYINITIAL> {comm_multilinea} {}
+<YYINITIAL> {comm_linea}      {}
 
 {LineTerminator} {/* ignorar */}
 {WhiteSpace} {/* ignorar */}

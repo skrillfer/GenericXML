@@ -7,6 +7,10 @@ package GenericCompiler;
 
 import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
+import Analizadores.Script.LexScript;
+import Analizadores.Script.SintacticoScript;
+import Ast_Generator.AST_Script;
+import Estructuras.Nodo;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.logging.Level;
@@ -27,12 +31,25 @@ public class Ejecutor {
     
     public void compilar() throws FileNotFoundException
     {
+        LexScript lex = new LexScript(new FileReader("EntradaScript.txt"));
+        SintacticoScript sin = new SintacticoScript(lex);
+        try {
+            sin.parse();
+            System.out.println("TODO BIEN");
+            Nodo raiz = sin.getRoot();
+            AST_Script   genTcjs = new AST_Script();
+            genTcjs.generacion_arbolScript(raiz);
+        } catch (Exception e) {
+            System.err.println("error al compilar:"+e.getMessage());
+        }
+        
+        /*
         LexGxml lex = new LexGxml(new FileReader("EntradaGxml.txt"));
         SintacticoGxml sin = new SintacticoGxml(lex);
         try {
             sin.parse();
         } catch (Exception e) {
             System.err.println("error al compilar:"+e.getMessage());
-        }
+        }*/
     }
 }
