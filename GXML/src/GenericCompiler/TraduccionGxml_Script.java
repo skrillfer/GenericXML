@@ -125,8 +125,10 @@ public class TraduccionGxml_Script {
             String tipoControl = hashMap.get("tipo").toLowerCase();
             switch(tipoControl)
             {
+                case "textoarea":
                 case "texto":
-                    
+                    String type="crearcajatexto";
+                    if(tipoControl.equals("textoarea")){type= "crearareatexto";}
                     parametros.add(obtenerAtributo(hashMap, "alto"));
                     parametros.add(obtenerAtributo(hashMap, "ancho"));
                     parametros.add(obtenerAtributo(hashMap, "fuente"));
@@ -139,14 +141,47 @@ public class TraduccionGxml_Script {
                     parametros.add(obtenerAtributo(hashMap, "cursiva"));
                     parametros.add(str_Defecto);
                     parametros.add(obtenerAtributo(hashMap, "nombre"));
-                    agregarAPadre(RAIZ, parametros, padre, "crearcajatexto");
+                    agregarAPadre(RAIZ, parametros, padre, type);
                     FRecursiva(RAIZ,RAIZ.valor);
-                    break;
-                case "textoarea":
                     break;    
                 case "numerico":
+                    parametros.add(obtenerAtributo(hashMap, "alto"));
+                    parametros.add(obtenerAtributo(hashMap, "ancho"));
+                    parametros.add(obtenerAtributo(hashMap, "maximo"));
+                    parametros.add(obtenerAtributo(hashMap, "minimo"));
+                    parametros.add(obtenerAtributo(hashMap, "x"));
+                    parametros.add(obtenerAtributo(hashMap, "y"));
+                    parametros.add(str_Defecto);
+                    parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    agregarAPadre(RAIZ, parametros, padre, "crearcontrolnumerico");
+                    
                     break;
                 case "desplegable":
+                    //Obtener Lista Datos
+                    Nodo LISTA = obtenerHijo(RAIZ, "listadatos");
+
+                    parametros.add(obtenerAtributo(hashMap, "alto"));
+                    parametros.add(obtenerAtributo(hashMap, "ancho"));
+                    //LISTA
+                    if(LISTA!=null)
+                    {
+                        parametros.add(getArrayListaDatos(LISTA));
+                    }else
+                    {
+                        parametros.add("[],");
+                    }
+                    
+                    
+                    parametros.add(obtenerAtributo(hashMap, "x"));
+                    parametros.add(obtenerAtributo(hashMap, "y"));
+                    
+                    //defecto
+                    str_Defecto = str_Defecto.replaceAll("\t", "");
+                    str_Defecto = str_Defecto.replaceAll(" ", "");
+                    parametros.add(str_Defecto.trim());
+                    
+                    parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    agregarAPadre(RAIZ, parametros, padre, "creardesplegable");
                     break;
                     
                     
@@ -154,6 +189,29 @@ public class TraduccionGxml_Script {
         }
 
         
+    }
+    
+    
+    
+    public String getArrayListaDatos(Nodo RAIZ)
+    {
+        String array = "[";
+        if(RAIZ.size()==3)
+        {
+         
+            Nodo vHijos = RAIZ.get(2);
+            for (Nodo dato : vHijos.hijos) {
+                Nodo vExplicit = dato.get(1);
+                vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
+                vExplicit.valor = vExplicit.valor.replaceAll("\n", "");
+                vExplicit.valor = vExplicit.valor.replaceAll("\t", "");
+                vExplicit.valor = vExplicit.valor.replaceAll(" ", "");
+                array+="\""+vExplicit.valor+"\",";
+            }
+            array=recortarString(array,0,array.length()-1);
+
+        }
+        return array+"]";
     }
     
     public void crearVentana(Nodo RAIZ)
