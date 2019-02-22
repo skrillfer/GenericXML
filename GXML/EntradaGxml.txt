@@ -9,7 +9,13 @@ hola perros
 </importar>
 <VENTANA ID="ventana1" TIPO="PRINCIPAL" accioninicial={llamar(15+78+15,78+7,verdadero)} accionfinal={llamar(15+78+15,78+7,verdadero)} >
 	<CONTENEDOR  id="cont1" X=10 Y=20>
-		
+		<TEXTO NOMBRE="texto1" x=10 y=20>
+			hola soy un texro cualquierla 123 hola .as.asd 
+		</TEXTO>
+        <CONTROL tipo="texto" nombre="control1" x=10 y=10>
+		    <defecto>HOLA SOY EL CONTENIDO POR DEFECTO DEL LA ETIQUETA TEXTO
+		    </defecto>
+		</CONTROL>
 	</CONTENEDOR>
 	##hola
 </VENTANA>

@@ -7,6 +7,7 @@ package GenericCompiler;
 
 import Estructuras.Nodo;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,8 +44,16 @@ public class TraduccionGxml_Script {
     {
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit  = RAIZ.get(1);
-        Nodo vHijos     = RAIZ.get(2);
+        Nodo vHijos     = null;
+        if(RAIZ.size()==3)
+        {
+                vHijos = RAIZ.get(2);
+        }else
+        {
+                vHijos = new Nodo();
+        }
         
+            
         for (Nodo hijo : vHijos.hijos) {
              switch(hijo.nombre.toLowerCase())
             {
@@ -52,6 +61,10 @@ public class TraduccionGxml_Script {
                     crearContenedor(hijo,padre);
                     break;
                 case "texto":
+                    crearTexto(hijo,padre);
+                    break;
+                case "control":
+                    crearControl(hijo,padre);
                     break;
                 case "boton":
                     break;
@@ -63,6 +76,85 @@ public class TraduccionGxml_Script {
         
     }
     
+    public void crearControl(Nodo RAIZ, String padre)
+    {
+        Nodo vAtributos = RAIZ.get(0);
+        
+        HashMap<String, String> hashMap = new HashMap<>();
+        
+        for (Nodo atributo : vAtributos.hijos) {
+            Nodo at_nombre = atributo.get(0);
+            Nodo at_valor  = atributo.get(1);
+            if(!hashMap.containsKey(at_nombre.nombre.toLowerCase()))
+            {
+                System.out.println("key:"+at_nombre.nombre.toLowerCase());
+                System.out.println("valor:"+at_valor.valor.toLowerCase());
+                hashMap.put(at_nombre.nombre.toLowerCase(), at_valor.valor);
+            }else
+            {
+                //Error Atributo Repetido
+            }
+        }
+        
+        ArrayList<String> parametros  = new ArrayList<>();
+        
+        //Obtener id o nombre del control y setear el nombre que tomara
+        String nombre = obtenerAtributo(hashMap, "nombre");
+        if(!nombre.equals("\"\""))
+        {
+            RAIZ.valor = recortarString(nombre, 1, nombre.length()-1);;
+        }else
+        {
+            RAIZ.valor =  RAIZ.valor + String.valueOf(RAIZ.index); 
+        }
+        
+        //Obtener <defecto> </defecto>
+        Nodo DEFECTO = obtenerHijo(RAIZ, "defecto");
+        String str_Defecto = "\"\"";
+        if(DEFECTO!=null)
+        {
+            Nodo vExplicit = DEFECTO.get(1);
+            vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
+            vExplicit.valor = vExplicit.valor.replaceAll("\n", "");
+            str_Defecto = "\""+vExplicit.valor+"\"";
+        }
+        
+        //Obtener el atributo TIPO de Control
+        if(hashMap.containsKey("tipo"))
+        {
+            String tipoControl = hashMap.get("tipo").toLowerCase();
+            switch(tipoControl)
+            {
+                case "texto":
+                    
+                    parametros.add(obtenerAtributo(hashMap, "alto"));
+                    parametros.add(obtenerAtributo(hashMap, "ancho"));
+                    parametros.add(obtenerAtributo(hashMap, "fuente"));
+                    parametros.add(obtenerAtributo(hashMap, "alto"));
+                    parametros.add(obtenerAtributo(hashMap, "tam"));
+                    parametros.add(obtenerAtributo(hashMap, "color"));
+                    parametros.add(obtenerAtributo(hashMap, "x"));
+                    parametros.add(obtenerAtributo(hashMap, "y"));
+                    parametros.add(obtenerAtributo(hashMap, "negrilla"));
+                    parametros.add(obtenerAtributo(hashMap, "cursiva"));
+                    parametros.add(str_Defecto);
+                    parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    agregarAPadre(RAIZ, parametros, padre, "crearcajatexto");
+                    FRecursiva(RAIZ,RAIZ.valor);
+                    break;
+                case "textoarea":
+                    break;    
+                case "numerico":
+                    break;
+                case "desplegable":
+                    break;
+                    
+                    
+            }
+        }
+
+        
+    }
     
     public void crearVentana(Nodo RAIZ)
     {
@@ -150,7 +242,6 @@ public class TraduccionGxml_Script {
     {
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit  = RAIZ.get(1);
-        Nodo vHijos     = RAIZ.get(2);
         
         ArrayList<String> parametros  = new ArrayList<>();
         parametros.add("\"0\"");//alto
@@ -196,9 +287,82 @@ public class TraduccionGxml_Script {
             }
         }
         
-        if(RAIZ.valor.equals("")){ RAIZ.valor =  String.valueOf(RAIZ.index);}
+        agregarAPadre(RAIZ, parametros, padre, "crearcontenedor");
+        FRecursiva(RAIZ,RAIZ.valor);
+       
+    }
+    
+    
+    
+    public void crearTexto(Nodo RAIZ, String padre)
+    {
+        Nodo vAtributos = RAIZ.get(0);
+        Nodo vExplicit  = RAIZ.get(1);
         
-        codigoScript +=salto+"var "+RAIZ.valor+" = crearcontenedor(";
+        vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
+        vExplicit.valor = vExplicit.valor.replaceAll("\n", "");
+        ArrayList<String> parametros  = new ArrayList<>();
+        parametros.add("\"\"");//fuente
+        parametros.add("\"\"");//tam
+        parametros.add("\"\"");//color
+        parametros.add("\"0\"");//x
+        parametros.add("\"0\"");//y
+        parametros.add("\"falso\"");//negrilla
+        parametros.add("\"falso\"");//cursiva
+        parametros.add("\"\"");//referencia
+        parametros.add("\""+vExplicit.valor+"\"");//valor
+        
+        
+        
+        for (Nodo atributo : vAtributos.hijos) {
+            Nodo n_atributo = atributo.get(0);
+            String n_valor =  "\""+atributo.get(1).valor+"\"";
+            String val = atributo.get(1).valor;
+            switch(n_atributo.nombre.toLowerCase())
+            {              
+                case "fuente":
+                    parametros.set(0,n_valor);
+                    break;
+                case "tam":
+                    parametros.set(1,n_valor);
+                    break;
+                case "color":
+                    parametros.set(2,n_valor);
+                    break;
+                case "x":
+                    parametros.set(3,n_valor);
+                    break;
+                case "y":
+                    parametros.set(4,n_valor);
+                    break;     
+                case "negrilla":
+                    parametros.set(5,n_valor);
+                    break;     
+                case "cursiva":
+                    parametros.set(6,n_valor);
+                    break;
+                case "referencia":
+                    parametros.set(7,n_valor);
+                    break;
+                case "nombre":
+                case "id":    
+                    RAIZ.valor= val;
+                    break; 
+                
+                default:
+                    //ERROR
+                    break;
+            }
+        }
+        
+        agregarAPadre(RAIZ, parametros, padre, "creartexto");
+        FRecursiva(RAIZ,RAIZ.valor);
+       
+    }
+    
+    public void agregarAPadre(Nodo RAIZ,ArrayList<String> parametros,String padre, String type)
+    {        
+        codigoScript +=salto+"var "+RAIZ.valor+" = "+type+"(";
         parametros.forEach((cad)->{
             if(!cad.equals(""))
             {
@@ -206,13 +370,42 @@ public class TraduccionGxml_Script {
             }
             
         });
+        
         codigoScript=recortarString(codigoScript,0,codigoScript.length()-1);
         codigoScript+=");";
         
-        codigoScript +=salto+padre+".crearcontenedor("+RAIZ.valor+");";
-        
-        FRecursiva(RAIZ,RAIZ.valor);
-       
+        codigoScript +=salto+padre+"."+type+"("+RAIZ.valor+");";
+    
+    }
+    
+    
+    
+    public String obtenerAtributo(HashMap<String,String> hashMap, String key)
+    {
+        if(hashMap.containsKey(key.toLowerCase()))
+        {
+            return "\""+hashMap.get(key)+"\"";
+        }else
+        {
+            return "\"\"";
+        }
+    }
+    
+    public Nodo obtenerHijo(Nodo RAIZ,String nombre)
+    {
+        Nodo RETORNO= null;
+        if(RAIZ.size()==3)
+        {
+            Nodo vHijos = RAIZ.get(2);
+            for (Nodo hijo : vHijos.hijos) {
+                if(hijo.nombre.toLowerCase().equals(nombre.toLowerCase()))
+                {
+                    RETORNO = hijo;
+                    break;
+                }
+            }
+        }
+        return RETORNO;
     }
     
     

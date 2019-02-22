@@ -68,7 +68,6 @@ comm_linea = ["#"] ["#"] [^\r\n]* [^\r\n]
 <YYINITIAL> "/boton>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.botonF1, new token(yycolumn, yyline, yytext()));}
 
 
-
 <YYINITIAL> "<texto"        {System.out.println("tk:"+yytext()); return new Symbol(sym.textoA1, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "texto"         {System.out.println("tk:"+yytext()); return new Symbol(sym.textoA2, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "/texto>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.textoF1, new token(yycolumn, yyline, yytext()));}

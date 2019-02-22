@@ -27,7 +27,7 @@ public class Nodo {
     }
 
     public Nodo() {
-        
+        this.hijos = new ArrayList<>();
     }
     
     
@@ -43,5 +43,8 @@ public class Nodo {
             return null;
         }
     }
-
+    public int size()
+    {
+        return this.hijos.size();
+    }
 }
