@@ -67,13 +67,151 @@ public class TraduccionGxml_Script {
                     crearControl(hijo,padre);
                     break;
                 case "boton":
+                    crearBoton(hijo, padre);
                     break;
+                case "multimedia":
+                    crearMultimedia(hijo, padre);
+                    break;    
                 default:
                     //ERROR
                     break;
             }
         }
         
+    }
+    
+    public void crearMultimedia(Nodo RAIZ, String padre)
+    {
+        Nodo vAtributos = RAIZ.get(0);
+        
+        HashMap<String, String> hashMap = new HashMap<>();
+        
+        for (Nodo atributo : vAtributos.hijos) {
+            Nodo at_nombre = atributo.get(0);
+            Nodo at_valor  = atributo.get(1);
+            if(!hashMap.containsKey(at_nombre.nombre.toLowerCase()))
+            {
+                hashMap.put(at_nombre.nombre.toLowerCase(), at_valor.valor);
+            }else
+            {
+                //Error Atributo Repetido
+            }
+        }
+        
+        ArrayList<String> parametros  = new ArrayList<>();
+        
+        //Obtener id o nombre del control y setear el nombre que tomara
+        String nombre = obtenerAtributo(hashMap, "nombre");
+        if(!nombre.equals("\"\""))
+        {
+            RAIZ.valor = recortarString(nombre, 1, nombre.length()-1);;
+        }else
+        {
+            RAIZ.valor =  RAIZ.valor + String.valueOf(RAIZ.index); 
+        }
+        
+        //Obtener el atributo TIPO de Control
+        if(hashMap.containsKey("tipo"))
+        {
+            String tipoControl = hashMap.get("tipo").toLowerCase();
+            switch(tipoControl)
+            {
+                case "imagen":
+                case "video":
+                    String type="crear"+tipoControl;
+                    
+                    parametros.add(obtenerAtributo(hashMap, "path"));
+                    parametros.add(obtenerAtributo(hashMap, "x"));
+                    parametros.add(obtenerAtributo(hashMap, "y"));
+                    parametros.add(obtenerAtributo(hashMap, "auto-reproduccion"));
+                    parametros.add(obtenerAtributo(hashMap, "alto"));
+                    parametros.add(obtenerAtributo(hashMap, "ancho"));
+                    agregarAPadre(RAIZ, parametros, padre, type);
+                    FRecursiva(RAIZ,RAIZ.valor);
+                    break;    
+                case "musica":
+                    parametros.add(obtenerAtributo(hashMap, "path"));
+                    parametros.add(obtenerAtributo(hashMap, "x"));
+                    parametros.add(obtenerAtributo(hashMap, "y"));
+                    parametros.add(obtenerAtributo(hashMap, "auto-reproduccion"));
+                    parametros.add(obtenerAtributo(hashMap, "alto"));
+                    parametros.add(obtenerAtributo(hashMap, "ancho"));
+                    agregarAPadre(RAIZ, parametros, padre, "crearreproductor");
+                    FRecursiva(RAIZ,RAIZ.valor);
+
+                    break;
+                    
+                    
+            }
+        }
+    }
+    
+    public void crearBoton(Nodo RAIZ, String padre)
+    {
+        Nodo vAtributos = RAIZ.get(0);
+        Nodo vExplicit  = RAIZ.get(1);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        
+        for (Nodo atributo : vAtributos.hijos) {
+            Nodo at_nombre = atributo.get(0);
+            Nodo at_valor  = atributo.get(1);
+            if(!hashMap.containsKey(at_nombre.nombre.toLowerCase()))
+            {
+                System.out.println("key:"+at_nombre.nombre.toLowerCase());
+                System.out.println("valor:"+at_valor.valor.toLowerCase());
+                hashMap.put(at_nombre.nombre.toLowerCase(), at_valor.valor);
+            }else
+            {
+                //Error Atributo Repetido
+            }
+        }
+        
+        ArrayList<String> parametros  = new ArrayList<>();
+        
+        //Obtener id o nombre del control y setear el nombre que tomara
+        String nombre = obtenerAtributo(hashMap, "nombre");
+        if(!nombre.equals("\"\""))
+        {
+            RAIZ.valor = recortarString(nombre, 1, nombre.length()-1);;
+        }else
+        {
+            RAIZ.valor =  RAIZ.valor + String.valueOf(RAIZ.index); 
+        }
+        
+        //Texto que mostrara el boton
+        String str_Defecto;
+        vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
+        vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
+        vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
+        vExplicit.valor = vExplicit.valor.trim();
+        str_Defecto = "\""+vExplicit.valor+"\"";
+        
+        
+        parametros.add(obtenerAtributo(hashMap, "fuente"));
+        parametros.add(obtenerAtributo(hashMap, "tam"));
+        parametros.add(obtenerAtributo(hashMap, "color"));
+        parametros.add(obtenerAtributo(hashMap, "x"));
+        parametros.add(obtenerAtributo(hashMap, "y"));
+        parametros.add(obtenerAtributo(hashMap, "referencia"));
+        //valor
+        parametros.add(str_Defecto);
+        parametros.add(obtenerAtributo(hashMap, "alto"));
+        parametros.add(obtenerAtributo(hashMap, "ancho"));
+
+        agregarAPadre(RAIZ, parametros, padre, "crearboton");
+        
+        /*  Si tiene el atributo Accion*/
+        String accion = obtenerAtributo(hashMap, "accion");
+        if(!accion.equals("\"\""))
+        {
+            accion= recortarString(accion,1,accion.length()-1);
+            accion= recortarString(accion,1,accion.length()-1);
+
+            codigoScript+=salto+RAIZ.valor+".alclic("+accion+");";
+        }
+        
+        FRecursiva(RAIZ,RAIZ.valor);
     }
     
     public void crearControl(Nodo RAIZ, String padre)
@@ -115,7 +253,9 @@ public class TraduccionGxml_Script {
         {
             Nodo vExplicit = DEFECTO.get(1);
             vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
-            vExplicit.valor = vExplicit.valor.replaceAll("\n", "");
+            vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
+            vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
+            vExplicit.valor = vExplicit.valor.trim();
             str_Defecto = "\""+vExplicit.valor+"\"";
         }
         
@@ -154,7 +294,8 @@ public class TraduccionGxml_Script {
                     parametros.add(str_Defecto);
                     parametros.add(obtenerAtributo(hashMap, "nombre"));
                     agregarAPadre(RAIZ, parametros, padre, "crearcontrolnumerico");
-                    
+                    FRecursiva(RAIZ,RAIZ.valor);
+
                     break;
                 case "desplegable":
                     //Obtener Lista Datos
@@ -162,13 +303,15 @@ public class TraduccionGxml_Script {
 
                     parametros.add(obtenerAtributo(hashMap, "alto"));
                     parametros.add(obtenerAtributo(hashMap, "ancho"));
+                    
                     //LISTA
                     if(LISTA!=null)
                     {
                         parametros.add(getArrayListaDatos(LISTA));
                     }else
                     {
-                        parametros.add("[],");
+                        parametros.add("[]");
+                        str_Defecto = "\"\"";
                     }
                     
                     
@@ -176,12 +319,12 @@ public class TraduccionGxml_Script {
                     parametros.add(obtenerAtributo(hashMap, "y"));
                     
                     //defecto
-                    str_Defecto = str_Defecto.replaceAll("\t", "");
-                    str_Defecto = str_Defecto.replaceAll(" ", "");
-                    parametros.add(str_Defecto.trim());
+                    parametros.add(str_Defecto);
                     
                     parametros.add(obtenerAtributo(hashMap, "nombre"));
                     agregarAPadre(RAIZ, parametros, padre, "creardesplegable");
+                    FRecursiva(RAIZ,RAIZ.valor);
+
                     break;
                     
                     
@@ -193,26 +336,7 @@ public class TraduccionGxml_Script {
     
     
     
-    public String getArrayListaDatos(Nodo RAIZ)
-    {
-        String array = "[";
-        if(RAIZ.size()==3)
-        {
-         
-            Nodo vHijos = RAIZ.get(2);
-            for (Nodo dato : vHijos.hijos) {
-                Nodo vExplicit = dato.get(1);
-                vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
-                vExplicit.valor = vExplicit.valor.replaceAll("\n", "");
-                vExplicit.valor = vExplicit.valor.replaceAll("\t", "");
-                vExplicit.valor = vExplicit.valor.replaceAll(" ", "");
-                array+="\""+vExplicit.valor+"\",";
-            }
-            array=recortarString(array,0,array.length()-1);
-
-        }
-        return array+"]";
-    }
+    
     
     public void crearVentana(Nodo RAIZ)
     {
@@ -474,5 +598,31 @@ public class TraduccionGxml_Script {
         } catch (Exception e) {
             return "";
         }
+    }
+    
+    
+    public String getArrayListaDatos(Nodo RAIZ)
+    {
+        String array = "[";
+        if(RAIZ.size()==3)
+        {
+         
+            Nodo vHijos = RAIZ.get(2);
+            if(!vHijos.hijos.isEmpty())
+            {
+                for (Nodo dato : vHijos.hijos) {
+                    Nodo vExplicit = dato.get(1);
+                    vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
+                    vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
+                    vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
+                    vExplicit.valor = vExplicit.valor.trim();
+                    array+="\""+vExplicit.valor+"\",";
+                }
+
+                array=recortarString(array,0,array.length()-1);
+            }
+            
+        }
+        return array+"]";
     }
 }

@@ -19,7 +19,7 @@ hola perros
 
         <CONTROL tipo="desplegable" nombre="desp1" x=10 y=10 alto=10 ancho=10 maximo=100>
 		    <listadatos>
-			    <DATO>hola</DATO>
+			    <DATO>que pasa perrimones</DATO>
 			    <DATO>hola</DATO>
 			    <DATO>hola</DATO>
 		    </listadatos>
@@ -28,6 +28,19 @@ hola perros
 		    </defecto>
 		</CONTROL>
 
+        <boton NOMBRE="boton1" x=10 y=20 referencia= "mireferencia" alto=16 ancho=15 accion={metodo1(1,2,3,4)}>
+			hola soy un texro cualquierla 123 hola .as.asd 
+		</boton>
+
+        <multimedia path = "/ruta.jpg" tipo="imagen" nombre="img1" x =10 y = 20 alto="12" ancho="14" auto-reproduccion="verdadero" >
+        </multimedia>
+
+ <multimedia path = "/ruta.jpg" tipo="video"  x =10 y = 20 alto="12" ancho="14" auto-reproduccion="verdadero" >
+        </multimedia>
+
+
+ <multimedia path = "/ruta.jpg" tipo="musica"  auto-reproduccion="verdadero" >
+        </multimedia>
 	</CONTENEDOR>
 	##hola
 </VENTANA>
