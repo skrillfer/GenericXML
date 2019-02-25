@@ -420,6 +420,7 @@ public class TraduccionGxml_Script {
     
         ventan1.crearcontenedor(contenedor);
     */
+    
     public void crearContenedor(Nodo RAIZ, String padre)
     {
         Nodo vAtributos = RAIZ.get(0);
@@ -480,66 +481,55 @@ public class TraduccionGxml_Script {
     {
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit  = RAIZ.get(1);
-        
-        vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
-        vExplicit.valor = vExplicit.valor.replaceAll("\n", "");
-        ArrayList<String> parametros  = new ArrayList<>();
-        parametros.add("\"\"");//fuente
-        parametros.add("\"\"");//tam
-        parametros.add("\"\"");//color
-        parametros.add("\"0\"");//x
-        parametros.add("\"0\"");//y
-        parametros.add("\"falso\"");//negrilla
-        parametros.add("\"falso\"");//cursiva
-        parametros.add("\"\"");//referencia
-        parametros.add("\""+vExplicit.valor+"\"");//valor
-        
-        
+
+        HashMap<String, String> hashMap = new HashMap<>();
         
         for (Nodo atributo : vAtributos.hijos) {
-            Nodo n_atributo = atributo.get(0);
-            String n_valor =  "\""+atributo.get(1).valor+"\"";
-            String val = atributo.get(1).valor;
-            switch(n_atributo.nombre.toLowerCase())
-            {              
-                case "fuente":
-                    parametros.set(0,n_valor);
-                    break;
-                case "tam":
-                    parametros.set(1,n_valor);
-                    break;
-                case "color":
-                    parametros.set(2,n_valor);
-                    break;
-                case "x":
-                    parametros.set(3,n_valor);
-                    break;
-                case "y":
-                    parametros.set(4,n_valor);
-                    break;     
-                case "negrilla":
-                    parametros.set(5,n_valor);
-                    break;     
-                case "cursiva":
-                    parametros.set(6,n_valor);
-                    break;
-                case "referencia":
-                    parametros.set(7,n_valor);
-                    break;
-                case "nombre":
-                case "id":    
-                    RAIZ.valor= val;
-                    break; 
-                
-                default:
-                    //ERROR
-                    break;
+            Nodo at_nombre = atributo.get(0);
+            Nodo at_valor  = atributo.get(1);
+            if(!hashMap.containsKey(at_nombre.nombre.toLowerCase()))
+            {
+                hashMap.put(at_nombre.nombre.toLowerCase(), at_valor.valor);
+            }else
+            {
+                //Error Atributo Repetido
             }
         }
         
+        ArrayList<String> parametros  = new ArrayList<>();
+        
+        //Obtener id o nombre del control y setear el nombre que tomara
+        String nombre = obtenerAtributo(hashMap, "nombre");
+        if(!nombre.equals("\"\""))
+        {
+            RAIZ.valor = recortarString(nombre, 1, nombre.length()-1);;
+        }else
+        {
+            RAIZ.valor =  RAIZ.valor + String.valueOf(RAIZ.index); 
+        }
+        
+        //Texto que mostrara el boton
+        String str_Defecto;
+        vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length()-1);
+        vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
+        vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
+        vExplicit.valor = vExplicit.valor.trim();
+        str_Defecto = "\""+vExplicit.valor+"\"";
+        
+        
+        parametros.add(obtenerAtributo(hashMap, "fuente"));
+        parametros.add(obtenerAtributo(hashMap, "tam"));
+        parametros.add(obtenerAtributo(hashMap, "color"));
+        parametros.add(obtenerAtributo(hashMap, "x"));
+        parametros.add(obtenerAtributo(hashMap, "y"));
+        parametros.add(obtenerAtributo(hashMap, "negrilla"));
+        parametros.add(obtenerAtributo(hashMap, "cursiva"));
+        parametros.add(obtenerAtributo(hashMap, "referencia"));
+        parametros.add(str_Defecto);//valor
+
         agregarAPadre(RAIZ, parametros, padre, "creartexto");
         FRecursiva(RAIZ,RAIZ.valor);
-       
+        
     }
     
     public void agregarAPadre(Nodo RAIZ,ArrayList<String> parametros,String padre, String type)

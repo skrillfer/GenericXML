@@ -22,11 +22,32 @@ import java.util.logging.Logger;
  */
 public class Ejecutor {
     public static void main(String[] args) {
-        try {
+        String str="";
+        Double db1=1.4;
+        Integer    gr1=5;
+        
+        Boolean flag=true;
+        
+        String cadena = "abc";
+        int suma = 0;
+        for (int i = 0; i < cadena.length(); i++) {
+            suma+= cadena.codePointAt(i);
+        }
+        System.out.println(suma);
+        
+        Object v1 = Integer.valueOf("1");
+        Object v2 = Double.valueOf("2.0");
+        
+        if( ((Integer)v1).doubleValue() < (Double)v2)
+        {
+            System.out.println("XI");
+        }
+        
+        /*try {
             new Ejecutor().compilar();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Ejecutor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
     
     public void compilar() throws FileNotFoundException
