@@ -7,9 +7,6 @@ package GenericCompiler;
 
 import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
-import Analizadores.Script.LexScript;
-import Analizadores.Script.SintacticoScript;
-import Ast_Generator.AST_Script;
 import Estructuras.Nodo;
 import ScriptCompiler.Script;
 import java.io.File;
@@ -19,8 +16,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +26,7 @@ public class Ejecutor {
 
     Hashtable<String, String> lista_cjs = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         new Ejecutor().MAIN();
         /*try {

@@ -73,7 +73,7 @@ non terminal Nodo INICIO,DECLARA,LIST_ID,ASIGN,DATO,LIST_EXP,CONTARRAY,LIST_ATRI
                   INSTRUCCIONES,INSTRUCCIONES_FUERA,I_NSTRUCCIONESF,SENTENCIAF,I_NSTRUCCIONES,SENTENCIA,
                   SI,MUCHOS_SINOSI,FINAL_SINO,LIST_SINOSI,SINO_SI,SINO,FUNCION,PARAMETROS,LISTA_PARAMETROS,
                   LLAMADA,ENVIO,ACCESO,ACCESOVAR,ACCESOARR,INDICES,INDICE,NATIVAS,
-                  ASIGNACION,TIPOASIG,ATRIBUTOS,ATRIBUTO,SIMPLIFICADA;
+                  ASIGNACION,TIPOASIG,ATRIBUTOS,ATRIBUTO,SIMPLIFICADA,CONTOBJ;
     
 /* PRECEDENCIAS */
 precedence left mas, menos;
@@ -154,12 +154,12 @@ DECLARA ::= var:m LIST_ID:n ASIGN:o pyc
                 RESULT.add(n);
                 RESULT.add(o);
             :}
-            |var:m LIST_ID:n igual alla LIST_ATRI:o clla pyc 
+            /*|var:m LIST_ID:n igual alla LIST_ATRI:o clla pyc 
             {:
                 RESULT = parser.crearNodo("declaracionobj","",m.getLinea(),m.getColumna());
                 RESULT.add(n);
                 RESULT.add(o);
-            :};
+            :}*/;
 
 /* Lista de Atributos de Objeto */
 
@@ -181,9 +181,16 @@ ATRIBUTOS   ::= ATRIBUTOS:r coma ATRIBUTO:h
 
 ATRIBUTO    ::= iden:m dspts EXP:h
                 {:
-                    RESULT = parser.crearNodo("atributo","",m.getLinea(),m.getColumna());
-                    RESULT.add(parser.crearNodo("m",m.getCadena(),m.getLinea(),m.getColumna()));    
-                    RESULT.add(h);
+                    RESULT = parser.crearNodo("declaracionvarG","",m.getLinea(),m.getColumna());
+                    
+                    Nodo Lt_id = parser.crearNodo("list_id","",m.getLinea(),m.getColumna());
+                    Lt_id.add(parser.crearNodo("id",m.getCadena(),m.getLinea(),m.getColumna()));
+                    
+                    Nodo Asign = parser.crearNodo("asign","",h.linea,h.columna);
+                    Asign.add(h);
+
+                    RESULT.add(Lt_id);
+                    RESULT.add(Asign); 
                 :};
 
 /*      Lista de identificadores        */
@@ -195,13 +202,29 @@ LIST_ID ::=  LIST_ID:n coma iden:m
             :}
             |iden:m
             {:
-                RESULT = parser.crearNodo("list_id",m.getCadena(),m.getLinea(),m.getColumna());
+                RESULT = parser.crearNodo("list_id","",m.getLinea(),m.getColumna());
                 RESULT.add(parser.crearNodo("id",m.getCadena(),m.getLinea(),m.getColumna()));
             :};
 
 
+/*      contenido de objetos         */
+CONTOBJ  ::= alla LIST_ATRI:m clla
+            {:
+                RESULT = parser.crearNodo("cntobj","",m.linea,m.columna);
+                RESULT.add(m);
+            :};
+
 /*      contenido de arreglos        */
-CONTARRAY  ::= acorch LIST_EXP ccorch;
+CONTARRAY  ::= acorch LIST_EXP:m ccorch
+               {:
+                    RESULT = parser.crearNodo("cntarray","",m.linea,m.columna);
+                    RESULT.add(m);
+               :}
+               |acorch:m ccorch
+               {:
+                    RESULT = parser.crearNodo("cntarray","",m.getLinea(),m.getColumna());
+                    RESULT.add( parser.crearNodo("lista_exp","",m.getLinea(),m.getColumna()) );
+               :};
 
 LIST_EXP   ::= LIST_EXP:r coma EXP:h
             {:
@@ -464,6 +487,8 @@ EXP_A ::= EXP_A:b mas:a EXP_A:c    {:
                                         RESULT.add(b);    RESULT.add(c);
                                       :}
           |apar EXP:r cpar         {:  RESULT=r;    :}
+          |CONTARRAY:r             {:  RESULT=r;    :}
+          |CONTOBJ:r               {:  RESULT=r;    :}
           |menos:a EXP_A:H         {:  RESULT = parser.crearNodo("unario","",a.getLinea(),a.getColumna()); RESULT.add(H); :}
           |DATO:r                  {:  RESULT=r;    :}
           |SIMPLIFICADA:r          {:  RESULT=r;    :}

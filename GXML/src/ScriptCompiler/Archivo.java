@@ -46,5 +46,10 @@ public class Archivo {
             
             clases.add(clase);
         //}
+        
+        /*
+        Creo una instancia para cada estructura que encuentre dentro de los atributos 
+        */
+        
     }
 }

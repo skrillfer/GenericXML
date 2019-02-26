@@ -11,6 +11,7 @@ import ScriptCompiler.Arreglo;
 import ScriptCompiler.Clase;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.Script;
+import ScriptCompiler.Sentencias.Declaracion;
 import ScriptCompiler.Simbolo;
 import ScriptCompiler.TablaSimbolo;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class OperacionesARL {
     }
 
     public Resultado ejecutar(Nodo nodo) {
-        Resultado result = null;
+        Resultado result = new Resultado("-1", null);
         switch (nodo.nombre) {
             /**
              * ********* EXPRESIONES LOGICAS *****
@@ -240,6 +241,21 @@ public class OperacionesARL {
                     result = new Resultado("Boolean", false);
                 }
                 break;
+                
+            /* - - -  - - - ARREGLOS  - -- - - - -- - - - - -- */
+            case "cntarray":
+                
+                Arreglo arreglo = new Arreglo(nodo, tabla, global,miTemplate);
+                if (arreglo.estado) 
+                {
+                    result = new Resultado(arreglo.getClass().getSimpleName(), arreglo);
+                }
+                break;
+            case "cntobj":
+                Declaracion declara = new Declaracion(global, tabla, miTemplate);
+                Clase clase = declara.crearInstanciaEstructura(nodo.get(0));
+                result = new Resultado(clase.getClass().getSimpleName(), clase);
+                break;    
             case "Accion_Obtener":
                 Nodo pto_Obtener = nodo.hijos.get(0);
                 Nodo id = pto_Obtener.hijos.get(0);
@@ -1280,6 +1296,14 @@ public class OperacionesARL {
                                     retorno.tipo = simbolo.tipo;
                                     retorno.simbolo = simbolo;
                                     break;
+                                default:
+                                    nivel++;
+                                    aux = (Clase) simbolo.valor;
+                                    tabla = aux.tabla;
+                                    retorno.tipo = simbolo.tipo;
+                                    retorno.valor = simbolo.valor;
+                                    retorno.simbolo = simbolo;
+                                    break;    
                             }
                             if (simbolo.esArreglo) {
                                 retorno.valor = simbolo.valor;
@@ -1450,5 +1474,7 @@ public class OperacionesARL {
         }
         return suma;
     }
+    
+    
 
 }

@@ -9,6 +9,7 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 /**
  *
@@ -23,6 +24,10 @@ public class Arreglo {
     public boolean estado = true;
     private OperacionesARL opL;
     public Template miTemplate;
+    /* TRUE= todos sus datos son del mismo tipo , FALSE= que no*/
+    public boolean Homogeneo = true;
+    public boolean esVacio = true;
+    public String type="";
 
     public Arreglo() {
         dimensiones = new ArrayList<>();
@@ -104,30 +109,33 @@ public class Arreglo {
 
     public void guardarValores(Nodo raiz) {
         ArrayList<Nodo> dim = null;
-        ArrayList<Nodo> val = null;
+        ArrayList<Nodo> val = raiz.get(0).hijos;
         String tipo = "";
-        switch (raiz.hijos.size()) {
-
-            case 2:
-                val = raiz.hijos.get(1).hijos;//modifique para la nueva version
-                break;
-            default:
-                break;
-        }
-
+        
+        Hashtable<String, String> hash =   new Hashtable<>();
+        
         int total = 0;
         for (Nodo hijo : val) {
             Resultado resultado = opL.ejecutar(hijo);
-            if (resultado != null) {
+            if (!esNulo(resultado)) {
+                if(!hash.contains(resultado.tipo))
+                {
+                    type=resultado.tipo;
+                    hash.put(resultado.tipo, resultado.tipo);
+                }
                 total++;
                 datos.add(resultado);
             }
         }
-        if (dimensiones.isEmpty()) {
+        if (dimensiones.isEmpty() && val.size()>0) {
             dimensiones.add(total);
         }
-
+        
+        Homogeneo=!(hash.size()>1);
+        esVacio  = val.isEmpty();
+        if(!Homogeneo){type="";}
     }
+    
 
     public void guardarValores2(Nodo raiz) {
         ArrayList<Nodo> val = raiz.hijos.get(1).hijos;// (LISTA_NODO)valores        
@@ -170,6 +178,30 @@ public class Arreglo {
         } else {
             //indice incorrecto
             return null;
+        }
+    }
+    
+     public boolean esNulo(Resultado r)
+    {
+        if(r==null)
+        {
+            return true;
+        }else
+        {
+            if(r.tipo.equals("-1") || r.tipo.equals("0nulo"))
+            {
+                return true;
+            }else
+            {
+                if(r.valor==null)
+                {
+                    return true;
+                }else
+                {
+                    return false;
+                }
+            }
+            
         }
     }
 
