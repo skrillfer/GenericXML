@@ -21,6 +21,15 @@ public class Declaracion extends Compilador{
     TablaSimbolo tabla;
     TablaSimbolo global;
 
+    public Declaracion(Nodo raiz, TablaSimbolo global,Template template1) {
+        this.miTemplate=template1;
+        this.raiz = raiz;
+        this.tabla = global;//tabla de atributos
+        this.global = new TablaSimbolo();//tabla de variables locales
+        opL = new OperacionesARL(global, global,miTemplate);
+        declarar();
+    }
+    
     //* cuando DECLARO PARAMETROS USO ESTE CONSTRUCTOR
     public Declaracion(Nodo raiz, Resultado resultado, TablaSimbolo global, TablaSimbolo tabla,Template template1) {
         this.miTemplate=template1;
@@ -44,9 +53,9 @@ public class Declaracion extends Compilador{
         //System.out.println(raiz.nombre);
         switch (raiz.nombre) {
             //********************  AMBITO GLOBAL ******************************
-            case "declara_var":
+            case "declaracionvarG":
                 try {
-                    declara_var();
+                    declaracionvarG();
                 } catch (Exception e) {
                 }
                 break;
@@ -58,40 +67,51 @@ public class Declaracion extends Compilador{
         return null;
     }
      
-      public void declara_var(){
+      public void declaracionvarG(){
         String tipo = "";//el tipo de la  variable depende del valor que tenga
-        String nombre= raiz.hijos.get(0).valor;//se obtiene el nombre de la variable a declarar
+        
+        Nodo LISTA_ID = raiz.get(0);
+        Nodo ASIGN    = raiz.get(1);
         
         
-        if(raiz.hijos.get(1).hijos.size()>0){
-            Nodo exp = raiz.hijos.get(1).hijos.get(0);//se obtiene el nodo de la expresion
-            //----------ejecuto la parte de la expresion
-            System.out.println("ASIGNO a " + nombre);
-            Resultado resultado = opL.ejecutar(exp);
-            
-            if(resultado!=null ){
-                // la variable toma el tipo del valor que le es asignado
-                tipo=resultado.tipo;
-                Simbolo simbolo = new Simbolo(tipo, nombre, "", resultado.valor);
-                simbolo.inicializado = true;
-                if (!global.setSimbolo(simbolo)) {
-                    Template.reporteError_CJS.agregar("Error Semantico",raiz.linea, raiz.columna,"La variable " + nombre + " ya existe");
+          for (Nodo nodoID : LISTA_ID.hijos) {
+            String nombre= nodoID.valor;//se obtiene el nombre de la variable a declarar
+             
+            if(ASIGN.size()>0)
+            {
+                //Se obtiene la expresion de asignacion y entonces se trata de obtener el resultado
+                Nodo EXP = ASIGN.get(0);
+                Resultado resultado = opL.ejecutar(EXP);
+
+                if(!esNulo(resultado)){
+                    // la variable toma el tipo del valor que le es asignado
+                    tipo=resultado.tipo;
+                    
+                    Object RESULTADO = null;
+                    boolean INICIALIZADO = false;
+                    if(LISTA_ID.get(LISTA_ID.size()-1).valor.equalsIgnoreCase(nodoID.valor))
+                    {
+                        RESULTADO= resultado.valor;
+                        INICIALIZADO = true;
+                    }
+                    Simbolo simbolo = new Simbolo(tipo, nombre, "", RESULTADO);
+                    simbolo.inicializado = INICIALIZADO;
+                    if (!global.setSimbolo(simbolo)) {
+                        Template.reporteError_CJS.agregar("Error Semantico",nodoID.linea, nodoID.columna,"La variable " + nombre + " ya existe");
+                    }
+                }else{
+                    Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
+                    if (!global.setSimbolo(simbolo)) {
+                        Template.reporteError_CJS.agregar("Error Semantico",nodoID.linea, nodoID.columna,"La variable " + nombre + " ya existe");
+                    }
                 }
             }else{
-                Simbolo simbolo = new Simbolo("", nombre, "", null);
+                Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
                 if (!global.setSimbolo(simbolo)) {
-                    Template.reporteError_CJS.agregar("Error Semantico",raiz.linea, raiz.columna,"La variable " + nombre + " ya existe");
-                }/*else{
-                    System.out.println("se agrego correctamente  "+simbolo.nombre);
-                }*/
+                    Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
+                }
             }
-             
-        }else{
-            Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
-            if (!global.setSimbolo(simbolo)) {
-                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + nombre + " ya existe");
-            }
-        }
+          }
     }
     
 }

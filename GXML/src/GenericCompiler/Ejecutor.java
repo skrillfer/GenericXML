@@ -11,8 +11,14 @@ import Analizadores.Script.LexScript;
 import Analizadores.Script.SintacticoScript;
 import Ast_Generator.AST_Script;
 import Estructuras.Nodo;
+import ScriptCompiler.Script;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,37 +27,103 @@ import java.util.logging.Logger;
  * @author fernando
  */
 public class Ejecutor {
+    //public  Script principal_Script = new Script();
+
+    Hashtable<String, String> lista_cjs = null;
+
     public static void main(String[] args) {
-        String str="";
-        Double db1=1.4;
-        Integer    gr1=5;
-        
-        Boolean flag=true;
-        
-        String cadena = "abc";
-        int suma = 0;
-        for (int i = 0; i < cadena.length(); i++) {
-            suma+= cadena.codePointAt(i);
-        }
-        System.out.println(suma);
-        
-        Object v1 = Integer.valueOf("1");
-        Object v2 = Double.valueOf("2.0");
-        
-        if( ((Integer)v1).doubleValue() < (Double)v2)
-        {
-            System.out.println("XI");
-        }
-        
+
+        new Ejecutor().MAIN();
         /*try {
             new Ejecutor().compilar();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Ejecutor.class.getName()).log(Level.SEVERE, null, ex);
         }*/
     }
-    
-    public void compilar() throws FileNotFoundException
-    {
+
+    public void MAIN() {
+
+        Script.archivos = new ArrayList();
+
+        File padre = new File("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script/pruebitas.txt");
+        File file = new File(padre.getParent());
+        File files[] = file.listFiles();
+        Script graphik = new Script(files, "pruebitas.txt");
+
+        
+        /*
+        
+         if (pestaniaActiva != null) {
+            if (pestaniaActiva.file != null) {
+                File file = new File(pestaniaActiva.file.getParent());
+                File files[] = file.listFiles();
+                Graphik graphik = new Graphik(files, pestaniaActiva.nombre);
+            }
+        }
+        
+        */
+        /*lista_cjs = new Hashtable<>();
+
+        addCjs("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script/pruebitas.txt");
+
+        try {
+            ejecutarArchivosCjs();
+        } catch (Exception e) {
+            System.out.println("Error Ejecucion: " + "Ejecutando CJS ->" + e.getMessage());
+        }
+         */
+    }
+
+    public void addCjs(String ruta) {
+        try {
+            if (!lista_cjs.containsKey(ruta)) {
+                lista_cjs.put(ruta, ruta);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    public void ejecutarArchivosCjs() throws FileNotFoundException {
+        ArrayList<String> listacjs = obtenerListaArchivosCJS();
+        if (listacjs != null) {
+            for (String ruta : listacjs) {
+                try {
+                    Nodo root = new ParserMethods().CompilarScriptJS(leerArchivo(ruta));
+                    //principal_Script.ejecucionCJS(root, "", ruta,null);
+                } catch (Exception e) {
+                }
+
+            }
+        }
+    }
+
+    public ArrayList<String> obtenerListaArchivosCJS() {
+        ArrayList<String> lista = new ArrayList<>();
+        Enumeration<String> llaves = lista_cjs.keys();
+        while (llaves.hasMoreElements()) {
+            String llave = llaves.nextElement();
+            String vruta = lista_cjs.get(llave).trim();
+            lista.add(vruta);
+        }
+        return lista;
+    }
+
+    public String leerArchivo(String path) {
+        try {
+            File file = new File(path);
+            FileInputStream fis = new FileInputStream(file);
+            byte[] data = new byte[(int) file.length()];
+            fis.read(data);
+            fis.close();
+
+            String str = new String(data, "UTF-8");
+            return str;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public void compilar() throws FileNotFoundException {
         /*
         LexScript lex = new LexScript(new FileReader("EntradaScript.txt"));
         SintacticoScript sin = new SintacticoScript(lex);
@@ -64,9 +136,8 @@ public class Ejecutor {
         } catch (Exception e) {
             System.err.println("error al compilar:"+e.getMessage());
         }
-        */
-        
-               
+         */
+
         LexGxml lex = new LexGxml(new FileReader("EntradaGxml.txt"));
         SintacticoGxml sin = new SintacticoGxml(lex);
         try {
@@ -77,7 +148,8 @@ public class Ejecutor {
             AST_Script   genTcjs = new AST_Script();
             genTcjs.generacion_arbolScript(raiz);*/
         } catch (Exception e) {
-            System.err.println("error al compilar:"+e.getMessage());
+            System.err.println("error al compilar:" + e.getMessage());
         }
     }
+
 }

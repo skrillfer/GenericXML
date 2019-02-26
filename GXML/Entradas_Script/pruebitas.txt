@@ -1,0 +1,10 @@
+var v1 = 14;
+var v2,v3,v4,v5="hola";
+
+var v6 =  nulo;
+
+
+funcion met1(){}
+funcion met1(){}
+funcion met1(){}
+funcion met1(){}

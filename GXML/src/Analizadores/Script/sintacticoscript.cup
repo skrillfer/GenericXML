@@ -129,7 +129,7 @@ I_NSTRUCCIONESF ::= I_NSTRUCCIONESF:r SENTENCIAF:h {:  r.add(h); RESULT = r;  :}
                         RESULT.add(h); 
                     :};
 
-SENTENCIAF      ::= DECLARA:g                {: RESULT = g; :}
+SENTENCIAF      ::= DECLARA:g                {: g.nombre += "G"; RESULT = g; :}
                    |FUNCION:g                {: RESULT = g; :}
                    |SELECCIONA:X             {: RESULT = X; :}
                    |SI:X                     {: RESULT = X; :}

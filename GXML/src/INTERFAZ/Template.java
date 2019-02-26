@@ -6,6 +6,7 @@
 package INTERFAZ;
 
 import Errores.ReporteError;
+import Errores.ReporteSimbolo;
 
 /**
  *
@@ -14,6 +15,6 @@ import Errores.ReporteError;
 public class Template {
     //----------------------------------------------------//
     public static ReporteError reporteError_CJS = new ReporteError(); // este REPORTE es para CJS
-    
+    public static ReporteSimbolo reporteSimbolos_CJS = new ReporteSimbolo(); // este REPORTE es para CJS
     //**************************************************************************
 }

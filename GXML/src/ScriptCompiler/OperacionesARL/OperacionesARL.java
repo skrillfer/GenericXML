@@ -184,6 +184,10 @@ public class OperacionesARL {
             case "int_literal":
                 result=new Resultado("Integer", Integer.parseInt(nodo.valor));
                 break;
+            case "nulo":
+                result=new Resultado("0nulo","nulo");
+                break;
+                
             case "double_literal":
                 result=new Resultado("Double", Double.parseDouble(nodo.valor));
                 break;    

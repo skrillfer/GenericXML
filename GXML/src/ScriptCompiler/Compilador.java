@@ -5,10 +5,12 @@
  */
 package ScriptCompiler;
 
+import Errores.ReporteError;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Sentencias.Declaracion;
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -16,8 +18,16 @@ import java.util.Stack;
  * @author fernando
  */
 public abstract class Compilador {
+    
+    public static ArrayList<Archivo> archivos;
+    public String archivoActual;
+    public static ArrayList<Simbolo> reporteSimbolos;
+    public static ReporteError reporteError_CJS; // este REPORTE es para CJS
+
      //--------------------------------------------------------------------------
     public Template miTemplate;
+    
+        
     public static Clase claseActual;
     public static Stack<Clase> pilaClases;
     public static Stack<Metodo> pilaMetodos;
@@ -36,17 +46,22 @@ public abstract class Compilador {
     public Metodo ejecutarSentencias(Nodo Sentencias){
         for (Nodo sentencia : Sentencias.hijos) {
             switch(sentencia.nombre){
-                case "declara_var_L":
-                case "declara_vecF1_L":
-                case "declara_vecF2_L":
-                case "asignacionLocal":
-                case "asigna_vecLocalF2":    
-                case "asigna_vecLocalF1":        
+                case "declaracionvarG":
                     try {
                         new Declaracion(sentencia, global, tabla,miTemplate);
                     } catch (Exception e) {
+                        System.err.println("declaracionvarG=>"+e.getMessage());
                     }
-                    break;
+                /*case "declara_vecF1_L":
+                case "declara_vecF2_L":
+                case "asignacionLocal":
+                case "asigna_vecLocalF2":    
+                case "asigna_vecLocalF1":        */
+                    /*try {
+                        new Declaracion(sentencia, global, tabla,miTemplate);
+                    } catch (Exception e) {
+                    }
+                    break;*/
                 /*case "llamadaFuncion":
                     try {
                         opL = new OperacionesARL(global, tabla,miTemplate);
@@ -188,5 +203,29 @@ public abstract class Compilador {
             }
         }
         return metodoActual;
+    }
+    
+    public boolean esNulo(Resultado r)
+    {
+        if(r==null)
+        {
+            return true;
+        }else
+        {
+            if(r.tipo.equals("-1") || r.tipo.equals("0nulo"))
+            {
+                return true;
+            }else
+            {
+                if(r.valor==null)
+                {
+                    return true;
+                }else
+                {
+                    return false;
+                }
+            }
+            
+        }
     }
 }

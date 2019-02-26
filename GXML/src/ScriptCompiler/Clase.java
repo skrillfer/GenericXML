@@ -6,6 +6,8 @@
 package ScriptCompiler;
 
 import Estructuras.Nodo;
+import INTERFAZ.Template;
+import ScriptCompiler.Sentencias.Declaracion;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -25,34 +27,30 @@ public class Clase {
     public ArrayList<Nodo> atributos;
     public ArrayList<Nodo> sentenciasGlobales;
     
-     public Clase() {
+     public Clase(String nombre) {
         global = new TablaSimbolo();   //La tabla de simbolos global
         tabla = new TablaSimbolo();    
         atributos = new ArrayList<>();
-        sentenciasGlobales = new ArrayList<>();
         metodos = new ArrayList<>();
         pilaTablas = new Stack<>();
     }
      
-    public Clase(Nodo raiz) {
-
+    public Clase(Nodo raiz,String nombre) {
+        archivo = nombre;
         global = new TablaSimbolo();
         tabla = new TablaSimbolo();
         atributos = new ArrayList<>();
         metodos = new ArrayList<>();
-        sentenciasGlobales = new ArrayList<>();
         pilaTablas = new Stack<>();
      
         //----------------------------------------------------------------------
         this.nombre = raiz.valor;
-        //this.visibilidad = raiz.hijos.get(0).valor;
-        this.metodos = getMetodos(raiz);
+        getMetodos(raiz);
         this.atributos = getAtributos(raiz);
         //----------------------------------------------------------------------
     } 
 
-     private ArrayList<Metodo> getMetodos(Nodo raiz) {
-        ArrayList<Metodo> metodos = new ArrayList<>();//una lista de METODOS
+     private void getMetodos(Nodo raiz) {
         for (Nodo hijo : raiz.hijos) {
             if (hijo.nombre.equalsIgnoreCase("funcion")) {
                 Metodo metodo = new Metodo(hijo);
@@ -61,17 +59,16 @@ public class Clase {
                     Simbolo simbolo = new Simbolo("funcion", metodo.nombre, "metodo");
                     simbolo.rol = "Metodo";
                     simbolo.ambito = nombre;
-                    //Graphik.reporteSimbolos.add(simbolo);
+                    Script.reporteSimbolos.add(simbolo);
                 }
             }
         }
-        return metodos;
     }
 
     private Boolean existeMetodo(String id, Nodo raiz) {
         for (Metodo metodo : metodos) {
             if (metodo.id.equalsIgnoreCase(id)) {
-                //Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El metodo " + metodo.nombre + " ya existe en la clase " + nombre);
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El metodo " + metodo.nombre + " ya existe en el archivo " + this.archivo);
                 return true;
             }
         }
@@ -90,7 +87,7 @@ public class Clase {
     private ArrayList<Nodo> getAtributos(Nodo raiz) {
         ArrayList<Nodo> atributos = new ArrayList<>();
         for (Nodo hijo : raiz.hijos) {
-            if (!hijo.nombre.equalsIgnoreCase("funcion")  ) {
+            if (!hijo.nombre.equalsIgnoreCase("funcion") ){
                 atributos.add(hijo);
             }
         }
@@ -100,6 +97,29 @@ public class Clase {
     
     
     public void ejecutar() {
+        
+        /*Compilador.pilaClases.push(Compilador.claseActual);
+        Compilador.claseActual = this;
+        Nodo padre = new Nodo("Sentencias", "", 0, 0, 8918);
+
+        for (Nodo atributo : atributos) {
+            padre.add(padre);
+            //new Declaracion(atributo, global, tabla);
+        }
+        
+        Compilador.claseActual = Compilador.pilaClases.pop();
+        
+        /*
+        for (Nodo atributo : atributos) 
+        {
+            System.out.println("|"+atributo.nombre+"|");
+        }
+        
+        for (Metodo met : metodos) 
+        {
+            System.out.println("|"+met.nombre+"|");
+        }
+        */
         /*
         for (Nodo atributo : atributos) {
             if ( atributo.nombre.equalsIgnoreCase("declara_var")  || atributo.nombre.equalsIgnoreCase("declara_vecF1") 
