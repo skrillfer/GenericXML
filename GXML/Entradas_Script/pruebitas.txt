@@ -1,10 +1,44 @@
-var v1 = 14;
-var v2,v3,v4,v5="hola";
+var v1 = 14!=0;
+var v2 = -14!=-14;
+var v3 = 1.3!=10;
+var v4 = 1.6!=1.3;
 
-var v6 =  nulo;
+
+Imprimir(v1);
+Imprimir(v2);
+Imprimir(v3);
+Imprimir(v4);
 
 
-funcion met1(){}
-funcion met1(){}
-funcion met1(){}
-funcion met1(){}
+
+/*
+var v1 = verdadero||falso;
+var v2 = falso||falso;
+var v3 = falso||verdadero;
+var v4 = verdadero||verdadero;
+
+
+var v1 = verdadero&&falso;
+var v2 = falso&&falso;
+var v3 = falso&&verdadero;
+var v4 = verdadero&&verdadero;
+
+Imprimir(v1);
+Imprimir(v2);
+Imprimir(v3);
+Imprimir(v4);
+
+
+var v1 = 14!=0;
+var v2 = 12!=-12;
+var v3 = 1.3!=10;
+var v4 = 1.6!=1.3;
+
+var v1 = 14==0;
+var v2 = 12==12.5;
+var v3 = 1.3==10;
+var v4 = 1.6==1.3;
+
+
+*/
+

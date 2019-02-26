@@ -6,6 +6,7 @@
 package gxml;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -18,7 +19,18 @@ public class GXML {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ArrayList <String> lista = new ArrayList<>();
+        
+        Object v1 = Double.valueOf("-14.5");
+        Object v2 = Double.valueOf("14.5");
+        
+        if(!Objects.equals((Double)v1, (Double)v2))
+        {
+            System.out.println("es diferente");
+        }else
+        {
+            System.out.println("IGUALES");
+        }
+        /*ArrayList <String> lista = new ArrayList<>();
         
         String nombre = "";
         
@@ -33,7 +45,7 @@ public class GXML {
             salida1 += "\n<YYINITIAL> \"" + string + "\"         {return new Symbol(sym." + string + ", new token(yycolumn, yyline, yytext()));}";
         }
         System.out.println(salida1);
-        System.out.println(salida2);
+        System.out.println(salida2);*/
         
     }
 

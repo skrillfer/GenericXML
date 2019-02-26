@@ -52,6 +52,22 @@ public abstract class Compilador {
                     } catch (Exception e) {
                         System.err.println("declaracionvarG=>"+e.getMessage());
                     }
+                    break;
+                case "imprimir":
+                    opL = new OperacionesARL(global,tabla,miTemplate);
+                    Nodo param = sentencia.get(0);
+                    if(param.size()>0)
+                    {
+                        Resultado rs = opL.ejecutar(param.get(0));
+
+                        try {
+                            //miTemplate.CONSOLA+="\n"+(String)rs.valor;
+                            System.out.println(rs.valor.toString());
+                        } catch (Exception e) {
+                        }
+                    }
+                    
+                    break;    
                 /*case "declara_vecF1_L":
                 case "declara_vecF2_L":
                 case "asignacionLocal":
