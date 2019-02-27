@@ -7,6 +7,7 @@
 
     var arr2 = [45,67,89,100,-1];
     Imprimir(    arr2.maximo() );
+    Imprimir(    arr2.minimo() );
 
 
 

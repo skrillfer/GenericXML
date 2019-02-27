@@ -69,6 +69,11 @@ public class LlamadaMetodo extends Compilador {
                         arr = (Arreglo)actualResultado.valor;
                         res_nativas = arr.maximo();
                         break;    
+                    case "minimo":
+                        proceder= false;
+                        arr = (Arreglo)actualResultado.valor;
+                        res_nativas = arr.minimo();
+                        break;    
                     
                 }
             }

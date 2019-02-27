@@ -317,7 +317,39 @@ public class Arreglo {
         }
         return resultado;
     }
+    
+    public Resultado minimo() {
+        Resultado resultado = new Resultado("-1", null);
+        if (Homogeneo) {
+            for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
+                String key = entry.getKey();
+                ListaGenerica value = entry.getValue();
 
+                Item min;
+                switch (key) {
+                    case "Double":
+                        min = Collections.min(value.Lista, new Comparator<Item>() {
+                            public int compare(Item a, Item b) {
+                                return Double.compare(a.valorDoble, b.valorDoble);
+                            }
+                        });
+                        resultado = (Resultado) datos.get(min.index);
+                        System.out.println("minimo:" + min.valorDoble);
+                        break;
+                    case "Integer":
+                        min = Collections.min(value.Lista, new Comparator<Item>() {
+                            public int compare(Item a, Item b) {
+                                return Integer.compare(a.valorInteger, b.valorInteger);
+                            }
+                        });
+                        resultado = (Resultado) datos.get(min.index);
+                        System.out.println("minimo:" + min.valorInteger);
+                }
+
+            }
+        }
+        return resultado;
+    }
 }
 
 class ListaGenerica {
