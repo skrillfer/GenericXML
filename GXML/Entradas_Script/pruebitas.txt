@@ -1,4 +1,23 @@
 
+
+si(4!=2)
+{
+    imprimir("cumple");
+}
+sino si(4!=2)
+{
+
+  imprimir("1. 4 es diferente a 2");
+}
+sino si(4!=2)
+{
+  imprimir("2. 4 es diferente a 2");
+}
+sino
+{
+imprimir("no cumple nada");
+}
+/*
     var arr1 = [56,12,54,32,21,33,44,55,12,-1,"z","d","f",12.3,67.2,9.1];
     arr1.invertir();
 
@@ -10,7 +29,7 @@
     var arr2 = [45,67,89,100,-1];
     Imprimir(    arr2.maximo() );
     Imprimir(    arr2.minimo() );
-    arr2.invertir();
+    arr2.invertir();*/
 
 
 
@@ -80,4 +99,3 @@ var v4 = 1.6==1.3;
 
 
 */
-

@@ -75,7 +75,8 @@ public class Script extends Compilador {
         for (Nodo atributo : claseActual.atributos) {
             padre.add(atributo);
         }
-        
+        Metodo m = new Metodo();
+        metodoActual = m;
         ejecutarSentencias(padre);
         
         //new Heredar(claseActual);

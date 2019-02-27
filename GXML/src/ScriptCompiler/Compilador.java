@@ -10,6 +10,7 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Sentencias.Declaracion;
+import ScriptCompiler.Sentencias.Si;
 import java.util.ArrayList;
 import java.util.Stack;
 import javax.swing.JOptionPane;
@@ -19,51 +20,48 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public abstract class Compilador {
-    
+
     public static ArrayList<Archivo> archivos;
     public String archivoActual;
     public static ArrayList<Simbolo> reporteSimbolos;
     public static ReporteError reporteError_CJS; // este REPORTE es para CJS
 
-     //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     public Template miTemplate;
-    
-        
+
     public static Clase claseActual;
     public static Stack<Clase> pilaClases;
     public static Stack<Metodo> pilaMetodos;
     public static Metodo metodoActual;
     public static Stack<TablaSimbolo> pilaTablas;
     //--------------------------------------------------------------------------
-    
+
     protected Nodo raiz;
     public static int nivelCiclo = 0;
     public static Stack<Integer> pilaNivelCiclo;
     protected OperacionesARL opL;
     public static TablaSimbolo tabla;//
     public static TablaSimbolo global;//esta es la tabla que se usa a nivel global para todas las clases del compilador
-    
-    
-    public Metodo ejecutarSentencias(Nodo Sentencias){
+
+    public Metodo ejecutarSentencias(Nodo Sentencias) {
         for (Nodo sentencia : Sentencias.hijos) {
-            switch(sentencia.nombre){
+            switch (sentencia.nombre) {
                 case "declaracionvarG":
                     try {
-                        new Declaracion(sentencia, global, tabla,miTemplate);
+                        new Declaracion(sentencia, global, tabla, miTemplate);
                     } catch (Exception e) {
-                        System.err.println("declaracionvarG=>"+e.getMessage());
+                        System.err.println("declaracionvarG=>" + e.getMessage());
                     }
                     break;
                 case "acceso":
                     JOptionPane.showMessageDialog(null, "QUENPAS");
-                    opL = new OperacionesARL(global,tabla,miTemplate);
+                    opL = new OperacionesARL(global, tabla, miTemplate);
                     opL.ejecutar(sentencia);
                     break;
                 case "imprimir":
-                    opL = new OperacionesARL(global,tabla,miTemplate);
+                    opL = new OperacionesARL(global, tabla, miTemplate);
                     Nodo param = sentencia.get(0);
-                    if(param.size()>0)
-                    {
+                    if (param.size() > 0) {
                         Resultado rs = opL.ejecutar(param.get(0));
 
                         try {
@@ -72,19 +70,19 @@ public abstract class Compilador {
                         } catch (Exception e) {
                         }
                     }
-                    
-                    break;    
+
+                    break;
                 /*case "declara_vecF1_L":
                 case "declara_vecF2_L":
                 case "asignacionLocal":
                 case "asigna_vecLocalF2":    
                 case "asigna_vecLocalF1":        */
-                    /*try {
+ /*try {
                         new Declaracion(sentencia, global, tabla,miTemplate);
                     } catch (Exception e) {
                     }
                     break;*/
-                /*case "llamadaFuncion":
+ /*case "llamadaFuncion":
                     try {
                         opL = new OperacionesARL(global, tabla,miTemplate);
                         opL.acceso(sentencia);
@@ -221,33 +219,41 @@ public abstract class Compilador {
                         //System.out.println("ADD|SUB:"+resp.tipo);
                     }
                     break;
-                    */
+                 */
+
+                case "si":
+                    Si si = new Si();
+                    metodoActual = si.ejecutar(sentencia);
+                    if (metodoActual.estadoRetorno) {
+                        return metodoActual;
+                    }
+                    if (metodoActual.estadoTerminar) {
+                        return metodoActual;
+                    }
+
+                    if (metodoActual.estadoContinuar) {
+                        return metodoActual;
+                    }
+                    break;
             }
         }
         return metodoActual;
     }
-    
-    public boolean esNulo(Resultado r)
-    {
-        if(r==null)
-        {
+
+    public boolean esNulo(Resultado r) {
+        if (r == null) {
             return true;
-        }else
-        {
-            if(r.tipo.equals("-1") || r.tipo.equals("0nulo"))
-            {
+        } else {
+            if (r.tipo.equals("-1") || r.tipo.equals("0nulo")) {
                 return true;
-            }else
-            {
-                if(r.valor==null)
-                {
+            } else {
+                if (r.valor == null) {
                     return true;
-                }else
-                {
+                } else {
                     return false;
                 }
             }
-            
+
         }
     }
 }
