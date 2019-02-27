@@ -12,6 +12,7 @@ import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Sentencias.Declaracion;
 import java.util.ArrayList;
 import java.util.Stack;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,6 +53,11 @@ public abstract class Compilador {
                     } catch (Exception e) {
                         System.err.println("declaracionvarG=>"+e.getMessage());
                     }
+                    break;
+                case "acceso":
+                    JOptionPane.showMessageDialog(null, "QUENPAS");
+                    opL = new OperacionesARL(global,tabla,miTemplate);
+                    opL.ejecutar(sentencia);
                     break;
                 case "imprimir":
                     opL = new OperacionesARL(global,tabla,miTemplate);

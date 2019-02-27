@@ -120,7 +120,7 @@ public class Declaracion extends Compilador {
                                 RESULTADO = null;
                                 INICIALIZADO = false;
                             } else {
-
+                                tipo = arr.type;
                             }
                         }
                         

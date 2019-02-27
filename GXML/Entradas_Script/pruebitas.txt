@@ -1,12 +1,7 @@
 
-        var obj1 = { nombre: "fernando",apellido:"ramirez", obj2 : { curso: "compiladores x2",oportunidad:7}};
-
-        imprimir(obj1.nombre);
-        imprimir(obj1.apellido);
-
-        imprimir(obj1.obj2.curso);
-        imprimir(obj1.obj2.oportunidad);
-
+    var arr1 = [56,12,54,32,21,33,44,55,12,-1,"z","d","f",12.3,67.2,9.1];
+    arr1.ascendente();
+    arr1.descendente();
 
 
 

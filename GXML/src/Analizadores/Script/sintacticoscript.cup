@@ -544,8 +544,7 @@ INDICE    ::= acorch EXP:a ccorch {:      RESULT = a;          :};
 
 /*-----------------   LLAMADA A FUNCIONES  -----------------------------------*/
 LLAMADA ::= NATIVAS:a apar ENVIO:H cpar{:
-                        RESULT = parser.crearNodo("llamada","",a.linea,a.columna);  
-                        RESULT.add(parser.crearNodo("id",a.nombre,a.linea,a.columna));
+                        RESULT = parser.crearNodo("llamada",a.valor,a.linea,a.columna);  
                         RESULT.add(H);
                     :};
 ENVIO  ::= {: RESULT = parser.crearNodo("envios","",0,0); :}

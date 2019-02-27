@@ -9,9 +9,11 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.Arreglo;
 import ScriptCompiler.Clase;
+import ScriptCompiler.Metodo;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.Script;
 import ScriptCompiler.Sentencias.Declaracion;
+import ScriptCompiler.Sentencias.LlamadaMetodo;
 import ScriptCompiler.Simbolo;
 import ScriptCompiler.TablaSimbolo;
 import java.util.ArrayList;
@@ -241,13 +243,12 @@ public class OperacionesARL {
                     result = new Resultado("Boolean", false);
                 }
                 break;
-                
+
             /* - - -  - - - ARREGLOS  - -- - - - -- - - - - -- */
             case "cntarray":
-                
-                Arreglo arreglo = new Arreglo(nodo, tabla, global,miTemplate);
-                if (arreglo.estado) 
-                {
+
+                Arreglo arreglo = new Arreglo(nodo, tabla, global, miTemplate);
+                if (arreglo.estado) {
                     result = new Resultado(arreglo.getClass().getSimpleName(), arreglo);
                 }
                 break;
@@ -255,7 +256,7 @@ public class OperacionesARL {
                 Declaracion declara = new Declaracion(global, tabla, miTemplate);
                 Clase clase = declara.crearInstanciaEstructura(nodo.get(0));
                 result = new Resultado(clase.getClass().getSimpleName(), clase);
-                break;    
+                break;
             case "Accion_Obtener":
                 Nodo pto_Obtener = nodo.hijos.get(0);
                 Nodo id = pto_Obtener.hijos.get(0);
@@ -383,7 +384,7 @@ public class OperacionesARL {
     }
 
     public Resultado operacionesRelacionales(Resultado r1, Resultado r2, String op) {
-        
+
         Resultado result = new Resultado("-1", null);
         if (verNulabilidad(r1, r2)) {
             return result;
@@ -823,8 +824,8 @@ public class OperacionesARL {
         if (verNulabilidad(r1, r2)) {
             return result;
         }
-        
-        Object valor ;
+
+        Object valor;
         if (op.equals("MAS")) {
             switch (r1.tipo) {
                 case "Integer":
@@ -1190,12 +1191,12 @@ public class OperacionesARL {
     }
 
     public Resultado operacionesSimplificadas(Resultado r1, String op) {
-       
+
         Resultado resultado = new Resultado("-1", null);
         if (verNulabilidad(r1)) {
             return resultado;
         }
-        
+
         Object valor;
         if (op.equals("ADD")) {
             if (r1.tipo.equals("Integer")) {
@@ -1292,24 +1293,29 @@ public class OperacionesARL {
                                 case "Double":
                                 case "String":
                                 case "Boolean":
+                                case  "":    
                                     retorno.valor = simbolo.valor;
                                     retorno.tipo = simbolo.tipo;
                                     retorno.simbolo = simbolo;
                                     break;
+                                    
                                 default:
                                     nivel++;
-                                    aux = (Clase) simbolo.valor;
-                                    tabla = aux.tabla;
-                                    retorno.tipo = simbolo.tipo;
-                                    retorno.valor = simbolo.valor;
-                                    retorno.simbolo = simbolo;
-                                    break;    
+                                    if(!simbolo.esArreglo)
+                                    {
+                                        aux = (Clase) simbolo.valor;
+                                        tabla = aux.tabla;
+                                        retorno.tipo = simbolo.tipo;
+                                        retorno.valor = simbolo.valor;
+                                        retorno.simbolo = simbolo;
+                                    }
+                                    break;
                             }
-                            if (simbolo.esArreglo) {
+                            /*if (simbolo.esArreglo) {
                                 retorno.valor = simbolo.valor;
                                 retorno.tipo = "Arreglo";
                                 retorno.simbolo = simbolo;
-                            }
+                            }*/
                         } else {
                             retorno.tipo = "";
                             retorno.valor = null;
@@ -1324,18 +1330,18 @@ public class OperacionesARL {
                     }
                     break;
 
-                case "llamadaFuncion":
-                    /*LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel);
-                Metodo metodo = llamada.ejecutar(raiz);
-                if (metodo != null) {
-                    if (metodo.retorno != null) {
+                case "llamada":
+                    LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel,retorno,acceso);
+                    /*Metodo metodo = llamada.ejecutar(raiz);
+                    if (metodo != null) {
+                        if (metodo.retorno != null) {
                             retorno = metodo.retorno;
                             metodo.estadoRetorno = false;
-                    }
-                } else {
-                    retorno.tipo = "-1";
-                    retorno.valor = null;
-                }*/
+                        }
+                    } else {
+                        retorno.tipo = "-1";
+                        retorno.valor = null;
+                    }*/
                     break;
             }
         }
@@ -1417,17 +1423,16 @@ public class OperacionesARL {
         }
 
     }
-    
-    
+
     public boolean verNulabilidad(Resultado r1) {
 
         if (r1 == null) {
             return true;
         } else {
-            if (r1.tipo.equals("-1") || r1.tipo.equals("0nulo") ) {
+            if (r1.tipo.equals("-1") || r1.tipo.equals("0nulo")) {
                 return true;
             } else {
-                if (r1.valor == null ) {
+                if (r1.valor == null) {
                     return true;
                 } else {
                     return false;
@@ -1474,7 +1479,5 @@ public class OperacionesARL {
         }
         return suma;
     }
-    
-    
 
 }
