@@ -10,6 +10,7 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Sentencias.Declaracion;
+import ScriptCompiler.Sentencias.Retornar;
 import ScriptCompiler.Sentencias.Seleccion;
 import ScriptCompiler.Sentencias.Si;
 import java.util.ArrayList;
@@ -249,7 +250,20 @@ public abstract class Compilador {
                         return metodoActual;
                     }
                     nivelCiclo--;
-                    break;    
+                    break;
+
+                case "terminar":
+                    if (nivelCiclo > 0) {
+                        metodoActual.estadoTerminar = true;
+                        return metodoActual;
+                    } else {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "La sentencia terminar solo puede estar detro de ciclos");
+                    }
+                    break;
+                case "retorno":
+                    Retornar retorno = new Retornar();
+                    metodoActual = retorno.ejecutar(sentencia);
+                    return metodoActual;    
             }
         }
         return metodoActual;

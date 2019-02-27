@@ -255,7 +255,7 @@ ASIGN   ::= {:  RESULT = parser.crearNodo("asign","",0,0);   :}
 
 DETENER  ::= detener:a 
             {:
-                    RESULT = parser.crearNodo("detener","",a.getLinea(),a.getColumna());
+                    RESULT = parser.crearNodo("terminar","",a.getLinea(),a.getColumna());
             :};
 
 
@@ -263,7 +263,7 @@ DETENER  ::= detener:a
 
 RETORNAR  ::= retornar:a EXP:h1 
               {:
-                    RESULT = parser.crearNodo("retornar","",a.getLinea(),a.getColumna());
+                    RESULT = parser.crearNodo("retorno","",a.getLinea(),a.getColumna());
                     RESULT.add(h1);
               :};
 

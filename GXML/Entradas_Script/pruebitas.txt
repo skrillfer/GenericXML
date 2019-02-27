@@ -23,6 +23,7 @@ var y = 50;
 selecciona (y /50) {
   caso 1: {
     imprimir("caso 1");
+    detener;
   } caso 2: {
     imprimir("caso 2");
   } defecto: {
