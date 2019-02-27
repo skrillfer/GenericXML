@@ -140,13 +140,13 @@ public class Arreglo {
                         VALORES.get(resultado.tipo).add(resultado.valor.toString(), 0.0, 0, total);
                         break;
                     case "Double":
-                        VALORES.get(resultado.tipo).add(resultado.valor.toString(), (Double) resultado.valor,0, total);
+                        VALORES.get(resultado.tipo).add(resultado.valor.toString(), (Double) resultado.valor, 0, total);
                         break;
                     case "Integer":
-                        VALORES.get(resultado.tipo).add(resultado.valor.toString(), 0.0,(Integer)resultado.valor, total);
+                        VALORES.get(resultado.tipo).add(resultado.valor.toString(), 0.0, (Integer) resultado.valor, total);
                         break;
                 }
-            
+
                 total++;
                 datos.add(resultado);
             }
@@ -225,7 +225,7 @@ public class Arreglo {
 
     public void ascendente() {
 
-         ArrayList<Object> datosNuevo = new ArrayList<>();
+        ArrayList<Object> datosNuevo = new ArrayList<>();
 
         for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
             String key = entry.getKey();
@@ -249,15 +249,14 @@ public class Arreglo {
             }
         }
 
-        if(!datosNuevo.isEmpty())
-        {
+        if (!datosNuevo.isEmpty()) {
             datos = datosNuevo;
         }
     }
 
     public void descendente() {
 
-         ArrayList<Object> datosNuevo = new ArrayList<>();
+        ArrayList<Object> datosNuevo = new ArrayList<>();
 
         for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
             String key = entry.getKey();
@@ -281,12 +280,44 @@ public class Arreglo {
             }
         }
 
-        if(!datosNuevo.isEmpty())
-        {
+        if (!datosNuevo.isEmpty()) {
             datos = datosNuevo;
         }
     }
-    
+
+    public Resultado maximo() {
+        Resultado resultado = new Resultado("-1", null);
+        if (Homogeneo) {
+            for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
+                String key = entry.getKey();
+                ListaGenerica value = entry.getValue();
+
+                Item max;
+                switch (key) {
+                    case "Double":
+                        max = Collections.max(value.Lista, new Comparator<Item>() {
+                            public int compare(Item a, Item b) {
+                                return Double.compare(a.valorDoble, b.valorDoble);
+                            }
+                        });
+                        resultado = (Resultado) datos.get(max.index);
+                        System.out.println("maximo:" + max.valorDoble);
+                        break;
+                    case "Integer":
+                        max = Collections.max(value.Lista, new Comparator<Item>() {
+                            public int compare(Item a, Item b) {
+                                return Integer.compare(a.valorInteger, b.valorInteger);
+                            }
+                        });
+                        resultado = (Resultado) datos.get(max.index);
+                        System.out.println("maximo:" + max.valorInteger);
+                }
+
+            }
+        }
+        return resultado;
+    }
+
 }
 
 class ListaGenerica {
@@ -342,8 +373,7 @@ class Item {
         //ascending order
         return StudentName1.compareTo(StudentName2);
     };
-    
-    
+
     /*  ######          DESCENDENTE                              ######      */
     public static Comparator<Item> tipo1DESC = (Item o1, Item o2) -> {
         String StudentName1 = o1.valor.toUpperCase();

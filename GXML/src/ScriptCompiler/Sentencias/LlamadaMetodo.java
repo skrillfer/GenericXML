@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class LlamadaMetodo extends Compilador {
-
+    public Resultado res_nativas = null;
     private Nodo raiz ;
     private Resultado actualResultado;
     
@@ -55,13 +55,21 @@ public class LlamadaMetodo extends Compilador {
                 switch(raiz.valor.toLowerCase())
                 {
                     case "ascendente":
+                        proceder= false;
                         arr = (Arreglo)actualResultado.valor;
                         arr.ascendente();
                         break;
                     case "descendente":
+                        proceder= false;
                         arr = (Arreglo)actualResultado.valor;
                         arr.descendente();
                         break;
+                    case "maximo":
+                        proceder= false;
+                        arr = (Arreglo)actualResultado.valor;
+                        res_nativas = arr.maximo();
+                        break;    
+                    
                 }
             }
         }

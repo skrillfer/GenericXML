@@ -3,7 +3,10 @@
     arr1.ascendente();
     arr1.descendente();
 
+    
 
+    var arr2 = [45,67,89,100,-1];
+    Imprimir(    arr2.maximo() );
 
 
 

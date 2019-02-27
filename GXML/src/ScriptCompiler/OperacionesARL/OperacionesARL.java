@@ -1332,6 +1332,15 @@ public class OperacionesARL {
 
                 case "llamada":
                     LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel,retorno,acceso);
+                    if(llamada.proceder)
+                    {
+                    }else
+                    {
+                        if(llamada.res_nativas!=null)
+                        {
+                            retorno = llamada.res_nativas;
+                        }
+                    }
                     /*Metodo metodo = llamada.ejecutar(raiz);
                     if (metodo != null) {
                         if (metodo.retorno != null) {
