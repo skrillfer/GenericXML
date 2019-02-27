@@ -10,6 +10,7 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Sentencias.Declaracion;
+import ScriptCompiler.Sentencias.Seleccion;
 import ScriptCompiler.Sentencias.Si;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -235,6 +236,20 @@ public abstract class Compilador {
                         return metodoActual;
                     }
                     break;
+                case "selecciona":
+                    nivelCiclo++;
+                    Seleccion seleccion = new Seleccion();
+                    metodoActual = seleccion.ejecutar(sentencia);
+                    if (metodoActual.estadoRetorno) {
+                        nivelCiclo--;
+                        return metodoActual;
+                    }
+                    if (metodoActual.estadoContinuar) {
+                        nivelCiclo--;
+                        return metodoActual;
+                    }
+                    nivelCiclo--;
+                    break;    
             }
         }
         return metodoActual;

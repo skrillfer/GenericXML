@@ -52,20 +52,21 @@ public class Si extends Compilador {
                 {
                     sino = sentenciasSino_Sino.get(0);
                     if (sino.size() > 0) {
+                        /*Sentencia Sino*/
                         return Ejecutar_Sino(sino);
                     }
                 } else if (sentenciasSino_Sino.size() > 1) {
                     sino = sentenciasSino_Sino.get(sentenciasSino_Sino.size() - 1);
                     for (int x = 0; x < sentenciasSino_Sino.size() - 1; x++) {
                         /*Sentencia Sino Si*/
-                        Metodo m=Ejecutar_Sino_Si(sentenciasSino_Sino.get(x));
-                        if(m!=null)
-                        {
+                        Metodo m = Ejecutar_Sino_Si(sentenciasSino_Sino.get(x));
+                        if (m != null) {
                             tabla = pilaTablas.pop();
                             return m;
                         }
                     }
                     if (sino.size() > 0) {
+                        /*Sentencia Sino*/
                         return Ejecutar_Sino(sino);
                     }
 
@@ -98,14 +99,14 @@ public class Si extends Compilador {
                 }
                 return metodoActual;
             }
-        } else {            
+        } else {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Solo se permiten valores booleanos en la condicion de la sentencia si o enteros 0 o 1");
         }
         return null;
     }
 
     public Metodo Ejecutar_Sino(Nodo final_sino) {
-        
+
         Nodo sentencias = final_sino.get(0);
 
         metodoActual = ejecutarSentencias(sentencias);

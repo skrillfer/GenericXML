@@ -17,6 +17,19 @@ sino
 {
 imprimir("no cumple nada");
 }
+
+
+var y = 50;
+selecciona (y /50) {
+  caso 1: {
+    imprimir("caso 1");
+  } caso 2: {
+    imprimir("caso 2");
+  } defecto: {
+    imprimir("caso defecto");
+  }
+}
+
 /*
     var arr1 = [56,12,54,32,21,33,44,55,12,-1,"z","d","f",12.3,67.2,9.1];
     arr1.invertir();

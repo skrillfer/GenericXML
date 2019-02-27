@@ -365,12 +365,12 @@ LISTA_CASOS ::= LISTA_CASOS:R CASO_DEFECTO:X{:
                     RESULT.add(X);
                :};
 
-CASO_DEFECTO  ::= caso:w   EXP_A:X   dspts   INSTRUCCIONES:Y {:
+CASO_DEFECTO  ::= caso:w   EXP_A:X   dspts   alla INSTRUCCIONES:Y clla{:
                     RESULT = parser.crearNodo("caso","",w.getLinea(),w.getColumna());
                     RESULT.add(X);// se agrega la EXPR
                     RESULT.add(Y);// se agregan las instrucciones
                 :}
-                |defecto:w           dspts   INSTRUCCIONES:Y {:
+                |defecto:w           dspts   alla INSTRUCCIONES:Y clla{:
                     RESULT = parser.crearNodo("defecto","",w.getLinea(),w.getColumna());
                     RESULT.add(Y);// se agregan las instrucciones
                 :};
