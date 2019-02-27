@@ -74,6 +74,11 @@ public class LlamadaMetodo extends Compilador {
                         arr = (Arreglo)actualResultado.valor;
                         res_nativas = arr.minimo();
                         break;    
+                    case "invertir":
+                        proceder= false;
+                        arr = (Arreglo)actualResultado.valor;
+                        arr.invertir();
+                        break;        
                     
                 }
             }
