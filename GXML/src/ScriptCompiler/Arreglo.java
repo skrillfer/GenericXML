@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class Arreglo {
-    
+
     private Hashtable<String, ListaGenerica> VALORES;
     public ArrayList<Integer> dimensiones;
     private ArrayList<Object> datos;
@@ -33,30 +33,30 @@ public class Arreglo {
     public boolean Homogeneo = true;
     public boolean esVacio = true;
     public String type = "";
-    
+
     public Arreglo() {
         dimensiones = new ArrayList<>();
         datos = new ArrayList<>();
         VALORES = new Hashtable<>();
     }
-    
+
     public Arreglo(Nodo raiz, TablaSimbolo global, TablaSimbolo tabla, ArrayList<Integer> dimensiones, Template template1, int num) {
         this.miTemplate = template1;
         this.dimensiones = dimensiones;
         datos = new ArrayList<>();
         VALORES = new Hashtable<>();
-        
+
         this.global = global;
         this.tabla = tabla;
         opL = new OperacionesARL(global, tabla, miTemplate);
-        
+
         for (int i = 0; i < dimensiones.size(); i++) {
             int tam = dimensiones.get(i);
             for (int j = 0; j < tam; j++) {
                 datos.add(null);
             }
         }
-        
+
         guardarValores2(raiz);
     }
 
@@ -66,7 +66,7 @@ public class Arreglo {
         this.dimensiones = dimensiones;
         datos = new ArrayList<>();
         VALORES = new Hashtable<>();
-        
+
         this.global = global;
         this.tabla = tabla;
         opL = new OperacionesARL(global, tabla, miTemplate);
@@ -79,7 +79,7 @@ public class Arreglo {
         dimensiones = new ArrayList<>();
         datos = new ArrayList<>();
         VALORES = new Hashtable<>();
-        
+
         this.global = global;
         this.tabla = tabla;
         opL = new OperacionesARL(global, tabla, miTemplate);
@@ -102,13 +102,13 @@ public class Arreglo {
             }
         }
     }
-    
+
     private void guardarDimensiones(Nodo raiz) {
         ArrayList<Nodo> dim = raiz.hijos.get(1).hijos;
         int total = 1;
         for (Nodo hijo : dim) {
             Resultado dimension = opL.ejecutar(hijo);
-            
+
             if (dimension.tipo.equalsIgnoreCase("number")) {
                 total = total * ((Double) dimension.valor).intValue();
                 dimensiones.add(((Double) dimension.valor).intValue());
@@ -118,24 +118,31 @@ public class Arreglo {
             }
         }
     }
-    
+
     public void guardarValores(Nodo raiz) {
         ArrayList<Nodo> dim = null;
         ArrayList<Nodo> val = raiz.get(0).hijos;
         String tipo = "";
-        
+
         Hashtable<String, String> hash = new Hashtable<>();
-        
+
         int total = 0;
         for (Nodo hijo : val) {
             Resultado resultado = opL.ejecutar(hijo);
             if (!esNulo(resultado)) {
+                
+                if (esClase(resultado.valor)) {
+                    Clase clase = (Clase) resultado.valor;
+                    clase.nombre = "";
+                    clase.ejecutar(miTemplate);
+                }
+                
                 if (!hash.containsKey(resultado.tipo)) {
                     type = resultado.tipo;
                     hash.put(resultado.tipo, resultado.tipo);
                     VALORES.put(resultado.tipo, new ListaGenerica());
                 }
-                
+
                 switch (resultado.tipo) {
                     case "String":
                         VALORES.get(resultado.tipo).add(resultado.valor.toString(), 0.0, 0, total);
@@ -147,7 +154,7 @@ public class Arreglo {
                         VALORES.get(resultado.tipo).add(resultado.valor.toString(), 0.0, (Integer) resultado.valor, total);
                         break;
                 }
-                
+
                 total++;
                 datos.add(resultado);
             }
@@ -155,7 +162,7 @@ public class Arreglo {
         if (dimensiones.isEmpty() && val.size() > 0) {
             dimensiones.add(total);
         }
-        
+
         Homogeneo = !(hash.size() > 1);
         esVacio = val.isEmpty();
         if (!Homogeneo) {
@@ -163,6 +170,15 @@ public class Arreglo {
         }
     }
     
+    public boolean esClase(Object valor) {
+        try {
+            Clase ar = (Clase) valor;
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
     public void guardarValores2(Nodo raiz) {
         ArrayList<Nodo> val = raiz.hijos.get(1).hijos;// (LISTA_NODO)valores        
         if (val.size() <= dimensiones.get(0)) {
@@ -175,12 +191,12 @@ public class Arreglo {
             }
         }
     }
-    
+
     public boolean setValor(Nodo indice, Resultado dato) {
         Resultado res = opL.ejecutar(indice);
         if (res.tipo.equals("number")) {
             int posicion = ((Double) res.valor).intValue();
-            
+
             if (posicion <= (datos.size() - 1) && posicion >= 0) {
                 datos.set(posicion, dato);
                 return true;
@@ -188,15 +204,15 @@ public class Arreglo {
         }
         return false;
     }
-    
+
     public void setDatos(ArrayList<Object> datos) {
         this.datos = datos;
     }
-    
+
     public ArrayList<Object> getDatos() {
         return datos;
     }
-    
+
     public Object getValor(ArrayList<Integer> indices) {
         int indice = indices.get(0);
         if ((indice + 1) <= datos.size() && indice >= 0) {
@@ -206,7 +222,7 @@ public class Arreglo {
             return null;
         }
     }
-    
+
     public boolean esNulo(Resultado r) {
         if (r == null) {
             return true;
@@ -220,18 +236,18 @@ public class Arreglo {
                     return false;
                 }
             }
-            
+
         }
     }
-    
+
     public void ascendente() {
         System.out.println("\n____________ ASCENDENTE  __________");
         ArrayList<Object> datosNuevo = new ArrayList<>();
-        
+
         for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
             String key = entry.getKey();
             ListaGenerica value = entry.getValue();
-            
+
             switch (key) {
                 case "String":
                     Collections.sort(value.Lista, Item.tipo1ASC);
@@ -242,28 +258,28 @@ public class Arreglo {
                 case "Integer":
                     Collections.sort(value.Lista, Item.tipo3ASC);
             }
-            
+
             System.out.println("\nType:" + key + "");
             for (Item item : value.Lista) {
-                System.out.print("["+item.index+"]"+item.valor + " ");
+                System.out.print("[" + item.index + "]" + item.valor + " ");
                 datosNuevo.add(datos.get(item.index));
             }
         }
-        
+
         if (!datosNuevo.isEmpty()) {
             datos = datosNuevo;
         }
     }
-    
+
     public void descendente() {
         System.out.println("\n$$$$$$$$$$$$$$$$$$$$ DESCENDENTE  $$$$$$$$$$$$-");
 
         ArrayList<Object> datosNuevo = new ArrayList<>();
-        
+
         for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
             String key = entry.getKey();
             ListaGenerica value = entry.getValue();
-            
+
             switch (key) {
                 case "String":
                     Collections.sort(value.Lista, Item.tipo1DESC);
@@ -274,26 +290,26 @@ public class Arreglo {
                 case "Integer":
                     Collections.sort(value.Lista, Item.tipo3DESC);
             }
-            
+
             System.out.println("\nType:" + key + "");
             for (Item item : value.Lista) {
                 datosNuevo.add(datos.get(item.index));
-                System.out.print("["+item.index+"]"+item.valor + " ");
+                System.out.print("[" + item.index + "]" + item.valor + " ");
             }
         }
-        
+
         if (!datosNuevo.isEmpty()) {
             datos = datosNuevo;
         }
     }
-    
+
     public Resultado maximo() {
         Resultado resultado = new Resultado("-1", null);
         if (Homogeneo) {
             for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
                 String key = entry.getKey();
                 ListaGenerica value = entry.getValue();
-                
+
                 Item max;
                 switch (key) {
                     case "Double":
@@ -314,19 +330,19 @@ public class Arreglo {
                         resultado = (Resultado) datos.get(max.index);
                         System.out.println("maximo:" + max.valorInteger);
                 }
-                
+
             }
         }
         return resultado;
     }
-    
+
     public Resultado minimo() {
         Resultado resultado = new Resultado("-1", null);
         if (Homogeneo) {
             for (Map.Entry<String, ListaGenerica> entry : VALORES.entrySet()) {
                 String key = entry.getKey();
                 ListaGenerica value = entry.getValue();
-                
+
                 Item min;
                 switch (key) {
                     case "Double":
@@ -347,17 +363,17 @@ public class Arreglo {
                         resultado = (Resultado) datos.get(min.index);
                         System.out.println("minimo:" + min.valorInteger);
                 }
-                
+
             }
         }
         return resultado;
     }
-    
+
     public Resultado invertir() {
         Resultado resultado = new Resultado("-1", null);
-        
+
         Collections.reverse(datos);
-        
+
         VALORES = new Hashtable<>();
         System.out.println("\n----------------INVERTIR  ------------------------");
         for (int x = 0; x < datos.size(); x++) {
@@ -365,7 +381,7 @@ public class Arreglo {
             if (!VALORES.containsKey(res1.tipo)) {
                 VALORES.put(res1.tipo, new ListaGenerica());
             }
-            
+
             switch (res1.tipo) {
                 case "String":
                     VALORES.get(res1.tipo).add(res1.valor.toString(), 0.0, 0, x);
@@ -377,36 +393,36 @@ public class Arreglo {
                     VALORES.get(res1.tipo).add(res1.valor.toString(), 0.0, (Integer) res1.valor, x);
                     break;
             }
-            
+
             System.out.print(((Resultado) datos.get(x)).valor.toString() + " ");
         }
-        
+
         return resultado;
     }
 }
 
 class ListaGenerica {
-    
+
     public ArrayList<Item> Lista;
-    
+
     public ListaGenerica() {
         Lista = new ArrayList<>();
     }
-    
+
     public void add(String valor, Double valorDoble, Integer valorInteger, int index) {
         Lista.add(new Item(valor, valorDoble, valorInteger, index));
-        
+
     }
-    
+
 }
 
 class Item {
-    
+
     public String valor;
     public Double valorDoble;
     public Integer valorInteger;
     public int index;
-    
+
     public Item(String valor, Double valorDoble, Integer valorInteger, int index) {
         this.valor = valor;
         this.valorInteger = valorInteger;
@@ -422,7 +438,7 @@ class Item {
         //ascending order
         return StudentName1.compareTo(StudentName2);
     };
-    
+
     public static Comparator<Item> tipo2ASC = (Item o1, Item o2) -> {
         Double StudentName1 = o1.valorDoble;
         Double StudentName2 = o2.valorDoble;
@@ -430,7 +446,7 @@ class Item {
         //ascending order
         return StudentName1.compareTo(StudentName2);
     };
-    
+
     public static Comparator<Item> tipo3ASC = (Item o1, Item o2) -> {
         Integer StudentName1 = o1.valorInteger;
         Integer StudentName2 = o2.valorInteger;
@@ -447,7 +463,7 @@ class Item {
         //ascending order
         return StudentName2.compareTo(StudentName1);
     };
-    
+
     public static Comparator<Item> tipo2DESC = (Item o1, Item o2) -> {
         Double StudentName1 = o1.valorDoble;
         Double StudentName2 = o2.valorDoble;
@@ -455,7 +471,7 @@ class Item {
         //ascending order
         return StudentName2.compareTo(StudentName1);
     };
-    
+
     public static Comparator<Item> tipo3DESC = (Item o1, Item o2) -> {
         Integer StudentName1 = o1.valorInteger;
         Integer StudentName2 = o2.valorInteger;
@@ -463,4 +479,5 @@ class Item {
         //ascending order
         return StudentName2.compareTo(StudentName1);
     };
+    
 }

@@ -1237,6 +1237,22 @@ public class OperacionesARL {
                     aux.tabla = tabla;
                     tabla = tablaAux;
                     retorno = accesoAr(acceso, nivel, aux);
+                    switch (retorno.tipo) {
+                        case "Integer":
+                        case "Double":
+                        case "String":
+                        case "Boolean":
+                        case "":
+                            break;
+                        default:
+                            try
+                            {
+                                nivel++;                            
+                                aux = (Clase) retorno.valor;
+                                tabla = aux.tabla;
+                            }catch(Exception ex){}
+                            break;
+                    }
                     break;
                 case "id_cmp":
                     nombre = acceso.valor;
@@ -1333,7 +1349,7 @@ public class OperacionesARL {
                     LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel, retorno, acceso);
                     /*
                     Proceder es una variable tipo booleano que me indica si la llamada a metodo fue una funcion nativa
-                    */
+                     */
                     if (llamada.proceder) {
                         Metodo metodo = llamada.ejecutar(acceso);
                         if (metodo != null) {
@@ -1355,7 +1371,7 @@ public class OperacionesARL {
                             retorno = llamada.res_nativas;
                         }
                     }
-                    
+
                     break;
             }
         }
@@ -1374,7 +1390,7 @@ public class OperacionesARL {
                     Arreglo arreglo = (Arreglo) simbolo.valor;
                     ArrayList<Integer> indices = new ArrayList<>();
                     OperacionesARL opL = new OperacionesARL(global, tabla, miTemplate);
-                    
+
                     /*__ Se obtiene el primer indice de la lista de indices ___ */
                     Resultado indice = opL.ejecutar(raiz.get(0).get(0));
                     if (!verNulabilidad(indice)) {
@@ -1382,26 +1398,23 @@ public class OperacionesARL {
                             Integer iii = (Integer) indice.valor;
                             indices.add(iii);
                         }
-                    }else
-                    {
+                    } else {
                         Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Solo se permiten valores enteros al acceder a un indce de un arreglo");
                         return resultado;
                     }
-                    
+
                     /*Se pregunta si la cantidad de indices a acceder es mayor a 1*/
-                    if(raiz.get(0).size()>1)
-                    {
+                    if (raiz.get(0).size() > 1) {
                         Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Para acceder a un valor de un arreglo solo se permite que sea una dimension: arr[n]");
                     }
-                    
-                    
+
                     Object valor = arreglo.getValor(indices);
                     if (valor != null) {
 
                         Resultado ree = (Resultado) valor;
                         resultado = ree;
                     } else {
-                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se pudo acceder al indice del arreglo: " + simbolo.nombre + " Indice fuera del limite"+"["+indices.get(0)+"]");
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se pudo acceder al indice del arreglo: " + simbolo.nombre + " Indice fuera del limite" + "[" + indices.get(0) + "]");
                     }
                 } else {
                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + raiz.valor + " no es arreglo");
