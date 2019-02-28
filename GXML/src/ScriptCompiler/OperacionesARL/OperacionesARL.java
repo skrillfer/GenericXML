@@ -1233,7 +1233,7 @@ public class OperacionesARL {
             String nombre;
             Simbolo simbolo;
             switch (acceso.nombre) {
-                case "accesoAr":
+                case "accesoar":
                     aux.tabla = tabla;
                     tabla = tablaAux;
                     retorno = accesoAr(acceso, nivel, aux);
@@ -1365,6 +1365,7 @@ public class OperacionesARL {
     }
 
     private Resultado accesoAr(Nodo raiz, int nivel, Clase aux) {
+        Resultado resultado = new Resultado("-1", null);
         Simbolo simbolo;
         simbolo = aux.tabla.getSimbolo((String) raiz.valor, aux);
         if (simbolo != null) {
@@ -1373,31 +1374,44 @@ public class OperacionesARL {
                     Arreglo arreglo = (Arreglo) simbolo.valor;
                     ArrayList<Integer> indices = new ArrayList<>();
                     OperacionesARL opL = new OperacionesARL(global, tabla, miTemplate);
-                    Resultado indice = opL.ejecutar(raiz.hijos.get(0));
-                    if (indice != null) {
-                        if (indice.tipo.equals("number")) {
-                            Double iii = (Double) indice.valor;
-                            indices.add(iii.intValue());
+                    
+                    /*__ Se obtiene el primer indice de la lista de indices ___ */
+                    Resultado indice = opL.ejecutar(raiz.get(0).get(0));
+                    if (!verNulabilidad(indice)) {
+                        if (indice.tipo.equals("Integer")) {
+                            Integer iii = (Integer) indice.valor;
+                            indices.add(iii);
                         }
+                    }else
+                    {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Solo se permiten valores enteros al acceder a un indce de un arreglo");
+                        return resultado;
                     }
+                    
+                    /*Se pregunta si la cantidad de indices a acceder es mayor a 1*/
+                    if(raiz.get(0).size()>1)
+                    {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Para acceder a un valor de un arreglo solo se permite que sea una dimension: arr[n]");
+                    }
+                    
+                    
                     Object valor = arreglo.getValor(indices);
                     if (valor != null) {
 
                         Resultado ree = (Resultado) valor;
-                        return ree;
+                        resultado = ree;
                     } else {
-                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se pudo acceder al indice del arreglo: " + simbolo.nombre + " Indice fuera del limite");
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se pudo acceder al indice del arreglo: " + simbolo.nombre + " Indice fuera del limite"+"["+indices.get(0)+"]");
                     }
                 } else {
                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + raiz.valor + " no es arreglo");
-                    return null;
                 }
             } else {
                 Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + raiz.valor + " no ha sido inicializada");
-                return null;
+
             }
         }
-        return null;
+        return resultado;
     }
 
     public Integer getBoolValor(Object objeto) {

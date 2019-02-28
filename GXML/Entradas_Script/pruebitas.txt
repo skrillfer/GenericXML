@@ -1,4 +1,9 @@
 
+var arr1 = ["hola",45,6.7];
+
+imprimir(arr1[0]);
+imprimir(arr1[1]);
+imprimir(arr1[2]);
 
 metodo1(1,2);
 funcion metodo1(var a,var b)
