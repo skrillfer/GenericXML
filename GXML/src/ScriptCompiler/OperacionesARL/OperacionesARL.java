@@ -1341,7 +1341,6 @@ public class OperacionesARL {
                         //retorno.tipo = "-1";
                         //retorno.valor = null;
                         Template.reporteError_CJS.agregar("Semantico", acceso.linea, acceso.columna, "La variable " + nombre + " no existe en el ambito donde fue invocada");
-                        return null;
                     }
                     break;
 

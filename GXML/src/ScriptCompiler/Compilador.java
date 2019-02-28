@@ -9,6 +9,7 @@ import Errores.ReporteError;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
+import ScriptCompiler.Sentencias.Asignacion;
 import ScriptCompiler.Sentencias.Declaracion;
 import ScriptCompiler.Sentencias.Retornar;
 import ScriptCompiler.Sentencias.Seleccion;
@@ -280,6 +281,9 @@ public abstract class Compilador {
                     Retornar retorno = new Retornar();
                     metodoActual = retorno.ejecutar(sentencia);
                     return metodoActual;
+                case "asignacion":
+                    new Asignacion(sentencia, global, tabla,miTemplate);
+                    break;    
             }
         }
         return metodoActual;

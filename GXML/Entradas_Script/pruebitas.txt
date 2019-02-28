@@ -1,10 +1,17 @@
 
-imprimir(metodo1(185,68));
-funcion metodo1(var a,var b)
-{
-  retornar a+b;
-}
+var id1;
+var id4;
+var id5;
 
+id4 = {nombre:"luis"};
+
+id5  = [1,2,3,4,"a"];
+
+imprimir(id4.nombre);
+imprimir(id5[4]);
+
+id1 ="string";
+imprimir(id1);
 
 /*si(4!=2)
 {

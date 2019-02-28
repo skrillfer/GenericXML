@@ -35,6 +35,12 @@ public class LlamadaMetodo extends Compilador {
         this.actual = actual;
     }
 
+    public LlamadaMetodo(Clase actual, int nivel, Nodo raiz) {
+        this.actual = actual;
+        this.nivel = nivel;
+        this.raiz = raiz;
+    }
+
     public LlamadaMetodo(Clase actual, int nivel, Resultado resultado, Nodo raiz) {
         this.actual = actual;
         this.nivel = nivel;
@@ -49,20 +55,19 @@ public class LlamadaMetodo extends Compilador {
         String id = getId(nombre, parametros);
         Metodo metodoTemp = getMetodo(id);
         //----------------------------------------------------------------------
-        if (metodoTemp != null)
-        {
+        if (metodoTemp != null) {
             pilaNivelCiclo.push(nivelCiclo);
             nivelCiclo = 0;
-            
+
             pilaTablas.push(tabla);
             TablaSimbolo tablaTemp = new TablaSimbolo();
             tabla = tablaTemp;
             for (int i = 0; i < metodoTemp.parametros.size(); i++) {
                 Nodo parametro = metodoTemp.parametros.get(i);
                 Resultado valor = parametros.get(i);
-                new Declaracion(parametro, valor, actual.global, tabla,miTemplate);
+                new Declaracion(parametro, valor, actual.global, tabla, miTemplate);
             }
-            
+
             pilaMetodos.push(metodoActual);
             metodoActual = metodoTemp;
 
@@ -79,8 +84,7 @@ public class LlamadaMetodo extends Compilador {
             global = claseActual.global;
             tabla = pilaTablas.pop();
             nivelCiclo = pilaNivelCiclo.pop();
-        }else
-        {
+        } else {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El metodo " + nombre + " no existe en el ambito donde fue invocado");
         }
         return metodoTemp;
@@ -97,15 +101,15 @@ public class LlamadaMetodo extends Compilador {
                 }
             }
         }*/
-        nombre+="_"+parametros.size();
+        nombre += "_" + parametros.size();
         return nombre;
     }
-    
+
     private ArrayList<Resultado> getParametros(Nodo raiz) {
         ArrayList<Resultado> parametros = new ArrayList<>();
         Nodo nodoParametros = raiz.hijos.get(0);
         for (Nodo hijo : nodoParametros.hijos) {
-            opL = new OperacionesARL(global, tabla,miTemplate);
+            opL = new OperacionesARL(global, tabla, miTemplate);
             Resultado resultado = opL.ejecutar(hijo);
             parametros.add(resultado);
         }
@@ -122,10 +126,10 @@ public class LlamadaMetodo extends Compilador {
                 metodo = getMetodo(id);
             }*/
         }
-        
+
         return metodo;
     }
-    
+
     private Metodo buscarMetodo(String id, Clase actual) {
         for (Metodo metodo : actual.metodos) {
             if (metodo.id.equalsIgnoreCase(id)) {
@@ -134,7 +138,7 @@ public class LlamadaMetodo extends Compilador {
         }
         return null;
     }
-    
+
     /*------------------------------------------------------------------------*/
     public void FuncionesNativasScript() {
 
