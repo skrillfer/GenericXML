@@ -25,7 +25,6 @@ public class Declaracion extends Compilador {
     TablaSimbolo tabla;
     TablaSimbolo global;
 
-    
     /*  Constructor utilizado cuando quiero crear una estructura desde Operaciones ARL    */
     public Declaracion(TablaSimbolo global, TablaSimbolo tabla, Template template1) {
         this.miTemplate = template1;
@@ -50,7 +49,7 @@ public class Declaracion extends Compilador {
         this.raiz = raiz;
         this.global = global;
         this.tabla = tabla;
-        //declararParametro(resultado);
+        declararParametro(resultado);
     }
 
     //* cuando hago una declaracion simple USO este CONSTRUCTOR
@@ -63,6 +62,50 @@ public class Declaracion extends Compilador {
         declarar();
     }
 
+    /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    private Simbolo declararParametro(Resultado resultado) {
+
+        if (esArreglo(resultado)) {
+            return parametroAr(resultado);
+        } else {
+            return parametro(resultado);
+        }
+    }
+
+    private Simbolo parametro(Resultado resultado) {
+        String nombre = raiz.valor;
+        if (!esNulo(resultado)) {
+            String tipo = resultado.tipo;
+            Simbolo simbolo = new Simbolo(tipo, nombre, resultado.valor);
+            simbolo.inicializado = true;
+            if (!tabla.setSimbolo(simbolo)) {
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error en declaracion de parametro: La variable " + nombre + " ya existe");
+            }
+        } else {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El valor a asignar al parametro [" + nombre + "] es nulo");
+        }
+        return null;
+    }
+
+    private Simbolo parametroAr(Resultado resultado) {
+        String nombre = raiz.valor;
+        if (!esNulo(resultado)) {
+            Arreglo arreglo = (Arreglo) resultado.valor;
+            String tipo = arreglo.type;
+            Simbolo simbolo = new Simbolo(tipo, nombre, arreglo);
+            simbolo.inicializado = true;
+            simbolo.esArreglo = true;
+            if (!tabla.setSimbolo(simbolo)) {
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + nombre + " ya existe");
+            }
+
+        } else {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El valor a asignar al parametroArr [" + nombre + "] es nulo");
+        }
+        return null;
+    }
+
+    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     public Object declarar() {
         //System.out.println(raiz.nombre);
         switch (raiz.nombre) {
@@ -79,7 +122,7 @@ public class Declaracion extends Compilador {
                     declaracionvarG();
                 } catch (Exception e) {
                 }
-                break;    
+                break;
             default:
                 System.out.println(raiz.nombre);
                 break;
@@ -123,10 +166,9 @@ public class Declaracion extends Compilador {
                                 tipo = arr.type;
                             }
                         }
-                        
-                        if(esClase(resultado.valor))
-                        {
-                            Clase clase = (Clase)resultado.valor;
+
+                        if (esClase(resultado.valor)) {
+                            Clase clase = (Clase) resultado.valor;
                             clase.nombre = nombre;
                             clase.ejecutar(miTemplate);
                         }
@@ -161,7 +203,7 @@ public class Declaracion extends Compilador {
             return false;
         }
     }
-    
+
     public boolean esClase(Object valor) {
         try {
             Clase ar = (Clase) valor;
@@ -170,11 +212,10 @@ public class Declaracion extends Compilador {
             return false;
         }
     }
-    
-    public Clase crearInstanciaEstructura(Nodo raiz)
-    {
+
+    public Clase crearInstanciaEstructura(Nodo raiz) {
         Clase clase = new Clase(raiz);
         return clase;
-    } 
+    }
 
 }

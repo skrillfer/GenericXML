@@ -1,6 +1,14 @@
 
 
-si(4!=2)
+metodo1(1,2);
+funcion metodo1(var a,var b)
+{
+  imprimir(a);
+  imprimir(b);
+}
+
+
+/*si(4!=2)
 {
     imprimir("cumple");
 }
@@ -29,7 +37,7 @@ selecciona (y /50) {
   } defecto: {
     imprimir("caso defecto");
   }
-}
+}*/
 
 /*
     var arr1 = [56,12,54,32,21,33,44,55,12,-1,"z","d","f",12.3,67.2,9.1];

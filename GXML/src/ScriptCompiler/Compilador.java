@@ -52,13 +52,18 @@ public abstract class Compilador {
                     try {
                         new Declaracion(sentencia, global, tabla, miTemplate);
                     } catch (Exception e) {
-                        System.err.println("declaracionvarG=>" + e.getMessage());
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia declaracion de Var Global:" + e.getMessage());
                     }
                     break;
                 case "acceso":
-                    JOptionPane.showMessageDialog(null, "QUENPAS");
-                    opL = new OperacionesARL(global, tabla, miTemplate);
-                    opL.ejecutar(sentencia);
+                    try {
+                        JOptionPane.showMessageDialog(null, "acceso");
+                        opL = new OperacionesARL(global, tabla, miTemplate);
+                        opL.ejecutar(sentencia);
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Acceso:" + e.getMessage());
+                    }
+
                     break;
                 case "imprimir":
                     opL = new OperacionesARL(global, tabla, miTemplate);
@@ -70,6 +75,7 @@ public abstract class Compilador {
                             //miTemplate.CONSOLA+="\n"+(String)rs.valor;
                             System.out.println(rs.valor.toString());
                         } catch (Exception e) {
+                            Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Imprimir:" + e.getMessage());
                         }
                     }
 
@@ -224,32 +230,42 @@ public abstract class Compilador {
                  */
 
                 case "si":
-                    Si si = new Si();
-                    metodoActual = si.ejecutar(sentencia);
-                    if (metodoActual.estadoRetorno) {
-                        return metodoActual;
-                    }
-                    if (metodoActual.estadoTerminar) {
-                        return metodoActual;
+                    try {
+                        Si si = new Si();
+                        metodoActual = si.ejecutar(sentencia);
+                        if (metodoActual.estadoRetorno) {
+                            return metodoActual;
+                        }
+                        if (metodoActual.estadoTerminar) {
+                            return metodoActual;
+                        }
+
+                        if (metodoActual.estadoContinuar) {
+                            return metodoActual;
+                        }
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Si:" + e.getMessage());
                     }
 
-                    if (metodoActual.estadoContinuar) {
-                        return metodoActual;
-                    }
                     break;
                 case "selecciona":
-                    nivelCiclo++;
-                    Seleccion seleccion = new Seleccion();
-                    metodoActual = seleccion.ejecutar(sentencia);
-                    if (metodoActual.estadoRetorno) {
+                    try {
+                        nivelCiclo++;
+                        Seleccion seleccion = new Seleccion();
+                        metodoActual = seleccion.ejecutar(sentencia);
+                        if (metodoActual.estadoRetorno) {
+                            nivelCiclo--;
+                            return metodoActual;
+                        }
+                        if (metodoActual.estadoContinuar) {
+                            nivelCiclo--;
+                            return metodoActual;
+                        }
                         nivelCiclo--;
-                        return metodoActual;
+
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Seleccionar:" + e.getMessage());
                     }
-                    if (metodoActual.estadoContinuar) {
-                        nivelCiclo--;
-                        return metodoActual;
-                    }
-                    nivelCiclo--;
                     break;
 
                 case "terminar":
@@ -263,7 +279,7 @@ public abstract class Compilador {
                 case "retorno":
                     Retornar retorno = new Retornar();
                     metodoActual = retorno.ejecutar(sentencia);
-                    return metodoActual;    
+                    return metodoActual;
             }
         }
         return metodoActual;

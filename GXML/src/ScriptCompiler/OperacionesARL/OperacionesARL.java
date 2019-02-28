@@ -1293,16 +1293,15 @@ public class OperacionesARL {
                                 case "Double":
                                 case "String":
                                 case "Boolean":
-                                case  "":    
+                                case "":
                                     retorno.valor = simbolo.valor;
                                     retorno.tipo = simbolo.tipo;
                                     retorno.simbolo = simbolo;
                                     break;
-                                    
+
                                 default:
                                     nivel++;
-                                    if(!simbolo.esArreglo)
-                                    {
+                                    if (!simbolo.esArreglo) {
                                         aux = (Clase) simbolo.valor;
                                         tabla = aux.tabla;
                                         retorno.tipo = simbolo.tipo;
@@ -1331,26 +1330,32 @@ public class OperacionesARL {
                     break;
 
                 case "llamada":
-                    LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel,retorno,acceso);
-                    if(llamada.proceder)
-                    {
-                    }else
-                    {
-                        if(llamada.res_nativas!=null)
-                        {
+                    LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel, retorno, acceso);
+                    /*
+                    Proceder es una variable tipo booleano que me indica si la llamada a metodo fue una funcion nativa
+                    */
+                    if (llamada.proceder) {
+                        Metodo metodo = llamada.ejecutar(acceso);
+                        if (metodo != null) {
+                            if (metodo.retorno != null) {
+                                if (metodo.tipo.equalsIgnoreCase(metodo.retorno.tipo)) {
+                                    retorno = metodo.retorno;
+                                    metodo.estadoRetorno = false;
+                                    if (!retorno.tipo.equalsIgnoreCase("String") && !retorno.tipo.equalsIgnoreCase("Integer") && !retorno.tipo.equalsIgnoreCase("Double") && !retorno.tipo.equalsIgnoreCase("Boolean") && !retorno.tipo.equalsIgnoreCase("")) {
+                                        aux = (Clase) retorno.valor;
+                                        tabla = aux.tabla;
+                                    }
+                                } else {
+                                    Template.reporteError_CJS.agregar("Semantico", acceso.linea, acceso.columna, "El metodo " + metodo.nombre + " no es tipo " + metodo.retorno.tipo);
+                                }
+                            }
+                        }
+                    } else {
+                        if (llamada.res_nativas != null) {
                             retorno = llamada.res_nativas;
                         }
                     }
-                    /*Metodo metodo = llamada.ejecutar(raiz);
-                    if (metodo != null) {
-                        if (metodo.retorno != null) {
-                            retorno = metodo.retorno;
-                            metodo.estadoRetorno = false;
-                        }
-                    } else {
-                        retorno.tipo = "-1";
-                        retorno.valor = null;
-                    }*/
+                    
                     break;
             }
         }

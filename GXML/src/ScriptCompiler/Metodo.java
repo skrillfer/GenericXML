@@ -41,7 +41,9 @@ public class Metodo {
     
      private String getId() {
         String id = nombre;
-        for (Nodo parametro : parametros) {
+        
+        id+="_"+parametros.size();
+        /*for (Nodo parametro : parametros) {
             if (parametro.nombre.equals("parametro")) {
                 id += "_1p";
             } else {
@@ -49,7 +51,7 @@ public class Metodo {
                 //si el parametro es un vector
                 //id += parametro.hijos.get(0).valor + parametro.hijos.get(1).hijos.size();
             }
-        }
+        }*/
         return id;
     }
 }

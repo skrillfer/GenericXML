@@ -73,7 +73,7 @@ non terminal Nodo INICIO,DECLARA,LIST_ID,ASIGN,DATO,LIST_EXP,CONTARRAY,LIST_ATRI
                   INSTRUCCIONES,INSTRUCCIONES_FUERA,I_NSTRUCCIONESF,SENTENCIAF,I_NSTRUCCIONES,SENTENCIA,
                   SI,MUCHOS_SINOSI,FINAL_SINO,LIST_SINOSI,SINO_SI,SINO,FUNCION,PARAMETROS,LISTA_PARAMETROS,
                   LLAMADA,ENVIO,ACCESO,ACCESOVAR,ACCESOARR,INDICES,INDICE,NATIVAS,
-                  ASIGNACION,TIPOASIG,ATRIBUTOS,ATRIBUTO,SIMPLIFICADA,CONTOBJ;
+                  ASIGNACION,TIPOASIG,ATRIBUTOS,ATRIBUTO,SIMPLIFICADA,CONTOBJ,VAR_S;
     
 /* PRECEDENCIAS */
 precedence left mas, menos;
@@ -328,21 +328,20 @@ FUNCION ::= funcion:w iden:x apar PARAMETROS:y cpar alla INSTRUCCIONES:z clla
 PARAMETROS ::= {:   RESULT = parser.crearNodo("parametros","",0,0);  :}
               |LISTA_PARAMETROS:x{:     RESULT=x;   :};
 
-LISTA_PARAMETROS ::=LISTA_PARAMETROS:x coma iden:y{:
-                        Nodo param = parser.crearNodo("parametro","",y.getLinea(),y.getColumna());
-                        param.add(parser.crearNodo("id",y.getCadena(),y.getLinea(),y.getColumna()));
+LISTA_PARAMETROS ::=LISTA_PARAMETROS:x coma VAR_S iden:y{:
+                        Nodo param = parser.crearNodo("parametro",y.getCadena(),y.getLinea(),y.getColumna());
                         x.add(param);
                         RESULT=x;
                     :}
-                    |iden:x {:
+                    |VAR_S iden:x {:
                         RESULT = parser.crearNodo("parametros","",x.getLinea(),x.getColumna());
-                        Nodo param = parser.crearNodo("parametro","",x.getLinea(),x.getColumna());
-                        param.add(parser.crearNodo("id",x.getCadena(),x.getLinea(),x.getColumna()));
+                        Nodo param = parser.crearNodo("parametro",x.getCadena(),x.getLinea(),x.getColumna());
                         RESULT.add(param);    
                     :};
 
 
-
+VAR_S  ::={::}
+          |var;
 //**************************Selecciona *****************************************
 
 SELECCIONA ::= selecciona:w apar EXP:X cpar alla CONT_SELECCIONA:Y clla
