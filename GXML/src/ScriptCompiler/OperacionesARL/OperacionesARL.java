@@ -1354,16 +1354,15 @@ public class OperacionesARL {
                         Metodo metodo = llamada.ejecutar(acceso);
                         if (metodo != null) {
                             if (metodo.retorno != null) {
-                                if (metodo.tipo.equalsIgnoreCase(metodo.retorno.tipo)) {
                                     retorno = metodo.retorno;
                                     metodo.estadoRetorno = false;
                                     if (!retorno.tipo.equalsIgnoreCase("String") && !retorno.tipo.equalsIgnoreCase("Integer") && !retorno.tipo.equalsIgnoreCase("Double") && !retorno.tipo.equalsIgnoreCase("Boolean") && !retorno.tipo.equalsIgnoreCase("")) {
-                                        aux = (Clase) retorno.valor;
-                                        tabla = aux.tabla;
+                                        try {
+                                            aux = (Clase) retorno.valor;
+                                            tabla = aux.tabla;
+                                        } catch (Exception e) {}
+                                        
                                     }
-                                } else {
-                                    Template.reporteError_CJS.agregar("Semantico", acceso.linea, acceso.columna, "El metodo " + metodo.nombre + " no es tipo " + metodo.retorno.tipo);
-                                }
                             }
                         }
                     } else {

@@ -1,13 +1,8 @@
 
-var arr1 = ["hola",45,6.7,{nombre:"luis"}];
-
-imprimir(arr1[3].nombre);
-
-metodo1(1,2);
+imprimir(metodo1(185,68));
 funcion metodo1(var a,var b)
 {
-  imprimir(a);
-  imprimir(b);
+  retornar a+b;
 }
 
 
