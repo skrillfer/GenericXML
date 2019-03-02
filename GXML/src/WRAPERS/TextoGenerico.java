@@ -8,46 +8,25 @@ package WRAPERS;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Map;
-import javax.swing.JTextArea;
+import javax.swing.JLabel;
 
 /**
  *
  * @author fernando
  */
-public class AreaTextoGenerica extends JTextArea {
+public class TextoGenerico extends JLabel{
 /*
-        Alto, ancho, Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, defecto, nombre
+    Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, valor    
 */
-    
     Nodo raiz;
-
-    public AreaTextoGenerica(Nodo raiz) {
+    public TextoGenerico(Nodo raiz) {
         this.raiz = raiz;
         //Estilo por defecto
         setNegrilla(false);
     }
-
-    public void setAncho(int ancho) {
-        try {
-            setPreferredSize(new Dimension(ancho, getPreferredSize().height));
-        } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho + "] en AreaTexto " + this.getName());
-        }
-        updateUI();
-    }
-
-    public void setAlto(int alto) {
-        try {
-            setPreferredSize(new Dimension(getPreferredSize().width, alto));
-        } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto + "] en AreaTexto " + this.getName());
-        }
-        updateUI();
-    }
-
+    
     public void setFuente(String family) {
         try {
             Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
@@ -55,7 +34,7 @@ public class AreaTextoGenerica extends JTextArea {
             Map atributes = ft.getAttributes();
             this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Fuente [" + family + "] en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Fuente [" + family + "] en TextoGenerico " + this.getName());
         }
     }
 
@@ -66,7 +45,7 @@ public class AreaTextoGenerica extends JTextArea {
             Map atributes = ft.getAttributes();
             this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Tamano [" + tam + "] en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Tamano [" + tam + "] en TextoGenerico " + this.getName());
         }
     }
 
@@ -74,15 +53,16 @@ public class AreaTextoGenerica extends JTextArea {
         try {
             this.setForeground(Color.decode(hex));
         } catch (NumberFormatException e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en TextoGenerico " + this.getName());
         }
     }
-
+    
+    
     public void setX(int x) {
         try {
             this.setLocation(x, this.getLocation().y);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en TextoGenerico " + this.getName());
         }
     }
 
@@ -90,7 +70,7 @@ public class AreaTextoGenerica extends JTextArea {
         try {
             this.setLocation(this.getLocation().x, y);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en TextoGenerico " + this.getName());
         }
     }
 
@@ -115,7 +95,7 @@ public class AreaTextoGenerica extends JTextArea {
             Map atributes = ft.getAttributes();
             this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Negrilla  en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Negrilla  en TextoGenerico " + this.getName());
         }
     }
     
@@ -141,17 +121,18 @@ public class AreaTextoGenerica extends JTextArea {
             Map atributes = ft.getAttributes();
             this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Cursiva  en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Cursiva  en TextoGenerico " + this.getName());
         }
     }
-
+    
+    
     //Defecto
     public void setTexto(String txt) {
         try {
 
             this.setText(txt);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto [" + txt + "] en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto [" + txt + "] en TextoGenerico " + this.getName());
         }
         updateUI();
     }
@@ -161,7 +142,7 @@ public class AreaTextoGenerica extends JTextArea {
         try {
             this.setName(id);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en AreaTexto " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en TextoGenerico " + this.getName());
         }
     }
 }

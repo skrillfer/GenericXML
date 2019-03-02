@@ -7,6 +7,7 @@ package gxml;
 
 import Estructuras.Nodo;
 import WRAPERS.CajaTextoGenerica;
+import WRAPERS.TextoGenerico;
 import java.text.ParseException;
 import javax.swing.JFrame;
 
@@ -26,8 +27,14 @@ public class GXML {
         v.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 
-
-        v.add(new CajaTextoGenerica(new Nodo()));
+        TextoGenerico txt = new TextoGenerico(new Nodo());
+        txt.setTexto("Este es mi mensaje ");
+        
+        txt.setCurvisa(true);
+        txt.setTam(13);
+        txt.setColor("#8b4513");
+        
+        v.add(txt);
         v.setVisible(true);
     }
 

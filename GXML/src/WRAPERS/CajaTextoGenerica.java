@@ -7,11 +7,10 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.awt.Font;
+import java.util.Map;
 import javax.swing.JTextField;
 
 /**
@@ -19,117 +18,23 @@ import javax.swing.JTextField;
  * @author fernando
  */
 public class CajaTextoGenerica extends JTextField {
-    boolean esnumerico;
-    String lastText="";
-    Double maximo=12.0;
-    Double minimo=0.0;
+
+    /*
+    Alto, Ancho, Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, defecto, nombre 
+     */
     Nodo raiz;
 
     public CajaTextoGenerica(Nodo raiz) {
         this.raiz = raiz;
-        this.setName("");
-        esnumerico = false;
-        //setControlNumerico();
+        //Estilo por defecto
+        setNegrilla(false);
     }
-    
-    
-    
-    public void setControlNumerico()
-    {
-        esnumerico = true;
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if(!getText().equals("") && !getText().equals("-"))
-                {
-                    if(!MATCH())
-                    {
-                        setText(lastText);
-                    }else
-                    {
-                        lastText = getText();
-                    }
-                }
-            }
-        });
-    }
-
-    public boolean MATCH() {
-        // String to be scanned to find the pattern.
-
-        String pattern = "^[-]?(\\d+(\\.\\d*)?)?";
-
-        // Create a Pattern object
-        Pattern r = Pattern.compile(pattern);
-
-        // Now create matcher object.
-        Matcher m = r.matcher(this.getText());
-        if (m.matches()) {
-            if(this.maximo!=this.minimo)
-            {
-                if(Double.valueOf(this.getText())<=this.maximo && this.maximo>this.minimo)
-                {
-                    if(Double.valueOf(this.getText())>=this.minimo && this.minimo<this.maximo)
-                    {
-                        return true;
-                    }else
-                    {
-                        return false;
-                    }
-                }else
-                {
-                    return false;
-                }
-            }else
-            {
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
-    
-    //Valor por Defecto
-    public void setTexto(String txt) {
-        try {
-            this.setText(txt);
-        } catch (Exception ex) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto por Defecto [" + txt + "] en CajaTexto " + this.getName());
-
-        }
-        updateUI();
-    }
-
-        public void setX(int x) {
-            try {
-                this.setLocation(x, this.getLocation().y);
-            } catch (Exception e) {
-                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en CajaTexto " + this.getName());
-            }
-        }
-
-        public void setY(int y) {
-            try {
-                this.setLocation(this.getLocation().x, y);
-            } catch (Exception e) {
-                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en CajaTexto " + this.getName());
-            }
-        }
-
-        public void setId(String id) {
-            try {
-                this.setName(id);
-            } catch (Exception e) {
-                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en CajaTexto " + this.getName());
-            }
-        }
 
     public void setAncho(int ancho) {
         try {
             setPreferredSize(new Dimension(ancho, getPreferredSize().height));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho + "] en CajaTexto " + this.getName());
-
         }
         updateUI();
     }
@@ -139,31 +44,124 @@ public class CajaTextoGenerica extends JTextField {
             setPreferredSize(new Dimension(getPreferredSize().width, alto));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto + "] en CajaTexto " + this.getName());
-
-        }
-        updateUI();
-    }
-    
-    
-    
-    public void setMaximo(Double minimo) {
-        try {
-            this.minimo= minimo;
-        } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Minimo [" + minimo + "] en CajaNumerica " + this.getName());
-
         }
         updateUI();
     }
 
-    public void setMinimo(Double maximo) {
+    public void setFuente(String family) {
         try {
-            this.maximo = maximo;
-        } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Maximo [" + maximo + "] en CajaNumerica " + this.getName());
+            Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
 
+            Map atributes = ft.getAttributes();
+            this.setFont(ft.deriveFont(atributes));
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Fuente [" + family + "] en CajaTexto " + this.getName());
+        }
+    }
+
+    public void setTam(int tam) {
+        try {
+            Font ft = new Font(this.getFont().getName(), this.getFont().getStyle(), tam);
+
+            Map atributes = ft.getAttributes();
+            this.setFont(ft.deriveFont(atributes));
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Tamano [" + tam + "] en CajaTexto " + this.getName());
+        }
+    }
+
+    public void setColor(String hex) {
+        try {
+            this.setForeground(Color.decode(hex));
+        } catch (NumberFormatException e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en CajaTexto " + this.getName());
+        }
+    }
+
+    public void setX(int x) {
+        try {
+            this.setLocation(x, this.getLocation().y);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en CajaTexto " + this.getName());
+        }
+    }
+
+    public void setY(int y) {
+        try {
+            this.setLocation(this.getLocation().x, y);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en CajaTexto " + this.getName());
+        }
+    }
+
+    public void setNegrilla(boolean check) {
+        try {
+
+            Font ft = null;
+            if (check) {
+                if (this.getFont().isItalic()) {
+                    ft = new Font(this.getFont().getName(), Font.ITALIC + Font.BOLD, this.getFont().getSize());
+                } else {
+                    ft = new Font(this.getFont().getName(), Font.BOLD, this.getFont().getSize());
+                }
+            } else {
+                if (this.getFont().isItalic()) {
+                    ft = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
+                } else {
+                    ft = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize());
+                }
+            }
+
+            Map atributes = ft.getAttributes();
+            this.setFont(ft.deriveFont(atributes));
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Negrilla  en CajaTexto " + this.getName());
+        }
+    }
+
+    public void setCurvisa(boolean check) {
+        try {
+
+            Font ft = null;
+            if (check) {
+                if (this.getFont().isBold()) {
+                    ft = new Font(this.getFont().getName(), Font.ITALIC + Font.BOLD, this.getFont().getSize());
+                } else {
+                    ft = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
+                }
+            } else {
+                if (this.getFont().isBold()) {
+                    ft = new Font(this.getFont().getName(), Font.BOLD, this.getFont().getSize());
+                } else {
+                    ft = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize());
+                }
+            }
+
+            Map atributes = ft.getAttributes();
+            this.setFont(ft.deriveFont(atributes));
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Cursiva  en CajaTexto " + this.getName());
+        }
+    }
+
+    //Defecto
+    public void setTexto(String txt) {
+        try {
+
+            this.setText(txt);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto [" + txt + "] en CajaTexto " + this.getName());
         }
         updateUI();
+    }
+
+    //Nombre o id
+    public void setId(String id) {
+        try {
+            this.setName(id);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en CajaTexto " + this.getName());
+        }
     }
 
 }
