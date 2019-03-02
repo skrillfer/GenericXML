@@ -19,6 +19,7 @@ import javax.swing.JTextField;
  * @author fernando
  */
 public class CajaTextoGenerica extends JTextField {
+    boolean esnumerico;
     String lastText="";
     Double maximo=12.0;
     Double minimo=0.0;
@@ -27,12 +28,15 @@ public class CajaTextoGenerica extends JTextField {
     public CajaTextoGenerica(Nodo raiz) {
         this.raiz = raiz;
         this.setName("");
-
-        setControlNumerico();
+        esnumerico = false;
+        //setControlNumerico();
     }
+    
+    
     
     public void setControlNumerico()
     {
+        esnumerico = true;
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -96,13 +100,29 @@ public class CajaTextoGenerica extends JTextField {
         updateUI();
     }
 
-    public void setId(String id) {
-        try {
-            this.setName(id);
-        } catch (Exception ex) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en CajaTexto " + this.getName());
+        public void setX(int x) {
+            try {
+                this.setLocation(x, this.getLocation().y);
+            } catch (Exception e) {
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en CajaTexto " + this.getName());
+            }
         }
-    }
+
+        public void setY(int y) {
+            try {
+                this.setLocation(this.getLocation().x, y);
+            } catch (Exception e) {
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en CajaTexto " + this.getName());
+            }
+        }
+
+        public void setId(String id) {
+            try {
+                this.setName(id);
+            } catch (Exception e) {
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en CajaTexto " + this.getName());
+            }
+        }
 
     public void setAncho(int ancho) {
         try {

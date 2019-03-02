@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Hashtable;
+import java.util.Map;
 import javax.swing.JButton;
 
 /**
@@ -25,6 +26,7 @@ public class BotonGenerico extends JButton {
     Nodo raiz;
 
     public BotonGenerico(Nodo raiz) {
+        super();
         this.raiz = raiz;
         this.setName("");
     }
@@ -49,7 +51,7 @@ public class BotonGenerico extends JButton {
     public void setColor(String hex) {
         try {
             this.setForeground(Color.decode(hex));
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en Boton " + this.getName());
         }
     }
@@ -80,12 +82,10 @@ public class BotonGenerico extends JButton {
 
     public void setFuente(String family) {
         try {
-            Font ft = null;
-            if (this.getFont().isBold()) {
-                ft = new Font(family, Font.ITALIC + Font.BOLD, this.getFont().getSize());
-            } else {
-                ft = new Font(family, Font.ITALIC, this.getFont().getSize());
-            }
+            Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
+
+            Map atributes = ft.getAttributes();
+            this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Fuente [" + family + "] en Boton " + this.getName());
         }
@@ -93,12 +93,10 @@ public class BotonGenerico extends JButton {
 
     public void setTam(int tam) {
         try {
-            Font ft = null;
-            if (this.getFont().isBold()) {
-                ft = new Font(this.getFont().getName(), Font.ITALIC + Font.BOLD, tam);
-            } else {
-                ft = new Font(this.getFont().getName(), Font.ITALIC, tam);
-            }
+            Font ft = new Font(this.getFont().getName(), this.getFont().getStyle(), tam);
+
+            Map atributes = ft.getAttributes();
+            this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Tamano [" + tam + "] en Boton " + this.getName());
         }
