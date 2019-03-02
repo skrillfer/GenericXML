@@ -26,14 +26,7 @@ public class GXML {
      */
     public static void main(String[] args) {
 
-        /*NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "");
-        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Reproductor re = new Reproductor();
-            }
-        });*/
+        
         Reproductor reproductor = new Reproductor();
         reproductor.setRuta("/home/fernando/Vídeos/Betrayed.mp3");
 
