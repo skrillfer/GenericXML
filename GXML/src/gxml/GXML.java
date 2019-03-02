@@ -5,10 +5,10 @@
  */
 package gxml;
 
-import ScriptCompiler.Arreglo;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
+import Estructuras.Nodo;
+import WRAPERS.CajaTextoGenerica;
+import java.text.ParseException;
+import javax.swing.JFrame;
 
 /**
  *
@@ -19,23 +19,16 @@ public class GXML {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+        JFrame v = new JFrame();
+        v.setSize(300, 303);
         
-        /*Object valor = null;
-        Arreglo arr = new Arreglo();
-        valor = arr;
-        System.out.println(valor.getClass().getSimpleName());*/
+        v.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        int n1 = 5;
-        
-        n1 += 1.2;
-        
-        
-        System.out.println("n1:"+n1);
-        n1++;
-        System.out.println("n1:"+(n1+0));
-        System.out.println("n1:"+(n1+0));
-        
+
+
+        v.add(new CajaTextoGenerica(new Nodo()));
+        v.setVisible(true);
     }
 
 }
