@@ -1,4 +1,30 @@
-var id1;
+
+var a1 = [1, {nombre:"ss"}];
+
+
+imprimir(a1[1].nombre);
+
+a1[1].nombre="hola";
+
+imprimir(a1[1].nombre);
+/*
+var arr1 = {nombre:"luis",arr2:{apellido:"ramirez"}};
+
+imprimir(arr1.nombre);
+arr1.nombre = "orale";
+
+imprimir(arr1.nombre);
+
+
+imprimir(arr1.arr2.apellido);
+
+arr1.arr2.apellido = "dame mas";
+
+imprimir(arr1.arr2.apellido);
+*/
+
+
+/*var id1;
 var id2;
 var id3;
 var id4;
@@ -19,7 +45,7 @@ imprimir(id2);
 
 imprimir("valor de id4");
 imprimir(id4.date);
-
+*/
 
 /*
 id4 = {nombre:"luis"};

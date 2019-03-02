@@ -194,8 +194,8 @@ public class Arreglo {
 
     public boolean setValor(Nodo indice, Resultado dato) {
         Resultado res = opL.ejecutar(indice);
-        if (res.tipo.equals("number")) {
-            int posicion = ((Double) res.valor).intValue();
+        if (res.tipo.equals("Integer")) {
+            int posicion = (Integer)res.valor;
 
             if (posicion <= (datos.size() - 1) && posicion >= 0) {
                 datos.set(posicion, dato);
@@ -222,6 +222,8 @@ public class Arreglo {
             return null;
         }
     }
+    
+
 
     public boolean esNulo(Resultado r) {
         if (r == null) {

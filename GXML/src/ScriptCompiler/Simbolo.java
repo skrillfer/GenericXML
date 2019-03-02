@@ -10,13 +10,15 @@ package ScriptCompiler;
  * @author fernando
  */
 public class Simbolo {
-     public String nombre;
+    public String nombre;
     public String tipo;
     public String visibilidad;
     public Object valor;
     public boolean inicializado = false;
     public boolean esArreglo = false;
 
+    public boolean vieneReferido = false;
+    
     public String ambito;
     public String rol;
 
