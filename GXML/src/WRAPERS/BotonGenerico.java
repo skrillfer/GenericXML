@@ -132,7 +132,7 @@ public class BotonGenerico extends JButton {
         updateUI();
     }
 
-    public void setAlto(String ruta) {
+    public void setReferencia(String ruta) {
         try {
             this.ruta = ruta;
         } catch (Exception e) {

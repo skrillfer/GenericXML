@@ -20,6 +20,8 @@ import javax.swing.JTextField;
  */
 public class CajaTextoGenerica extends JTextField {
     String lastText="";
+    Double maximo=12.0;
+    Double minimo=0.0;
     Nodo raiz;
 
     public CajaTextoGenerica(Nodo raiz) {
@@ -34,19 +36,16 @@ public class CajaTextoGenerica extends JTextField {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                if(!MATCH())
+                if(!getText().equals("") && !getText().equals("-"))
                 {
-                    setText(lastText);
-                }else
-                {
-                    lastText = getText();
+                    if(!MATCH())
+                    {
+                        setText(lastText);
+                    }else
+                    {
+                        lastText = getText();
+                    }
                 }
-                System.out.println("presionado");
-                /*char c = e.getKeyChar();
-                if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE) && (c != '.')) {
-
-                    e.consume(); // consume non-numbers
-                }*/
             }
         });
     }
@@ -62,7 +61,25 @@ public class CajaTextoGenerica extends JTextField {
         // Now create matcher object.
         Matcher m = r.matcher(this.getText());
         if (m.matches()) {
-            return true;
+            if(this.maximo!=this.minimo)
+            {
+                if(Double.valueOf(this.getText())<=this.maximo && this.maximo>this.minimo)
+                {
+                    if(Double.valueOf(this.getText())>=this.minimo && this.minimo<this.maximo)
+                    {
+                        return true;
+                    }else
+                    {
+                        return false;
+                    }
+                }else
+                {
+                    return false;
+                }
+            }else
+            {
+                return true;
+            }
         } else {
             return false;
         }
@@ -102,6 +119,28 @@ public class CajaTextoGenerica extends JTextField {
             setPreferredSize(new Dimension(getPreferredSize().width, alto));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto + "] en CajaTexto " + this.getName());
+
+        }
+        updateUI();
+    }
+    
+    
+    
+    public void setMaximo(Double minimo) {
+        try {
+            this.minimo= minimo;
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Minimo [" + minimo + "] en CajaNumerica " + this.getName());
+
+        }
+        updateUI();
+    }
+
+    public void setMinimo(Double maximo) {
+        try {
+            this.maximo = maximo;
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Maximo [" + maximo + "] en CajaNumerica " + this.getName());
 
         }
         updateUI();
