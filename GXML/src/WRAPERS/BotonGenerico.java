@@ -19,16 +19,15 @@ import javax.swing.JButton;
  * @author fernando
  */
 public class BotonGenerico extends JButton {
-
-    public String ruta;
-    //public Hashtable<String, String> propiedades = new Hashtable<>();
-
+/*
+    Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho    
+*/
+    public String referencia;
     Nodo raiz;
-
     public BotonGenerico(Nodo raiz) {
         super();
         this.raiz = raiz;
-        this.setName("");
+        
     }
 
     public boolean aplicaStilo(String nombre) {
@@ -48,42 +47,10 @@ public class BotonGenerico extends JButton {
         }
     }
 
-    public void setColor(String hex) {
-        try {
-            this.setForeground(Color.decode(hex));
-        } catch (NumberFormatException e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en Boton " + this.getName());
-        }
-    }
-
-    public void setX(int x) {
-        try {
-            this.setLocation(x, this.getLocation().y);
-        } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en Boton " + this.getName());
-        }
-    }
-
-    public void setY(int y) {
-        try {
-            this.setLocation(this.getLocation().x, y);
-        } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en Boton " + this.getName());
-        }
-    }
-
-    public void setId(String id) {
-        try {
-            this.setName(id);
-        } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en Boton " + this.getName());
-        }
-    }
-
+    
     public void setFuente(String family) {
         try {
             Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
-
             Map atributes = ft.getAttributes();
             this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
@@ -102,6 +69,40 @@ public class BotonGenerico extends JButton {
         }
     }
 
+    public void setColor(String hex) {
+        try {
+            this.setForeground(Color.decode(hex));
+        } catch (NumberFormatException e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en Boton " + this.getName());
+        }
+    }
+    
+    public void setX(int x) {
+        try {
+            this.setLocation(x, this.getLocation().y);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en Boton " + this.getName());
+        }
+    }
+
+    public void setY(int y) {
+        try {
+            this.setLocation(this.getLocation().x, y);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en Boton " + this.getName());
+        }
+    }
+    
+    public void setReferencia(String referencia) {
+        try {
+            this.referencia = referencia;
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ruta [" + referencia + "] en Boton " + this.getName());
+        }
+        updateUI();
+    }
+    
+    //Valor
     public void setTexto(String txt) {
         try {
 
@@ -111,7 +112,8 @@ public class BotonGenerico extends JButton {
         }
         updateUI();
     }
-
+    
+    
     public void setAncho(int ancho) {
         try {
             setPreferredSize(new Dimension(ancho, getPreferredSize().height));
@@ -129,14 +131,13 @@ public class BotonGenerico extends JButton {
         }
         updateUI();
     }
-
-    public void setReferencia(String ruta) {
+    
+    public void setId(String id) {
         try {
-            this.ruta = ruta;
+            this.setName(id);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ruta [" + ruta + "] en Boton " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en Boton " + this.getName());
         }
-        updateUI();
     }
-
+    
 }
