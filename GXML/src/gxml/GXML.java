@@ -21,10 +21,20 @@ public class GXML {
      */
     public static void main(String[] args) {
         
-        Object valor = null;
+        /*Object valor = null;
         Arreglo arr = new Arreglo();
         valor = arr;
-        System.out.println(valor.getClass().getSimpleName());
+        System.out.println(valor.getClass().getSimpleName());*/
+        
+        int n1 = 5;
+        
+        n1 += 1.2;
+        
+        
+        System.out.println("n1:"+n1);
+        n1++;
+        System.out.println("n1:"+(n1+0));
+        System.out.println("n1:"+(n1+0));
         
     }
 

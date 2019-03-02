@@ -82,9 +82,16 @@ public class Asignacion extends Compilador {
                 } else {
 
                     try {
+                        TipoAsignacion tipoAsig = new TipoAsignacion();
+                        resultado=tipoAsig.aplicarAsignacion(simbolo, raiz.get(1), resultado);
+                        
                         simbolo.valor = resultado.valor;
                         simbolo.tipo = resultado.tipo;
                         simbolo.inicializado = true;
+                        if(resultado.simbolo!=null)
+                        {
+                            simbolo.esArreglo = resultado.simbolo.esArreglo;
+                        }
                     } catch (Exception e) {
                     }
                 }

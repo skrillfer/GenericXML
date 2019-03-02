@@ -1,8 +1,27 @@
-
 var id1;
+var id2;
+var id3;
 var id4;
 var id5;
 
+
+id1="hola ojetes";
+id2 = id1;
+
+id3 = {date:"12/12/42"};
+id4 = id3;
+
+imprimir("valor de id1");
+imprimir(id1);
+
+imprimir("valor de id2");
+imprimir(id2);
+
+imprimir("valor de id4");
+imprimir(id4.date);
+
+
+/*
 id4 = {nombre:"luis"};
 
 id5  = [1,2,3,4,"a"];
@@ -12,6 +31,10 @@ imprimir(id5[4]);
 
 id1 ="string";
 imprimir(id1);
+
+*/
+
+
 
 /*si(4!=2)
 {
