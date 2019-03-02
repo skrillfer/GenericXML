@@ -10,7 +10,6 @@ import INTERFAZ.Template;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.Hashtable;
 import java.util.Map;
 import javax.swing.JButton;
 
@@ -19,15 +18,15 @@ import javax.swing.JButton;
  * @author fernando
  */
 public class BotonGenerico extends JButton {
-/*
+
+    /*
     Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho    
-*/
+     */
     public String referencia;
     Nodo raiz;
+
     public BotonGenerico(Nodo raiz) {
-        super();
         this.raiz = raiz;
-        
     }
 
     public boolean aplicaStilo(String nombre) {
@@ -47,7 +46,6 @@ public class BotonGenerico extends JButton {
         }
     }
 
-    
     public void setFuente(String family) {
         try {
             Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
@@ -76,7 +74,7 @@ public class BotonGenerico extends JButton {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en Boton " + this.getName());
         }
     }
-    
+
     public void setX(int x) {
         try {
             this.setLocation(x, this.getLocation().y);
@@ -92,7 +90,7 @@ public class BotonGenerico extends JButton {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en Boton " + this.getName());
         }
     }
-    
+
     public void setReferencia(String referencia) {
         try {
             this.referencia = referencia;
@@ -101,7 +99,7 @@ public class BotonGenerico extends JButton {
         }
         updateUI();
     }
-    
+
     //Valor
     public void setTexto(String txt) {
         try {
@@ -112,8 +110,7 @@ public class BotonGenerico extends JButton {
         }
         updateUI();
     }
-    
-    
+
     public void setAncho(int ancho) {
         try {
             setPreferredSize(new Dimension(ancho, getPreferredSize().height));
@@ -131,7 +128,7 @@ public class BotonGenerico extends JButton {
         }
         updateUI();
     }
-    
+
     public void setId(String id) {
         try {
             this.setName(id);
@@ -139,5 +136,5 @@ public class BotonGenerico extends JButton {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en Boton " + this.getName());
         }
     }
-    
+
 }

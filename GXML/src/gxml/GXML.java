@@ -5,11 +5,15 @@
  */
 package gxml;
 
-import Estructuras.Nodo;
-import WRAPERS.CajaTextoGenerica;
-import WRAPERS.TextoGenerico;
+import WRAPERS.Reproductor;
+import WRAPERS.VLCPlayer;
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
 import java.text.ParseException;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /**
  *
@@ -20,22 +24,32 @@ public class GXML {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ParseException {
-        JFrame v = new JFrame();
-        v.setSize(300, 303);
-        
-        v.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+    public static void main(String[] args) {
 
-        TextoGenerico txt = new TextoGenerico(new Nodo());
-        txt.setTexto("Este es mi mensaje ");
-        
-        txt.setCurvisa(true);
-        txt.setTam(13);
-        txt.setColor("#8b4513");
-        
-        v.add(txt);
-        v.setVisible(true);
+        /*NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "");
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Reproductor re = new Reproductor();
+            }
+        });*/
+        Reproductor reproductor = new Reproductor();
+        reproductor.setRuta("/home/fernando/Vídeos/Betrayed.mp3");
+
+        JFrame frame = new JFrame("Capture");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setContentPane(reproductor);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocation(50, 50);
+        frame.setSize(800, 600);
+
+        frame.setVisible(true);
+
+        // Reproduce el vídeo.
+        reproductor.iniciarReproduccion();
+
     }
 
 }
