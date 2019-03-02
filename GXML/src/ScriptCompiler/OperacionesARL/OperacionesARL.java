@@ -1223,34 +1223,55 @@ public class OperacionesARL {
     }
 
     public Resultado acceso(Nodo raiz) {
+        Resultado tmpRet;
         JOptionPane.showMessageDialog(null, "dame");
         Clase aux = Script.claseActual;
         TablaSimbolo tablaAux = tabla;
         Resultado retorno = new Resultado("-1", null);
         //----------------------------------------------------------------------
         int nivel = 0;
-        for (Nodo acceso : raiz.hijos) {
+
+        for (int x = 0; x < raiz.size(); x++) {
+            Nodo acceso = raiz.get(x);
             String nombre;
             Simbolo simbolo;
             switch (acceso.nombre) {
                 case "accesoar":
                     aux.tabla = tabla;
                     tabla = tablaAux;
-                    retorno = accesoAr(acceso, nivel, aux);
+                    tmpRet = accesoAr(acceso, nivel, aux);
                     switch (retorno.tipo) {
                         case "Integer":
                         case "Double":
                         case "String":
                         case "Boolean":
                         case "":
+                            if (x == raiz.size() - 1) {
+                                retorno.valor = tmpRet.valor;
+                                retorno.tipo = tmpRet.tipo;
+                                if (tmpRet.simbolo != null) {
+                                    retorno.simbolo = tmpRet.simbolo;
+                                }
+                            }
+
                             break;
                         default:
-                            try
-                            {
-                                nivel++;                            
-                                aux = (Clase) retorno.valor;
+                            try {
+                                nivel++;
+                                aux = (Clase) tmpRet.valor;
                                 tabla = aux.tabla;
-                            }catch(Exception ex){}
+                                
+                                if (x == raiz.size() - 1) {
+                                    retorno.valor = tmpRet.valor;
+                                    retorno.tipo = tmpRet.tipo;
+                                    if (tmpRet.simbolo != null) {
+                                        retorno.simbolo = tmpRet.simbolo;
+                                    }
+                                }
+                                
+
+                            } catch (Exception ex) {
+                            }
                             break;
                     }
                     break;
@@ -1353,15 +1374,16 @@ public class OperacionesARL {
                         Metodo metodo = llamada.ejecutar(acceso);
                         if (metodo != null) {
                             if (metodo.retorno != null) {
-                                    retorno = metodo.retorno;
-                                    metodo.estadoRetorno = false;
-                                    if (!retorno.tipo.equalsIgnoreCase("String") && !retorno.tipo.equalsIgnoreCase("Integer") && !retorno.tipo.equalsIgnoreCase("Double") && !retorno.tipo.equalsIgnoreCase("Boolean") && !retorno.tipo.equalsIgnoreCase("")) {
-                                        try {
-                                            aux = (Clase) retorno.valor;
-                                            tabla = aux.tabla;
-                                        } catch (Exception e) {}
-                                        
+                                retorno = metodo.retorno;
+                                metodo.estadoRetorno = false;
+                                if (!retorno.tipo.equalsIgnoreCase("String") && !retorno.tipo.equalsIgnoreCase("Integer") && !retorno.tipo.equalsIgnoreCase("Double") && !retorno.tipo.equalsIgnoreCase("Boolean") && !retorno.tipo.equalsIgnoreCase("")) {
+                                    try {
+                                        aux = (Clase) retorno.valor;
+                                        tabla = aux.tabla;
+                                    } catch (Exception e) {
                                     }
+
+                                }
                             }
                         }
                     } else {

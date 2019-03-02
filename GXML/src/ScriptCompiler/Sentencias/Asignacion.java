@@ -64,43 +64,43 @@ public class Asignacion extends Compilador {
         if (!esNulo(resultado)) {
             if (simbolo != null) {
 
-                if (!simbolo.vieneReferido) {
-                    if (resultado.valor.getClass().getSimpleName().equalsIgnoreCase("clase") && resultado.simbolo == null) {
-                        Clase clase = (Clase) resultado.valor;
-                        clase.nombre = simbolo.nombre;
-                        clase.ejecutar(miTemplate);
+                //if (!simbolo.vieneReferido) {
+                if (resultado.valor.getClass().getSimpleName().equalsIgnoreCase("clase") && resultado.simbolo == null) {
+                    Clase clase = (Clase) resultado.valor;
+                    clase.nombre = simbolo.nombre;
+                    clase.ejecutar(miTemplate);
+
+                    simbolo.valor = resultado.valor;
+                    simbolo.inicializado = true;
+                    simbolo.tipo = resultado.tipo;
+                } else if (resultado.valor.getClass().getSimpleName().equalsIgnoreCase("arreglo") && resultado.simbolo == null) {
+                    Arreglo arreglo2 = (Arreglo) resultado.valor;
+
+                    simbolo.valor = arreglo2;
+                    simbolo.esArreglo = true;
+                    simbolo.inicializado = true;
+
+                } else {
+
+                    try {
+                        TipoAsignacion tipoAsig = new TipoAsignacion();
+                        resultado = tipoAsig.aplicarAsignacion(simbolo, raiz.get(1), resultado);
 
                         simbolo.valor = resultado.valor;
-                        simbolo.inicializado = true;
                         simbolo.tipo = resultado.tipo;
-                    } else if (resultado.valor.getClass().getSimpleName().equalsIgnoreCase("arreglo") && resultado.simbolo == null) {
-                        Arreglo arreglo2 = (Arreglo) resultado.valor;
-
-                        simbolo.valor = arreglo2;
-                        simbolo.esArreglo = true;
                         simbolo.inicializado = true;
-
-                    } else {
-
-                        try {
-                            TipoAsignacion tipoAsig = new TipoAsignacion();
-                            resultado = tipoAsig.aplicarAsignacion(simbolo, raiz.get(1), resultado);
-
-                            simbolo.valor = resultado.valor;
-                            simbolo.tipo = resultado.tipo;
-                            simbolo.inicializado = true;
-                            if (resultado.simbolo != null) {
-                                simbolo.esArreglo = resultado.simbolo.esArreglo;
-                            }
-                        } catch (Exception e) {
+                        if (resultado.simbolo != null) {
+                            simbolo.esArreglo = resultado.simbolo.esArreglo;
                         }
+                    } catch (Exception e) {
                     }
-                } else {
+                }
+                /*} else {
                     System.out.println("-=-=-=-=-=");
                     Resultado res = (Resultado) simbolo.valor;
                     res.valor = resultado.valor;
                     res.tipo = resultado.tipo;
-                }
+                }*/
 
                 return simbolo;
 
@@ -125,8 +125,8 @@ public class Asignacion extends Compilador {
             switch (acceso.nombre) {
                 case "accesoar":
                     nombre = acceso.valor;
-                    //aux.tabla = tabla;
-                    //tabla = tablaAux;
+                    aux.tabla = tabla;
+                    tabla = tablaAux;
                     simbolo = accesoAr(acceso, aux);
 
                     if (simbolo != null) {
@@ -139,34 +139,18 @@ public class Asignacion extends Compilador {
                                 break;
 
                             default:
-                                if (simbolo.vieneReferido) {
-                                    Resultado xres = (Resultado) simbolo.valor;
-                                    
-                                    if (!simbolo.esArreglo) {
-                                        try {
-                                            nivel++;
-                                            aux = (Clase) simbolo.valor;
-                                            tabla = aux.tabla;
-                                            sim = simbolo;
-                                        } catch (Exception e) {
-                                            nivel++;
-                                            sim = simbolo;
-                                        }
 
+                                if (!simbolo.esArreglo) {
+                                    try {
+                                        nivel++;
+                                        aux = (Clase) simbolo.valor;
+                                        tabla = aux.tabla;
+                                        sim = simbolo;
+                                    } catch (Exception e) {
+                                        nivel++;
+                                        sim = simbolo;
                                     }
-                                } else {
-                                    if (!simbolo.esArreglo) {
-                                        try {
-                                            nivel++;
-                                            aux = (Clase) simbolo.valor;
-                                            tabla = aux.tabla;
-                                            sim = simbolo;
-                                        } catch (Exception e) {
-                                            nivel++;
-                                            sim = simbolo;
-                                        }
 
-                                    }
                                 }
 
                                 break;
@@ -269,6 +253,8 @@ public class Asignacion extends Compilador {
                         Resultado res_obtenido = (Resultado) obtenido;
                         if (!esNulo(res_obtenido)) {
                             Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
+                            nuevoSim.valor = res_obtenido.valor;
+                            nuevoSim.tipo = res_obtenido.tipo;
                             nuevoSim.inicializado = true;
                             nuevoSim.vieneReferido = true;
                             return nuevoSim;
