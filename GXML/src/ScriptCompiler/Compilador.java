@@ -14,8 +14,10 @@ import ScriptCompiler.Sentencias.Declaracion;
 import ScriptCompiler.Sentencias.Retornar;
 import ScriptCompiler.Sentencias.Seleccion;
 import ScriptCompiler.Sentencias.Si;
+import WRAPERS.VentanaGenerica;
 import java.util.ArrayList;
 import java.util.Stack;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,13 +26,15 @@ import javax.swing.JOptionPane;
  */
 public abstract class Compilador {
 
+    public static ArrayList<VentanaGenerica> listaVentanas ;
+    
     public static ArrayList<Archivo> archivos;
     public String archivoActual;
     public static ArrayList<Simbolo> reporteSimbolos;
     public static ReporteError reporteError_CJS; // este REPORTE es para CJS
 
     //--------------------------------------------------------------------------
-    public Template miTemplate;
+    public static Template miTemplate;
 
     public static Clase claseActual;
     public static Stack<Clase> pilaClases;
@@ -303,6 +307,21 @@ public abstract class Compilador {
                 }
             }
 
+        }
+    }
+    
+    public Nodo crearNodo(String nombre,String valor,int linea,int columna, int index){
+        Nodo nuevo = new Nodo(nombre,valor,linea,columna,index);
+        return nuevo;
+    }
+    
+    public boolean esNumero(String nm)
+    {   
+        try {
+            Integer.valueOf(nm);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

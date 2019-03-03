@@ -134,7 +134,11 @@ public class Arreglo {
                 if (esClase(resultado.valor)) {
                     Clase clase = (Clase) resultado.valor;
                     clase.nombre = "";
-                    clase.ejecutar(miTemplate);
+                    if(!clase.Inicializada)
+                    {
+                        clase.ejecutar(miTemplate);
+                    }
+                    
                 }
 
                 if (!hash.containsKey(resultado.tipo)) {

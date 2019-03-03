@@ -1,0 +1,42 @@
+<lista>
+    <principal>
+         <CTNombre>"Julio Arango"</CTNombre>
+         <CDPaisaje1>"Playa"</CDPaisaje1>
+         <CDPaisaje2>"Luna"</CDPaisaje2>
+         <CDPaisaje3>"Selva"</CDPaisaje3>
+         <CDPaisaje4>"Desierto"</CDPaisaje4>
+         <CDPaisaje5>"Oceano"</CDPaisaje5>
+    </principal>
+    <principal>
+          <CTNombre>"Julia Sierra"</CTNombre>
+         <CDPaisaje1>"Playa"</CDPaisaje1>
+         <CDPaisaje2>"Luna"</CDPaisaje2>
+         <CDPaisaje3>"Selva"</CDPaisaje3>
+         <CDPaisaje4>"Desierto"</CDPaisaje4>
+         <CDPaisaje5>"Oceano"</CDPaisaje5>
+    </principal>
+    <principal>
+         <CTNombre>"Alba Chinchilla"</CTNombre>
+         <CDPaisaje1>"Playa"</CDPaisaje1>
+         <CDPaisaje2>"Luna"</CDPaisaje2>
+         <CDPaisaje3>"Luna"</CDPaisaje3>
+         <CDPaisaje4>"Desierto"</CDPaisaje4>
+         <CDPaisaje5>"Playa"</CDPaisaje5>
+    </principal>
+    <principal>
+         <CTNombre>"Gustavo Gamboa"</CTNombre>
+         <CDPaisaje1>"Playa"</CDPaisaje1>
+         <CDPaisaje2>"Luna"</CDPaisaje2>
+         <CDPaisaje3>"Luna"</CDPaisaje3>
+         <CDPaisaje4>"Desierto"</CDPaisaje4>
+         <CDPaisaje5>"Playa"</CDPaisaje5>
+    </principal>
+    <principal>
+         <CTNombre>"Juan Carlos Alberto"</CTNombre>
+         <CDPaisaje1>"Playa"</CDPaisaje1>
+         <CDPaisaje2>"Luna"</CDPaisaje2>
+         <CDPaisaje3>"Selva"</CDPaisaje3>
+         <CDPaisaje4>"Desierto"</CDPaisaje4>
+         <CDPaisaje5>"Oceano"</CDPaisaje5>
+    </principal>
+</lista>

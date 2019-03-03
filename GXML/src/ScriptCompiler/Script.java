@@ -27,11 +27,15 @@ public class Script extends Compilador {
 
     ArrayList<Clase> lista_Clases = new ArrayList<>();
 
-    public Script(File[] files, String archivoActual) {
+    
+
+    
+    public Script(File[] files, String archivoActual,Template template) {
         //EL ARCHIVO ACTUAL ES MI PRINCIPAL
-        
+        miTemplate = template;
         
         archivos = new ArrayList();
+        listaVentanas = new ArrayList<>();
         reporteError_CJS = new ReporteError();
         reporteSimbolos = new ArrayList();
         this.archivoActual = archivoActual;
@@ -84,7 +88,6 @@ public class Script extends Compilador {
         
     }
 
-    
     private Clase getClasePrincipal() {
         ArrayList<Clase> clases;
         Archivo archivo = getArchivoPrincipal();

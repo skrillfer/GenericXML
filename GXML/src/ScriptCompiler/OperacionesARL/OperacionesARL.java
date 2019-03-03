@@ -9,6 +9,7 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.Arreglo;
 import ScriptCompiler.Clase;
+import static ScriptCompiler.Compilador.miTemplate;
 import ScriptCompiler.Metodo;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.Script;
@@ -1390,6 +1391,24 @@ public class OperacionesARL {
                         if (llamada.res_nativas != null) {
                             retorno = llamada.res_nativas;
                         }
+                        if(llamada.ComponenteRes !=null)
+                        {
+                            retorno = llamada.ComponenteRes;
+                        }
+                    }
+                    
+                    if(!verNulabilidad(retorno))
+                    {
+                        if (esClase(retorno.valor)) {
+                            Clase clase = (Clase) retorno.valor;
+                            
+                            if(!clase.Inicializada)
+                            {
+                                clase.nombre = "";
+                                clase.ejecutar(miTemplate);
+                            }
+                            
+                        }
                     }
 
                     break;
@@ -1541,4 +1560,12 @@ public class OperacionesARL {
         return suma;
     }
 
+    public boolean esClase(Object valor) {
+        try {
+            Clase ar = (Clase) valor;
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 }

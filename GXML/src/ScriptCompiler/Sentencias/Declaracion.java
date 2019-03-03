@@ -169,8 +169,12 @@ public class Declaracion extends Compilador {
 
                         if (esClase(resultado.valor)) {
                             Clase clase = (Clase) resultado.valor;
-                            clase.nombre = nombre;
-                            clase.ejecutar(miTemplate);
+                            if(!clase.Inicializada)
+                            {
+                                clase.nombre = nombre;
+                                clase.ejecutar(miTemplate);
+                            }
+                            
                         }
 
                     }

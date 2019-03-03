@@ -29,8 +29,9 @@ public class Template {
         File padre = new File(absolutePath);
         File file = new File(padre.getParent());
         File files[] = file.listFiles();
-        Script graphik = new Script(files, nombreArchivoActual);
+        Script graphik = new Script(files, nombreArchivoActual,this);
 
         
     }
+    
 }

@@ -43,7 +43,7 @@ public class Ejecutor {
         File padre = new File("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script/pruebitas.txt");
         File file = new File(padre.getParent());
         File files[] = file.listFiles();
-        Script graphik = new Script(files, "pruebitas.txt");
+        //Script graphik = new Script(files, "pruebitas.txt");
 
         
         /*

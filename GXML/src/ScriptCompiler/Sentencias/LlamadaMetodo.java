@@ -14,6 +14,7 @@ import ScriptCompiler.Metodo;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.TablaSimbolo;
+import WRAPERS.VentanaGenerica;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -22,8 +23,10 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class LlamadaMetodo extends Compilador {
-
+    public Resultado ComponenteRes=null;
+    
     public Resultado res_nativas = null;
+    
     private Nodo raiz;
     private Resultado actualResultado;
 
@@ -196,7 +199,133 @@ public class LlamadaMetodo extends Compilador {
 
                 }
             }
+        } else {
+            //Creacion de componentes GRAFICOS
+            switch (raiz.valor.toLowerCase()) {
+                case "crearventana":
+                    try {
+                        crearVentana();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "crearVentana error:" + e.getMessage());
+                    }
+
+                    break;
+            }
         }
+    }
+
+    /*  ====    ====            CREAR VENTANA            ====    ====    */
+    public void crearVentana() {
+        String[] stilos = {"color", "ancho", "alto", "id"};
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametros(raiz);
+
+        VentanaGenerica nuevaVentana = new VentanaGenerica(raiz);
+
+        /*----------------###############################---------------------*/
+        Resultado color = null, alto = null, ancho = null, id = null;
+        try {
+            color = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            alto = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            ancho = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            id = parametros.get(3);
+        } catch (Exception e) {
+        }
+        /*----------------###############################---------------------*/
+
+
+ /*Se crea el Arbol que corresponde a cntObj*/
+        Nodo cntobj = crearNodo("cntobj", "", raiz.linea, raiz.columna, raiz.index);
+        Nodo atributos = crearNodo("atributos", "", raiz.linea, raiz.columna, raiz.index);
+
+        for (int x = 0; x < raiz.get(0).size(); x++) {
+            Nodo hijo = raiz.get(0).get(x);
+
+            Nodo Atributo = crearNodo("declaracionvarG", "", raiz.linea, raiz.columna, raiz.index);
+
+            Nodo Lt_id = crearNodo("list_id", "", raiz.linea, raiz.columna, raiz.index);
+            Lt_id.add(crearNodo("id", stilos[x], raiz.linea, raiz.columna, raiz.index));
+
+            Nodo Asign = crearNodo("asign", "", raiz.linea, raiz.columna, raiz.index);
+            Asign.add(hijo);
+
+            Atributo.add(Lt_id);
+            Atributo.add(Asign);
+
+            atributos.add(Atributo);
+
+            if (x == 3) {
+                break;
+            }
+        }
+        cntobj.add(atributos);
+        /*
+        
+        RESULT = parser.crearNodo("declaracionvarG","",m.getLinea(),m.getColumna());
+                    
+        Nodo Lt_id = parser.crearNodo("list_id","",m.getLinea(),m.getColumna());
+        Lt_id.add(parser.crearNodo("id",m.getCadena(),m.getLinea(),m.getColumna()));
+
+        Nodo Asign = parser.crearNodo("asign","",h.linea,h.columna);
+        Asign.add(h);
+
+        RESULT.add(Lt_id);
+        RESULT.add(Asign); 
+         */
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.nombre = "Ventana";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada=true;
+            }
+
+            JOptionPane.showMessageDialog(null, "PARA!!!!");
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(id)) {
+                if (id.tipo.equals("String")) {
+                    nuevaVentana.setId((String) id.valor);
+                } else {
+                    nuevaVentana.setId("");
+                }
+            } else {
+                nuevaVentana.setId("");
+            }
+
+            if (!esNulo(color)) {
+                nuevaVentana.setColor(color.valor.toString());
+            }
+
+            if (!esNulo(alto)) {
+                nuevaVentana.setAlto(alto.valor.toString());
+            }
+
+            if (!esNulo(ancho)) {
+                nuevaVentana.setAlto(ancho.valor.toString());
+            }
+            /*---------------------------------------------------------------------*/
+            
+            listaVentanas.add(nuevaVentana);//Pensar bien si si o no
+        }
+        
     }
 
     public boolean esArreglo(Object valor) {

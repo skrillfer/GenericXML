@@ -16,6 +16,8 @@ import java.util.Stack;
  * @author fernando
  */
 public class Clase {
+    public boolean Inicializada = false;
+    
     public Stack<TablaSimbolo> pilaTablas;
          //--------------------------------------
     public String archivo;
