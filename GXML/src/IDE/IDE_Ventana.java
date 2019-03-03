@@ -332,7 +332,7 @@ public class IDE_Ventana extends JFrame {
         try{
             DefaultMutableTreeNode nodo=(DefaultMutableTreeNode)arbol.getLastSelectedPathComponent();
             if(nodo==null){
-                return;
+                return; 
             }
             if(nodo.getLevel()==0){
                 System.out.println("Es el nodo raiz");
@@ -342,6 +342,7 @@ public class IDE_Ventana extends JFrame {
                 String [] separado=valor.split("\\.");
                 if(separado.length==2){
                      //aca tengo que agregar la nueva tab a la interfaz
+                     //AQUI FUE DONDE HICE CAMBIO
                     String rutanueva=nodo.getUserObject().toString();
                     File archivo=new File(rutanueva);
                     FileReader fr = new FileReader (archivo);
