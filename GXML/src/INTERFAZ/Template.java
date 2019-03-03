@@ -7,6 +7,9 @@ package INTERFAZ;
 
 import Errores.ReporteError;
 import Errores.ReporteSimbolo;
+import ScriptCompiler.Script;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,4 +20,17 @@ public class Template {
     public static ReporteError reporteError_CJS = new ReporteError(); // este REPORTE es para CJS
     public static ReporteSimbolo reporteSimbolos_CJS = new ReporteSimbolo(); // este REPORTE es para CJS
     //**************************************************************************
+    
+    public void ParsearArchivoFs(String absolutePath , String nombreArchivoActual)
+    {
+        
+        Script.archivos = new ArrayList();
+
+        File padre = new File(absolutePath);
+        File file = new File(padre.getParent());
+        File files[] = file.listFiles();
+        Script graphik = new Script(files, nombreArchivoActual);
+
+        
+    }
 }

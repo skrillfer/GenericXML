@@ -29,7 +29,7 @@ public class GXML {
 
         
         Reproductor reproductor = new Reproductor(new Nodo());
-        reproductor.setRuta("/home/fernando/Vídeos/Betrayed.mp3");
+        reproductor.setRuta("/home/fernando/Vídeos/Tutorial de Modelo OSI.mp4");
 
         JFrame frame = new JFrame("Capture");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -8,9 +8,11 @@ package IDE;
 import IDE.Estructuras.Pestaña;
 import IDE.Estructuras.Pintar;
 import IDE.Estructuras.jtree;
+import INTERFAZ.Template;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -58,6 +61,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  */
 public class IDE_Ventana extends JFrame {
 
+    public static JTextArea CONSOLA = new JTextArea();
     JMenu jMenu3;
     JScrollPane jScrollPane1;
     JTree jTree1;
@@ -67,22 +71,27 @@ public class IDE_Ventana extends JFrame {
     JButton jButton2;
     JMenuBar jMenuBar1;
     JMenu jMenu1;
-    JMenuItem   jMenuItem5;
-    JMenuItem   jMenuItem4;
-    JMenuItem   jMenuItem3;
-    JMenuItem   jMenuItem2;
-    JMenuItem   jMenuItem1;
-      
-    JMenu   jMenu2;
-    JMenuItem   jMenuItem6;
-    JMenuItem   jMenuItem7;
-    JMenuItem   jMenuItem8;
-    JMenuItem   jMenuItem9;
-    JMenuItem   jMenuItem10;
-    
-    
-    
+    JMenuItem jMenuItem5;
+    JMenuItem jMenuItem4;
+    JMenuItem jMenuItem3;
+    JMenuItem jMenuItem2;
+    JMenuItem jMenuItem1;
+    JMenuItem jMenuItem1_1;
 
+    JMenu jMenu2;
+    JMenuItem jMenuItem6;
+    JMenuItem jMenuItem7;
+    JMenuItem jMenuItem8;
+    JMenuItem jMenuItem9;
+    JMenuItem jMenuItem10;
+
+    /*  Codigo de GENERIC
+    
+     */
+    Template template = new Template();
+    /*
+        Codigo de GENERIC
+     */
     public static ArrayList<JTextArea> listAreas = new ArrayList<JTextArea>();
     public static Pestaña nueva;
     public static boolean control_ambientes = false;
@@ -106,7 +115,7 @@ public class IDE_Ventana extends JFrame {
         agregar_Tabla();
         agregar_Errores();
         agregarPesta();
-        
+
         this.setSize(1350, 700);
         this.setLocationRelativeTo(null);
     }
@@ -134,6 +143,9 @@ public class IDE_Ventana extends JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+
+        jMenuItem1_1 = new javax.swing.JMenuItem();
+
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -160,6 +172,9 @@ public class IDE_Ventana extends JFrame {
         });
 
         jButton2.setText("COMPILAR");
+        jButton2.setFont(new Font("Arial", Font.BOLD, 18));
+        jButton2.setBackground(Color.BLUE);
+        jButton2.setForeground(Color.WHITE);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -199,6 +214,14 @@ public class IDE_Ventana extends JFrame {
             }
         });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem1_1.setText("Cerrar Todas las Tab");
+        jMenuItem1_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1_1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1_1);
 
         jMenuItem1.setText("Salir");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -294,109 +317,128 @@ public class IDE_Ventana extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-     public void GenerarPesta(String entrada,String nombre,String path){
-        try{
-            if((this.jTabbedPane1.getTabCount()-1)==this.jTabbedPane1.getSelectedIndex()){
-                nueva=new Pestaña(path);
+    public void GenerarPesta(String entrada, String nombre, String path) {
+        try {
+            if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
+                nueva = new Pestaña(path);
                 nueva.setContenido(entrada);
                 //x,y,ancho,alto
                 nueva.setName(nombre);
-                this.jTabbedPane1.add(nueva,nombre,this.jTabbedPane1.getTabCount());
-                this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount()-1);
+                this.jTabbedPane1.addTab(nombre, new ImageIcon("Icons/tag.png"), nueva, path);
+                //this.jTabbedPane1.//.setToolTipText(path);
+
+                this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount() - 1);
                 contador_pesta++;
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "O4currio un error " +e.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O4currio un error " + e.toString());
         }
     }
+
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             JFrame parentFrame = new JFrame();
             JFileChooser fileChooser = new JFileChooser("ruta");
-            fileChooser.setDialogTitle("Specify a file to save");   
-            int userSelection = fileChooser.showSaveDialog(parentFrame); 
+            fileChooser.setDialogTitle("Specify a file to save");
+            int userSelection = fileChooser.showSaveDialog(parentFrame);
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
-                if(Crear_Archivo(fileToSave.getAbsolutePath())){
-                    GenerarPesta("",fileToSave.getName(),fileToSave.getAbsolutePath());
+                if (Crear_Archivo(fileToSave.getAbsolutePath())) {
+
+                    GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath());
                     jTreeFiles.init();
                 }
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "O5currio un error " +e.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O5currio un error " + e.toString());
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
-    
+
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
         // TODO add your handling code here:
-        try{
-            DefaultMutableTreeNode nodo=(DefaultMutableTreeNode)arbol.getLastSelectedPathComponent();
-            if(nodo==null){
-                return; 
+        try {
+            DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
+            if (nodo == null) {
+                return;
             }
-            if(nodo.getLevel()==0){
+            if (nodo.getLevel() == 0) {
                 System.out.println("Es el nodo raiz");
-            }else{
+            } else {
                 System.out.println(nodo.getUserObject().toString());
-                String valor=nodo.getUserObject().toString();
-                String [] separado=valor.split("\\.");
-                if(separado.length==2){
-                     //aca tengo que agregar la nueva tab a la interfaz
-                     //AQUI FUE DONDE HICE CAMBIO
-                    String rutanueva=nodo.getUserObject().toString();
-                    File archivo=new File(rutanueva);
-                    FileReader fr = new FileReader (archivo);
+                String valor = nodo.getUserObject().toString();
+                String[] separado = valor.split("\\.");
+                if (separado.length == 2) {
+                    //aca tengo que agregar la nueva tab a la interfaz
+                    //AQUI FUE DONDE HICE CAMBIO
+                    String rutanueva = nodo.getUserObject().toString();
+                    File archivo = new File(rutanueva);
+                    FileReader fr = new FileReader(archivo);
                     BufferedReader br = new BufferedReader(fr);
-                    String completo="";
-                    String linea ="";
-                    while((linea=br.readLine())!=null){
-                        completo+="\n"+linea;
+                    String completo = "";
+                    String linea = "";
+                    while ((linea = br.readLine()) != null) {
+                        completo += "\n" + linea;
                     }
-                    GenerarPesta(completo,valor,rutanueva);
-                }else{
+                    GenerarPesta(completo, archivo.getName(), rutanueva);
+                } else {
                     System.out.println("Es una carpeta");
                 }
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "O6currio un error " +e.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O6currio un error " + e.toString());
         }
     }//GEN-LAST:event_jTree1ValueChanged
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        try{
-            if(contador_pesta>0){
+        try {
+            if (contador_pesta > 0) {
                 this.jTabbedPane1.remove(this.jTabbedPane1.getSelectedIndex());
                 contador_pesta--;
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "No hay pestañas para cerrar");
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "O7currio un error " +e.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O7currio un error " + e.toString());
         }
-        
+
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    //Metodo que cerra todos los tabs
+    private void jMenuItem1_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (contador_pesta > 0) {
+                this.jTabbedPane1.removeAll();
+                contador_pesta = 0;
+            } else {
+                JOptionPane.showMessageDialog(null, "No hay pestañas para cerrar");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O7currio un error " + e.toString());
+        }
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        try{
-            String choosertitle="";
-            JFileChooser chooser = new JFileChooser(); 
+        try {
+            String choosertitle = "";
+            JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new java.io.File("ruta"));
             chooser.setDialogTitle(choosertitle);
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.setAcceptAllFileFilterUsed(false);    
-            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
-                System.out.println("getCurrentDirectory(): " 
-                +  chooser.getCurrentDirectory());
-                System.out.println("getSelectedFile() : " 
-                +  chooser.getSelectedFile());
-            }else{
+            chooser.setAcceptAllFileFilterUsed(false);
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                System.out.println("getCurrentDirectory(): "
+                        + chooser.getCurrentDirectory());
+                System.out.println("getSelectedFile() : "
+                        + chooser.getSelectedFile());
+            } else {
                 System.out.println("No Selection ");
             }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "O8currio un error " +e.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O8currio un error " + e.toString());
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -404,37 +446,40 @@ public class IDE_Ventana extends JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-    public void EscribirArchivo(String nombre, String contenido){
+
+    public void EscribirArchivo(String nombre, String contenido) {
         FileWriter fichero = null;
         PrintWriter pw = null;
-        try{
+        try {
             fichero = new FileWriter(nombre);
             pw = new PrintWriter(fichero);
             pw.println(contenido);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-           try {
-           if (null != fichero)
-              fichero.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
-           }
+            try {
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
     }
+
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        if(contador_pesta>0){
+        if (contador_pesta > 0) {
             System.out.println(this.jTabbedPane1.getSelectedIndex());
-            Pestaña pesta=(Pestaña)this.jTabbedPane1.getComponentAt(this.jTabbedPane1.getSelectedIndex());
-            for(Component cmp2:pesta.getComponents()){
-                if(cmp2.getName()=="scroll"){
-                    RTextScrollPane scroll=(RTextScrollPane)cmp2;
+            Pestaña pesta = (Pestaña) this.jTabbedPane1.getComponentAt(this.jTabbedPane1.getSelectedIndex());
+            for (Component cmp2 : pesta.getComponents()) {
+                if (cmp2.getName() == "scroll") {
+                    RTextScrollPane scroll = (RTextScrollPane) cmp2;
                     System.out.println(scroll.getTextArea().getText());
-                    EscribirArchivo(pesta.path,scroll.getTextArea().getText());
+                    EscribirArchivo(pesta.path, scroll.getTextArea().getText());
                     JOptionPane.showMessageDialog(null, "Se guardo con exito la pestaña");
                 }
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No hay pestañas para guardar");
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -448,40 +493,53 @@ public class IDE_Ventana extends JFrame {
         // TODO add your handling code here:
         System.out.println("BOTON TERMINAR TODO");
     }//GEN-LAST:event_jMenuItem8ActionPerformed
-    
-    public static boolean existe_maestro(String path){
-        boolean respuesta=false;
+
+    public static boolean existe_maestro(String path) {
+        boolean respuesta = false;
         File fichero = new File(path);
-        if (fichero.exists()){
-            respuesta=true;
-        }else{
-            respuesta=false;
+        if (fichero.exists()) {
+            respuesta = true;
+        } else {
+            respuesta = false;
         }
         return respuesta;
     }
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         System.out.println("BOTON COMPILAR");
-        
-        if(control_ambientes==true){
-            if((this.jTabbedPane1.getTabCount()-1)==this.jTabbedPane1.getSelectedIndex()){
-                nueva=new Pestaña(listAreas.get(0).getText());
+
+        if (control_ambientes == true) {
+            if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
+                nueva = new Pestaña(listAreas.get(0).getText());
                 nueva.setContenido(listAreas.get(1).getText());
                 //x,y,ancho,alto
-                this.jTabbedPane1.add(nueva,"",this.jTabbedPane1.getTabCount());
-                this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount()-1);
+                this.jTabbedPane1.add(nueva, "", this.jTabbedPane1.getTabCount());
+                this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount() - 1);
                 contador_pesta++;
             }
         }
-        if(contador_pesta>0){
+        if (contador_pesta > 0) {
             System.out.println(this.jTabbedPane1.getSelectedIndex());
-            Pestaña pesta=(Pestaña)this.jTabbedPane1.getComponentAt(this.jTabbedPane1.getSelectedIndex());
-            for(Component cmp2:pesta.getComponents()){
-                if(cmp2.getName()=="scroll"){
-                    RTextScrollPane scroll=(RTextScrollPane)cmp2;
+            Pestaña pesta = (Pestaña) this.jTabbedPane1.getComponentAt(this.jTabbedPane1.getSelectedIndex());
+            for (Component cmp2 : pesta.getComponents()) {
+                if ("scroll".equals(cmp2.getName())) {
+                    RTextScrollPane scroll = (RTextScrollPane) cmp2;
                     System.out.println(scroll.getTextArea().getText());
-                    EscribirArchivo(pesta.path,scroll.getTextArea().getText());
-                    
+                    EscribirArchivo(pesta.path, scroll.getTextArea().getText());
+
+                    String[] separado = pesta.getName().split("\\.");
+                    if (separado.length > 1) {
+                        if (separado[1].equals("gxml")) {
+                            JOptionPane.showMessageDialog(null, "has pedido compilar:" + pesta.getName());
+                            
+                        } else if (separado[1].equals("fs")) {
+                            JOptionPane.showMessageDialog(null, "has pedido compilar:" + pesta.getName());
+                            template.ParsearArchivoFs(pesta.path, pesta.getName());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "El archivo " + pesta.getName() + " que intentas compilar NO ES EXTENSION .fs o .gxml", "Error de Compilacion", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
                     //AQUI!!!!!!!!!!!
                     /*Ejecucion_D.Interpretacion ttt = new Ejecucion_D.Interpretacion();
                     try {
@@ -490,37 +548,39 @@ public class IDE_Ventana extends JFrame {
                     } catch (IOException ex) {
                         Logger.getLogger(IDE_Ventana.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    */
+                     */
                 }
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No hay pestañas para guardar");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-    public void Lectura(String direccion){
-    
-    
+
+    public void Lectura(String direccion) {
+
     }
-    public void GenerarNueva(String entrada){
-        if((this.jTabbedPane1.getTabCount()-1)==this.jTabbedPane1.getSelectedIndex()){
-            nueva=new Pestaña(entrada);
+
+    public void GenerarNueva(String entrada) {
+        if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
+            nueva = new Pestaña(entrada);
             nueva.setContenido(entrada);
             //x,y,ancho,alto
-            this.jTabbedPane1.add(nueva,"",this.jTabbedPane1.getTabCount());
-            this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount()-1);
+            this.jTabbedPane1.add(nueva, "", this.jTabbedPane1.getTabCount());
+            this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount() - 1);
             contador_pesta++;
         }
     }
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         pintar.listapintar.clear();
-        JPanel panel=(JPanel)this.jTabbedPane2.getComponentAt(0);
-        for(Component cmp2:panel.getComponents()){
-            if(cmp2.getName()=="scroll"){
+        JPanel panel = (JPanel) this.jTabbedPane2.getComponentAt(0);
+        for (Component cmp2 : panel.getComponents()) {
+            if (cmp2.getName() == "scroll") {
                 try {
-                    if(true){
-                    
-                    }else{
+                    if (true) {
+
+                    } else {
                         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
                         FileNameExtensionFilter filter = new FileNameExtensionFilter("XLS files", "xls");
                         jfc.setFileFilter(filter);
@@ -528,24 +588,24 @@ public class IDE_Ventana extends JFrame {
                         // int returnValue = jfc.showSaveDialog(null);
                         if (returnValue == JFileChooser.APPROVE_OPTION) {
                             File selectedFile = jfc.getSelectedFile();
-                            String path=selectedFile.getAbsolutePath().toString();
+                            String path = selectedFile.getAbsolutePath().toString();
                             System.out.println(selectedFile.getAbsolutePath());
                             Lectura(path);
-                            JOptionPane.showMessageDialog(null,"Archivo Cargado a Memoria","Mensaje",JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Archivo Cargado a Memoria", "Mensaje", JOptionPane.WARNING_MESSAGE);
                         }
                     }
-                    RTextScrollPane scroll=(RTextScrollPane)cmp2;
+                    RTextScrollPane scroll = (RTextScrollPane) cmp2;
                     //reporteError = new Reporte_ErroresDRACO();
-                    try{
+                    try {
                         JFrame parentFrame = new JFrame();
                         JFileChooser fileChooser = new JFileChooser("ruta");
-                        fileChooser.setDialogTitle("Specify a file to save");   
-                        int userSelection = fileChooser.showSaveDialog(parentFrame); 
+                        fileChooser.setDialogTitle("Specify a file to save");
+                        int userSelection = fileChooser.showSaveDialog(parentFrame);
                         if (userSelection == JFileChooser.APPROVE_OPTION) {
                             File fileToSave = fileChooser.getSelectedFile();
-                            EscribirArchivo(fileToSave.getAbsolutePath(),scroll.getTextArea().getText());
+                            EscribirArchivo(fileToSave.getAbsolutePath(), scroll.getTextArea().getText());
                             File file = new File(fileToSave.getAbsolutePath());
-                            
+
                             //AQUI!!!!!!!!!!!!!!!!!!!!!!!!!1
                             /*
                             EjecutorDraco draco = new EjecutorDraco(file,fileToSave.getAbsolutePath());   
@@ -553,10 +613,10 @@ public class IDE_Ventana extends JFrame {
                             reporte.generarHtml();
                             reporteError.generarHtml("reporte","DRACO");
                             
-                            */
+                             */
                         }
-                    }catch(Exception e){
-                        JOptionPane.showMessageDialog(null, "O9currio un error " +e.toString());
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "O9currio un error " + e.toString());
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(IDE_Ventana.class.getName()).log(Level.SEVERE, null, ex);
@@ -566,52 +626,51 @@ public class IDE_Ventana extends JFrame {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-    
-    public static boolean existe(String path){
-        boolean respuesta=false;
+
+    public static boolean existe(String path) {
+        boolean respuesta = false;
         File fichero = new File(path);
-        if (fichero.exists()){
-            respuesta=true;
-        }else{
-            respuesta=false;
+        if (fichero.exists()) {
+            respuesta = true;
+        } else {
+            respuesta = false;
         }
         return respuesta;
     }
-    
-    public static void cargar_archivos_BD(){
+
+    public static void cargar_archivos_BD() {
         //aqui vamos a hacer la ejecucion
         try {
-            
-            for(int i=0;i<listAreas.size();i++){
+
+            for (int i = 0; i < listAreas.size(); i++) {
                 //System.out.println(inicio_maestro.getHijos().get(i).getPath());
-                FileReader lectura=new FileReader(listAreas.get(0).getText());
+                FileReader lectura = new FileReader(listAreas.get(0).getText());
                 //AQUI!!!!!!!!!!!!!!
                 //EjecutorDraco nuevo;
-                
+
                 System.out.println("Archivos");
             }
             //System.out.println(inicio_maestro.getNombre());
-            
+
         } catch (Exception e) {
-            System.out.println("error metodo cargar_archivos_BD"+ e.getMessage());
+            System.out.println("error metodo cargar_archivos_BD" + e.getMessage());
         }
     }
-    
-    
+
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jMenuItem9ActionPerformed
-    
+
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        variableDebugger=true;
+        variableDebugger = true;
         pintar.listapintar.clear();
-        JPanel panel=(JPanel)this.jTabbedPane2.getComponentAt(0);
-        for(Component cmp2:panel.getComponents()){
-            if(cmp2.getName()=="scroll"){
+        JPanel panel = (JPanel) this.jTabbedPane2.getComponentAt(0);
+        for (Component cmp2 : panel.getComponents()) {
+            if (cmp2.getName() == "scroll") {
                 try {
-                    if(true){
-                    }else{
+                    if (true) {
+                    } else {
                         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
                         FileNameExtensionFilter filter = new FileNameExtensionFilter("", "");
                         jfc.setFileFilter(filter);
@@ -619,33 +678,33 @@ public class IDE_Ventana extends JFrame {
                         // int returnValue = jfc.showSaveDialog(null);
                         if (returnValue == JFileChooser.APPROVE_OPTION) {
                             File selectedFile = jfc.getSelectedFile();
-                            String path=selectedFile.getAbsolutePath().toString();
+                            String path = selectedFile.getAbsolutePath().toString();
                             System.out.println(selectedFile.getAbsolutePath());
                             Lectura(path);
-                            JOptionPane.showMessageDialog(null,"Archivo Cargado a Memoria","Mensaje",JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Archivo Cargado a Memoria", "Mensaje", JOptionPane.WARNING_MESSAGE);
                         }
                     }
-                    RTextScrollPane scroll=(RTextScrollPane)cmp2;
+                    RTextScrollPane scroll = (RTextScrollPane) cmp2;
                     //reporteError = new Reporte_ErroresDRACO();
-                    try{
+                    try {
                         JFrame parentFrame = new JFrame();
                         JFileChooser fileChooser = new JFileChooser("ruta");
-                        fileChooser.setDialogTitle("Specify a file to save");   
-                        int userSelection = fileChooser.showSaveDialog(parentFrame); 
+                        fileChooser.setDialogTitle("Specify a file to save");
+                        int userSelection = fileChooser.showSaveDialog(parentFrame);
                         if (userSelection == JFileChooser.APPROVE_OPTION) {
                             File fileToSave = fileChooser.getSelectedFile();
-                            EscribirArchivo(fileToSave.getAbsolutePath(),scroll.getTextArea().getText());
+                            EscribirArchivo(fileToSave.getAbsolutePath(), scroll.getTextArea().getText());
                             File file = new File(fileToSave.getAbsolutePath());
-                            
+
                             //AQUIIIIIIIIIIIIII
                             /*EjecutorDraco draco = new EjecutorDraco(file,fileToSave.getAbsolutePath());   
                             ReporteTablaSimbolo reporte=new ReporteTablaSimbolo();
                             reporte.generarHtml();
                             reporteError.generarHtml("reporte","DRACO");*/
                         }
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         System.out.println("aqui perros");
-                        JOptionPane.showMessageDialog(null, "O1currio un error " +e.toString());
+                        JOptionPane.showMessageDialog(null, "O1currio un error " + e.toString());
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(IDE_Ventana.class.getName()).log(Level.SEVERE, null, ex);
@@ -658,13 +717,14 @@ public class IDE_Ventana extends JFrame {
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
-        
-        pintar.agregarPoint(100,100,"#000000",50);
-        pintar.agregarQuadrate(200, 200,"#FA0000",100,100);
-        pintar.agregarOval(300, 200,"#FF0AA0",100,50);
-        pintar.agregarString(400, 400,"#AAAFFF","HOLA");
-        pintar.agregarLine(100,500,150,200,"#F44000",15);
+
+        pintar.agregarPoint(100, 100, "#000000", 50);
+        pintar.agregarQuadrate(200, 200, "#FA0000", 100, 100);
+        pintar.agregarOval(300, 200, "#FF0AA0", 100, 50);
+        pintar.agregarString(400, 400, "#AAAFFF", "HOLA");
+        pintar.agregarLine(100, 500, 150, 200, "#F44000", 15);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -700,27 +760,26 @@ public class IDE_Ventana extends JFrame {
             }
         });
     }
-    
-    
-    
-    public boolean Crear_Archivo(String ruta){
-        boolean respuesta=false;
-        try{
+
+    public boolean Crear_Archivo(String ruta) {
+        boolean respuesta = false;
+        try {
             File archivo = new File(ruta);
-            BufferedWriter bw=null;
-            if(archivo.exists()) {
+            BufferedWriter bw = null;
+            if (archivo.exists()) {
                 JOptionPane.showMessageDialog(null, "Ya existe un archivo con ese nombre");
-            }else {
+            } else {
                 bw = new BufferedWriter(new FileWriter(archivo));
                 bw.write("");
-                respuesta=true;
+                respuesta = true;
             }
             bw.close();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "O2currio un error " +e.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O2currio un error " + e.toString());
         }
         return respuesta;
     }
+
     public void agregar_Tabla() {
         JPanel panel_tabla = new JPanel();
         panel_tabla.setName("tabla");
@@ -760,19 +819,19 @@ public class IDE_Ventana extends JFrame {
         JPanel panel = new JPanel();
         panel.setName("consola");
         panel.setLayout(new BorderLayout());  //give your JPanel a BorderLayout
-        JTextArea text = new JTextArea();
-        text.setName("texto_consola");
-        listAreas.add(text);
-        JScrollPane scroll = new JScrollPane(text); //place the JTextArea in a scroll pane
+        //JTextArea text = new JTextArea();
+        //CONSOLA = text;
+
+        CONSOLA.setName("texto_consola");
+        listAreas.add(CONSOLA);
+        JScrollPane scroll = new JScrollPane(CONSOLA); //place the JTextArea in a scroll pane
         scroll.setName("scroll_consola");
         panel.add(scroll, BorderLayout.CENTER);
         this.jTabbedPane2.add(panel, "CONSOLA", 0);
         this.jTabbedPane2.setSelectedIndex(0);
 
     }
-    
-    
-    
+
     private MouseMotionListener getListener() {
         return new MouseMotionListener() {
 
@@ -780,10 +839,10 @@ public class IDE_Ventana extends JFrame {
             public void mouseMoved(MouseEvent e) {
 
                 int viewToModel = textArea.viewToModel(e.getPoint());
-                if(viewToModel != -1){
+                if (viewToModel != -1) {
                     try {
-                        lineaActual=(1+textArea.getLineOfOffset(viewToModel));
-                        System.out.println("line: "+(1+textArea.getLineOfOffset(viewToModel)));
+                        lineaActual = (1 + textArea.getLineOfOffset(viewToModel));
+                        System.out.println("line: " + (1 + textArea.getLineOfOffset(viewToModel)));
                     } catch (BadLocationException e1) {
                         e1.printStackTrace();
                     }
@@ -794,33 +853,35 @@ public class IDE_Ventana extends JFrame {
             public void mouseDragged(MouseEvent e) {
             }
 
-            
         };
     }
-    public static void agregar_puntos(int linea) throws IOException, BadLocationException{
+
+    public static void agregar_puntos(int linea) throws IOException, BadLocationException {
         /*Icon icon = new ImageIcon(ImageIO.read(Principal.class.getResource("/breakpoint.png")));
         GutterIconInfo info = gutter.addLineTrackingIcon(linea, icon);
         Debugger debug=new Debugger(linea,info);
         lista_Debugger.add(debug);*/
     }
-    public static void quitar_puntos(int linea){
+
+    public static void quitar_puntos(int linea) {
         /*gutter.removeTrackingIcon(buscar_Lista(linea).getInfo());
         eliminar_Lista(linea);*/
     }
-    public void agregarPesta(){
+
+    public void agregarPesta() {
         RTextScrollPane sp;
         System.out.println(this.jTabbedPane2.getSelectedIndex());
-        JPanel panel= new JPanel();
-        textArea= new RSyntaxTextArea(16,157);
-        textArea.setLocation(0,0);
+        JPanel panel = new JPanel();
+        textArea = new RSyntaxTextArea(16, 157);
+        textArea.setLocation(0, 0);
         textArea.addMouseMotionListener(getListener());
-        textArea.addMouseListener(new MouseAdapter(){
-         @Override
-            public void mouseClicked(MouseEvent e){
-                
-            if(e.getClickCount()==2){
-                System.out.println("hola perra");
-                /*if(buscar_Lista(lineaActual)!=null){
+        textArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if (e.getClickCount() == 2) {
+                    System.out.println("hola perra");
+                    /*if(buscar_Lista(lineaActual)!=null){
                 gutter.removeTrackingIcon(buscar_Lista(lineaActual).getInfo());
                 eliminar_Lista(lineaActual);
                 }else{
@@ -829,10 +890,10 @@ public class IDE_Ventana extends JFrame {
                 Debugger debug=new Debugger(lineaActual,info);
                 lista_Debugger.add(debug);
                 }*/
-            }
+                }
             }
         });
-        AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
+        AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
         atmf.putMapping("text/mi_lenguaje", "colores.colores_Draco");
         textArea.setSyntaxEditingStyle("text/mi_lenguaje");
         textArea.setName("textArea");
@@ -840,20 +901,20 @@ public class IDE_Ventana extends JFrame {
         RTextScrollPane sp1 = new RTextScrollPane(textArea);
         sp1.setFoldIndicatorEnabled(true);
         sp1.setIconRowHeaderEnabled(true);
-        
+
         gutter = sp1.getGutter();
         gutter.setLineNumberColor(Color.RED);
-        
+
         sp1.setName("scroll");
         sp1.setSize(10, 20);
         panel.add(BorderLayout.CENTER, sp1);
         panel.add(sp1);
-        this.jTabbedPane2.add(panel,"DASM",0);
+        this.jTabbedPane2.add(panel, "DASM", 0);
         this.jTabbedPane2.setSelectedIndex(0);
-        
+
         System.out.println("¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿");
     }
-    
+
     /*public static Debugger buscar_Lista(int valor){
         Debugger respuesta=null;
         for(int i=0;i<lista_Debugger.size();i++){
@@ -864,9 +925,7 @@ public class IDE_Ventana extends JFrame {
         }
         return respuesta;
     }*/
-    
-    
-    public static void eliminar_Lista(int valor){
+    public static void eliminar_Lista(int valor) {
         /*for(int i=0;i<lista_Debugger.size();i++){
             if(lista_Debugger.get(i).getLinea()==valor){
                 lista_Debugger.remove(i);
@@ -874,9 +933,10 @@ public class IDE_Ventana extends JFrame {
             }
         }*/
     }
-     private void changeStyleProgrammatically() {
-      // Change a few things here and there.
-        try{
+
+    private void changeStyleProgrammatically() {
+        // Change a few things here and there.
+        try {
             SyntaxScheme scheme = textArea.getSyntaxScheme();
             scheme.getStyle(Token.RESERVED_WORD).foreground = Color.BLUE;
             scheme.getStyle(Token.LITERAL_CHAR).foreground = Color.ORANGE;
@@ -885,8 +945,8 @@ public class IDE_Ventana extends JFrame {
             scheme.getStyle(Token.COMMENT_MULTILINE).foreground = Color.GRAY;
             scheme.getStyle(Token.COMMENT_EOL).foreground = Color.GRAY;
             textArea.revalidate();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "O3currio un error " +e.toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "O3currio un error " + e.toString());
         }
-   }
+    }
 }
