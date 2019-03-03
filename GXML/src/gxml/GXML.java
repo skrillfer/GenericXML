@@ -5,6 +5,7 @@
  */
 package gxml;
 
+import Estructuras.Nodo;
 import WRAPERS.Reproductor;
 import WRAPERS.VLCPlayer;
 import com.sun.jna.Native;
@@ -27,7 +28,7 @@ public class GXML {
     public static void main(String[] args) {
 
         
-        Reproductor reproductor = new Reproductor();
+        Reproductor reproductor = new Reproductor(new Nodo());
         reproductor.setRuta("/home/fernando/Vídeos/Betrayed.mp3");
 
         JFrame frame = new JFrame("Capture");
