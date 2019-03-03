@@ -130,13 +130,13 @@ public class Arreglo {
         for (Nodo hijo : val) {
             Resultado resultado = opL.ejecutar(hijo);
             if (!esNulo(resultado)) {
-                
+
                 if (esClase(resultado.valor)) {
                     Clase clase = (Clase) resultado.valor;
                     clase.nombre = "";
                     clase.ejecutar(miTemplate);
                 }
-                
+
                 if (!hash.containsKey(resultado.tipo)) {
                     type = resultado.tipo;
                     hash.put(resultado.tipo, resultado.tipo);
@@ -169,7 +169,7 @@ public class Arreglo {
             type = "";
         }
     }
-    
+
     public boolean esClase(Object valor) {
         try {
             Clase ar = (Clase) valor;
@@ -195,7 +195,7 @@ public class Arreglo {
     public boolean setValor(Nodo indice, Resultado dato) {
         Resultado res = opL.ejecutar(indice);
         if (res.tipo.equals("Integer")) {
-            int posicion = (Integer)res.valor;
+            int posicion = (Integer) res.valor;
 
             if (posicion <= (datos.size() - 1) && posicion >= 0) {
                 datos.set(posicion, dato);
@@ -222,8 +222,6 @@ public class Arreglo {
             return null;
         }
     }
-    
-
 
     public boolean esNulo(Resultado r) {
         if (r == null) {
@@ -401,6 +399,32 @@ public class Arreglo {
 
         return resultado;
     }
+
+    /*
+        Esta Funcion es aplicable cuando voy a setear un defecto en un JComboBox
+        Por tal razon lo busco y si existe entonces lo devuelvo
+     */
+    public boolean existeOpcion(String opcion) {
+        for (Object object : datos) {
+            try {
+                Resultado res = (Resultado) object;
+                switch (res.tipo) {
+                    case "String":
+                    case "Double":
+                    case "Integer":
+                    case "Boolean":
+                        if(opcion.equalsIgnoreCase(res.valor.toString()))
+                        {
+                            return true;
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+            }
+        }
+        return false;
+    }
+
 }
 
 class ListaGenerica {
@@ -481,5 +505,5 @@ class Item {
         //ascending order
         return StudentName2.compareTo(StudentName1);
     };
-    
+
 }
