@@ -263,6 +263,25 @@ public class LlamadaMetodo extends Compilador {
                         }
                         break;
 
+                    case "alclic":
+                        try {
+                            Clase clas = (Clase)actualResultado.valor;
+                            if(clas.Componente!=null)
+                            {
+                                Nodo LTExp = raiz.get(0);
+                                switch(clas.nombre.toLowerCase())
+                                {
+                                    case "boton":
+                                        proceder=false;
+                                        ((BotonGenerico)clas.Componente).setAlClick(LTExp.get(0));
+                                        break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "alclic error:" + e.getMessage());
+                        }
+                        break;
+
                 }
             }
         } else {
@@ -475,7 +494,7 @@ public class LlamadaMetodo extends Compilador {
 
         String[] stilos = {"fuente", "tam", "color", "x", "y", "referencia", "valor", "alto", "ancho"};
         proceder = false;
-        ArrayList<Resultado> parametros = getParametrosConRefencia(raiz,5);
+        ArrayList<Resultado> parametros = getParametrosConRefencia(raiz, 5);
 
         BotonGenerico nuevoBoton = new BotonGenerico(raiz);
         /*----------------###############################---------------------*/
@@ -543,9 +562,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.Inicializada = true;
             }
 
-            
             /*  al boton le voy a setear la tabla,global y template actual*/
-            
             nuevoBoton.setearCore(global, tabla, miTemplate);
             /*---------------------------------------------------------------------*/
             //(Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho) la referencia es una llamada a metodo

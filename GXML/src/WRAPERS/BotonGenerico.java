@@ -31,7 +31,8 @@ public class BotonGenerico extends JButton {
     /*
     Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho    
      */
-    public Object referencia=null;
+    public Object referencia =  null;
+    public Object click      = null;
     Nodo raiz;
 
     public BotonGenerico(Nodo raiz) {
@@ -52,11 +53,29 @@ public class BotonGenerico extends JButton {
                             opL.ejecutar(llamada);
                         }else
                         {
-                            Template.reporteError_CJS.agregar("Semtantico", raiz.linea, raiz.columna, "La refencia del boton no es una llamada :"+referencia.toString());
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La refencia del boton no es una llamada :"+referencia.toString());
                         }
                     }else
                     {
-                        Template.reporteError_CJS.agregar("Semtantico", raiz.linea, raiz.columna, "La refencia del boton es incorrecta:"+referencia.toString());
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La refencia del boton es incorrecta:"+referencia.toString());
+                    }
+                }
+                if(click!=null)
+                {
+                    if(click.getClass().getSimpleName().equalsIgnoreCase("nodo"))
+                    {
+                        Nodo llamada  = (Nodo)click;
+                        if(llamada.nombre.equalsIgnoreCase("acceso"))
+                        {
+                            opL = new OperacionesARL(global, tabla, miTemplate);
+                            opL.ejecutar(llamada);
+                        }else
+                        {
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El click del boton no es una llamada :"+click.toString());
+                        }
+                    }else
+                    {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El click del boton es incorrecta:"+click.toString());
                     }
                 }
             }
@@ -137,9 +156,17 @@ public class BotonGenerico extends JButton {
         try {
             this.referencia = referencia;
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ruta [" + referencia + "] en Boton " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Referecia [" + referencia.toString() + "] en Boton " + this.getName());
         }
-        updateUI();
+    }
+    
+    //Al clik
+    public void setAlClick(Object clik) {
+        try {
+            this.click = clik;
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear AlClic [" + clik.toString() + "] en Boton " + this.getName());
+        }
     }
 
     //Valor
