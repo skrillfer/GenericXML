@@ -143,7 +143,19 @@ public class Declaracion extends Compilador {
             if (ASIGN.size() > 0) {
                 //Se obtiene la expresion de asignacion y entonces se trata de obtener el resultado
                 Nodo EXP = ASIGN.get(0);
-                Resultado resultado = opL.ejecutar(EXP);
+                
+                Resultado resultado = null;
+                if(claseActual.Componente==null)
+                {
+                    resultado = opL.ejecutar(EXP);
+                }else
+                {
+                    if(!nombre.equals("referencia"))
+                    {
+                        resultado = opL.ejecutar(EXP);
+                    }
+                }
+                
 
                 if (!esNulo(resultado)) {
 

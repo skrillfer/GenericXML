@@ -5,7 +5,7 @@
 
 var Ven_Inicio = CrearVentana("#ff0000",500,500,"VentanaUno");
 
-var Cont1_Inicio = Ven_Inicio.CrearContenedor(400, 400, "#00FF00", falso, 20, 20);
+var Cont1_Inicio = Ven_Inicio.CrearContenedor(200, 400, "#00FF00", verdadero, 20, 20);
 
 
 
@@ -16,4 +16,15 @@ cont1_inicio.CrearCajaTexto(30, 150, "Arial", 14, "#000000", 70, 20, falso, fals
 ////////////////// Valores de Correo
 cont1_inicio.CrearTexto("Arial", 14, "#000000", 10, 50, falso, falso, "Correo");
 cont1_inicio.CrearCajaTexto(30, 150, "Arial", 14, "#000000", 70, 50, falso, falso, "Ingrese aqui su correo", "CTCorreo");
+
+
+
+/////////////////// Contenedor ContBtn
+var ContBtn_Inicio = Ven_Inicio.CrearContenedor(100, 200, "#FFFF00", falso, 10, 220);
+
+
+/////////////////// Boton enviar
+Var btnIngresar_Inicio = ContBtn_Inicio.CrearBoton("Arial", 12, "#000000", 25, 30, metodo1(1,2,3), "Ingresar", 50, 70);
+imprimir(btnIngresar_Inicio.fuente);
+//btnIngresar_Inicio.AlClic(Guardar_Inicio());
 

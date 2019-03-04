@@ -15,6 +15,7 @@ import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.TablaSimbolo;
 import WRAPERS.AreaTextoGenerica;
+import WRAPERS.BotonGenerico;
 import WRAPERS.CajaTextoGenerica;
 import WRAPERS.PanelGenerico;
 import WRAPERS.TextoGenerico;
@@ -121,6 +122,25 @@ public class LlamadaMetodo extends Compilador {
             opL = new OperacionesARL(global, tabla, miTemplate);
             Resultado resultado = opL.ejecutar(hijo);
             parametros.add(resultado);
+        }
+        return parametros;
+    }
+
+    private ArrayList<Resultado> getParametrosConRefencia(Nodo raiz, int pos) {
+        ArrayList<Resultado> parametros = new ArrayList<>();
+        Nodo nodoParametros = raiz.hijos.get(0);
+        int index = 0;
+        for (Nodo hijo : nodoParametros.hijos) {
+            if (pos == index) {
+                JOptionPane.showMessageDialog(null, pos);
+                parametros.add(new Resultado("String", hijo));
+            } else {
+                opL = new OperacionesARL(global, tabla, miTemplate);
+                Resultado resultado = opL.ejecutar(hijo);
+                parametros.add(resultado);
+            }
+
+            index++;
         }
         return parametros;
     }
@@ -233,6 +253,13 @@ public class LlamadaMetodo extends Compilador {
                             crearAreaTexto();
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "crearAreaTexto error:" + e.getMessage());
+                        }
+                        break;
+                    case "crearboton":
+                        try {
+                            crearBoton();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "crearBoton error:" + e.getMessage());
                         }
                         break;
 
@@ -441,6 +468,144 @@ public class LlamadaMetodo extends Compilador {
             }
         }
 
+    }
+
+    public void crearBoton() {
+        //(Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho) la referencia es una llamada a metodo
+
+        String[] stilos = {"fuente", "tam", "color", "x", "y", "referencia", "valor", "alto", "ancho"};
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametrosConRefencia(raiz,5);
+
+        BotonGenerico nuevoBoton = new BotonGenerico(raiz);
+        /*----------------###############################---------------------*/
+        Resultado fuente = null, tam = null, color = null, x = null, y = null, referencia = null, valor = null, alto = null, ancho = null;
+        try {
+            fuente = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            tam = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            color = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            x = parametros.get(3);
+        } catch (Exception e) {
+        }
+
+        try {
+            y = parametros.get(4);
+        } catch (Exception e) {
+        }
+
+        try {
+            referencia = parametros.get(5);
+        } catch (Exception e) {
+        }
+
+        try {
+            valor = parametros.get(6);
+        } catch (Exception e) {
+        }
+
+        try {
+            alto = parametros.get(7);
+        } catch (Exception e) {
+        }
+
+        try {
+            ancho = parametros.get(8);
+        } catch (Exception e) {
+        }
+
+        /*----------------###############################---------------------*/
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 5);
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
+        //======================================================================
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevoBoton;
+                clase.nombre = "Boton";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+            }
+
+            /*---------------------------------------------------------------------*/
+            //(Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho) la referencia es una llamada a metodo
+            if (!esNulo(fuente)) {
+                nuevoBoton.setFuente(fuente.valor.toString());
+            }
+
+            if (!esNulo(tam)) {
+                nuevoBoton.setTam(tam.valor.toString());
+            }
+
+            if (!esNulo(color)) {
+                nuevoBoton.setColor(color.valor.toString());
+            }
+
+            if (!esNulo(x)) {
+                nuevoBoton.setX(x.valor.toString());
+            }
+
+            if (!esNulo(y)) {
+                nuevoBoton.setY(y.valor.toString());
+            }
+
+            if (!esNulo(referencia)) {
+                nuevoBoton.setReferencia(referencia.valor.toString());
+            }
+
+            if (!esNulo(valor)) {
+                nuevoBoton.setTexto(valor.valor.toString());
+            }
+
+            if (!esNulo(alto)) {
+                nuevoBoton.setAlto(alto.valor.toString());
+            }
+
+            if (!esNulo(ancho)) {
+                nuevoBoton.setAncho(ancho.valor.toString());
+            }
+            /*---------------------------------------------------------------------*/
+
+            if (!esNulo(actualResultado)) {
+                if (esClase(actualResultado.valor)) {
+                    Clase clase = (Clase) actualResultado.valor;
+                    if (clase.Componente != null) {
+
+                        switch (clase.nombre.toLowerCase()) {
+                            case "ventana":
+                                nuevoBoton.setLayout(null);
+                                nuevoBoton.setBounds(nuevoBoton.getLocation().x, nuevoBoton.getLocation().y, nuevoBoton.getPreferredSize().width, nuevoBoton.getPreferredSize().height);
+                                ((VentanaGenerica) clase.Componente).add(nuevoBoton);
+
+                                break;
+                            case "panel":
+                                nuevoBoton.setLayout(null);
+                                nuevoBoton.setBounds(nuevoBoton.getLocation().x, nuevoBoton.getLocation().y, nuevoBoton.getPreferredSize().width, nuevoBoton.getPreferredSize().height);
+                                ((PanelGenerico) clase.Componente).add(nuevoBoton);
+                                break;
+                        }
+
+                    }
+                }
+            }
+        }
+        //======================================================================
     }
 
     public void crearTexto() {
@@ -878,9 +1043,6 @@ public class LlamadaMetodo extends Compilador {
             }
 
         }
-    }
-
-    public void crearBoton() {
     }
 
     public Nodo crearNodoObj(Nodo raiz, String stilos[], int limit) {
