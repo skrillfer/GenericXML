@@ -3,10 +3,16 @@
 
 
 
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 var Ven_Inicio = CrearVentana("#ff0000",500,500,"VentanaUno");
 
-var Cont1_Inicio = Ven_Inicio.CrearContenedor(200, 200, "#ffffff", falso, 10, 10);
+var Cont1_Inicio = Ven_Inicio.CrearContenedor(200, 200, "#00FF00", falso, 20, 20);

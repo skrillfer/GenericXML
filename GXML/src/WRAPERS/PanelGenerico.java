@@ -24,6 +24,7 @@ public class PanelGenerico extends JPanel {
 
     public PanelGenerico(Nodo raiz) {
         this.raiz = raiz;
+        
     }
 
     public void setAncho(Object ancho) {
@@ -50,7 +51,7 @@ public class PanelGenerico extends JPanel {
 
     public void setColor(String hex) {
         try {
-            this.setForeground(Color.decode(hex));
+            this.setBackground(Color.decode(hex));
         } catch (NumberFormatException e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en PanelGenerico " + this.getName());
         }
@@ -72,6 +73,7 @@ public class PanelGenerico extends JPanel {
     public void setX(Object x) {
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
+            updateUI();
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x.toString() + "] en PanelGenerico " + this.getName());
         }
@@ -80,6 +82,7 @@ public class PanelGenerico extends JPanel {
     public void setY(Object y) {
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
+            updateUI();
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y.toString() + "] en PanelGenerico " + this.getName());
         }

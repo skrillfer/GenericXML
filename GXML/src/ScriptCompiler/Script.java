@@ -28,13 +28,10 @@ public class Script extends Compilador {
 
     ArrayList<Clase> lista_Clases = new ArrayList<>();
 
-    
-
-    
-    public Script(File[] files, String archivoActual,Template template) {
+    public Script(File[] files, String archivoActual, Template template) {
         //EL ARCHIVO ACTUAL ES MI PRINCIPAL
         miTemplate = template;
-        
+
         archivos = new ArrayList();
         listaVentanas = new ArrayList<>();
         reporteError_CJS = new ReporteError();
@@ -59,23 +56,20 @@ public class Script extends Compilador {
             }
             //}
         }
-        
-        
+
         pilaNivelCiclo = new Stack<>();
         pilaClases = new Stack<>();
         pilaMetodos = new Stack<>();
         pilaTablas = new Stack<>();
         claseActual = getClasePrincipal();
-        
-        
+
         if (claseActual == null) {
             Template.reporteError_CJS.agregar("Semantico", 0, 0, "Metodo inicio no encontrado");
             return;
         }
         tabla = claseActual.tabla;
         global = claseActual.global;
-        
-        
+
         Nodo padre = new Nodo("Sentencias", "", 0, 0, 8918);
         for (Nodo atributo : claseActual.atributos) {
             padre.add(atributo);
@@ -83,13 +77,21 @@ public class Script extends Compilador {
         Metodo m = new Metodo();
         metodoActual = m;
         ejecutarSentencias(padre);
-        
+
         //new Heredar(claseActual);
-        
         for (VentanaGenerica listaVentana : listaVentanas) {
+            System.out.println(listaVentana.getPreferredSize().width + "-" + listaVentana.getPreferredSize().height);
+            //listaVentana.getContentPane().setLayout(null);
+
+
+            listaVentana.pack();
+            listaVentana.setLayout(null);
+
+            //listaVentana.setBounds(100, 10, listaVentana.getSize().width, listaVentana.getSize().height);
+            listaVentana.setLocationRelativeTo(null);
             listaVentana.setVisible(true);
         }
-        
+
     }
 
     private Clase getClasePrincipal() {
@@ -100,13 +102,12 @@ public class Script extends Compilador {
         }
         //Se retorna la primera clase ya que todo el documento es una sola "clase"
         clases = archivo.clases;
-        if(!clases.isEmpty())
-        {
+        if (!clases.isEmpty()) {
             return clases.get(0);
         }
         return null;
     }
-    
+
     private Archivo getArchivoPrincipal() {
         for (Archivo archivo : archivos) {
             if (archivo.nombre.equalsIgnoreCase(archivoActual)) {
@@ -115,7 +116,7 @@ public class Script extends Compilador {
         }
         return null;
     }
-    
+
     public void ejecucionCJS(Nodo raiz, String metodoInicio, String archivo, Template template1) {
         //aqui habra una lista de archivos cjs que pertenecen a el html
         //como hay una lista de archivos cjs debe haber una lista de CLASES (JAVASCRIPT)
@@ -123,7 +124,7 @@ public class Script extends Compilador {
         System.out.println("\n\n al menos si llego aqui");
         miTemplate = template1;
         raiz.valor = archivo;
-        Clase n_clase = new Clase(raiz,"");
+        Clase n_clase = new Clase(raiz, "");
         n_clase.archivo = archivo;
 
         claseActual = n_clase;

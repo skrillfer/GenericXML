@@ -218,8 +218,8 @@ public class LlamadaMetodo extends Compilador {
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "crearContenedor error:" + e.getMessage());
                         }
-                        break;    
-                        
+                        break;
+
                 }
             }
         } else {
@@ -304,9 +304,11 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(ancho)) {
-                nuevaVentana.setAlto(ancho.valor.toString());
+                nuevaVentana.setAncho(ancho.valor.toString());
             }
-            nuevaVentana.setBounds(10, 10, nuevaVentana.getSize().width, nuevaVentana.getSize().height);
+
+            System.out.println("VENTANA = >");
+            System.out.println(alto.valor.toString() + "-" + ancho.valor.toString());
             /*---------------------------------------------------------------------*/
 
             listaVentanas.add(nuevaVentana);//Pensar bien si si o no
@@ -355,6 +357,7 @@ public class LlamadaMetodo extends Compilador {
         } catch (Exception e) {
         }
 
+
         /*----------------###############################---------------------*/
         //Se crea el Arbol que corresponde a cntObj
         Nodo cntobj = crearNodoObj(raiz, stilos, 5);
@@ -378,7 +381,7 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(ancho)) {
-                nuevoPanel.setAlto(ancho.valor.toString());
+                nuevoPanel.setAncho(ancho.valor.toString());
             }
 
             if (!esNulo(color)) {
@@ -396,24 +399,29 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(y)) {
                 nuevoPanel.setY(y.valor.toString());
             }
+
+            System.out.println(nuevoPanel.getLocation() + "  ...   " + nuevoPanel.getPreferredSize());
+
+            System.out.println("CONTENEDOR = >");
+            System.out.println(alto.valor.toString() + "-" + ancho.valor.toString());
             /*---------------------------------------------------------------------*/
             //nuevoPanel.setBounds(nu, nivel, nivel, nivel);
             if (!esNulo(actualResultado)) {
                 if (esClase(actualResultado.valor)) {
                     Clase clase = (Clase) actualResultado.valor;
                     if (clase.Componente != null) {
-                        
-                        switch(clase.nombre.toLowerCase())
-                        {
+
+                        switch (clase.nombre.toLowerCase()) {
                             case "ventana":
+                                nuevoPanel.setBounds(nuevoPanel.getLocation().x, nuevoPanel.getLocation().y, nuevoPanel.getPreferredSize().width, nuevoPanel.getPreferredSize().height);
                                 ((VentanaGenerica) clase.Componente).add(nuevoPanel);
-                                
+
                                 break;
                             case "panel":
                                 ((PanelGenerico) clase.Componente).add(nuevoPanel);
-                                break;    
+                                break;
                         }
-                        
+
                     }
                 }
             }
@@ -421,7 +429,6 @@ public class LlamadaMetodo extends Compilador {
 
     }
 
-   
     public void crearTexto() {
         //Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, valo
         String[] stilos = {"fuente", "tam", "color", "x", "y", "negrilla", "cursiva"};

@@ -38,6 +38,7 @@ public class VentanaGenerica extends JFrame {
     public void setColor(String hex) {
         try {
             this.setBackground(Color.decode(hex));
+            
         } catch (NumberFormatException e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en Ventana Generica " + this.getName());
         }
@@ -45,7 +46,8 @@ public class VentanaGenerica extends JFrame {
 
     public void setAncho(Object ancho) {
         try {
-            setSize(new Dimension(castToInt(ancho), getSize().height));
+            setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
+            repaint();
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho.toString() + "] en Ventana Generica " + this.getName());
         }
@@ -53,7 +55,8 @@ public class VentanaGenerica extends JFrame {
 
     public void setAlto(Object alto) {
         try {
-            setSize(new Dimension(getSize().width, castToInt(alto)));
+            setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
+            repaint();
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto.toString() + "] en Ventana Generica " + this.getName());
         }
