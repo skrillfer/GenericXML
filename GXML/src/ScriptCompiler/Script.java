@@ -11,6 +11,7 @@ import Errores.ReporteError;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.Sentencias.Declaracion;
+import WRAPERS.VentanaGenerica;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,6 +86,9 @@ public class Script extends Compilador {
         
         //new Heredar(claseActual);
         
+        for (VentanaGenerica listaVentana : listaVentanas) {
+            listaVentana.setVisible(true);
+        }
         
     }
 

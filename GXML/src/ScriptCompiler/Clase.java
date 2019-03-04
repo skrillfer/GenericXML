@@ -10,12 +10,15 @@ import INTERFAZ.Template;
 import ScriptCompiler.Sentencias.Declaracion;
 import java.util.ArrayList;
 import java.util.Stack;
+import javax.swing.JComponent;
 
 /**
  *
  * @author fernando
  */
 public class Clase {
+    
+    public Object Componente =null;
     public boolean Inicializada = false;
     
     public Stack<TablaSimbolo> pilaTablas;

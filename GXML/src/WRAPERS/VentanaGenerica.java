@@ -22,6 +22,9 @@ public class VentanaGenerica extends JFrame {
 
     public VentanaGenerica(Nodo raiz) throws HeadlessException {
         this.raiz = raiz;
+        setLayout(null);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     public void setTitulo(String titulo) {
@@ -42,7 +45,7 @@ public class VentanaGenerica extends JFrame {
 
     public void setAncho(Object ancho) {
         try {
-            setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
+            setSize(new Dimension(castToInt(ancho), getSize().height));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho.toString() + "] en Ventana Generica " + this.getName());
         }
@@ -50,7 +53,7 @@ public class VentanaGenerica extends JFrame {
 
     public void setAlto(Object alto) {
         try {
-            setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
+            setSize(new Dimension(getSize().width, castToInt(alto)));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto.toString() + "] en Ventana Generica " + this.getName());
         }

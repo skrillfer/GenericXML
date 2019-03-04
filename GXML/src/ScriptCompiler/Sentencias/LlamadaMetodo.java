@@ -14,8 +14,11 @@ import ScriptCompiler.Metodo;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.TablaSimbolo;
+import WRAPERS.PanelGenerico;
+import WRAPERS.TextoGenerico;
 import WRAPERS.VentanaGenerica;
 import java.util.ArrayList;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,10 +26,11 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class LlamadaMetodo extends Compilador {
-    public Resultado ComponenteRes=null;
-    
+
+    public Resultado ComponenteRes = null;
+
     public Resultado res_nativas = null;
-    
+
     private Nodo raiz;
     private Resultado actualResultado;
 
@@ -198,6 +202,25 @@ public class LlamadaMetodo extends Compilador {
                         break;
 
                 }
+            } else if (esClase(actualResultado.valor)) {
+                //Creacion de componentes GRAFICOS
+                switch (raiz.valor.toLowerCase()) {
+                    case "crearcontenedor":
+                        try {
+                            crearContenedor();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "crearContenedor error:" + e.getMessage());
+                        }
+                        break;
+                    case "creartexto":
+                        try {
+                            crearTexto();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "crearContenedor error:" + e.getMessage());
+                        }
+                        break;    
+                        
+                }
             }
         } else {
             //Creacion de componentes GRAFICOS
@@ -245,45 +268,8 @@ public class LlamadaMetodo extends Compilador {
         }
         /*----------------###############################---------------------*/
 
-
- /*Se crea el Arbol que corresponde a cntObj*/
-        Nodo cntobj = crearNodo("cntobj", "", raiz.linea, raiz.columna, raiz.index);
-        Nodo atributos = crearNodo("atributos", "", raiz.linea, raiz.columna, raiz.index);
-
-        for (int x = 0; x < raiz.get(0).size(); x++) {
-            Nodo hijo = raiz.get(0).get(x);
-
-            Nodo Atributo = crearNodo("declaracionvarG", "", raiz.linea, raiz.columna, raiz.index);
-
-            Nodo Lt_id = crearNodo("list_id", "", raiz.linea, raiz.columna, raiz.index);
-            Lt_id.add(crearNodo("id", stilos[x], raiz.linea, raiz.columna, raiz.index));
-
-            Nodo Asign = crearNodo("asign", "", raiz.linea, raiz.columna, raiz.index);
-            Asign.add(hijo);
-
-            Atributo.add(Lt_id);
-            Atributo.add(Asign);
-
-            atributos.add(Atributo);
-
-            if (x == 3) {
-                break;
-            }
-        }
-        cntobj.add(atributos);
-        /*
-        
-        RESULT = parser.crearNodo("declaracionvarG","",m.getLinea(),m.getColumna());
-                    
-        Nodo Lt_id = parser.crearNodo("list_id","",m.getLinea(),m.getColumna());
-        Lt_id.add(parser.crearNodo("id",m.getCadena(),m.getLinea(),m.getColumna()));
-
-        Nodo Asign = parser.crearNodo("asign","",h.linea,h.columna);
-        Asign.add(h);
-
-        RESULT.add(Lt_id);
-        RESULT.add(Asign); 
-         */
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 3);
 
         opL = new OperacionesARL(global, tabla, miTemplate);
         Resultado resultado = opL.ejecutar(cntobj);
@@ -292,12 +278,11 @@ public class LlamadaMetodo extends Compilador {
             ComponenteRes = resultado;
             if (esClase(resultado.valor)) {
                 Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevaVentana;
                 clase.nombre = "Ventana";
                 clase.ejecutar(miTemplate);
-                clase.Inicializada=true;
+                clase.Inicializada = true;
             }
-
-            JOptionPane.showMessageDialog(null, "PARA!!!!");
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(id)) {
@@ -321,11 +306,252 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(ancho)) {
                 nuevaVentana.setAlto(ancho.valor.toString());
             }
+            nuevaVentana.setBounds(10, 10, nuevaVentana.getSize().width, nuevaVentana.getSize().height);
             /*---------------------------------------------------------------------*/
-            
+
             listaVentanas.add(nuevaVentana);//Pensar bien si si o no
+
+            //nuevaVentana.add(new PanelGenerico(raiz));
         }
-        
+
+    }
+
+    public void crearContenedor() {
+        String[] stilos = {"alto", "ancho", "color", "borde", "x", "y"};
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametros(raiz);
+
+        PanelGenerico nuevoPanel = new PanelGenerico(raiz);
+
+        /*----------------###############################---------------------*/
+        Resultado alto = null, ancho = null, color = null, borde = null, x = null, y = null;
+        try {
+            alto = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            ancho = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            color = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            borde = parametros.get(3);
+        } catch (Exception e) {
+        }
+
+        try {
+            x = parametros.get(4);
+        } catch (Exception e) {
+        }
+
+        try {
+            y = parametros.get(5);
+        } catch (Exception e) {
+        }
+
+        /*----------------###############################---------------------*/
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 5);
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevoPanel;
+                clase.nombre = "Panel";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(alto)) {
+                nuevoPanel.setAlto(alto.valor.toString());
+            }
+
+            if (!esNulo(ancho)) {
+                nuevoPanel.setAlto(ancho.valor.toString());
+            }
+
+            if (!esNulo(color)) {
+                nuevoPanel.setColor(color.valor.toString());
+            }
+
+            if (!esNulo(borde)) {
+                nuevoPanel.setBorde(borde.valor.toString());
+            }
+
+            if (!esNulo(x)) {
+                nuevoPanel.setX(x.valor.toString());
+            }
+
+            if (!esNulo(y)) {
+                nuevoPanel.setY(y.valor.toString());
+            }
+            /*---------------------------------------------------------------------*/
+            //nuevoPanel.setBounds(nu, nivel, nivel, nivel);
+            if (!esNulo(actualResultado)) {
+                if (esClase(actualResultado.valor)) {
+                    Clase clase = (Clase) actualResultado.valor;
+                    if (clase.Componente != null) {
+                        
+                        switch(clase.nombre.toLowerCase())
+                        {
+                            case "ventana":
+                                ((VentanaGenerica) clase.Componente).add(nuevoPanel);
+                                
+                                break;
+                            case "panel":
+                                ((PanelGenerico) clase.Componente).add(nuevoPanel);
+                                break;    
+                        }
+                        
+                    }
+                }
+            }
+        }
+
+    }
+
+   
+    public void crearTexto() {
+        //Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, valo
+        String[] stilos = {"fuente", "tam", "color", "x", "y", "negrilla", "cursiva"};
+
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametros(raiz);
+
+        TextoGenerico nuevaTexto = new TextoGenerico(raiz);
+
+        /*----------------###############################---------------------*/
+        Resultado fuente = null, tam = null, color = null, x = null, y = null, negrilla = null, cursiva = null;
+
+        try {
+            fuente = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            tam = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            color = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            x = parametros.get(3);
+        } catch (Exception e) {
+        }
+
+        try {
+            y = parametros.get(4);
+        } catch (Exception e) {
+        }
+
+        try {
+            negrilla = parametros.get(5);
+        } catch (Exception e) {
+        }
+
+        try {
+            cursiva = parametros.get(6);
+        } catch (Exception e) {
+        }
+        /*----------------###############################---------------------*/
+
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 6);
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevaTexto;
+                clase.nombre = "Texto";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(fuente)) {
+                nuevaTexto.setFuente((String) fuente.valor);
+            }
+
+            if (!esNulo(tam)) {
+                nuevaTexto.setTam(tam.valor.toString());
+            }
+
+            if (!esNulo(color)) {
+                nuevaTexto.setColor(color.valor.toString());
+            }
+
+            if (!esNulo(x)) {
+                nuevaTexto.setX(x.valor.toString());
+            }
+
+            if (!esNulo(y)) {
+                nuevaTexto.setY(y.valor.toString());
+            }
+
+            if (!esNulo(negrilla)) {
+                nuevaTexto.setNegrilla(negrilla.valor.toString());
+            }
+
+            if (!esNulo(cursiva)) {
+                nuevaTexto.setCurvisa(cursiva.valor.toString());
+            }
+            /*---------------------------------------------------------------------*/
+
+        }
+
+    }
+
+    public void crearBoton() {
+    }
+
+    public Nodo crearNodoObj(Nodo raiz, String stilos[], int limit) {
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodo("cntobj", "", raiz.linea, raiz.columna, raiz.index);
+        Nodo atributos = crearNodo("atributos", "", raiz.linea, raiz.columna, raiz.index);
+
+        for (int m = 0; m < raiz.get(0).size(); m++) {
+            Nodo hijo = raiz.get(0).get(m);
+
+            Nodo Atributo = crearNodo("declaracionvarG", "", raiz.linea, raiz.columna, raiz.index);
+
+            Nodo Lt_id = crearNodo("list_id", "", raiz.linea, raiz.columna, raiz.index);
+            Lt_id.add(crearNodo("id", stilos[m], raiz.linea, raiz.columna, raiz.index));
+
+            Nodo Asign = crearNodo("asign", "", raiz.linea, raiz.columna, raiz.index);
+            Asign.add(hijo);
+
+            Atributo.add(Lt_id);
+            Atributo.add(Asign);
+
+            atributos.add(Atributo);
+
+            if (m == limit) {
+                break;
+            }
+        }
+        cntobj.add(atributos);
+
+        return cntobj;
+
     }
 
     public boolean esArreglo(Object valor) {

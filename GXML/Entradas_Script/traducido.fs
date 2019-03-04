@@ -3,14 +3,10 @@
 
 
 
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-var Ven_Inicio = CrearVentana("#ffffff",500,500,"VentanaUno");
+var Ven_Inicio = CrearVentana("#ff0000",500,500,"VentanaUno");
 
-imprimir(Ven_Inicio.color);
+var Cont1_Inicio = Ven_Inicio.CrearContenedor(200, 200, "#ffffff", falso, 10, 10);

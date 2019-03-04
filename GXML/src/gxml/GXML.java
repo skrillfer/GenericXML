@@ -32,8 +32,8 @@ public class GXML {
          JFrame frame = new JFrame("Capture");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        PanelGenerico pane = new PanelGenerico();
-        pane.setBorder();
+        PanelGenerico pane=null;
+        //pane.setBorder();
         frame.setContentPane(pane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocation(50, 50);

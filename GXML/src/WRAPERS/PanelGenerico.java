@@ -5,6 +5,8 @@
  */
 package WRAPERS;
 
+import Estructuras.Nodo;
+import INTERFAZ.Template;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
@@ -18,34 +20,102 @@ import javax.swing.border.EtchedBorder;
  */
 public class PanelGenerico extends JPanel {
 
-    public PanelGenerico() {
+    Nodo raiz;
 
+    public PanelGenerico(Nodo raiz) {
+        this.raiz = raiz;
     }
 
-    public void setAncho(int ancho) {
+    public void setAncho(Object ancho) {
         try {
-            setPreferredSize(new Dimension(ancho, getPreferredSize().height));
+            setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
+            updateUI();
         } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + ancho.toString() + "] en PanelGenerico " + this.getName());
 
         }
         updateUI();
     }
 
-    public void setAlto(int alto) {
+    public void setAlto(Object alto) {
         try {
-            setPreferredSize(new Dimension(getPreferredSize().width, alto));
+            setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
+            updateUI();
         } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + alto.toString() + "] en PanelGenerico " + this.getName());
+
         }
         updateUI();
     }
 
+    public void setColor(String hex) {
+        try {
+            this.setForeground(Color.decode(hex));
+        } catch (NumberFormatException e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en PanelGenerico " + this.getName());
+        }
+    }
+
+    public void setBorde(Object borde) {
+
+        try {
+            if (castToBoolean(borde)) {
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+            } else {
+                this.setBorder(BorderFactory.createEmptyBorder());
+            }
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Borde [" + borde.toString() + "] en PanelGenerico " + this.getName());
+        }
+    }
+
+    public void setX(Object x) {
+        try {
+            this.setLocation(castToInt(x), this.getLocation().y);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x.toString() + "] en PanelGenerico " + this.getName());
+        }
+    }
+
+    public void setY(Object y) {
+        try {
+            this.setLocation(this.getLocation().x, castToInt(y));
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y.toString() + "] en PanelGenerico " + this.getName());
+        }
+    }
+
+    public Integer castToInt(Object nm) {
+        try {
+            return Integer.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Boolean castToBoolean(Object nm) {
+        try {
+            return Boolean.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    //Nombre o id
+    public void setId(String id) {
+        try {
+            this.setName(id);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en TextoGenerico " + this.getName());
+        }
+    }
+    /*
     public void setBorder() {
         Border blackline, raisedetched, loweredetched,
-               raisedbevel, loweredbevel, empty;
+                raisedbevel, loweredbevel, empty;
 
         //A border that puts 10 extra pixels at the sides and
         //bottom of each pane.
-
         blackline = BorderFactory.createLineBorder(Color.black);
         raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
@@ -58,5 +128,5 @@ public class PanelGenerico extends JPanel {
                 raisedbevel, loweredbevel);
         this.setBorder(compound);
     }
-
+     */
 }
