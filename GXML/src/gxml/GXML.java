@@ -5,17 +5,8 @@
  */
 package gxml;
 
-import Estructuras.Nodo;
 import WRAPERS.PanelGenerico;
-import WRAPERS.Reproductor;
-import WRAPERS.VLCPlayer;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
-import java.text.ParseException;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import uk.co.caprica.vlcj.binding.LibVlc;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /**
  *

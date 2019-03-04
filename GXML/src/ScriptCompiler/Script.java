@@ -192,6 +192,7 @@ public class Script extends Compilador {
 
             }
             bufer.close();
+            
         } catch (Exception e) {
         }
         return texto;
