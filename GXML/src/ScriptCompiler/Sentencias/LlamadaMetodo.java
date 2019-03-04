@@ -14,6 +14,7 @@ import ScriptCompiler.Metodo;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.TablaSimbolo;
+import WRAPERS.AreaTextoGenerica;
 import WRAPERS.CajaTextoGenerica;
 import WRAPERS.PanelGenerico;
 import WRAPERS.TextoGenerico;
@@ -217,16 +218,23 @@ public class LlamadaMetodo extends Compilador {
                         try {
                             crearTexto();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearContenedor error:" + e.getMessage());
+                            JOptionPane.showMessageDialog(null, "crearTexto error:" + e.getMessage());
                         }
                         break;
                     case "crearcajatexto":
                         try {
                             crearCajaTexto();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearContenedor error:" + e.getMessage());
+                            JOptionPane.showMessageDialog(null, "crearCajaTexto error:" + e.getMessage());
                         }
-                        break;    
+                        break;
+                    case "crearareatexto":
+                        try {
+                            crearAreaTexto();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "crearAreaTexto error:" + e.getMessage());
+                        }
+                        break;
 
                 }
             }
@@ -569,7 +577,7 @@ public class LlamadaMetodo extends Compilador {
         proceder = false;
         ArrayList<Resultado> parametros = getParametros(raiz);
 
-        CajaTextoGenerica nuevaCajaText = new CajaTextoGenerica(raiz);
+        CajaTextoGenerica nuevaAreaText = new CajaTextoGenerica(raiz);
 
         /*----------------###############################---------------------*/
         Resultado alto = null, ancho = null, fuente = null, tam = null, color = null, x = null, y = null, negrilla = null, cursiva = null, nombre = null, defecto = null;
@@ -640,7 +648,7 @@ public class LlamadaMetodo extends Compilador {
             ComponenteRes = resultado;
             if (esClase(resultado.valor)) {
                 Clase clase = (Clase) resultado.valor;
-                clase.Componente = nuevaCajaText;
+                clase.Componente = nuevaAreaText;
                 clase.nombre = "CajaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
@@ -648,51 +656,49 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(alto)) {
-                nuevaCajaText.setAlto(alto.valor.toString());
+                nuevaAreaText.setAlto(alto.valor.toString());
             }
 
             if (!esNulo(ancho)) {
-                nuevaCajaText.setAncho(ancho.valor.toString());
+                nuevaAreaText.setAncho(ancho.valor.toString());
             }
 
             if (!esNulo(fuente)) {
-                nuevaCajaText.setFuente(fuente.valor.toString());
+                nuevaAreaText.setFuente(fuente.valor.toString());
             }
-            
+
             if (!esNulo(tam)) {
-                nuevaCajaText.setTam(tam.valor.toString());
+                nuevaAreaText.setTam(tam.valor.toString());
             }
-            
+
             if (!esNulo(color)) {
-                nuevaCajaText.setColor(color.valor.toString());
+                nuevaAreaText.setColor(color.valor.toString());
             }
-            
+
             if (!esNulo(x)) {
-                nuevaCajaText.setX(x.valor.toString());
+                nuevaAreaText.setX(x.valor.toString());
             }
-            
+
             if (!esNulo(y)) {
-                nuevaCajaText.setY(y.valor.toString());
+                nuevaAreaText.setY(y.valor.toString());
             }
-            
+
             if (!esNulo(negrilla)) {
-                nuevaCajaText.setNegrilla(negrilla.valor.toString());
+                nuevaAreaText.setNegrilla(negrilla.valor.toString());
             }
-            
+
             if (!esNulo(cursiva)) {
-                nuevaCajaText.setCurvisa(cursiva.valor.toString());
+                nuevaAreaText.setCurvisa(cursiva.valor.toString());
             }
-            
-            
+
             if (!esNulo(defecto)) {
-                nuevaCajaText.setTexto(defecto.valor.toString());
+                nuevaAreaText.setTexto(defecto.valor.toString());
             }
-            
-            
+
             if (!esNulo(nombre)) {
-                nuevaCajaText.setId(nombre.valor.toString());
+                nuevaAreaText.setId(nombre.valor.toString());
             }
-            
+
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(actualResultado)) {
@@ -702,18 +708,13 @@ public class LlamadaMetodo extends Compilador {
 
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
-                                nuevaCajaText.setBounds(nuevaCajaText.getLocation().x, nuevaCajaText.getLocation().y, nuevaCajaText.getPreferredSize().width, nuevaCajaText.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).add(nuevaCajaText);
+                                nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
+                                ((VentanaGenerica) clase.Componente).add(nuevaAreaText);
 
                                 break;
                             case "panel":
-                                System.out.println("@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@");
-                                System.out.println(nuevaCajaText.getPreferredSize());
-                                System.out.println(nuevaCajaText.getLocation());
-                                System.out.println(nuevaCajaText.getText());
-                                
-                                nuevaCajaText.setBounds(nuevaCajaText.getLocation().x, nuevaCajaText.getLocation().y, nuevaCajaText.getPreferredSize().width, nuevaCajaText.getPreferredSize().height);
-                                ((PanelGenerico)clase.Componente).add(nuevaCajaText);
+                                nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
+                                ((PanelGenerico) clase.Componente).add(nuevaAreaText);
                                 break;
                         }
 
@@ -723,7 +724,161 @@ public class LlamadaMetodo extends Compilador {
 
         }
     }
-    
+
+    public void crearAreaTexto() {
+        //Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, valo
+        String[] stilos = {"alto", "ancho", "fuente", "tam", "color", "x", "y", "negrilla", "cursiva", "defecto", "nombre"};
+
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametros(raiz);
+
+        AreaTextoGenerica nuevaAreaText = new AreaTextoGenerica(raiz);
+
+        /*----------------###############################---------------------*/
+        Resultado alto = null, ancho = null, fuente = null, tam = null, color = null, x = null, y = null, negrilla = null, cursiva = null, nombre = null, defecto = null;
+
+        try {
+            alto = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            ancho = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            fuente = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            tam = parametros.get(3);
+        } catch (Exception e) {
+        }
+
+        try {
+            color = parametros.get(4);
+        } catch (Exception e) {
+        }
+
+        try {
+            x = parametros.get(5);
+        } catch (Exception e) {
+        }
+
+        try {
+            y = parametros.get(6);
+        } catch (Exception e) {
+        }
+
+        try {
+            negrilla = parametros.get(7);
+        } catch (Exception e) {
+        }
+
+        try {
+            cursiva = parametros.get(8);
+        } catch (Exception e) {
+        }
+
+        try {
+            defecto = parametros.get(9);
+        } catch (Exception e) {
+        }
+
+        try {
+            nombre = parametros.get(10);
+        } catch (Exception e) {
+        }
+
+        /*----------------###############################---------------------*/
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 10);
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevaAreaText;
+                clase.nombre = "AreaTexto";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(alto)) {
+                nuevaAreaText.setAlto(alto.valor.toString());
+            }
+
+            if (!esNulo(ancho)) {
+                nuevaAreaText.setAncho(ancho.valor.toString());
+            }
+
+            if (!esNulo(fuente)) {
+                nuevaAreaText.setFuente(fuente.valor.toString());
+            }
+
+            if (!esNulo(tam)) {
+                nuevaAreaText.setTam(tam.valor.toString());
+            }
+
+            if (!esNulo(color)) {
+                nuevaAreaText.setColor(color.valor.toString());
+            }
+
+            if (!esNulo(x)) {
+                nuevaAreaText.setX(x.valor.toString());
+            }
+
+            if (!esNulo(y)) {
+                nuevaAreaText.setY(y.valor.toString());
+            }
+
+            if (!esNulo(negrilla)) {
+                nuevaAreaText.setNegrilla(negrilla.valor.toString());
+            }
+
+            if (!esNulo(cursiva)) {
+                nuevaAreaText.setCurvisa(cursiva.valor.toString());
+            }
+
+            if (!esNulo(defecto)) {
+                nuevaAreaText.setTexto(defecto.valor.toString());
+            }
+
+            if (!esNulo(nombre)) {
+                nuevaAreaText.setId(nombre.valor.toString());
+            }
+
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(actualResultado)) {
+                if (esClase(actualResultado.valor)) {
+                    Clase clase = (Clase) actualResultado.valor;
+                    if (clase.Componente != null) {
+
+                        switch (clase.nombre.toLowerCase()) {
+                            case "ventana":
+                                nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
+                                ((VentanaGenerica) clase.Componente).add(nuevaAreaText);
+
+                                break;
+                            case "panel":
+                                nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
+                                ((PanelGenerico) clase.Componente).add(nuevaAreaText);
+                                break;
+                        }
+
+                    }
+                }
+            }
+
+        }
+    }
 
     public void crearBoton() {
     }

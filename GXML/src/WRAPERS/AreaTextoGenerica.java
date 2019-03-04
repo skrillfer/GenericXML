@@ -18,10 +18,11 @@ import javax.swing.JTextArea;
  * @author fernando
  */
 public class AreaTextoGenerica extends JTextArea {
-/*
+
+    /*
         Alto, ancho, Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, defecto, nombre
-*/
-    
+     */
+
     Nodo raiz;
 
     public AreaTextoGenerica(Nodo raiz) {
@@ -30,18 +31,18 @@ public class AreaTextoGenerica extends JTextArea {
         setNegrilla(false);
     }
 
-    public void setAncho(int ancho) {
+    public void setAncho(Object ancho) {
         try {
-            setPreferredSize(new Dimension(ancho, getPreferredSize().height));
+            setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho + "] en AreaTexto " + this.getName());
         }
         updateUI();
     }
 
-    public void setAlto(int alto) {
+    public void setAlto(Object alto) {
         try {
-            setPreferredSize(new Dimension(getPreferredSize().width, alto));
+            setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto + "] en AreaTexto " + this.getName());
         }
@@ -59,9 +60,9 @@ public class AreaTextoGenerica extends JTextArea {
         }
     }
 
-    public void setTam(int tam) {
+    public void setTam(Object tam) {
         try {
-            Font ft = new Font(this.getFont().getName(), this.getFont().getStyle(), tam);
+            Font ft = new Font(this.getFont().getName(), this.getFont().getStyle(), castToInt(tam));
 
             Map atributes = ft.getAttributes();
             this.setFont(ft.deriveFont(atributes));
@@ -78,27 +79,27 @@ public class AreaTextoGenerica extends JTextArea {
         }
     }
 
-    public void setX(int x) {
+    public void setX(Object x) {
         try {
-            this.setLocation(x, this.getLocation().y);
+            this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en AreaTexto " + this.getName());
         }
     }
 
-    public void setY(int y) {
+    public void setY(Object y) {
         try {
-            this.setLocation(this.getLocation().x, y);
+            this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en AreaTexto " + this.getName());
         }
     }
 
-    public void setNegrilla(boolean check) {
+    public void setNegrilla(Object check) {
         try {
 
             Font ft = null;
-            if (check) {
+            if (castToBoolean(check)) {
                 if (this.getFont().isItalic()) {
                     ft = new Font(this.getFont().getName(), Font.ITALIC + Font.BOLD, this.getFont().getSize());
                 } else {
@@ -118,13 +119,12 @@ public class AreaTextoGenerica extends JTextArea {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Negrilla  en AreaTexto " + this.getName());
         }
     }
-    
-    
-    public void setCurvisa(boolean check) {
+
+    public void setCurvisa(Object check) {
         try {
 
             Font ft = null;
-            if (check) {
+            if (castToBoolean(check)) {
                 if (this.getFont().isBold()) {
                     ft = new Font(this.getFont().getName(), Font.ITALIC + Font.BOLD, this.getFont().getSize());
                 } else {
@@ -164,4 +164,21 @@ public class AreaTextoGenerica extends JTextArea {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en AreaTexto " + this.getName());
         }
     }
+
+    public Integer castToInt(Object nm) {
+        try {
+            return Integer.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Boolean castToBoolean(Object nm) {
+        try {
+            return Boolean.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
 }
