@@ -1,7 +1,15 @@
 
+
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
+
+
+var numero1 = 1000;
+funcion metodo1()
+{
+    imprimir(numero1);
+}
 
 var Ven_Inicio = CrearVentana("#ff0000",500,500,"VentanaUno");
 
@@ -24,7 +32,7 @@ var ContBtn_Inicio = Ven_Inicio.CrearContenedor(100, 200, "#FFFF00", falso, 10, 
 
 
 /////////////////// Boton enviar
-Var btnIngresar_Inicio = ContBtn_Inicio.CrearBoton("Arial", 12, "#000000", 25, 30, metodo1(1,2,3), "Ingresar", 50, 70);
-imprimir(btnIngresar_Inicio.fuente);
+Var btnIngresar_Inicio = ContBtn_Inicio.CrearBoton("Arial", 12, "#000000", 25, 30, metodo1(), "Ingresar", 50, 70);
+
 //btnIngresar_Inicio.AlClic(Guardar_Inicio());
 

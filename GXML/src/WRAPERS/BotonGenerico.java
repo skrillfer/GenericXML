@@ -7,9 +7,13 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.OperacionesARL.OperacionesARL;
+import ScriptCompiler.TablaSimbolo;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
 import javax.swing.JButton;
 
@@ -18,15 +22,45 @@ import javax.swing.JButton;
  * @author fernando
  */
 public class BotonGenerico extends JButton {
-
+    protected TablaSimbolo tabla;
+    protected TablaSimbolo global;
+    public Template miTemplate;
+    
+    OperacionesARL opL = null;
+    
     /*
     Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho    
      */
-    public String referencia;
+    public Object referencia=null;
     Nodo raiz;
 
     public BotonGenerico(Nodo raiz) {
         this.raiz = raiz;
+        
+        
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(referencia!=null)
+                {
+                    if(referencia.getClass().getSimpleName().equalsIgnoreCase("nodo"))
+                    {
+                        Nodo llamada  = (Nodo)referencia;
+                        if(llamada.nombre.equalsIgnoreCase("acceso"))
+                        {
+                            opL = new OperacionesARL(global, tabla, miTemplate);
+                            opL.ejecutar(llamada);
+                        }else
+                        {
+                            Template.reporteError_CJS.agregar("Semtantico", raiz.linea, raiz.columna, "La refencia del boton no es una llamada :"+referencia.toString());
+                        }
+                    }else
+                    {
+                        Template.reporteError_CJS.agregar("Semtantico", raiz.linea, raiz.columna, "La refencia del boton es incorrecta:"+referencia.toString());
+                    }
+                }
+            }
+        });
     }
 
     public boolean aplicaStilo(String nombre) {
@@ -91,7 +125,15 @@ public class BotonGenerico extends JButton {
         }
     }
 
-    public void setReferencia(String referencia) {
+    
+    public void setearCore(TablaSimbolo global, TablaSimbolo tabla, Template template)
+    {
+        this.global = global;
+        this.tabla = tabla;
+        this.miTemplate = template;
+    }
+    
+    public void setReferencia(Object referencia) {
         try {
             this.referencia = referencia;
         } catch (Exception e) {

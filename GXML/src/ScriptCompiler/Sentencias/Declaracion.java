@@ -153,6 +153,9 @@ public class Declaracion extends Compilador {
                     if(!nombre.equals("referencia"))
                     {
                         resultado = opL.ejecutar(EXP);
+                    }else
+                    {
+                        resultado = new Resultado("String", EXP);
                     }
                 }
                 

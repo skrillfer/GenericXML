@@ -543,6 +543,10 @@ public class LlamadaMetodo extends Compilador {
                 clase.Inicializada = true;
             }
 
+            
+            /*  al boton le voy a setear la tabla,global y template actual*/
+            
+            nuevoBoton.setearCore(global, tabla, miTemplate);
             /*---------------------------------------------------------------------*/
             //(Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho) la referencia es una llamada a metodo
             if (!esNulo(fuente)) {
@@ -566,7 +570,7 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(referencia)) {
-                nuevoBoton.setReferencia(referencia.valor.toString());
+                nuevoBoton.setReferencia(referencia.valor);
             }
 
             if (!esNulo(valor)) {
