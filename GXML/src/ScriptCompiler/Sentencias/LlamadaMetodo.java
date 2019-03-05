@@ -16,6 +16,7 @@ import ScriptCompiler.Resultado;
 import ScriptCompiler.TablaSimbolo;
 import WRAPERS.AreaTextoGenerica;
 import WRAPERS.BotonGenerico;
+import WRAPERS.CajaNumericaGenerica;
 import WRAPERS.CajaTextoGenerica;
 import WRAPERS.PanelGenerico;
 import WRAPERS.TextoGenerico;
@@ -136,14 +137,12 @@ public class LlamadaMetodo extends Compilador {
         int index = 0;
         for (Nodo hijo : nodoParametros.hijos) {
             if (pos == index) {
-                JOptionPane.showMessageDialog(null, pos);
                 parametros.add(new Resultado("String", hijo));
             } else {
                 opL = new OperacionesARL(global, tabla, miTemplate);
                 Resultado resultado = opL.ejecutar(hijo);
                 parametros.add(resultado);
             }
-
             index++;
         }
         return parametros;
@@ -257,6 +256,13 @@ public class LlamadaMetodo extends Compilador {
                             crearAreaTexto();
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "crearAreaTexto error:" + e.getMessage());
+                        }
+                        break;
+                    case "crearcontrolnumerico":
+                        try {
+                            crearControlNumerico();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "crearControlNumerico error:" + e.getMessage());
                         }
                         break;
                     case "crearboton":
@@ -825,6 +831,136 @@ public class LlamadaMetodo extends Compilador {
             }
 
         }
+    }
+
+    public void crearControlNumerico() {
+        //Alto, Ancho, Maximo, Minimo, X, Y, defecto, nombre
+        String[] stilos = {"alto", "ancho", "maximo", "minimo", "x", "y", "defecto", "nombre"};
+
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametros(raiz);
+
+        CajaNumericaGenerica nuevaNumerica = new CajaNumericaGenerica(raiz);
+
+        /*----------------###############################---------------------*/
+        Resultado alto = null, ancho = null, maximo = null, minimo = null, x = null, y = null, nombre = null, defecto = null;
+
+        try {
+            alto = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            ancho = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            maximo = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            minimo = parametros.get(3);
+        } catch (Exception e) {
+        }
+
+        try {
+            x = parametros.get(4);
+        } catch (Exception e) {
+        }
+
+        try {
+            y = parametros.get(5);
+        } catch (Exception e) {
+        }
+
+        try {
+            defecto = parametros.get(6);
+        } catch (Exception e) {
+        }
+
+        try {
+            nombre = parametros.get(7);
+        } catch (Exception e) {
+        }
+
+
+        /*----------------###############################---------------------*/
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 7);
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevaNumerica;
+                clase.nombre = "CajaNumerica";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(alto)) {
+                nuevaNumerica.setAlto(alto.valor.toString());
+            }
+
+            if (!esNulo(ancho)) {
+                nuevaNumerica.setAncho(ancho.valor.toString());
+            }
+
+            if (!esNulo(maximo)) {
+                nuevaNumerica.setMaximo(maximo.valor.toString());
+            }
+            
+            if (!esNulo(minimo)) {
+                nuevaNumerica.setMinimo(minimo.valor.toString());
+            }
+
+            if (!esNulo(x)) {
+                nuevaNumerica.setX(x.valor.toString());
+            }
+
+            if (!esNulo(y)) {
+                nuevaNumerica.setY(y.valor.toString());
+            }
+
+            if (!esNulo(defecto)) {
+                nuevaNumerica.setTexto(defecto.valor.toString());
+            }
+
+            if (!esNulo(nombre)) {
+                nuevaNumerica.setId(nombre.valor.toString());
+            }
+
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(actualResultado)) {
+                if (esClase(actualResultado.valor)) {
+                    Clase clase = (Clase) actualResultado.valor;
+                    if (clase.Componente != null) {
+
+                        switch (clase.nombre.toLowerCase()) {
+                            case "ventana":
+                                nuevaNumerica.setBounds(nuevaNumerica.getLocation().x, nuevaNumerica.getLocation().y, nuevaNumerica.getPreferredSize().width, nuevaNumerica.getPreferredSize().height);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevaNumerica);
+
+                                break;
+                            case "panel":
+                                nuevaNumerica.setBounds(nuevaNumerica.getLocation().x, nuevaNumerica.getLocation().y, nuevaNumerica.getPreferredSize().width, nuevaNumerica.getPreferredSize().height);
+                                ((PanelGenerico) clase.Componente).add(nuevaNumerica);
+                                break;
+                        }
+
+                    }
+                }
+            }
+
+        }
+
     }
 
     public void crearCajaTexto() {

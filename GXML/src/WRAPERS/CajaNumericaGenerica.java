@@ -7,47 +7,133 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
  *
  * @author fernando
  */
-public class CajaNumericaGenerica extends JTextField {
-/*
+public class CajaNumericaGenerica extends JPanel {
+
+    JTextField caja = new JTextField();
+    /*
     Alto, Ancho, Maximo, Minimo, X, Y, defecto, nombre 
-*/
+     */
     String lastText = "";
     Double maximo = 0.0;
     Double minimo = 0.0;
     Nodo raiz;
 
+    JButton subir = new JButton("");
+    JButton bajar = new JButton("");
+
     public CajaNumericaGenerica(Nodo raiz) {
         this.raiz = raiz;
         //Estilo por defecto
+        setControlNumerico();
+
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+        subir.setPreferredSize(new Dimension(10, 10));
+        bajar.setPreferredSize(new Dimension(10, 10));
+
+        subir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                INCREMENTAR();
+            }
+        });
+
+        bajar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DECREMENTAR();
+            }
+        });
+        JPanel btns = new JPanel();
+        btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
+        btns.add(subir);
+        btns.add(bajar);
+
+        this.add(caja);
+        this.add(btns);
+        this.add(caja);
+        this.add(btns);
     }
 
     public void setControlNumerico() {
-        this.addKeyListener(new KeyAdapter() {
+        caja.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                if (!getText().equals("") && !getText().equals("-")) {
-                    if (!MATCH()) {
-                        setText(lastText);
-                    } else {
-                        lastText = getText();
-                    }
+                int keyCode = e.getKeyCode();
+                switch (keyCode) {
+                    case KeyEvent.VK_UP:
+                        INCREMENTAR();
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        DECREMENTAR();
+                        break;
+                    default:
+                        if (!caja.getText().equalsIgnoreCase(lastText)) {
+                            if (!caja.getText().equals("") && !caja.getText().equals("-")) {
+                                if (!MATCH()) {
+                                    caja.setText(lastText);
+                                } else {
+                                    lastText = caja.getText();
+                                }
+                            }
+                        }
+
+                        break;
                 }
+
             }
         });
+    }
+
+    public void INCREMENTAR() {
+        try {
+            Double num = Double.valueOf(caja.getText());
+            num++;
+            caja.setText(num.toString());
+            if (!MATCH()) {
+                caja.setText(lastText);
+            } else {
+                lastText = caja.getText();
+            }
+        } catch (Exception xe) {
+        }
+    }
+
+    public void DECREMENTAR() {
+        try {
+            Double num = Double.valueOf(caja.getText());
+            num--;
+            caja.setText(num.toString());
+            if (!MATCH()) {
+                caja.setText(lastText);
+            } else {
+                lastText = caja.getText();
+            }
+        } catch (Exception xe) {
+        }
     }
 
     public boolean MATCH() {
@@ -59,11 +145,12 @@ public class CajaNumericaGenerica extends JTextField {
         Pattern r = Pattern.compile(pattern);
 
         // Now create matcher object.
-        Matcher m = r.matcher(this.getText());
+        Matcher m = r.matcher(caja.getText());
         if (m.matches()) {
-            if (this.maximo != this.minimo) {
-                if (Double.valueOf(this.getText()) <= this.maximo && this.maximo > this.minimo) {
-                    if (Double.valueOf(this.getText()) >= this.minimo && this.minimo < this.maximo) {
+
+            try {
+                if (Double.valueOf(caja.getText()) <= this.maximo) {
+                    if (Double.valueOf(caja.getText()) >= this.minimo) {
                         return true;
                     } else {
                         return false;
@@ -71,74 +158,77 @@ public class CajaNumericaGenerica extends JTextField {
                 } else {
                     return false;
                 }
-            } else {
-                return true;
+            } catch (Exception e) {
+                return false;
             }
+
         } else {
             return false;
         }
     }
 
-    public void setAlto(int alto) {
+    public void setAlto(Object alto) {
         try {
-            setPreferredSize(new Dimension(getPreferredSize().width, alto));
+            setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto + "] en CajaNumerica " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto.toString() + "] en CajaNumerica " + this.getName());
 
         }
         updateUI();
     }
 
-    public void setAncho(int ancho) {
+    public void setAncho(Object ancho) {
         try {
-            setPreferredSize(new Dimension(ancho, getPreferredSize().height));
+            setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho + "] en CajaNumerica " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho.toString() + "] en CajaNumerica " + this.getName());
 
         }
         updateUI();
     }
 
-    public void setMaximo(Double minimo) {
+    public void setMaximo(Object maximo) {
         try {
-            this.minimo = minimo;
+            this.maximo = castToDouble(maximo);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Minimo [" + minimo + "] en CajaNumerica " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Maximo [" + maximo.toString() + "] en CajaNumerica " + this.getName());
 
         }
         updateUI();
     }
 
-    public void setMinimo(Double maximo) {
+    public void setMinimo(Object minimo) {
         try {
-            this.maximo = maximo;
+            this.minimo = castToDouble(minimo);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Maximo [" + maximo + "] en CajaNumerica " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Minimo [" + minimo.toString() + "] en CajaNumerica " + this.getName());
 
         }
         updateUI();
     }
 
-    public void setX(int x) {
+    public void setX(Object x) {
         try {
-            this.setLocation(x, this.getLocation().y);
+            this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en CajaNumerica " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x.toString() + "] en CajaNumerica " + this.getName());
         }
     }
 
-    public void setY(int y) {
+    public void setY(Object y) {
         try {
-            this.setLocation(this.getLocation().x, y);
+            this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en CajaNumerica " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y.toString() + "] en CajaNumerica " + this.getName());
         }
     }
 
     //Valor por Defecto
     public void setTexto(String txt) {
         try {
-            this.setText(txt);
+
+            caja.setText(txt);
+            lastText = txt;
         } catch (Exception ex) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto por Defecto [" + txt + "] en CajaNumerica " + this.getName());
 
@@ -151,6 +241,22 @@ public class CajaNumericaGenerica extends JTextField {
             this.setName(id);
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en CajaNumerica " + this.getName());
+        }
+    }
+
+    public Integer castToInt(Object nm) {
+        try {
+            return Integer.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Double castToDouble(Object nm) {
+        try {
+            return Double.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 
