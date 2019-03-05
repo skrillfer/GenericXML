@@ -5,7 +5,9 @@
  */
 package gxml;
 
+import Estructuras.Nodo;
 import WRAPERS.PanelGenerico;
+import WRAPERS.Reproductor;
 import javax.swing.JFrame;
 
 /**
@@ -20,21 +22,21 @@ public class GXML {
     public static void main(String[] args) {
 
         
-         JFrame frame = new JFrame("Capture");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         //JFrame frame = new JFrame("Capture");
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         PanelGenerico pane=null;
         //pane.setBorder();
-        frame.setContentPane(pane);
+        /*frame.setContentPane(pane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocation(50, 50);
         frame.setSize(800, 600);
 
-        frame.setVisible(true);
+        frame.setVisible(true);*/
         
-        /*Reproductor reproductor = new Reproductor(new Nodo());
-        reproductor.setRuta("/home/fernando/Vídeos/Tutorial de Modelo OSI.mp4");
-
+        Reproductor reproductor = new Reproductor(new Nodo());
+        reproductor.setRuta("/home/fernando/Imágenes/capppp.png");
+        reproductor.setAutoReproduccion(true);
         JFrame frame = new JFrame("Capture");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -46,7 +48,7 @@ public class GXML {
         frame.setVisible(true);
 
         // Reproduce el vídeo.
-        reproductor.iniciarReproduccion();*/
+        //reproductor.iniciarReproduccion();
 
     }
 

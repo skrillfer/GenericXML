@@ -14,8 +14,16 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
@@ -25,11 +33,12 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
  * @author fernando
  */
 public class Reproductor extends JPanel {
-/*
+
+    /*
     Ruta, X, Y, Auto-reproductor, Alto, Ancho    
-*/
+     */
     Nodo raiz;
-    
+
     boolean yainicio = false;
     boolean auto = false;
     String ruta = "";
@@ -92,15 +101,31 @@ public class Reproductor extends JPanel {
                 try {
                     if (!yainicio) {
                         mediaPlayer.playMedia(ruta);
-                        yainicio=true;
+                        yainicio = true;
                     } else {
-                        mediaPlayer.play(); 
+                        mediaPlayer.play();
                     }
 
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
+            }
+        });
+        this.addAncestorListener(new AncestorListener() {
+           
+            @Override
+            public void ancestorAdded(AncestorEvent event) {
+                iniciarReproduccion();
+            }
 
+            @Override
+            public void ancestorRemoved(AncestorEvent event) {
+                
+            }
+
+            @Override
+            public void ancestorMoved(AncestorEvent event) {
+                
             }
         });
     }
@@ -117,55 +142,69 @@ public class Reproductor extends JPanel {
         this.ruta = ruta;
     }
 
-    public void setX(int x) {
+    public void setX(Object x) {
         try {
-            this.setLocation(x, this.getLocation().y);
+            this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en Reproductor " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x.toString() + "] en Reproductor " + this.getName());
         }
     }
 
-    public void setY(int y) {
+    public void setY(Object y) {
         try {
-            this.setLocation(this.getLocation().x, y);
+            this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en Reproductor " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y.toString() + "] en Reproductor " + this.getName());
         }
     }
-    
-    
-    public void setAutoReproduccion(boolean check)
-    {
+
+    public void setAutoReproduccion(Object check) {
         try {
-            this.auto = check;
+            this.auto = castToBoolean(check);
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear AutoReproduccion  en Reproductor " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear AutoReproduccion " + check.toString() + " en Reproductor " + this.getName());
         }
     }
-    
-    public void setAncho(int ancho) {
+
+    public void setAncho(Object ancho) {
         try {
-            setPreferredSize(new Dimension(ancho, getPreferredSize().height));
+            setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho + "] en Reproductor " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho.toString() + "] en Reproductor " + this.getName());
         }
         updateUI();
     }
 
-    public void setAlto(int alto) {
+    public void setAlto(Object alto) {
         try {
-            setPreferredSize(new Dimension(getPreferredSize().width, alto));
+            setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto + "] en Reproductor " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto.toString() + "] en Reproductor " + this.getName());
         }
         updateUI();
     }
-    
+
     public void setId(String id) {
         try {
             this.setName(id);
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en Reproductor " + this.getName());
+        }
+    }
+
+    public Integer castToInt(Object nm) {
+        try {
+            return Integer.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    public Boolean castToBoolean(Object nm) {
+        try {
+            return Boolean.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 }

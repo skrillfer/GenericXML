@@ -833,6 +833,12 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
+    
+    public void crearReproductor()
+    {
+    
+    }
+    
     public void crearControlNumerico() {
         //Alto, Ancho, Maximo, Minimo, X, Y, defecto, nombre
         String[] stilos = {"alto", "ancho", "maximo", "minimo", "x", "y", "defecto", "nombre"};
