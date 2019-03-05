@@ -1,5 +1,6 @@
 
 
+
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +44,7 @@ Var btnRegistrar_Inicio = ContBtn_Inicio.CrearBoton("Arial", 14, "#000000", 75, 
 /////////////////         Fin Traduccion Ventana Inicio         /////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
-Cont1_Inicio.CrearControlNumerico(50, 50, 20, 10, 70, 80, 18, "CEdad"); //Sin valor maximo que sea nulo
+Cont1_Inicio.CrearControlNumerico(50, 50, 20, nulo, 70, 80, 18, "CEdad"); //Sin valor maximo que sea nulo
 
 Ven_Inicio.AlCargar(); /// Traduccion ventana principal
 

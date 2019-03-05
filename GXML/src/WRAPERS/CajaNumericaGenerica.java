@@ -37,8 +37,8 @@ public class CajaNumericaGenerica extends JPanel {
     Alto, Ancho, Maximo, Minimo, X, Y, defecto, nombre 
      */
     String lastText = "";
-    Double maximo = 0.0;
-    Double minimo = 0.0;
+    Double maximo = null;
+    Double minimo = null;
     Nodo raiz;
 
     JButton subir = new JButton("");
@@ -149,15 +149,33 @@ public class CajaNumericaGenerica extends JPanel {
         if (m.matches()) {
 
             try {
-                if (Double.valueOf(caja.getText()) <= this.maximo) {
-                    if (Double.valueOf(caja.getText()) >= this.minimo) {
-                        return true;
+
+                if (maximo != null) {
+                    if (Double.valueOf(caja.getText()) <= this.maximo) {
+                        if (minimo != null) {
+                            if (Double.valueOf(caja.getText()) >= this.minimo) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return true;
+                        }
                     } else {
                         return false;
                     }
                 } else {
-                    return false;
+                    if (minimo != null) {
+                        if (Double.valueOf(caja.getText()) >= this.minimo) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
                 }
+
             } catch (Exception e) {
                 return false;
             }
