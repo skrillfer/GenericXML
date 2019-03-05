@@ -7,10 +7,16 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.OperacionesARL.OperacionesARL;
+import ScriptCompiler.TablaSimbolo;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -18,13 +24,68 @@ import javax.swing.JFrame;
  */
 public class VentanaGenerica extends JFrame {
 
+    protected TablaSimbolo tabla;
+    protected TablaSimbolo global;
+    public Template miTemplate;
+
+    OperacionesARL opL = null;
+    Object alCargar = null;
+    Object alCerrar = null;
+
     Nodo raiz;
 
     public VentanaGenerica(Nodo raiz) throws HeadlessException {
         this.raiz = raiz;
-        setLayout(null);
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(null);
 
+        this.addComponentListener(new ComponentAdapter() {
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+                if (alCargar != null) {
+                    if (alCargar.getClass().getSimpleName().equalsIgnoreCase("nodo")) {
+                        Nodo llamada = (Nodo) alCargar;
+                        if (llamada.nombre.equalsIgnoreCase("acceso")) {
+                            opL = new OperacionesARL(global, tabla, miTemplate);
+                            opL.ejecutar(llamada);
+                        } else {
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Alcargar  dela ventana no es una llamada :" + alCargar.toString());
+                        }
+                    } else {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Alcargar  dela ventana es incorrecta:" + alCargar.toString());
+                    }
+                }
+            }
+        });
+    }
+
+    public void setearCore(TablaSimbolo global, TablaSimbolo tabla, Template template) {
+        this.global = global;
+        this.tabla = tabla;
+        this.miTemplate = template;
+    }
+
+    //Al Cargar
+    public void setAlCargar(Object alcargar) {
+        try {
+            this.alCargar = alcargar;
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear AlCargar [" + alcargar.toString() + "] en Ventana Generica " + this.getName());
+        }
+    }
+
+    //Al Cerrar
+    public void setAlCerrar(Object alcerrar) {
+        try {
+            this.alCerrar = alcerrar;
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear AlCerrar [" + alcerrar.toString() + "] en Ventana Generica " + this.getName());
+        }
     }
 
     public void setTitulo(String titulo) {
@@ -37,8 +98,8 @@ public class VentanaGenerica extends JFrame {
 
     public void setColor(String hex) {
         try {
-            this.setBackground(Color.decode(hex));
-            
+            getContentPane().setBackground(Color.decode(hex));
+
         } catch (NumberFormatException e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en Ventana Generica " + this.getName());
         }

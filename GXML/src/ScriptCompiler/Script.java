@@ -80,16 +80,16 @@ public class Script extends Compilador {
 
         //new Heredar(claseActual);
         for (VentanaGenerica listaVentana : listaVentanas) {
-            System.out.println(listaVentana.getPreferredSize().width + "-" + listaVentana.getPreferredSize().height);
+            //System.out.println(listaVentana.getPreferredSize().width + "-" + listaVentana.getPreferredSize().height);
             //listaVentana.getContentPane().setLayout(null);
 
 
-            listaVentana.pack();
-            listaVentana.setLayout(null);
+            //listaVentana.pack();
+            //listaVentana.setLayout(null);
 
             //listaVentana.setBounds(100, 10, listaVentana.getSize().width, listaVentana.getSize().height);
-            listaVentana.setLocationRelativeTo(null);
-            listaVentana.setVisible(true);
+            //listaVentana.setLocationRelativeTo(null);
+            //listaVentana.setVisible(true);
         }
 
     }

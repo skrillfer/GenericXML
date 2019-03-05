@@ -20,9 +20,13 @@ import WRAPERS.CajaTextoGenerica;
 import WRAPERS.PanelGenerico;
 import WRAPERS.TextoGenerico;
 import WRAPERS.VentanaGenerica;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -264,21 +268,88 @@ public class LlamadaMetodo extends Compilador {
                         break;
 
                     case "alclic":
+                        proceder = false;
+
                         try {
-                            Clase clas = (Clase)actualResultado.valor;
-                            if(clas.Componente!=null)
-                            {
+                            Clase clas = (Clase) actualResultado.valor;
+                            if (clas.Componente != null) {
                                 Nodo LTExp = raiz.get(0);
-                                switch(clas.nombre.toLowerCase())
-                                {
+                                switch (clas.nombre.toLowerCase()) {
                                     case "boton":
-                                        proceder=false;
-                                        ((BotonGenerico)clas.Componente).setAlClick(LTExp.get(0));
+                                        ((BotonGenerico) clas.Componente).setAlClick(LTExp.get(0));
                                         break;
                                 }
                             }
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "alclic error:" + e.getMessage());
+                        }
+                        break;
+                    case "alcargar":
+                        try {
+                            Clase clas = (Clase) actualResultado.valor;
+                            if (clas.Componente != null) {
+                                proceder = false;
+                                Nodo LTExp = raiz.get(0);
+                                if (LTExp.size() > 0) {
+                                    switch (clas.nombre.toLowerCase()) {
+                                        case "ventana":
+                                            ((VentanaGenerica) clas.Componente).setAlCargar(LTExp.get(0));
+                                            break;
+                                    }
+                                } else {
+                                    if (clas.nombre.equalsIgnoreCase("ventana")) {
+                                        VentanaGenerica vt = ((VentanaGenerica) clas.Componente);
+
+                                        if (vt.getPreferredSize().width > 50 && vt.getPreferredSize().height > 50) {
+                                            vt.setBounds(100, 10, vt.getPreferredSize().width, vt.getPreferredSize().height);
+                                        } else {
+                                            int maxWidth = 0;
+                                            int maxHeigth = 0;
+                                            int x = 0;
+                                            int y = 0;
+                                            for (Component component : vt.getContentPane().getComponents()) {
+                                                if (component.getLocation().x > x) {
+                                                    x = component.getLocation().x;
+                                                    maxWidth = component.getPreferredSize().width + x;
+                                                }
+
+                                                if (component.getLocation().y > y) {
+                                                    y = component.getLocation().y;
+                                                    maxHeigth = component.getPreferredSize().height + y;
+                                                }
+                                            }
+                                            vt.setBounds(100, 10, maxWidth, maxHeigth);
+                                        }
+                                        vt.setLocationRelativeTo(null);
+                                        vt.setVisible(true);
+                                    }
+                                }
+
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "alcargar error:" + e.getMessage());
+                        }
+                        break;
+                    case "alcerrar":
+                        try {
+                            Clase clas = (Clase) actualResultado.valor;
+                            if (clas.Componente != null) {
+                                proceder = false;
+                                Nodo LTExp = raiz.get(0);
+                                if (LTExp.size() > 0) {
+                                    switch (clas.nombre.toLowerCase()) {
+                                        case "ventana":
+                                            ((VentanaGenerica) clas.Componente).setAlCerrar(LTExp.get(0));
+                                            break;
+                                    }
+                                } else {
+                                    if (clas.nombre.equalsIgnoreCase("ventana")) {
+                                        ((VentanaGenerica) clas.Componente).dispose();
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "alcerrar error:" + e.getMessage());
                         }
                         break;
 
@@ -306,7 +377,7 @@ public class LlamadaMetodo extends Compilador {
         ArrayList<Resultado> parametros = getParametros(raiz);
 
         VentanaGenerica nuevaVentana = new VentanaGenerica(raiz);
-
+        nuevaVentana.setearCore(global, tabla, miTemplate);
         /*----------------###############################---------------------*/
         Resultado color = null, alto = null, ancho = null, id = null;
         try {
@@ -472,7 +543,7 @@ public class LlamadaMetodo extends Compilador {
                             case "ventana":
                                 nuevoPanel.setLayout(null);
                                 nuevoPanel.setBounds(nuevoPanel.getLocation().x, nuevoPanel.getLocation().y, nuevoPanel.getPreferredSize().width, nuevoPanel.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).add(nuevoPanel);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevoPanel);
 
                                 break;
                             case "panel":
@@ -612,7 +683,7 @@ public class LlamadaMetodo extends Compilador {
                             case "ventana":
                                 nuevoBoton.setLayout(null);
                                 nuevoBoton.setBounds(nuevoBoton.getLocation().x, nuevoBoton.getLocation().y, nuevoBoton.getPreferredSize().width, nuevoBoton.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).add(nuevoBoton);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevoBoton);
 
                                 break;
                             case "panel":
@@ -740,7 +811,7 @@ public class LlamadaMetodo extends Compilador {
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevaTexto.setBounds(nuevaTexto.getLocation().x, nuevaTexto.getLocation().y, nuevaTexto.getPreferredSize().width, nuevaTexto.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).add(nuevaTexto);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevaTexto);
 
                                 break;
                             case "panel":
@@ -895,7 +966,7 @@ public class LlamadaMetodo extends Compilador {
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).add(nuevaAreaText);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevaAreaText);
 
                                 break;
                             case "panel":
@@ -1050,7 +1121,7 @@ public class LlamadaMetodo extends Compilador {
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).add(nuevaAreaText);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevaAreaText);
 
                                 break;
                             case "panel":
