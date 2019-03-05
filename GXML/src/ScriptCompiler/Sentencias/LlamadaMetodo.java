@@ -19,6 +19,7 @@ import WRAPERS.BotonGenerico;
 import WRAPERS.CajaNumericaGenerica;
 import WRAPERS.CajaTextoGenerica;
 import WRAPERS.PanelGenerico;
+import WRAPERS.Reproductor;
 import WRAPERS.TextoGenerico;
 import WRAPERS.VentanaGenerica;
 import java.awt.Component;
@@ -833,12 +834,57 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
-    
-    public void crearReproductor()
-    {
-    
+    public void crearReproductor() {
+        //Ruta, X, Y, Auto-reproductor, Alto, Ancho
+        String[] stilos = {"ruta", "x", "y", "auto_reproductor", "alto", "ancho"};
+
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametros(raiz);
+
+        Reproductor nuevoReproductor = new Reproductor(raiz);
+
+        /*----------------###############################---------------------*/
+        Resultado ruta = null, x = null, y = null, auto_reproductor = null, alto = null, ancho = null;
+
+        try {
+            ruta = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            x = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            y = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            auto_reproductor = parametros.get(3);
+        } catch (Exception e) {
+        }
+
+        try {
+            alto = parametros.get(4);
+        } catch (Exception e) {
+        }
+
+        try {
+            ancho = parametros.get(5);
+        } catch (Exception e) {
+        }
+
+        /*----------------###############################---------------------*/
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 5);
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
     }
-    
+
     public void crearControlNumerico() {
         //Alto, Ancho, Maximo, Minimo, X, Y, defecto, nombre
         String[] stilos = {"alto", "ancho", "maximo", "minimo", "x", "y", "defecto", "nombre"};
@@ -921,7 +967,7 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(maximo)) {
                 nuevaNumerica.setMaximo(maximo.valor.toString());
             }
-            
+
             if (!esNulo(minimo)) {
                 nuevaNumerica.setMinimo(minimo.valor.toString());
             }
