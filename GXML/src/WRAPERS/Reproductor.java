@@ -18,6 +18,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -100,10 +101,21 @@ public class Reproductor extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!yainicio) {
-                        mediaPlayer.playMedia(ruta);
-                        yainicio = true;
+                        File file = new File(ruta);
+                        if (file.exists()) {
+                            mediaPlayer.playMedia(ruta);
+                            yainicio = true;
+                        } else {
+                            Template.reporteError_CJS.agregar("Ejecucion", raiz.linea, raiz.columna, "Error al reproducir ruta[" + ruta + "] en Reproductor " + getName());
+                        }
+
                     } else {
-                        mediaPlayer.play();
+                        File file = new File(ruta);
+                        if (file.exists()) {
+                            mediaPlayer.play();
+                        } else {
+                            Template.reporteError_CJS.agregar("Ejecucion", raiz.linea, raiz.columna, "Error al reproducir ruta[" + ruta + "] en Reproductor " + getName());
+                        }
                     }
 
                 } catch (Exception ex) {
@@ -112,7 +124,7 @@ public class Reproductor extends JPanel {
             }
         });
         this.addAncestorListener(new AncestorListener() {
-           
+
             @Override
             public void ancestorAdded(AncestorEvent event) {
                 iniciarReproduccion();
@@ -120,12 +132,12 @@ public class Reproductor extends JPanel {
 
             @Override
             public void ancestorRemoved(AncestorEvent event) {
-                
+
             }
 
             @Override
             public void ancestorMoved(AncestorEvent event) {
-                
+
             }
         });
     }
@@ -134,7 +146,12 @@ public class Reproductor extends JPanel {
 
         if (auto) {
             yainicio = true;
-            mediaPlayer.playMedia(this.ruta);
+            File file = new File(this.ruta);
+            if (file.exists()) {
+                mediaPlayer.playMedia(this.ruta);
+            } else {
+                Template.reporteError_CJS.agregar("Ejecucion", raiz.linea, raiz.columna, "Error al reproducir ruta[" + this.ruta + "] en Reproductor " + this.getName());
+            }
         }
     }
 
