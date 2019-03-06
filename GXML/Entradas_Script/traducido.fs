@@ -1,4 +1,3 @@
-
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +18,7 @@ var Cont1_Inicio = Ven_Inicio.CrearContenedor(200, 400, "#00FF00", verdadero, 20
 ////////////////// Valores de Nombre
 cont1_inicio.Crearimagen("/home/fernando/Imágenes/ASUS_X_SERIES_X555QG.jpg", 10, 20, falso, 70,70);
 cont1_inicio.Crearvideo("/home/fernando/Vídeos/Explicación del Modelo OSI.mp4", 10, 70, falso, 70,70);
-cont1_inicio.Crearaudio("/home/fernando/Música/Arcangel Bad Bunny - Original [Official Video].mp3", 10, 140, verdadero, 70,70);
+cont1_inicio.creardesplegable(90,90 ,["1",2,3,"4"], 10, 140,"3","desple1");
 
 /////////////////// Contenedor ContBtn
 var ContBtn_Inicio = Ven_Inicio.CrearContenedor(100, 200, "#FFFF00", falso, 10, 220);

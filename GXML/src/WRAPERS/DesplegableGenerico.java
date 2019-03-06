@@ -17,7 +17,7 @@ import javax.swing.JComboBox;
  * @author fernando
  */
 public class DesplegableGenerico extends JComboBox {
-
+    Object defecto=null;
     Arreglo lista_datos;
     /*
     Alto, Ancho, lista, X, Y, Defecto, nombre    
@@ -28,29 +28,30 @@ public class DesplegableGenerico extends JComboBox {
         this.raiz = raiz;
     }
 
-    public void setAncho(int ancho) {
+    public void setAncho(Object ancho) {
         try {
-            setPreferredSize(new Dimension(ancho, getPreferredSize().height));
+            setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho + "] en Desplegable " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Ancho [" + ancho.toString() + "] en Desplegable " + this.getName());
         }
         updateUI();
     }
 
-    public void setAlto(int alto) {
+    public void setAlto(Object alto) {
         try {
-            setPreferredSize(new Dimension(getPreferredSize().width, alto));
+            setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto + "] en Desplegable " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Alto [" + alto.toString() + "] en Desplegable " + this.getName());
         }
         updateUI();
     }
 
-    public void setLista(Arreglo arr) {
+    public void setLista(Object arr) {
         try {
-            this.lista_datos = arr;
+            Arreglo miarr = (Arreglo)arr;
+            this.lista_datos = miarr;
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Lista de Datos  en Desplegable " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Lista de Datos, no es una lista,  en Desplegable " + this.getName());
         }
     }
 
@@ -73,39 +74,59 @@ public class DesplegableGenerico extends JComboBox {
             } catch (Exception e) {
             }
         }
-    }
-
-    public void setX(int x) {
         try {
-            this.setLocation(x, this.getLocation().y);
+            cargarDefecto();
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x + "] en Desplegable " + this.getName());
+        }
+    }
+    
+    public void cargarDefecto()
+    {
+        try {
+            if (lista_datos != null) {
+                boolean existe = lista_datos.existeOpcion(defecto.toString());
+                if (existe) {
+                    this.setSelectedItem(defecto.toString());
+                } else {
+                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El valor por defecto [" + defecto.toString() + "] no existe en la lista de Desplegable " + this.getName());
+                }
+            }
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto [" + defecto.toString() + "] en Desplegable " + this.getName());
+        }
+        updateUI();
+    }
+    
+    public void setX(Object x) {
+        try {
+            this.setLocation(castToInt(x), this.getLocation().y);
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en X [" + x.toString() + "] en Desplegable " + this.getName());
         }
     }
 
-    public void setY(int y) {
+    public void setY(Object y) {
         try {
-            this.setLocation(this.getLocation().x, y);
+            this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y + "] en Desplegable " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Location en Y [" + y.toString() + "] en Desplegable " + this.getName());
         }
     }
 
     //Defecto
-    public void setDefecto(String txt) {
+    public void setDefecto(Object txt) {
         try {
-            if (lista_datos != null) {
-                boolean existe = lista_datos.existeOpcion(txt);
-                if (existe) {
-                    this.setSelectedItem(txt);
-                } else {
-                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El valor por defecto [" + txt + "] no existe en la lista de Desplegable " + this.getName());
+            this.defecto = txt;
+            if(lista_datos!=null)
+            {
+                if(lista_datos.getDatos().size()>0)
+                {
+                    cargarDefecto();
                 }
             }
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto [" + txt + "] en Desplegable " + this.getName());
         }
-        updateUI();
     }
 
     //Nombre o id
@@ -114,6 +135,14 @@ public class DesplegableGenerico extends JComboBox {
             this.setName(id);
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en Desplegable " + this.getName());
+        }
+    }
+    
+    public Integer castToInt(Object nm) {
+        try {
+            return Integer.valueOf(nm.toString());
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 }

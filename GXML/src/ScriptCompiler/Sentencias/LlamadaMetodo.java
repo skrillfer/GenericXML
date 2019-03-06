@@ -18,6 +18,7 @@ import WRAPERS.AreaTextoGenerica;
 import WRAPERS.BotonGenerico;
 import WRAPERS.CajaNumericaGenerica;
 import WRAPERS.CajaTextoGenerica;
+import WRAPERS.DesplegableGenerico;
 import WRAPERS.PanelGenerico;
 import WRAPERS.Reproductor;
 import WRAPERS.TextoGenerico;
@@ -276,11 +277,18 @@ public class LlamadaMetodo extends Compilador {
                     case "crearreproductor":
                     case "crearaudio":
                     case "crearvideo":
-                    case "crearimagen":    
+                    case "crearimagen":
                         try {
                             crearReproductor();
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "crearReproductor error:" + e.getMessage());
+                        }
+                        break;
+                    case "creardesplegable":
+                        try {
+                            crearDesplegable();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "crearDesplegable error:" + e.getMessage());
                         }
                         break;
 
@@ -907,7 +915,7 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(ruta)) {
                 nuevoReproductor.setRuta(ruta.valor.toString());
             }
-            
+
             if (!esNulo(x)) {
                 nuevoReproductor.setX(x.valor.toString());
             }
@@ -915,11 +923,11 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(y)) {
                 nuevoReproductor.setY(y.valor.toString());
             }
-            
+
             if (!esNulo(auto_reproductor)) {
                 nuevoReproductor.setAutoReproduccion(auto_reproductor.valor.toString());
             }
-            
+
             if (!esNulo(alto)) {
                 nuevoReproductor.setAlto(alto.valor.toString());
             }
@@ -951,6 +959,126 @@ public class LlamadaMetodo extends Compilador {
             }
 
         }
+    }
+
+    public void crearDesplegable() {
+        //(Alto, Ancho, lista, X, Y, Defecto, nombre)
+        String[] stilos = {"alto", "ancho", "lista", "x", "y", "defecto", "nombre"};
+
+        proceder = false;
+        ArrayList<Resultado> parametros = getParametros(raiz);
+
+        DesplegableGenerico nuevoDesple = new DesplegableGenerico(raiz);
+        /*----------------###############################---------------------*/
+        Resultado alto = null, ancho = null, lista = null, x = null, y = null, defecto = null, nombre = null;
+
+        try {
+            alto = parametros.get(0);
+        } catch (Exception e) {
+        }
+
+        try {
+            ancho = parametros.get(1);
+        } catch (Exception e) {
+        }
+
+        try {
+            lista = parametros.get(2);
+        } catch (Exception e) {
+        }
+
+        try {
+            x = parametros.get(3);
+        } catch (Exception e) {
+        }
+
+        try {
+            y = parametros.get(4);
+        } catch (Exception e) {
+        }
+
+        try {
+            defecto = parametros.get(5);
+        } catch (Exception e) {
+        }
+
+        try {
+            nombre = parametros.get(6);
+        } catch (Exception e) {
+        }
+
+        /*----------------###############################---------------------*/
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodoObj(raiz, stilos, 6);
+
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado resultado = opL.ejecutar(cntobj);
+
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevoDesple;
+                clase.nombre = "Desplegable";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(defecto)) {
+                nuevoDesple.setDefecto(defecto.valor.toString());
+            }
+            
+            if (!esNulo(nombre)) {
+                nuevoDesple.setId(nombre.valor.toString());
+            }
+
+            if (!esNulo(x)) {
+                nuevoDesple.setX(x.valor.toString());
+            }
+
+            if (!esNulo(y)) {
+                nuevoDesple.setY(y.valor.toString());
+            }
+
+            if (!esNulo(lista)) {
+                nuevoDesple.setLista(lista.valor);
+            }
+
+            if (!esNulo(alto)) {
+                nuevoDesple.setAlto(alto.valor.toString());
+            }
+
+            if (!esNulo(ancho)) {
+                nuevoDesple.setAncho(ancho.valor.toString());
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(actualResultado)) {
+                if (esClase(actualResultado.valor)) {
+                    Clase clase = (Clase) actualResultado.valor;
+                    if (clase.Componente != null) {
+
+                        switch (clase.nombre.toLowerCase()) {
+                            case "ventana":
+                                nuevoDesple.setDatos();
+                                nuevoDesple.setBounds(nuevoDesple.getLocation().x, nuevoDesple.getLocation().y, nuevoDesple.getPreferredSize().width, nuevoDesple.getPreferredSize().height);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevoDesple);
+
+                                break;
+                            case "panel":
+                                nuevoDesple.setDatos();
+                                nuevoDesple.setBounds(nuevoDesple.getLocation().x, nuevoDesple.getLocation().y, nuevoDesple.getPreferredSize().width, nuevoDesple.getPreferredSize().height);
+                                ((PanelGenerico) clase.Componente).add(nuevoDesple);
+                                break;
+                        }
+
+                    }
+                }
+            }
+
+        }
+        
     }
 
     public void crearControlNumerico() {
