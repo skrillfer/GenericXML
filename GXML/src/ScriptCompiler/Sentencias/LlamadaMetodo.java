@@ -273,6 +273,16 @@ public class LlamadaMetodo extends Compilador {
                             JOptionPane.showMessageDialog(null, "crearBoton error:" + e.getMessage());
                         }
                         break;
+                    case "crearreproductor":
+                    case "crearaudio":
+                    case "crearvideo":
+                    case "crearimagen":    
+                        try {
+                            crearReproductor();
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "crearReproductor error:" + e.getMessage());
+                        }
+                        break;
 
                     case "alclic":
                         proceder = false;
@@ -883,6 +893,64 @@ public class LlamadaMetodo extends Compilador {
         opL = new OperacionesARL(global, tabla, miTemplate);
         Resultado resultado = opL.ejecutar(cntobj);
 
+        if (!esNulo(resultado)) {
+            ComponenteRes = resultado;
+            if (esClase(resultado.valor)) {
+                Clase clase = (Clase) resultado.valor;
+                clase.Componente = nuevoReproductor;
+                clase.nombre = "Reproductor";
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(ruta)) {
+                nuevoReproductor.setRuta(ruta.valor.toString());
+            }
+            
+            if (!esNulo(x)) {
+                nuevoReproductor.setX(x.valor.toString());
+            }
+
+            if (!esNulo(y)) {
+                nuevoReproductor.setY(y.valor.toString());
+            }
+            
+            if (!esNulo(auto_reproductor)) {
+                nuevoReproductor.setAutoReproduccion(auto_reproductor.valor.toString());
+            }
+            
+            if (!esNulo(alto)) {
+                nuevoReproductor.setAlto(alto.valor.toString());
+            }
+
+            if (!esNulo(ancho)) {
+                nuevoReproductor.setAncho(ancho.valor.toString());
+            }
+
+            /*---------------------------------------------------------------------*/
+            if (!esNulo(actualResultado)) {
+                if (esClase(actualResultado.valor)) {
+                    Clase clase = (Clase) actualResultado.valor;
+                    if (clase.Componente != null) {
+
+                        switch (clase.nombre.toLowerCase()) {
+                            case "ventana":
+                                nuevoReproductor.setBounds(nuevoReproductor.getLocation().x, nuevoReproductor.getLocation().y, nuevoReproductor.getPreferredSize().width, nuevoReproductor.getPreferredSize().height);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevoReproductor);
+
+                                break;
+                            case "panel":
+                                nuevoReproductor.setBounds(nuevoReproductor.getLocation().x, nuevoReproductor.getLocation().y, nuevoReproductor.getPreferredSize().width, nuevoReproductor.getPreferredSize().height);
+                                ((PanelGenerico) clase.Componente).add(nuevoReproductor);
+                                break;
+                        }
+
+                    }
+                }
+            }
+
+        }
     }
 
     public void crearControlNumerico() {
