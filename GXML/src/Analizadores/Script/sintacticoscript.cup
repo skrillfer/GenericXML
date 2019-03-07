@@ -103,20 +103,28 @@ S_IMPORT ::= {:     RESULT = parser.crearNodo("imports","",0,0);      :}
 
 IMPORTS  ::= IMPORTS:r IMPORTAR:h
              {:
+                h.nombre = "importar";
                 r.add(h);
                 RESULT = r;
              :}
              |IMPORTAR:h
              {:
-                RESULT = parser.crearNodo("imports","",h.linea,h.columna);  
-                RESULT.add(h); 
+                RESULT = parser.crearNodo("imports","",h.linea,h.columna);
+                h.nombre = "importar";
+                RESULT.add(h);
+ 
              :};
 
 
 
 /*      IMPORTAR        */
 
-IMPORTAR  ::= importar apar string_literal cpar pyc;
+IMPORTAR  ::= importar apar string_literal:a cpar pyc
+              {:
+                 String cad = a.getCadena(); cad= cad.substring(1,cad.length()-1);
+                 RESULT = parser.crearNodo("string_literal",cad,a.getLinea(),a.getColumna());
+
+              :};
 
 
 //*************************Instrucciones FUERA ****************************************

@@ -28,10 +28,10 @@ public class Script extends Compilador {
 
     ArrayList<Clase> lista_Clases = new ArrayList<>();
 
-    public Script(File[] files, String archivoActual, Template template) {
+    public Script(File[] files, String archivoActual, Template template, String path_root) {
         //EL ARCHIVO ACTUAL ES MI PRINCIPAL
         miTemplate = template;
-
+        PathRoot=path_root;
         archivos = new ArrayList();
         listaVentanas = new ArrayList<>();
         reporteError_CJS = new ReporteError();
@@ -40,7 +40,7 @@ public class Script extends Compilador {
         for (File file : files) {
             String nombre = file.getName();
             String tipo = nombre.substring(nombre.length() - 2, nombre.length());
-            //if (tipo.equalsIgnoreCase("gk")) {
+            //if (tipo.equalsIgnoreCase("fs")) {
             String cadena = obtenerTextoArchivo(file);
             try {
                 LexScript lex = new LexScript(new BufferedReader(new StringReader(cadena)));

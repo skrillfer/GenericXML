@@ -26,6 +26,8 @@ import javax.swing.JOptionPane;
  */
 public abstract class Compilador {
 
+    public static String PathRoot = "";
+            
     public static ArrayList<VentanaGenerica> listaVentanas;
 
     public static ArrayList<Archivo> archivos;
@@ -53,6 +55,8 @@ public abstract class Compilador {
     public Metodo ejecutarSentencias(Nodo Sentencias) {
         for (Nodo sentencia : Sentencias.hijos) {
             switch (sentencia.nombre) {
+                case "importar":
+                    break;
                 case "declaracionvarG":
                 case "declaracionvar":
                     try {

@@ -30,7 +30,6 @@ public class Clase {
     public String visibilidad;
     public ArrayList<Metodo> metodos;
     public ArrayList<Nodo> atributos;
-    public ArrayList<Nodo> sentenciasGlobales;
     
     /*  CONSTRUCTOR usado cuando crea una nueva estructura desde Operaciones ARL */
     public Clase(Nodo raiz) {
@@ -41,7 +40,6 @@ public class Clase {
         metodos = new ArrayList<>();
         pilaTablas = new Stack<>();
     }
-    
      public Clase(String nombre) {
         global = new TablaSimbolo();   //La tabla de simbolos global
         tabla = new TablaSimbolo();    
@@ -49,7 +47,20 @@ public class Clase {
         metodos = new ArrayList<>();
         pilaTablas = new Stack<>();
     }
+    
+     /*
+        ** Constructor usado para cuando se esta importando un archivo
+     */
      
+     public Clase(Nodo raiz,ArrayList<Metodo> metodos, ArrayList<Nodo> atributos)
+     {
+         this.metodos = metodos;
+         this.atributos = atributos;
+         getMetodos(raiz);
+         getAtributosImport(raiz);
+     }
+     
+    /*  CONSTRUCTOR utilizado por la clase Archivo*/
     public Clase(Nodo raiz,String nombre) {
         archivo = nombre;
         global = new TablaSimbolo();
@@ -107,6 +118,16 @@ public class Clase {
             }
         }
         return atributos;
+    }
+    
+    private void getAtributosImport(Nodo raiz) {
+        
+        for (Nodo hijo : raiz.hijos) {
+            if (!hijo.nombre.equalsIgnoreCase("funcion") ){
+                this.atributos.add(hijo);
+            }
+        }
+        
     }
 
     
