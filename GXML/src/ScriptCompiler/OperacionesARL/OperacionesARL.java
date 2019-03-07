@@ -891,12 +891,8 @@ public class OperacionesARL {
                             result = new Resultado("Integer", valor);
                             break;
                         case "String":
-                            if (((String) r2.valor).length() == 1) {
-                                valor = (Integer) r1.valor + obtenerSumaCaracteres((String) r2.valor);
-                                result = new Resultado("Integer", valor);
-                            } else {
-                                Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica Suma entre " + r1.tipo + "-" + r2.tipo);
-                            }
+                                valor = ((Integer) r1.valor).toString() + (String) r2.valor;
+                                result = new Resultado("String", valor);
                             break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica Suma entre " + r1.tipo + "-" + r2.tipo);
@@ -918,13 +914,8 @@ public class OperacionesARL {
                             result = new Resultado("Double", (Double) valor);
                             break;
                         case "String":
-                            if (((String) r2.valor).length() == 1) {
-                                valor = (Double) r1.valor + obtenerSumaCaracteres((String) r2.valor).doubleValue();
-                                result = new Resultado("Double", valor);
-                            } else {
-                                Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica Suma entre " + r1.tipo + "-" + r2.tipo);
-                            }
-
+                                valor = ((Double) r1.valor).toString() +(String) r2.valor;
+                                result = new Resultado("String", valor);
                             break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica Suma entre " + r1.tipo + "-" + r2.tipo);
@@ -934,7 +925,7 @@ public class OperacionesARL {
                 case "Boolean":
                     switch (r2.tipo) {
                         case "String":
-                            result = new Resultado("String", (Boolean) r1.valor + (String) r2.valor);
+                            result = new Resultado("String", ((Boolean) r1.valor).toString() + (String) r2.valor);
                             break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica Suma entre " + r1.tipo + "-" + r2.tipo);
@@ -944,28 +935,13 @@ public class OperacionesARL {
                 case "String":
                     switch (r2.tipo) {
                         case "Integer":
-
-                            if (((String) r1.valor).length() == 1) {
-                                valor = obtenerSumaCaracteres((String) r1.valor) + (Integer) r2.valor;
-                                result = new Resultado("Integer", valor);
-
-                            } else {
-                                result = new Resultado("String", (String) r1.valor + (Integer) r2.valor);
-                            }
-
+                            result = new Resultado("String", (String) r1.valor + ((Integer) r2.valor).toString());
                             break;
                         case "Double":
-                            if (((String) r1.valor).length() == 1) {
-                                valor = obtenerSumaCaracteres((String) r1.valor).doubleValue() + (Double) r2.valor;
-                                result = new Resultado("Double", valor);
-
-                            } else {
-                                result = new Resultado("String", (String) r1.valor + (Double) r2.valor);
-                            }
+                            result = new Resultado("String", (String) r1.valor + ((Double) r2.valor).toString());
                             break;
-
                         case "Boolean":
-                            result = new Resultado("String", (String) r1.valor + (Boolean) r2.valor);
+                            result = new Resultado("String", (String) r1.valor + ((Boolean) r2.valor).toString());
                             break;
                         case "String":
                             result = new Resultado("String", (String) r1.valor + (String) r2.valor);
