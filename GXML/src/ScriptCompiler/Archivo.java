@@ -39,11 +39,12 @@ public class Archivo {
         archivosImportados = new ArrayList<>();
         this.nombre = nombre;
         this.raiz = raiz;
+        this.metodos = metodos;
+        this.atributos = atributos;
         guardarImports(raiz.hijos.get(0));
         guardarClases(raiz.hijos.get(1));
 
-        this.metodos = metodos;
-        this.atributos = atributos;
+        
     }
 
     /*
@@ -90,7 +91,7 @@ public class Archivo {
                         Nodo raizz = sin.getRoot();
                         if (raizz != null) {
                             Archivo archivo = new Archivo(nombre, raizz,clase.metodos,clase.atributos);
-                            archivos.add(archivo);
+                            //archivos.add(archivo);
                         }
                     } catch (Exception ex) {
                         Template.reporteError_CJS.agregar("Sintactico", nodoImportado.linea, nodoImportado.columna, "El archivo [" + nombre_ + "] no pudo ser parseado");
