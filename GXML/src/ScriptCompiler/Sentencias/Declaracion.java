@@ -119,7 +119,7 @@ public class Declaracion extends Compilador {
             //********************  AMBITO  ******************************    
             case "declaracionvar":
                 try {
-                    declaracionvarG();
+                    declaracionvar();
                 } catch (Exception e) {
                 }
                 break;
@@ -210,6 +210,90 @@ public class Declaracion extends Compilador {
                 Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
                 if (!global.setSimbolo(simbolo)) {
                     Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
+                }
+            }
+        }
+    }
+    
+    public void declaracionvar() {
+        String tipo = "";//el tipo de la  variable depende del valor que tenga
+
+        Nodo LISTA_ID = raiz.get(0);
+        Nodo ASIGN = raiz.get(1);
+
+        for (Nodo nodoID : LISTA_ID.hijos) {
+            String nombre = nodoID.valor;//se obtiene el nombre de la variable a declarar
+
+            if (ASIGN.size() > 0) {
+                //Se obtiene la expresion de asignacion y entonces se trata de obtener el resultado
+                Nodo EXP = ASIGN.get(0);
+                
+                Resultado resultado = null;
+                if(claseActual.Componente==null)
+                {
+                    resultado = opL.ejecutar(EXP);
+                }else
+                {
+                    if(!nombre.equals("referencia"))
+                    {
+                        resultado = opL.ejecutar(EXP);
+                    }else
+                    {
+                        resultado = new Resultado("String", EXP);
+                    }
+                }
+                
+
+                if (!esNulo(resultado)) {
+
+                    // la variable toma el tipo del valor que le es asignado
+                    tipo = resultado.tipo;
+
+                    Object RESULTADO = null;
+                    boolean INICIALIZADO = false;
+
+                    if (LISTA_ID.get(LISTA_ID.size() - 1).valor.equalsIgnoreCase(nodoID.valor)) {
+                        RESULTADO = resultado.valor;
+                        INICIALIZADO = true;
+
+                        if (esArreglo(resultado.valor)) {
+                            Arreglo arr = (Arreglo) resultado.valor;
+                            if (!arr.estado) {
+                                RESULTADO = null;
+                                INICIALIZADO = false;
+                            } else {
+                                tipo = arr.type;
+                            }
+                        }
+
+                        if (esClase(resultado.valor)) {
+                            Clase clase = (Clase) resultado.valor;
+                            if(!clase.Inicializada)
+                            {
+                                clase.nombre = nombre;
+                                clase.ejecutar(miTemplate);
+                                clase.Inicializada = true;
+                            }
+                            
+                        }
+
+                    }
+
+                    Simbolo simbolo = new Simbolo(tipo, nombre, "", RESULTADO);
+                    simbolo.inicializado = INICIALIZADO;
+                    if (!tabla.setSimbolo(simbolo)) {
+                        Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable LOCAL " + nombre + " ya existe");
+                    }
+                } else {
+                    Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
+                    if (!tabla.setSimbolo(simbolo)) {
+                        Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable LOCAL " + nombre + " ya existe");
+                    }
+                }
+            } else {
+                Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
+                if (!tabla.setSimbolo(simbolo)) {
+                    Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable LOCAL " + nombre + " ya existe");
                 }
             }
         }
