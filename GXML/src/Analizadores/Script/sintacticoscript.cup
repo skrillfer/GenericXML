@@ -53,7 +53,7 @@ parser code
 terminal token  asigmas,asigmen,asigpor,asigdiv,
                 mas,menos,por,div,pot,add,sub,
                 menq,meniq,mayq,mayiq,ig_ig,dif,
-                and,or,not,
+                and,or,not,trn,
 
                 var,imprimir,importar,detener,selecciona,caso,defecto,retornar,si,sino,funcion,descendente,ascendente,
                 creararraydesdearchivo,invertir,maximo,minimo,reduce,todos,alguno,filtrar,buscar,map,
@@ -85,6 +85,7 @@ precedence left ig_ig,mayq,menq,mayiq,meniq,dif;
 precedence left or;
 precedence left and;
 precedence right not;
+precedence left trn;
 
 start with INICIO;
 
@@ -421,7 +422,11 @@ SINO   ::= sino:X alla INSTRUCCIONES:i clla {:
 
 
 //************************Expresiones Logicas***********************************
-EXP ::= EXP:b and:a EXP:c     {:
+EXP ::=   EXP:b trn:a EXP:c dspts EXP:d{:
+                                          RESULT = parser.crearNodo("trn","",a.getLinea(),a.getColumna());
+                                          RESULT.add(b); RESULT.add(c); RESULT.add(d);
+                                       :} 
+          |EXP:b and:a EXP:c     {:
                                           RESULT = parser.crearNodo("and","",a.getLinea(),a.getColumna());
                                           RESULT.add(b); RESULT.add(c);
                                        :}

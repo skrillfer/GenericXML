@@ -62,6 +62,7 @@ comm_linea = ["/"] ["/"] [^\r\n]* [^\r\n]
 
 
 /* OPERADORES LOGICOS */
+<YYINITIAL> "?" {return new Symbol(sym.trn, new token(yycolumn, yyline, yytext()));} 
 <YYINITIAL> "&&" {return new Symbol(sym.and, new token(yycolumn, yyline, yytext()));} 
 <YYINITIAL> "||" {return new Symbol(sym.or, new token(yycolumn, yyline, yytext()));} 
 <YYINITIAL> "!" {return new Symbol(sym.not, new token(yycolumn, yyline, yytext()));} 
