@@ -49,15 +49,22 @@ public class OperacionesARL {
             /**
              * ********* EXPRESIONES LOGICAS *****
              */
+            case "trn":
+                linea1 = nodo.hijos.get(0).linea;
+                columna1 = nodo.hijos.get(0).columna;
+                linea2 = nodo.hijos.get(1).linea;
+                columna2 = nodo.hijos.get(1).columna;
+
+                result = operacionTernaria(nodo);
+
+                break;
             case "and":
                 linea1 = nodo.hijos.get(0).linea;
                 columna1 = nodo.hijos.get(0).columna;
                 linea2 = nodo.hijos.get(1).linea;
                 columna2 = nodo.hijos.get(1).columna;
 
-                Resultado r_and1 = ejecutar(nodo.hijos.get(0));
-                Resultado r_and2 = ejecutar(nodo.hijos.get(1));
-                result = operacionesLogicas(r_and1, r_and2, "AND");
+                result = operacionTernaria(nodo);
 
                 break;
             case "or":
@@ -334,6 +341,36 @@ public class OperacionesARL {
                     }
                 }
                 break;
+        }
+        return result;
+    }
+
+    public Resultado operacionTernaria(Nodo raiz) {
+        Resultado result = new Resultado("-1", null);
+
+        try {
+            Resultado condicion = ejecutar(raiz.hijos.get(0));
+            Resultado sentenciaV = ejecutar(raiz.hijos.get(1));
+            Resultado sentenciaF = ejecutar(raiz.hijos.get(2));
+
+            if (condicion.tipo.equalsIgnoreCase("Integer")) {
+                if ((Integer) condicion.valor == 1) {
+                    return new Resultado("Boolean", true);
+                } else if ((Integer) condicion.valor == 0) {
+                    return new Resultado("Boolean", false);
+                }
+            }
+            if (condicion.tipo.equalsIgnoreCase("Boolean")) {
+                if ((Boolean) condicion.valor) {
+                    return sentenciaV;
+                } else {
+                    return sentenciaF;
+                }
+            } else {
+                Template.reporteError_CJS.agregar("Semantico", linea1, columna1, "Solo se permiten valores booleanos en la condicion de la sentencia TERNARIA o enteros 0 o 1");
+            }
+        } catch (Exception e) {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "ha ocurrido un error al ejecutar la sentencia TERNARIA:" + e.getMessage());
         }
         return result;
     }
@@ -691,7 +728,7 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", false);
-                            break;    
+                            break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -713,7 +750,7 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", false);
-                            break;        
+                            break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -729,7 +766,7 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", false);
-                            break;        
+                            break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -746,7 +783,7 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", false);
-                            break;        
+                            break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -760,7 +797,7 @@ public class OperacionesARL {
                         default:
                             result = new Resultado("Boolean", false);
                             break;
-                    }    
+                    }
                     break;
                 default:
                     Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
@@ -784,8 +821,8 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", true);
-                            break;        
-                            
+                            break;
+
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -807,8 +844,8 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", true);
-                            break;        
-                            
+                            break;
+
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -824,8 +861,8 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", true);
-                            break;        
-                            
+                            break;
+
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -842,8 +879,8 @@ public class OperacionesARL {
                             break;
                         case "$nulo":
                             result = new Resultado("Boolean", true);
-                            break;        
-                            
+                            break;
+
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
@@ -853,12 +890,12 @@ public class OperacionesARL {
                     switch (r2.tipo) {
                         case "$nulo":
                             result = new Resultado("Boolean", false);
-                            break;        
+                            break;
                         default:
                             result = new Resultado("Boolean", true);
                             break;
                     }
-                    break;    
+                    break;
                 default:
                     Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;
@@ -891,8 +928,8 @@ public class OperacionesARL {
                             result = new Resultado("Integer", valor);
                             break;
                         case "String":
-                                valor = ((Integer) r1.valor).toString() + (String) r2.valor;
-                                result = new Resultado("String", valor);
+                            valor = ((Integer) r1.valor).toString() + (String) r2.valor;
+                            result = new Resultado("String", valor);
                             break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica Suma entre " + r1.tipo + "-" + r2.tipo);
@@ -914,8 +951,8 @@ public class OperacionesARL {
                             result = new Resultado("Double", (Double) valor);
                             break;
                         case "String":
-                                valor = ((Double) r1.valor).toString() +(String) r2.valor;
-                                result = new Resultado("String", valor);
+                            valor = ((Double) r1.valor).toString() + (String) r2.valor;
+                            result = new Resultado("String", valor);
                             break;
                         default:
                             Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica Suma entre " + r1.tipo + "-" + r2.tipo);
