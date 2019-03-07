@@ -188,6 +188,7 @@ public class Declaracion extends Compilador {
                             {
                                 clase.nombre = nombre;
                                 clase.ejecutar(miTemplate);
+                                clase.Inicializada = true;
                             }
                             
                         }

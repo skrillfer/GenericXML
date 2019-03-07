@@ -227,7 +227,7 @@ public class OperacionesARL {
                 result = new Resultado("Integer", Integer.parseInt(nodo.valor));
                 break;
             case "nulo":
-                result = new Resultado("0nulo", "nulo");
+                result = new Resultado("$nulo", "nulo");
                 break;
 
             case "double_literal":
@@ -1245,7 +1245,7 @@ public class OperacionesARL {
                         case "Double":
                         case "String":
                         case "Boolean":
-                        case "":
+                        case "$nulo":
                             if (x == raiz.size() - 1) {
                                 retorno.valor = tmpRet.valor;
                                 retorno.tipo = tmpRet.tipo;
@@ -1260,7 +1260,7 @@ public class OperacionesARL {
                                 nivel++;
                                 aux = (Clase) tmpRet.valor;
                                 tabla = aux.tabla;
-                                
+
                                 if (x == raiz.size() - 1) {
                                     retorno.valor = tmpRet.valor;
                                     retorno.tipo = tmpRet.tipo;
@@ -1268,7 +1268,6 @@ public class OperacionesARL {
                                         retorno.simbolo = tmpRet.simbolo;
                                     }
                                 }
-                                
 
                             } catch (Exception ex) {
                             }
@@ -1330,21 +1329,26 @@ public class OperacionesARL {
                                 case "Double":
                                 case "String":
                                 case "Boolean":
-                                case "":
+                                case "$nulo":
+
                                     retorno.valor = simbolo.valor;
                                     retorno.tipo = simbolo.tipo;
                                     retorno.simbolo = simbolo;
                                     break;
 
                                 default:
-                                    nivel++;
-                                    if (!simbolo.esArreglo) {
-                                        aux = (Clase) simbolo.valor;
-                                        tabla = aux.tabla;
-                                        retorno.tipo = simbolo.tipo;
-                                        retorno.valor = simbolo.valor;
-                                        retorno.simbolo = simbolo;
+                                    try {
+                                        nivel++;
+                                        if (!simbolo.esArreglo) {
+                                            aux = (Clase) simbolo.valor;
+                                            tabla = aux.tabla;
+                                            retorno.tipo = simbolo.tipo;
+                                            retorno.valor = simbolo.valor;
+                                            retorno.simbolo = simbolo;
+                                        }
+                                    } catch (Exception e) {
                                     }
+
                                     break;
                             }
                             /*if (simbolo.esArreglo) {
@@ -1390,23 +1394,28 @@ public class OperacionesARL {
                         if (llamada.res_nativas != null) {
                             retorno = llamada.res_nativas;
                         }
-                        if(llamada.ComponenteRes !=null)
-                        {
+                        if (llamada.ComponenteRes != null) {
                             retorno = llamada.ComponenteRes;
                         }
                     }
-                    
-                    if(!verNulabilidad(retorno))
-                    {
+
+                    if (!verNulabilidad(retorno)) {
                         if (esClase(retorno.valor)) {
                             Clase clase = (Clase) retorno.valor;
-                            
-                            if(!clase.Inicializada)
-                            {
+
+                            if (!clase.Inicializada) {
                                 clase.nombre = "";
                                 clase.ejecutar(miTemplate);
+                                clase.Inicializada = true;
                             }
-                            
+
+                            try {
+                                nivel++;
+                                aux = clase;
+                                tabla = aux.tabla;
+                            } catch (Exception e) {
+                            }
+
                         }
                     }
 
@@ -1489,7 +1498,7 @@ public class OperacionesARL {
         if (r1 == null || r2 == null) {
             return true;
         } else {
-            if (r1.tipo.equals("-1")  || r2.tipo.equals("-1")) {
+            if (r1.tipo.equals("-1") || r2.tipo.equals("-1")) {
                 return true;
             } else {
                 if (r1.valor == null || r2.valor == null) {
