@@ -761,6 +761,7 @@ public class OperacionesARL {
                             result = new Resultado("Boolean", false);
                             break;
                     }    
+                    break;
                 default:
                     Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;

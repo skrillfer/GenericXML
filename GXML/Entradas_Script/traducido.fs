@@ -4,12 +4,27 @@
 
 
 
+
+
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 
-imprimir(factorial(8));
+prueba();
+
+funcion prueba()
+{
+	var p=nulo;
+	Si(p!=nulo)
+	{
+		imprimir("p es nulo");
+	}
+	Si(verdadero<falso)
+	{
+		imprimir("verdadero es mayor a falso");
+	}
+}
 funcion fibonacci(var n)
 {
 	
@@ -37,7 +52,6 @@ funcion factorial(var numero)
      retornar numero * factorial(numero-1);
     }
 }
-
 
 
 
