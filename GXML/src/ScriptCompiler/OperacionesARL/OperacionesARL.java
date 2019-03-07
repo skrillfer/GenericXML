@@ -1224,7 +1224,7 @@ public class OperacionesARL {
 
     public Resultado acceso(Nodo raiz) {
         Resultado tmpRet;
-        JOptionPane.showMessageDialog(null, "dame");
+        //JOptionPane.showMessageDialog(null, "dame");
         Clase aux = Script.claseActual;
         TablaSimbolo tablaAux = tabla;
         Resultado retorno = new Resultado("-1", null);
