@@ -2,12 +2,14 @@
 
 
 
+
+
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 
-imprimir(fibonacci(20));
+imprimir(factorial(8));
 funcion fibonacci(var n)
 {
 	
@@ -23,6 +25,16 @@ funcion fibonacci(var n)
     sino{ //error
         imprimir("Debes ingresar un tamaño mayor o igual a 1");
         retornar 1; 
+    }
+}
+
+funcion factorial(var numero)
+{
+    si (numero==0){
+      retornar 1;
+    }
+    sino{
+     retornar numero * factorial(numero-1);
     }
 }
 
