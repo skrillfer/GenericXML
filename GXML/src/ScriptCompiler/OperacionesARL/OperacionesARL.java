@@ -9,7 +9,6 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.Arreglo;
 import ScriptCompiler.Clase;
-import static ScriptCompiler.Compilador.miTemplate;
 import ScriptCompiler.Metodo;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.Script;
@@ -1490,7 +1489,7 @@ public class OperacionesARL {
         if (r1 == null || r2 == null) {
             return true;
         } else {
-            if (r1.tipo.equals("-1") || r1.tipo.equals("0nulo") || r2.tipo.equals("-1") || r2.tipo.equals("0nulo")) {
+            if (r1.tipo.equals("-1")  || r2.tipo.equals("-1")) {
                 return true;
             } else {
                 if (r1.valor == null || r2.valor == null) {
@@ -1509,7 +1508,7 @@ public class OperacionesARL {
         if (r1 == null) {
             return true;
         } else {
-            if (r1.tipo.equals("-1") || r1.tipo.equals("0nulo")) {
+            if (r1.tipo.equals("-1")) {
                 return true;
             } else {
                 if (r1.valor == null) {

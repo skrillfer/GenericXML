@@ -297,7 +297,7 @@ public abstract class Compilador {
         if (r == null) {
             return true;
         } else {
-            if (r.tipo.equals("-1") || r.tipo.equals("0nulo")) {
+            if (r.tipo.equals("-1")) {
                 return true;
             } else {
                 if (r.valor == null) {
