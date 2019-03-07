@@ -61,7 +61,11 @@ public class Si extends Compilador {
                         /*Sentencia Sino Si*/
                         Metodo m = Ejecutar_Sino_Si(sentenciasSino_Sino.get(x));
                         if (m != null) {
-                            tabla = pilaTablas.pop();
+                            if(!m.estadoRetorno)
+                            {
+                                tabla = pilaTablas.pop();
+                            }
+                            
                             return m;
                         }
                     }

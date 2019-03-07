@@ -26,8 +26,8 @@ import javax.swing.JOptionPane;
  */
 public abstract class Compilador {
 
-    public static ArrayList<VentanaGenerica> listaVentanas ;
-    
+    public static ArrayList<VentanaGenerica> listaVentanas;
+
     public static ArrayList<Archivo> archivos;
     public String archivoActual;
     public static ArrayList<Simbolo> reporteSimbolos;
@@ -54,6 +54,7 @@ public abstract class Compilador {
         for (Nodo sentencia : Sentencias.hijos) {
             switch (sentencia.nombre) {
                 case "declaracionvarG":
+                case "declaracionvar":
                     try {
                         new Declaracion(sentencia, global, tabla, miTemplate);
                     } catch (Exception e) {
@@ -68,20 +69,23 @@ public abstract class Compilador {
                     } catch (Exception e) {
                         Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Acceso:" + e.getMessage());
                     }
-
                     break;
                 case "imprimir":
-                    opL = new OperacionesARL(global, tabla, miTemplate);
-                    Nodo param = sentencia.get(0);
-                    if (param.size() > 0) {
-                        Resultado rs = opL.ejecutar(param.get(0));
+                    try {
+                        opL = new OperacionesARL(global, tabla, miTemplate);
+                        Nodo param = sentencia.get(0);
+                        if (param.size() > 0) {
+                            Resultado rs = opL.ejecutar(param.get(0));
 
-                        try {
-                            //miTemplate.CONSOLA+="\n"+(String)rs.valor;
-                            System.out.println(rs.valor.toString());
-                        } catch (Exception e) {
-                            Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Imprimir:" + e.getMessage());
+                            try {
+                                //miTemplate.CONSOLA+="\n"+(String)rs.valor;
+                                System.out.println(rs.valor.toString());
+                            } catch (Exception e) {
+                                Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Imprimir:" + e.getMessage());
+                            }
                         }
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Imprimir:" + e.getMessage());
                     }
 
                     break;
@@ -283,11 +287,23 @@ public abstract class Compilador {
                     break;
                 case "retorno":
                     Retornar retorno = new Retornar();
-                    metodoActual = retorno.ejecutar(sentencia);
-                    return metodoActual;
+                    
+                    try {
+                        metodoActual = retorno.ejecutar(sentencia);
+                        return metodoActual;
+
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Retornar:" + e.getMessage());
+                    }
+                    
                 case "asignacion":
-                    new Asignacion(sentencia, global, tabla,miTemplate);
-                    break;    
+                    try {
+                       new Asignacion(sentencia, global, tabla, miTemplate);
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia asignacion:" + e.getMessage());
+                    }
+                    
+                    break;
             }
         }
         return metodoActual;
@@ -309,14 +325,13 @@ public abstract class Compilador {
 
         }
     }
-    
-    public Nodo crearNodo(String nombre,String valor,int linea,int columna, int index){
-        Nodo nuevo = new Nodo(nombre,valor,linea,columna,index);
+
+    public Nodo crearNodo(String nombre, String valor, int linea, int columna, int index) {
+        Nodo nuevo = new Nodo(nombre, valor, linea, columna, index);
         return nuevo;
     }
-    
-    public boolean esNumero(String nm)
-    {   
+
+    public boolean esNumero(String nm) {
         try {
             Integer.valueOf(nm);
             return true;

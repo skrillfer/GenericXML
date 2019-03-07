@@ -1386,7 +1386,6 @@ public class OperacionesARL {
                                         tabla = aux.tabla;
                                     } catch (Exception e) {
                                     }
-
                                 }
                             }
                         }

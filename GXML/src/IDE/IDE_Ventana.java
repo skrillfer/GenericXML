@@ -507,7 +507,7 @@ public class IDE_Ventana extends JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        System.out.println("BOTON COMPILAR");
+        //System.out.println("BOTON COMPILAR");
 
         if (control_ambientes == true) {
             if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
@@ -520,7 +520,7 @@ public class IDE_Ventana extends JFrame {
             }
         }
         if (contador_pesta > 0) {
-            System.out.println(this.jTabbedPane1.getSelectedIndex());
+            //System.out.println(this.jTabbedPane1.getSelectedIndex());
             Pestaña pesta = (Pestaña) this.jTabbedPane1.getComponentAt(this.jTabbedPane1.getSelectedIndex());
             for (Component cmp2 : pesta.getComponents()) {
                 if ("scroll".equals(cmp2.getName())) {
@@ -842,7 +842,7 @@ public class IDE_Ventana extends JFrame {
                 if (viewToModel != -1) {
                     try {
                         lineaActual = (1 + textArea.getLineOfOffset(viewToModel));
-                        System.out.println("line: " + (1 + textArea.getLineOfOffset(viewToModel)));
+                        //System.out.println("line: " + (1 + textArea.getLineOfOffset(viewToModel)));
                     } catch (BadLocationException e1) {
                         e1.printStackTrace();
                     }
