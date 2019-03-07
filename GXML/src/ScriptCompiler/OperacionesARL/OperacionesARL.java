@@ -406,7 +406,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica < QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -425,7 +425,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica < QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -438,7 +438,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica < QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -452,12 +452,12 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica < QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
                 default:
-                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica < QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;
             }
         } else if (op.equals("MENIQ")) {
@@ -477,7 +477,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica <= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -496,7 +496,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica <= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -509,7 +509,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica <= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -523,12 +523,12 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica <= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
                 default:
-                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica <= QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;
             }
         } else if (op.equals("MAYQ")) {
@@ -548,7 +548,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica > QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -567,7 +567,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica > QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -580,7 +580,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica > QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -594,12 +594,12 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica > QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
                 default:
-                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica > QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;
             }
         } else if (op.equals("MAYIQ")) {
@@ -619,7 +619,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica >= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -638,7 +638,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica >= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -651,7 +651,7 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica >= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -665,12 +665,12 @@ public class OperacionesARL {
                             }
                             break;
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica >= QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
                 default:
-                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica >= QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;
             }
         } else if (op.equals("IG_IG")) {
@@ -689,8 +689,11 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", false);
+                            break;    
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -708,8 +711,11 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", false);
+                            break;        
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -721,8 +727,11 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", false);
+                            break;        
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -735,13 +744,25 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", false);
+                            break;        
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
+                case "$nulo":
+                    switch (r2.tipo) {
+                        case "$nulo":
+                            result = new Resultado("Boolean", true);
+                            break;
+                        default:
+                            result = new Resultado("Boolean", false);
+                            break;
+                    }    
                 default:
-                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica == QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;
             }
         } else if (op.equals("DIF")) {
@@ -760,8 +781,12 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", true);
+                            break;        
+                            
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -779,8 +804,12 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", true);
+                            break;        
+                            
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -792,8 +821,12 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", true);
+                            break;        
+                            
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
@@ -806,13 +839,27 @@ public class OperacionesARL {
                                 result = new Resultado("Boolean", true);
                             }
                             break;
+                        case "$nulo":
+                            result = new Resultado("Boolean", true);
+                            break;        
+                            
                         default:
-                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                            Template.reporteError_CJS.agregar("Error Semantico", linea2, columna2, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                             break;
                     }
                     break;
+                case "$nulo":
+                    switch (r2.tipo) {
+                        case "$nulo":
+                            result = new Resultado("Boolean", false);
+                            break;        
+                        default:
+                            result = new Resultado("Boolean", true);
+                            break;
+                    }
+                    break;    
                 default:
-                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica MENOR QUE entre " + r1.tipo + "-" + r2.tipo);
+                    Template.reporteError_CJS.agregar("Error Semantico", linea1, columna1, "No aplica != QUE entre " + r1.tipo + "-" + r2.tipo);
                     break;
             }
         }
