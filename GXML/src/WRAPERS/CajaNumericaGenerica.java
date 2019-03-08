@@ -35,7 +35,7 @@ import javax.swing.event.AncestorListener;
  * @author fernando
  */
 public class CajaNumericaGenerica extends JPanel {
-    protected Clase classe;
+    public Clase classe;
 
     JTextField caja = new JTextField();
     /*

@@ -23,7 +23,7 @@ import javax.swing.JButton;
  * @author fernando
  */
 public class BotonGenerico extends JButton {
-    protected Clase classe;
+    public Clase classe;
     
     protected TablaSimbolo tabla;
     protected TablaSimbolo global;

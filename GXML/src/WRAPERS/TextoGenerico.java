@@ -19,7 +19,7 @@ import javax.swing.JLabel;
  */
 public class TextoGenerico extends JLabel {
 
-    protected Clase classe;
+    public Clase classe;
 
     /*
     Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, valor    

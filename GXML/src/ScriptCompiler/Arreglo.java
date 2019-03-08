@@ -39,6 +39,16 @@ public class Arreglo {
         datos = new ArrayList<>();
         VALORES = new Hashtable<>();
     }
+    
+    public void AGREGAR(Resultado r)
+    {
+        this.datos.add(r);
+    }
+    
+    public void SETDIM()
+    {
+        this.dimensiones.add(this.datos.size());
+    }
 
     public Arreglo(Nodo raiz, TablaSimbolo global, TablaSimbolo tabla, ArrayList<Integer> dimensiones, Template template1, int num) {
         this.miTemplate = template1;

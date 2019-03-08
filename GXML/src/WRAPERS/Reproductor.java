@@ -36,7 +36,7 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
  */
 public class Reproductor extends JPanel {
 
-    protected Clase classe;
+    public Clase classe;
 
     /*
     Ruta, X, Y, Auto-reproductor, Alto, Ancho    

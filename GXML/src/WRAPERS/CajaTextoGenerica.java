@@ -22,7 +22,7 @@ import javax.swing.event.AncestorListener;
  * @author fernando
  */
 public class CajaTextoGenerica extends JTextField {
-    protected Clase classe;
+    public Clase classe;
     /*
     Alto, Ancho, Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, defecto, nombre 
      */

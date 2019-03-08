@@ -128,11 +128,10 @@ public class LlamadaMetodo extends Compilador {
         for (Nodo hijo : nodoParametros.hijos) {
             opL = new OperacionesARL(global, tabla, miTemplate);
             Resultado resultado = opL.ejecutar(hijo);
-            if(!esNulo(resultado))
-            {
+            if (!esNulo(resultado)) {
                 parametros.add(resultado);
             }
-            
+
         }
         return parametros;
     }
@@ -352,11 +351,10 @@ public class LlamadaMetodo extends Compilador {
                                         for (Component component : vt.getContentPane().getComponents()) {
                                             System.out.println(component.getClass().getSimpleName());
                                         }
-                                        
+
                                         vt.setLocationRelativeTo(null);
                                         vt.setVisible(true);
-                                        
-                                        
+
                                     }
                                 }
 
@@ -385,6 +383,35 @@ public class LlamadaMetodo extends Compilador {
                             }
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "alcerrar error:" + e.getMessage());
+                        }
+                        break;
+                    case "obtenerporetiqueta":
+                        ComponenteRes = new Resultado();
+
+                        proceder = false;
+                        try {
+                            Clase clas = (Clase) actualResultado.valor;
+                            if (clas.Componente != null) {
+
+                                switch (clas.nombre.toLowerCase()) {
+                                    case "ventana":
+                                        break;
+                                    case "panel":
+                                        break;
+                                }
+                                /*Nodo LTExp = raiz.get(0);
+                                if (LTExp.size() > 0) {
+                                    
+                                    Nodo EXP = LTExp.get(0);
+                                    opL = new OperacionesARL(global, tabla, miTemplate);
+                                    Resultado resultado = opL.ejecutar(EXP);
+
+                                    if (!esNulo(resultado)) {
+                                        
+                                    }
+                                }*/
+                            }
+                        } catch (Exception e) {
                         }
                         break;
 
@@ -450,6 +477,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Ventana";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevaVentana.setearClasse(clase);
             }
 
@@ -542,6 +570,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Panel";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevoPanel.setearClasse(clase);
             }
 
@@ -668,6 +697,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Boton";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevoBoton.setearClasse(clase);
             }
 
@@ -805,6 +835,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Texto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevaTexto.setearClasse(clase);
             }
 
@@ -923,6 +954,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Reproductor";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevoReproductor.setearClasse(clase);
             }
 
@@ -1037,6 +1069,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Desplegable";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevoDesple.setearClasse(clase);
             }
 
@@ -1044,7 +1077,7 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(defecto)) {
                 nuevoDesple.setDefecto(defecto.valor.toString());
             }
-            
+
             if (!esNulo(nombre)) {
                 nuevoDesple.setId(nombre.valor.toString());
             }
@@ -1094,7 +1127,7 @@ public class LlamadaMetodo extends Compilador {
             }
 
         }
-        
+
     }
 
     public void crearControlNumerico() {
@@ -1165,6 +1198,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "CajaNumerica";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevaNumerica.setearClasse(clase);
             }
 
@@ -1310,8 +1344,9 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "CajaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                nuevaCajaText.setearClasse(clase);
                 
+                nuevaCajaText.setearClasse(clase);
+
             }
 
             /*---------------------------------------------------------------------*/
@@ -1467,6 +1502,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "AreaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                
                 nuevaAreaText.setearClasse(clase);
             }
 
@@ -1541,6 +1577,104 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
+    public Arreglo obtenerPorEtiqueta(JComponent padre, Arreglo nuevo, String etiqueta_name) {
+
+        Clase cla = null;
+
+        for (Component component : padre.getComponents()) {
+            String namecomponente = component.getClass().getSimpleName().toLowerCase();
+
+            switch (namecomponente) {
+                /*case "ventanagenerica":
+                    try {
+                        cla = ((VentanaGenerica)component).classe;
+                        nuevo.AGREGAR(new Resultado(cla.nombre,cla));
+                    } catch (Exception e) {
+                    }
+                    break;*/
+                case "panelgenerico":
+                    try {
+                        cla = ((PanelGenerico) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente)) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                        obtenerPorEtiqueta(((PanelGenerico) component), nuevo, etiqueta_name);
+                    } catch (Exception e) {
+                        obtenerPorEtiqueta(((PanelGenerico) component), nuevo, etiqueta_name);
+                    }
+                    break;
+                //*************************    
+                case "textogenerico":
+                    try {
+                        cla = ((TextoGenerico) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente)) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                    } catch (Exception e) {
+                    }
+
+                    break;
+                case "reproductor":
+                    try {
+                        cla = ((Reproductor) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente)) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                    } catch (Exception e) {
+                    }
+
+                    break;
+                case "desplegablegenerico":
+                    try {
+                        cla = ((DesplegableGenerico) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor")) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                    } catch (Exception e) {
+                    }
+                    break;
+                case "cajatextogenerica":
+                    try {
+                        cla = ((CajaTextoGenerica) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor") ) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                    } catch (Exception e) {
+                    }
+                    break;
+                case "cajanumericagenerica":
+                    try {
+                        cla = ((CajaNumericaGenerica) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor") ) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                    } catch (Exception e) {
+                    }
+                    break;
+                case "botongenerico":
+                    try {
+                        cla = ((BotonGenerico) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente)) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                    } catch (Exception e) {
+                    }
+                    break;
+                case "areatextogenerica":
+                    try {
+                        cla = ((AreaTextoGenerica) component).classe;
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor") ) {
+                            nuevo.AGREGAR(new Resultado(cla.nombre, cla));
+                        }
+                    } catch (Exception e) {
+                    }
+                    break;
+            }
+        }
+
+        return nuevo;
+    }
+
     public Nodo crearNodoObj(Nodo raiz, String stilos[], int limit) {
         //Se crea el Arbol que corresponde a cntObj
         Nodo cntobj = crearNodo("cntobj", "", raiz.linea, raiz.columna, raiz.index);
@@ -1589,4 +1723,5 @@ public class LlamadaMetodo extends Compilador {
             return false;
         }
     }
+
 }

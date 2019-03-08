@@ -20,7 +20,7 @@ import javax.swing.border.EtchedBorder;
  * @author fernando
  */
 public class PanelGenerico extends JPanel {
-    protected Clase classe;
+    public Clase classe;
 
     Nodo raiz;
 

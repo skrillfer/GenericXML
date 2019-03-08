@@ -17,6 +17,7 @@ import javax.swing.JComponent;
  * @author fernando
  */
 public class Clase {
+    public Nodo raiz_GXML=null;
     
     public Object Componente =null;
     public boolean Inicializada = false;

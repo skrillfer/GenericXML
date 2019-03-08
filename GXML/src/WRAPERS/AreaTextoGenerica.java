@@ -23,7 +23,7 @@ import javax.swing.event.AncestorListener;
  */
 public class AreaTextoGenerica extends JTextArea {
 
-    protected Clase classe;
+    public Clase classe;
 
     /*
         Alto, ancho, Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, defecto, nombre

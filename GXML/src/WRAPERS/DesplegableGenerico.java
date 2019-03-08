@@ -19,7 +19,7 @@ import javax.swing.JComboBox;
  */
 public class DesplegableGenerico extends JComboBox {
 
-    protected Clase classe;
+    public Clase classe;
 
     Object defecto = null;
     Arreglo lista_datos;
