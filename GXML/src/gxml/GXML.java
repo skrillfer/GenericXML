@@ -25,7 +25,7 @@ public class GXML {
          //JFrame frame = new JFrame("Capture");
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        PanelGenerico pane=null;
+        /*PanelGenerico pane=null;*/
         //pane.setBorder();
         /*frame.setContentPane(pane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,7 +34,7 @@ public class GXML {
 
         frame.setVisible(true);*/
         
-        Reproductor reproductor = new Reproductor(new Nodo());
+        /*Reproductor reproductor = new Reproductor(new Nodo());
         reproductor.setRuta("/home/fernando/Imágenes/capppp.png");
         reproductor.setAutoReproduccion(true);
         JFrame frame = new JFrame("Capture");
@@ -45,11 +45,23 @@ public class GXML {
         frame.setLocation(50, 50);
         frame.setSize(800, 600);
 
-        frame.setVisible(true);
+        frame.setVisible(true);*/
 
         // Reproduce el vídeo.
         //reproductor.iniciarReproduccion();
-
+        System.out.println(new GXML().ackermann(3,11));
     }
+
+    
+public int ackermann(int m, int n) {
+    //System.out.println("entro");
+    if (m == 0) {
+        return (n + 1);
+    } else if (m > 0 && n == 0) {
+        return ackermann(m - 1, 1);
+    } else {
+        return ackermann(m - 1, ackermann(m, n - 1));
+    }
+}
 
 }

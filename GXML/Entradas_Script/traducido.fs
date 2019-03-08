@@ -1,15 +1,21 @@
 
 
+
+
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
 importar("Funciones.fs");
 
+var data=ackermann(3,6);
+imprimir(data);
 
 /*imprimir(4<2?"lo es":"no lo es");
 MensajeBienvenida("luis fernado ramirez");
 MensajeDespedida("adios perros");*/
-ackermann(3,11);
+
+
+/*
 funcion prueba()
 {
 	var p=nulo;
@@ -49,6 +55,6 @@ funcion factorial(var numero)
      retornar numero * factorial(numero-1);
     }
 }
-
+*/
 
 

@@ -1434,11 +1434,17 @@ public class OperacionesARL {
 
                 case "llamada":
                     LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel, retorno, acceso);
+
                     /*
                     Proceder es una variable tipo booleano que me indica si la llamada a metodo fue una funcion nativa
                      */
                     if (llamada.proceder) {
-                        Metodo metodo = llamada.ejecutar(acceso);
+                        Metodo metodo = null;
+                        try {
+                            metodo = llamada.ejecutar(acceso);
+                        } catch (Exception e) {
+                            Template.reporteError_CJS.agregar("Ejecucion", acceso.linea, acceso.columna, " Error al ejecutar el metodo "+ e.getMessage());
+                        }
                         if (metodo != null) {
                             if (metodo.retorno != null) {
                                 retorno = metodo.retorno;
