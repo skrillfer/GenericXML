@@ -7,6 +7,8 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.Clase;
+import ScriptCompiler.Simbolo;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -25,12 +27,15 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 /**
  *
  * @author fernando
  */
 public class CajaNumericaGenerica extends JPanel {
+    protected Clase classe;
 
     JTextField caja = new JTextField();
     /*
@@ -71,13 +76,50 @@ public class CajaNumericaGenerica extends JPanel {
         btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
         btns.add(subir);
         btns.add(bajar);
+        
+        
+        this.addAncestorListener(new AncestorListener() {
+
+            @Override
+            public void ancestorAdded(AncestorEvent event) {
+                reset();
+            }
+
+            @Override
+            public void ancestorRemoved(AncestorEvent event) {
+
+            }
+
+            @Override
+            public void ancestorMoved(AncestorEvent event) {
+
+            }
+        });
 
         this.add(caja);
         this.add(btns);
         this.add(caja);
         this.add(btns);
     }
+    
+    public void setearClasse(Clase classe)
+    {
+        this.classe = classe;
+    }
 
+    public void reset()
+    {
+        if(classe!=null)
+        {
+            Simbolo defecto  = classe.tabla.getSimbolo("defecto", classe);
+            try {
+                setTexto(defecto.valor.toString());
+            } catch (Exception e) {
+                Template.reporteError_CJS.agregar("Ejecucion",raiz.linea, raiz.columna, "Error al reset defecti de CajaNumerica "+e.getMessage());
+            }
+        }
+    }
+    
     public void setControlNumerico() {
         caja.addKeyListener(new KeyAdapter() {
             @Override

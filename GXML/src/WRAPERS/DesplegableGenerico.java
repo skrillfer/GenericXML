@@ -8,6 +8,7 @@ package WRAPERS;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.Arreglo;
+import ScriptCompiler.Clase;
 import ScriptCompiler.Resultado;
 import java.awt.Dimension;
 import javax.swing.JComboBox;
@@ -17,7 +18,10 @@ import javax.swing.JComboBox;
  * @author fernando
  */
 public class DesplegableGenerico extends JComboBox {
-    Object defecto=null;
+
+    protected Clase classe;
+
+    Object defecto = null;
     Arreglo lista_datos;
     /*
     Alto, Ancho, lista, X, Y, Defecto, nombre    
@@ -26,6 +30,11 @@ public class DesplegableGenerico extends JComboBox {
 
     public DesplegableGenerico(Nodo raiz) {
         this.raiz = raiz;
+    }
+    
+    public void setearClasse(Clase classe)
+    {
+        this.classe = classe;
     }
 
     public void setAncho(Object ancho) {
@@ -48,7 +57,7 @@ public class DesplegableGenerico extends JComboBox {
 
     public void setLista(Object arr) {
         try {
-            Arreglo miarr = (Arreglo)arr;
+            Arreglo miarr = (Arreglo) arr;
             this.lista_datos = miarr;
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Lista de Datos, no es una lista,  en Desplegable " + this.getName());
@@ -79,9 +88,8 @@ public class DesplegableGenerico extends JComboBox {
         } catch (Exception e) {
         }
     }
-    
-    public void cargarDefecto()
-    {
+
+    public void cargarDefecto() {
         try {
             if (lista_datos != null) {
                 boolean existe = lista_datos.existeOpcion(defecto.toString());
@@ -96,7 +104,7 @@ public class DesplegableGenerico extends JComboBox {
         }
         updateUI();
     }
-    
+
     public void setX(Object x) {
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
@@ -117,10 +125,8 @@ public class DesplegableGenerico extends JComboBox {
     public void setDefecto(Object txt) {
         try {
             this.defecto = txt;
-            if(lista_datos!=null)
-            {
-                if(lista_datos.getDatos().size()>0)
-                {
+            if (lista_datos != null) {
+                if (lista_datos.getDatos().size() > 0) {
                     cargarDefecto();
                 }
             }
@@ -137,7 +143,7 @@ public class DesplegableGenerico extends JComboBox {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en Desplegable " + this.getName());
         }
     }
-    
+
     public Integer castToInt(Object nm) {
         try {
             return Integer.valueOf(nm.toString());

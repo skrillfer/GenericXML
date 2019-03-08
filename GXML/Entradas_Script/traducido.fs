@@ -3,6 +3,8 @@
 
 
 
+
+
 var Ven_Inicio = CrearVentana("#ff0000",0,0,"VentanaUno");
 
 var Cont1_Inicio = Ven_Inicio.CrearContenedor(200, 400, "#00FF00", verdadero, 200, 20);

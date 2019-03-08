@@ -7,6 +7,7 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.Clase;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.TablaSimbolo;
 import java.awt.Color;
@@ -22,6 +23,8 @@ import javax.swing.JButton;
  * @author fernando
  */
 public class BotonGenerico extends JButton {
+    protected Clase classe;
+    
     protected TablaSimbolo tabla;
     protected TablaSimbolo global;
     public Template miTemplate;
@@ -81,6 +84,12 @@ public class BotonGenerico extends JButton {
             }
         });
     }
+    
+    public void setearClasse(Clase classe)
+    {
+        this.classe = classe;
+    }
+    
 
     public boolean aplicaStilo(String nombre) {
         switch (nombre.toLowerCase()) {

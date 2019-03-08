@@ -7,6 +7,7 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.Clase;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
@@ -19,12 +20,17 @@ import javax.swing.border.EtchedBorder;
  * @author fernando
  */
 public class PanelGenerico extends JPanel {
+    protected Clase classe;
 
     Nodo raiz;
 
     public PanelGenerico(Nodo raiz) {
         this.raiz = raiz;
-        
+
+    }
+
+    public void setearClasse(Clase classe) {
+        this.classe = classe;
     }
 
     public void setAncho(Object ancho) {

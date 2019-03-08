@@ -349,8 +349,14 @@ public class LlamadaMetodo extends Compilador {
                                             }
                                             vt.setBounds(100, 10, maxWidth, maxHeigth);
                                         }
+                                        for (Component component : vt.getContentPane().getComponents()) {
+                                            System.out.println(component.getClass().getSimpleName());
+                                        }
+                                        
                                         vt.setLocationRelativeTo(null);
                                         vt.setVisible(true);
+                                        
+                                        
                                     }
                                 }
 
@@ -444,6 +450,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Ventana";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevaVentana.setearClasse(clase);
             }
 
             /*---------------------------------------------------------------------*/
@@ -535,6 +542,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Panel";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevoPanel.setearClasse(clase);
             }
 
             /*---------------------------------------------------------------------*/
@@ -660,6 +668,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Boton";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevoBoton.setearClasse(clase);
             }
 
             /*  al boton le voy a setear la tabla,global y template actual*/
@@ -796,6 +805,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Texto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevaTexto.setearClasse(clase);
             }
 
             /*---------------------------------------------------------------------*/
@@ -913,6 +923,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Reproductor";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevoReproductor.setearClasse(clase);
             }
 
             /*---------------------------------------------------------------------*/
@@ -1026,6 +1037,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Desplegable";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevoDesple.setearClasse(clase);
             }
 
             /*---------------------------------------------------------------------*/
@@ -1153,6 +1165,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "CajaNumerica";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevaNumerica.setearClasse(clase);
             }
 
             /*---------------------------------------------------------------------*/
@@ -1222,7 +1235,7 @@ public class LlamadaMetodo extends Compilador {
         proceder = false;
         ArrayList<Resultado> parametros = getParametros(raiz);
 
-        CajaTextoGenerica nuevaAreaText = new CajaTextoGenerica(raiz);
+        CajaTextoGenerica nuevaCajaText = new CajaTextoGenerica(raiz);
 
         /*----------------###############################---------------------*/
         Resultado alto = null, ancho = null, fuente = null, tam = null, color = null, x = null, y = null, negrilla = null, cursiva = null, nombre = null, defecto = null;
@@ -1293,57 +1306,57 @@ public class LlamadaMetodo extends Compilador {
             ComponenteRes = resultado;
             if (esClase(resultado.valor)) {
                 Clase clase = (Clase) resultado.valor;
-                clase.Componente = nuevaAreaText;
+                clase.Componente = nuevaCajaText;
                 clase.nombre = "CajaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                nuevaAreaText.setearClasse(clase);
+                nuevaCajaText.setearClasse(clase);
                 
             }
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(alto)) {
-                nuevaAreaText.setAlto(alto.valor.toString());
+                nuevaCajaText.setAlto(alto.valor.toString());
             }
 
             if (!esNulo(ancho)) {
-                nuevaAreaText.setAncho(ancho.valor.toString());
+                nuevaCajaText.setAncho(ancho.valor.toString());
             }
 
             if (!esNulo(fuente)) {
-                nuevaAreaText.setFuente(fuente.valor.toString());
+                nuevaCajaText.setFuente(fuente.valor.toString());
             }
 
             if (!esNulo(tam)) {
-                nuevaAreaText.setTam(tam.valor.toString());
+                nuevaCajaText.setTam(tam.valor.toString());
             }
 
             if (!esNulo(color)) {
-                nuevaAreaText.setColor(color.valor.toString());
+                nuevaCajaText.setColor(color.valor.toString());
             }
 
             if (!esNulo(x)) {
-                nuevaAreaText.setX(x.valor.toString());
+                nuevaCajaText.setX(x.valor.toString());
             }
 
             if (!esNulo(y)) {
-                nuevaAreaText.setY(y.valor.toString());
+                nuevaCajaText.setY(y.valor.toString());
             }
 
             if (!esNulo(negrilla)) {
-                nuevaAreaText.setNegrilla(negrilla.valor.toString());
+                nuevaCajaText.setNegrilla(negrilla.valor.toString());
             }
 
             if (!esNulo(cursiva)) {
-                nuevaAreaText.setCurvisa(cursiva.valor.toString());
+                nuevaCajaText.setCurvisa(cursiva.valor.toString());
             }
 
             if (!esNulo(defecto)) {
-                nuevaAreaText.setTexto(defecto.valor.toString());
+                nuevaCajaText.setTexto(defecto.valor.toString());
             }
 
             if (!esNulo(nombre)) {
-                nuevaAreaText.setId(nombre.valor.toString());
+                nuevaCajaText.setId(nombre.valor.toString());
             }
 
 
@@ -1355,13 +1368,13 @@ public class LlamadaMetodo extends Compilador {
 
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
-                                nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevaAreaText);
+                                nuevaCajaText.setBounds(nuevaCajaText.getLocation().x, nuevaCajaText.getLocation().y, nuevaCajaText.getPreferredSize().width, nuevaCajaText.getPreferredSize().height);
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevaCajaText);
 
                                 break;
                             case "panel":
-                                nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
-                                ((PanelGenerico) clase.Componente).add(nuevaAreaText);
+                                nuevaCajaText.setBounds(nuevaCajaText.getLocation().x, nuevaCajaText.getLocation().y, nuevaCajaText.getPreferredSize().width, nuevaCajaText.getPreferredSize().height);
+                                ((PanelGenerico) clase.Componente).add(nuevaCajaText);
                                 break;
                         }
 
@@ -1454,6 +1467,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "AreaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevaAreaText.setearClasse(clase);
             }
 
             /*---------------------------------------------------------------------*/

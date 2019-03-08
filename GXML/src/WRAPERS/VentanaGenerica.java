@@ -23,6 +23,7 @@ import javax.swing.JFrame;
  * @author fernando
  */
 public class VentanaGenerica extends JFrame {
+    protected Clase classe;
     
     protected TablaSimbolo tabla;
     protected TablaSimbolo global;
@@ -64,7 +65,10 @@ public class VentanaGenerica extends JFrame {
         });
     }
 
-    
+    public void setearClasse(Clase classe)
+    {
+        this.classe = classe;
+    }
     
     public void setearCore(TablaSimbolo global, TablaSimbolo tabla, Template template) {
         this.global = global;

@@ -7,6 +7,7 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.Clase;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Map;
@@ -16,17 +17,25 @@ import javax.swing.JLabel;
  *
  * @author fernando
  */
-public class TextoGenerico extends JLabel{
-/*
+public class TextoGenerico extends JLabel {
+
+    protected Clase classe;
+
+    /*
     Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, valor    
-*/
+     */
     Nodo raiz;
+
     public TextoGenerico(Nodo raiz) {
         this.raiz = raiz;
         //Estilo por defecto
         setNegrilla(false);
     }
-    
+
+    public void setearClasse(Clase classe) {
+        this.classe = classe;
+    }
+
     public void setFuente(String family) {
         try {
             Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
@@ -56,8 +65,7 @@ public class TextoGenerico extends JLabel{
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en TextoGenerico " + this.getName());
         }
     }
-    
-    
+
     public void setX(Object x) {
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
@@ -98,8 +106,7 @@ public class TextoGenerico extends JLabel{
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Negrilla  en TextoGenerico " + this.getName());
         }
     }
-    
-    
+
     public void setCurvisa(Object check) {
         try {
 
@@ -124,8 +131,7 @@ public class TextoGenerico extends JLabel{
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Cursiva  en TextoGenerico " + this.getName());
         }
     }
-    
-    
+
     //Defecto
     public void setTexto(String txt) {
         try {
@@ -145,7 +151,7 @@ public class TextoGenerico extends JLabel{
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Id/Name [" + id + "] en TextoGenerico " + this.getName());
         }
     }
-    
+
     public Integer castToInt(Object nm) {
         try {
             return Integer.valueOf(nm.toString());
@@ -153,8 +159,7 @@ public class TextoGenerico extends JLabel{
             return null;
         }
     }
-    
-    
+
     public Boolean castToBoolean(Object nm) {
         try {
             return Boolean.valueOf(nm.toString());

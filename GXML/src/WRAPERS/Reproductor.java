@@ -7,6 +7,7 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.Clase;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -34,6 +35,8 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
  * @author fernando
  */
 public class Reproductor extends JPanel {
+
+    protected Clase classe;
 
     /*
     Ruta, X, Y, Auto-reproductor, Alto, Ancho    
@@ -140,6 +143,11 @@ public class Reproductor extends JPanel {
 
             }
         });
+    }
+    
+    public void setearClasse(Clase classe)
+    {
+        this.classe = classe;
     }
 
     public void iniciarReproduccion() {
