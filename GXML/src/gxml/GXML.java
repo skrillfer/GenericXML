@@ -8,6 +8,8 @@ package gxml;
 import Estructuras.Nodo;
 import WRAPERS.PanelGenerico;
 import WRAPERS.Reproductor;
+import java.io.File;
+import java.util.Arrays;
 import javax.swing.JFrame;
 
 /**
@@ -49,7 +51,8 @@ public class GXML {
 
         // Reproduce el vídeo.
         //reproductor.iniciarReproduccion();
-        System.out.println(new GXML().ackermann(3,11));
+        
+        
     }
 
     

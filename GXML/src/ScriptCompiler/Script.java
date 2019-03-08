@@ -14,8 +14,6 @@ import ScriptCompiler.Sentencias.Declaracion;
 import WRAPERS.VentanaGenerica;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -175,26 +173,5 @@ public class Script extends Compilador {
         return null;
     }
 
-    String obtenerTextoArchivo(File file) {
-        String texto = "";
-        try {
-            BufferedReader bufer = new BufferedReader(
-                    new InputStreamReader(new FileInputStream((String) file.getAbsolutePath())));
-            String temp = "";
-            while (temp != null) {
-                temp = bufer.readLine();
-                if (temp != null) {
-                    texto = texto + temp + "\n";
-                    //txtEditor.append(temp + "\n");
-                    temp = "";
-                } else {
-                }
-
-            }
-            bufer.close();
-            
-        } catch (Exception e) {
-        }
-        return texto;
-    }
+    
 }

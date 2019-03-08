@@ -10,7 +10,6 @@ import Analizadores.Script.SintacticoScript;
 import Ast_Generator.AST_Script;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
-import static ScriptCompiler.Compilador.archivos;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;

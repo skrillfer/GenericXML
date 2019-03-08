@@ -15,9 +15,12 @@ import ScriptCompiler.Sentencias.Retornar;
 import ScriptCompiler.Sentencias.Seleccion;
 import ScriptCompiler.Sentencias.Si;
 import WRAPERS.VentanaGenerica;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Stack;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 /**
@@ -342,5 +345,58 @@ public abstract class Compilador {
         } catch (Exception e) {
             return false;
         }
+    }
+    
+    public String existeArchivo(String path)
+    {
+        String pathPadre=Compilador.PathRoot;
+        
+        File file1 = new File(pathPadre+""+path);
+        File file2 = new File(pathPadre+"/"+path);
+        File file3 = new File(path);
+        File file4 = new File("/"+path);
+        
+        if(file1.exists())
+        {
+            return file1.getAbsolutePath();
+        }
+        
+        if(file2.exists())
+        {
+            return file2.getAbsolutePath();
+        }
+        
+        if(file3.exists())
+        {
+            return file3.getAbsolutePath();
+        }
+        
+        if(file4.exists())
+        {
+            return file4.getAbsolutePath();
+        }
+        return "";
+    }
+    
+    String obtenerTextoArchivo(File file) {
+        String texto = "";
+        try {
+            BufferedReader bufer = new BufferedReader(
+                    new InputStreamReader(new FileInputStream((String) file.getAbsolutePath())));
+            String temp = "";
+            while (temp != null) {
+                temp = bufer.readLine();
+                if (temp != null) {
+                    texto = texto + temp + "\n";
+                    temp = "";
+                } else {
+                }
+
+            }
+            bufer.close();
+
+        } catch (Exception e) {
+        }
+        return texto;
     }
 }

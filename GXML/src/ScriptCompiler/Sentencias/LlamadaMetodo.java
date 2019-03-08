@@ -5,7 +5,10 @@
  */
 package ScriptCompiler.Sentencias;
 
+import Analizadores.Gxml.LexGxml;
+import Analizadores.Gxml.SintacticoGxml;
 import Estructuras.Nodo;
+import GenericCompiler.TraduccionGxml_Script;
 import INTERFAZ.Template;
 import ScriptCompiler.Arreglo;
 import ScriptCompiler.Clase;
@@ -26,7 +29,13 @@ import WRAPERS.VentanaGenerica;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -419,12 +428,63 @@ public class LlamadaMetodo extends Compilador {
             }
         } else {
             //Creacion de componentes GRAFICOS
+            Nodo EXP;
+            Resultado resultado;
+            String cad_ruta;
+            String rutaBuena = "";
             switch (raiz.valor.toLowerCase()) {
                 case "crearventana":
                     try {
                         crearVentana();
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "crearVentana error:" + e.getMessage());
+                    }
+
+                    break;
+                case "creararraydesdearchivo":
+                    proceder = false;
+                    Nodo LTExp = raiz.get(0);
+                    if (LTExp.size() > 0) {
+                        EXP = LTExp.get(0);
+                        opL = new OperacionesARL(global, tabla, miTemplate);
+                        resultado = opL.ejecutar(EXP);
+                        if (!esNulo(resultado)) {
+                            if (resultado.tipo.equals("String")) {
+                                cad_ruta = (String) resultado.valor;
+                                rutaBuena = existeArchivo(cad_ruta);
+                                if (!rutaBuena.equals("")) {
+                                    File file = new File(rutaBuena);
+                                    String nombre_ = file.getName();
+                                    String ext = Arrays.stream(nombre_.split("\\.")).reduce((a, b) -> b).orElse(null);
+                                    if (ext.equals("gxml")) {
+                                        Nodo r_GXML = null;
+                                        try {
+                                            LexGxml lex = new LexGxml(new FileReader(rutaBuena));
+                                            SintacticoGxml sin = new SintacticoGxml(lex);
+                                            try {
+                                                sin.parse();
+                                                r_GXML = sin.getRoot();
+                                            } catch (Exception e) {
+                                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "Erro al compilar archivo " + nombre_);
+                                            }
+                                        } catch (FileNotFoundException ex) {
+                                            Logger.getLogger(LlamadaMetodo.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        if (r_GXML != null) {
+                                            //mandar a realizar el arreglo de ventanas
+                                        }
+                                    } else if (ext.equals("gdato")) {
+
+                                    } else {
+                                        Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de creararraydesdearchivo tiene extension ." + ext + " solo se soporta .gdato y .gxml");
+                                    }
+                                }
+                            } else {
+                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de creararraydesdearchivo tiene que ser un string");
+                            }
+                        }
+                    } else {
+                        //es para guardar en gdato
                     }
 
                     break;
@@ -477,7 +537,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Ventana";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevaVentana.setearClasse(clase);
             }
 
@@ -570,7 +630,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Panel";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevoPanel.setearClasse(clase);
             }
 
@@ -697,7 +757,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Boton";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevoBoton.setearClasse(clase);
             }
 
@@ -835,7 +895,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Texto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevaTexto.setearClasse(clase);
             }
 
@@ -954,7 +1014,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Reproductor";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevoReproductor.setearClasse(clase);
             }
 
@@ -1069,7 +1129,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "Desplegable";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevoDesple.setearClasse(clase);
             }
 
@@ -1198,7 +1258,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "CajaNumerica";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevaNumerica.setearClasse(clase);
             }
 
@@ -1344,7 +1404,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "CajaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevaCajaText.setearClasse(clase);
 
             }
@@ -1502,7 +1562,7 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "AreaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
-                
+
                 nuevaAreaText.setearClasse(clase);
             }
 
@@ -1636,7 +1696,7 @@ public class LlamadaMetodo extends Compilador {
                 case "cajatextogenerica":
                     try {
                         cla = ((CajaTextoGenerica) component).classe;
-                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor") ) {
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor")) {
                             nuevo.AGREGAR(new Resultado(cla.nombre, cla));
                         }
                     } catch (Exception e) {
@@ -1645,7 +1705,7 @@ public class LlamadaMetodo extends Compilador {
                 case "cajanumericagenerica":
                     try {
                         cla = ((CajaNumericaGenerica) component).classe;
-                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor") ) {
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor")) {
                             nuevo.AGREGAR(new Resultado(cla.nombre, cla));
                         }
                     } catch (Exception e) {
@@ -1663,7 +1723,7 @@ public class LlamadaMetodo extends Compilador {
                 case "areatextogenerica":
                     try {
                         cla = ((AreaTextoGenerica) component).classe;
-                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor") ) {
+                        if (etiqueta_name.equalsIgnoreCase(namecomponente) || etiqueta_name.equals("contenedor")) {
                             nuevo.AGREGAR(new Resultado(cla.nombre, cla));
                         }
                     } catch (Exception e) {
@@ -1673,6 +1733,49 @@ public class LlamadaMetodo extends Compilador {
         }
 
         return nuevo;
+    }
+
+    public void crearArrayDesdeArchivo(Nodo raiz) {
+        Nodo imports = raiz.get(0);
+        Nodo Lventanas = raiz.get(1);
+
+        for (Nodo vt : Lventanas.hijos) {
+            Nodo vAtributos = vt.get(0);
+            //Nodo vExplicit = vt.get(1);
+            Nodo vHijos = vt.get(2);
+
+        }
+    }
+
+    public void crearObjdesdeNodo(Nodo vAtributos) {
+        //Se crea el Arbol que corresponde a cntObj
+        Nodo cntobj = crearNodo("cntobj", "", vAtributos.linea, vAtributos.columna, vAtributos.index);
+        Nodo atributos_obj = crearNodo("atributos", "", vAtributos.linea, vAtributos.columna, vAtributos.index);
+
+        for (Nodo Xtributo : vAtributos.hijos) {
+            Nodo n_Atributo = Xtributo.get(0);
+            Nodo n_Valor = Xtributo.get(1);
+
+            String tipo_estilo = n_Atributo.nombre.toLowerCase();
+
+            /*REVISAR*/
+            if (!tipo_estilo.equals("accioninicial") && !tipo_estilo.equals("accionfinal") && !tipo_estilo.equals("accion")) {
+                Nodo Atributo = crearNodo("declaracionvarG", "", Xtributo.linea, Xtributo.columna, Xtributo.index);
+
+                Nodo Lt_id = crearNodo("list_id", "", n_Atributo.linea, n_Atributo.columna, n_Atributo.index);
+                Lt_id.add(crearNodo("id", tipo_estilo, n_Atributo.linea, n_Atributo.columna, n_Atributo.index));
+
+                Nodo Asign = crearNodo("asign", "", n_Valor.linea, n_Valor.columna, n_Valor.index);
+                Asign.add(n_Valor);
+
+                Atributo.add(Lt_id);
+                Atributo.add(Asign);
+
+                atributos_obj.add(Atributo);
+
+            }
+        }
+        cntobj.add(atributos_obj);
     }
 
     public Nodo crearNodoObj(Nodo raiz, String stilos[], int limit) {
