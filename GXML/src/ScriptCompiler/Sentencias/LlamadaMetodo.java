@@ -8,7 +8,6 @@ package ScriptCompiler.Sentencias;
 import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
 import Estructuras.Nodo;
-import GenericCompiler.TraduccionGxml_Script;
 import INTERFAZ.Template;
 import ScriptCompiler.Arreglo;
 import ScriptCompiler.Clase;
@@ -27,8 +26,6 @@ import WRAPERS.Reproductor;
 import WRAPERS.TextoGenerico;
 import WRAPERS.VentanaGenerica;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -38,7 +35,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 
 /**
  *
@@ -443,6 +439,7 @@ public class LlamadaMetodo extends Compilador {
                     break;
                 case "creararraydesdearchivo":
                     proceder = false;
+                    Arreglo arr = new Arreglo();
                     Nodo LTExp = raiz.get(0);
                     if (LTExp.size() > 0) {
                         EXP = LTExp.get(0);
@@ -472,6 +469,7 @@ public class LlamadaMetodo extends Compilador {
                                         }
                                         if (r_GXML != null) {
                                             //mandar a realizar el arreglo de ventanas
+                                            crearArrayDesdeArchivo(r_GXML, arr);
                                         }
                                     } else if (ext.equals("gdato")) {
 
@@ -486,7 +484,8 @@ public class LlamadaMetodo extends Compilador {
                     } else {
                         //es para guardar en gdato
                     }
-
+                    arr.SETDIM();
+                    res_nativas = new Resultado("", arr);
                     break;
             }
         }
@@ -1735,19 +1734,61 @@ public class LlamadaMetodo extends Compilador {
         return nuevo;
     }
 
-    public void crearArrayDesdeArchivo(Nodo raiz) {
+    public void parserImportGXML(Nodo impor_t, Arreglo arr) {
+        String cad_ruta = impor_t.valor;
+        String rutaBuena = existeArchivo(cad_ruta);
+        if (!rutaBuena.equals("")) {
+            File file = new File(rutaBuena);
+            String nombre_ = file.getName();
+            String ext = Arrays.stream(nombre_.split("\\.")).reduce((a, b) -> b).orElse(null);
+            if (ext.equals("gxml")) {
+                Nodo r_GXML = null;
+                try {
+                    LexGxml lex = new LexGxml(new FileReader(rutaBuena));
+                    SintacticoGxml sin = new SintacticoGxml(lex);
+                    try {
+                        sin.parse();
+                        r_GXML = sin.getRoot();
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", impor_t.linea, impor_t.columna, "Erro al compilar archivo " + nombre_);
+                    }
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(LlamadaMetodo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (r_GXML != null) {
+                    crearArrayDesdeArchivo(r_GXML, arr);
+                }
+            }
+        }
+    }
+
+    public void crearArrayDesdeArchivo(Nodo raiz, Arreglo arr) {
         Nodo imports = raiz.get(0);
+
         Nodo Lventanas = raiz.get(1);
 
+        Resultado res;
         for (Nodo vt : Lventanas.hijos) {
             Nodo vAtributos = vt.get(0);
-            //Nodo vExplicit = vt.get(1);
-            Nodo vHijos = vt.get(2);
+
+            Nodo EXP = crearObjdesdeNodo(vAtributos);
+            opL = new OperacionesARL(global, tabla, miTemplate);
+            res = opL.ejecutar(EXP);
+            if (!esNulo(res)) {
+                if(esClase(res.valor))
+                {
+                    Clase clase = (Clase) res.valor;
+                    clase.nombre = "Ventana";
+                    clase.ejecutar(miTemplate);
+                    clase.Inicializada = true;
+                }
+                arr.AGREGAR(res);
+            }
 
         }
     }
 
-    public void crearObjdesdeNodo(Nodo vAtributos) {
+    public Nodo crearObjdesdeNodo(Nodo vAtributos) {
         //Se crea el Arbol que corresponde a cntObj
         Nodo cntobj = crearNodo("cntobj", "", vAtributos.linea, vAtributos.columna, vAtributos.index);
         Nodo atributos_obj = crearNodo("atributos", "", vAtributos.linea, vAtributos.columna, vAtributos.index);
@@ -1776,6 +1817,7 @@ public class LlamadaMetodo extends Compilador {
             }
         }
         cntobj.add(atributos_obj);
+        return cntobj;
     }
 
     public Nodo crearNodoObj(Nodo raiz, String stilos[], int limit) {

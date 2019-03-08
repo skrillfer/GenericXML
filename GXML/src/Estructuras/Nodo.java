@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author fernando
  */
 public class Nodo {
-     public String nombre;
+    public String nombre;
     public String valor;
     public int linea;
     public int columna;

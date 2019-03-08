@@ -1,0 +1,31 @@
+<Importar>
+/Ventanas.gxml
+</Importar>
+<Ventana id = "Inicio" tipo = "principal">
+	<Contenedor id = "Cont1" x = 10 y = 10 Alto = 200 Ancho = 200>
+		<Texto Nombre = "lblNombre" X = 10 Y = 20>
+			Nombre
+		</Texto>
+		<Control tipo = "texto" Nombre = "CTNombre" X = 40 Y = 20 Alto = 10 Ancho = 100>
+			<Defecto>
+				Ingrese aqui su nombre
+			</Defecto>
+		</Control>
+		<Texto Nombre = "lblCorreo" X = 10 Y = 50>
+			Correo
+		</Texto>
+		<Control tipo = "texto" Nombre = "CTCorreo" X = 40 Y = 50 Alto = 10 Ancho = 100>
+			<Defecto>
+				Ingrese aqui su correo
+			</Defecto>
+		</Control>
+	</Contenedor>
+	<Contenedor id = "ContBtn" x = 10 Y = 220 Alto = 100 Ancho = 200>
+		<Enviar Nombre = "btnIngresar" X = 25 Y = 30 Alto = 70 Ancho = 50>
+			Ingresar
+		</Enviar>
+		<Boton Nombre = "btnRegistrar" X = 125 Y = 30 Alto = 70 Ancho = 50 Referencia = "Registrar">
+			Registrar
+		</Boton>
+	</Contenedor>
+</Ventana>
