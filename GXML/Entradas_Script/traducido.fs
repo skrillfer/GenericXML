@@ -2,59 +2,56 @@
 
 
 
+
+var Ven_Inicio = CrearVentana("#ff0000",0,0,"VentanaUno");
+
+var Cont1_Inicio = Ven_Inicio.CrearContenedor(200, 400, "#00FF00", verdadero, 200, 20);
+
+
+
+////////////////// Valores de Nombre
+cont1_inicio.CrearTexto("Arial", 14, "#000000", 10, 20, falso, falso, "Nombre");
+cont1_inicio.CrearCajaTexto(30, 150, "Arial", 14, "#000000", 70, 20, falso, falso, "Ingrese aqui su nombre", "CTNombre");
+
+////////////////// Valores de Correo
+cont1_inicio.CrearTexto("Arial", 14, "#000000", 10, 50, falso, falso, "Correo");
+cont1_inicio.CrearCajaTexto(30, 150, "Arial", 14, "#000000", 70, 50, falso, falso, "Ingrese aqui su correo", "CTCorreo");
+
+
+
+/////////////////// Contenedor ContBtn
+var ContBtn_Inicio = Ven_Inicio.CrearContenedor(100, 200, "#FFFF00", falso, 10, 220);
+
+
+/////////////////// Boton enviar
+Var btnIngresar_Inicio = ContBtn_Inicio.CrearBoton("Arial", 12, "#000000", 25, 10, abrirVentana(), "Ingresar", 30, 80);
+btnIngresar_Inicio.AlClic(Guardar_Inicio());
+
+
+/////////////////// Boton Registrar
+Var btnRegistrar_Inicio = ContBtn_Inicio.CrearBoton("Arial", 12, "#000000", 25, 40, cerrarVentana(), "Registrar", 30, 80);
+
 /////////////////////////////////////////////////////////////////////////////////
-///////////////////         Traduccion Ventana Inicio         ///////////////////
+/////////////////         Fin Traduccion Ventana Inicio         /////////////////
 /////////////////////////////////////////////////////////////////////////////////
-importar("Funciones.fs");
 
-var data=ackermann(3,6);
-imprimir(data);
+Cont1_Inicio.CrearControlNumerico(50, 50, 20, nulo, 70, 80, 18, "CEdad"); //Sin valor maximo que sea nulo
 
-/*imprimir(4<2?"lo es":"no lo es");
-MensajeBienvenida("luis fernado ramirez");
-MensajeDespedida("adios perros");*/
+Ven_Inicio.AlCargar(); /// Traduccion ventana principal
 
 
-/*
-funcion prueba()
+funcion cerrarVentana()
 {
-	var p=nulo;
-	Si(p!=nulo)
-	{
-		imprimir("p es nulo");
-	}
-	Si(verdadero<falso)
-	{
-		imprimir("verdadero es mayor a falso");
-	}
-}
-funcion fibonacci(var n)
-{
-	
-    si (n>1){
-       retornar fibonacci(n-1) + fibonacci(n-2);  //función recursiva
-    }
-    sino si (n==1) {  // caso base
-        retornar 1;
-    }
-    sino si (n==0){  // caso base
-        retornar 0;
-    }
-    sino{ //error
-        imprimir("Debes ingresar un tamaño mayor o igual a 1");
-        retornar 1; 
-    }
+	Ven_Inicio.Alcerrar(); /// Traduccion ventana principal
+	abrirVentana();
 }
 
-funcion factorial(var numero)
+funcion abrirVentana()
 {
-    si (numero==0){
-      retornar 1;
-    }
-    sino{
-     retornar numero * factorial(numero-1);
-    }
+	Ven_Inicio.Alcargar(); /// Traduccion ventana principal
 }
-*/
+
+
+
 
 

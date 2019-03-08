@@ -1297,6 +1297,8 @@ public class LlamadaMetodo extends Compilador {
                 clase.nombre = "CajaTexto";
                 clase.ejecutar(miTemplate);
                 clase.Inicializada = true;
+                nuevaAreaText.setearClasse(clase);
+                
             }
 
             /*---------------------------------------------------------------------*/

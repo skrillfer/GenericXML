@@ -7,23 +7,23 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.Clase;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
+import ScriptCompiler.Simbolo;
 import ScriptCompiler.TablaSimbolo;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 
 /**
  *
  * @author fernando
  */
 public class VentanaGenerica extends JFrame {
-
+    
     protected TablaSimbolo tabla;
     protected TablaSimbolo global;
     public Template miTemplate;
@@ -64,6 +64,8 @@ public class VentanaGenerica extends JFrame {
         });
     }
 
+    
+    
     public void setearCore(TablaSimbolo global, TablaSimbolo tabla, Template template) {
         this.global = global;
         this.tabla = tabla;

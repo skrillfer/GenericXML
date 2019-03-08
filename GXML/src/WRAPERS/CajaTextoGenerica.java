@@ -7,18 +7,22 @@ package WRAPERS;
 
 import Estructuras.Nodo;
 import INTERFAZ.Template;
+import ScriptCompiler.Clase;
+import ScriptCompiler.Simbolo;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Map;
 import javax.swing.JTextField;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 /**
  *
  * @author fernando
  */
 public class CajaTextoGenerica extends JTextField {
-
+    protected Clase classe;
     /*
     Alto, Ancho, Fuente, Tamaño, Color, X, Y, Negrilla, Cursiva, defecto, nombre 
      */
@@ -28,6 +32,42 @@ public class CajaTextoGenerica extends JTextField {
         this.raiz = raiz;
         //Estilo por defecto
         setNegrilla(false);
+        
+        this.addAncestorListener(new AncestorListener() {
+
+            @Override
+            public void ancestorAdded(AncestorEvent event) {
+                reset();
+            }
+
+            @Override
+            public void ancestorRemoved(AncestorEvent event) {
+
+            }
+
+            @Override
+            public void ancestorMoved(AncestorEvent event) {
+
+            }
+        });
+    }
+    
+    public void setearClasse(Clase classe)
+    {
+        this.classe = classe;
+    }
+    
+    public void reset()
+    {
+        if(classe!=null)
+        {
+            Simbolo defecto  = classe.tabla.getSimbolo("defecto", classe);
+            try {
+                setTexto(defecto.valor.toString());
+            } catch (Exception e) {
+                Template.reporteError_CJS.agregar("Ejecucion",raiz.linea, raiz.columna, "Error al reset defecti de CajaTexto "+e.getMessage());
+            }
+        }
     }
 
     public void setAncho(Object ancho) {
