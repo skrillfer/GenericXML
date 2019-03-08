@@ -128,7 +128,11 @@ public class LlamadaMetodo extends Compilador {
         for (Nodo hijo : nodoParametros.hijos) {
             opL = new OperacionesARL(global, tabla, miTemplate);
             Resultado resultado = opL.ejecutar(hijo);
-            parametros.add(resultado);
+            if(!esNulo(resultado))
+            {
+                parametros.add(resultado);
+            }
+            
         }
         return parametros;
     }

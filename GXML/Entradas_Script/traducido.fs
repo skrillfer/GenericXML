@@ -1,14 +1,15 @@
 
 
-
-
 /////////////////////////////////////////////////////////////////////////////////
 ///////////////////         Traduccion Ventana Inicio         ///////////////////
 /////////////////////////////////////////////////////////////////////////////////
 importar("Funciones.fs");
 
-imprimir(4<2?"lo es":"no lo es");
 
+/*imprimir(4<2?"lo es":"no lo es");
+MensajeBienvenida("luis fernado ramirez");
+MensajeDespedida("adios perros");*/
+ackermann(3,11);
 funcion prueba()
 {
 	var p=nulo;

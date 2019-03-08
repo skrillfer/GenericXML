@@ -64,7 +64,9 @@ public class OperacionesARL {
                 linea2 = nodo.hijos.get(1).linea;
                 columna2 = nodo.hijos.get(1).columna;
 
-                result = operacionTernaria(nodo);
+                Resultado r_and1 = ejecutar(nodo.hijos.get(0));
+                Resultado r_and2 = ejecutar(nodo.hijos.get(1));
+                result = operacionesLogicas(r_and1, r_and2, "AND");
 
                 break;
             case "or":
@@ -347,7 +349,7 @@ public class OperacionesARL {
 
     public Resultado operacionTernaria(Nodo raiz) {
         Resultado result = new Resultado("-1", null);
-
+        JOptionPane.showMessageDialog(null, "es operacion ternaria " + raiz.linea + "-" + raiz.columna);
         try {
             Resultado condicion = ejecutar(raiz.hijos.get(0));
             Resultado sentenciaV = ejecutar(raiz.hijos.get(1));

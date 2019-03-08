@@ -7,6 +7,7 @@ package ScriptCompiler;
 
 import Analizadores.Script.LexScript;
 import Analizadores.Script.SintacticoScript;
+import Ast_Generator.AST_Script;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
 import static ScriptCompiler.Compilador.archivos;
@@ -90,6 +91,9 @@ public class Archivo {
                         sin.parse();
                         Nodo raizz = sin.getRoot();
                         if (raizz != null) {
+                            Ast_Generator.AST_Script as = new AST_Script();
+                            as.generacion_arbolScript(raizz);
+                            
                             Archivo archivo = new Archivo(nombre, raizz,clase.metodos,clase.atributos);
                             //archivos.add(archivo);
                         }
