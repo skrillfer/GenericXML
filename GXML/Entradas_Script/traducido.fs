@@ -10,14 +10,16 @@ var arr1={arreglo:[1,2,3,4,5,6,7]};
 var xx = 100;
 
 
-var fix = arr1.arreglo.buscar(comparar);
+var fix = arr1.arreglo.reduce(comparar);
+
 imprimir("fix es:"+fix);
 
 
-funcion comparar(item)
+funcion comparar(total,item)
 {
-    retornar item>2;
+    retornar total+item;
 }
+
 
 funcion print(item)
 {

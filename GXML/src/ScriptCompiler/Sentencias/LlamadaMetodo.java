@@ -83,8 +83,7 @@ public class LlamadaMetodo extends Compilador {
             nivelCiclo = 0;
 
             pilaTablas.push(tabla);
-            
-            
+
             //---------     CAMBIO DE AMBITO    --------------  ----------  --------
             TablaSimbolo tablaTemp = new TablaSimbolo();
             tablaTemp.cambiarAmbito(superClase.global);
@@ -92,7 +91,7 @@ public class LlamadaMetodo extends Compilador {
             //--------      -------------   --------------  -----------------   ----
             //TablaSimbolo tablaTemp = new TablaSimbolo();
             //tabla = tablaTemp;
-            
+
             for (int i = 0; i < metodoTemp.parametros.size(); i++) {
                 Nodo parametro = metodoTemp.parametros.get(i);
                 Resultado valor = parametros.get(i);
@@ -130,13 +129,13 @@ public class LlamadaMetodo extends Compilador {
             nivelCiclo = 0;
 
             pilaTablas.push(tabla);
-            
-             //---------     CAMBIO DE AMBITO    --------------  ----------  --------
+
+            //---------     CAMBIO DE AMBITO    --------------  ----------  --------
             TablaSimbolo tablaTemp = new TablaSimbolo();
             tablaTemp.cambiarAmbito(superClase.global);
             tabla = tablaTemp;
             //--------      -------------   --------------  -----------------   ----
-            
+
             for (int i = 0; i < metodoTemp.parametros.size(); i++) {
                 Nodo parametro = metodoTemp.parametros.get(i);
                 Resultado valor = parametros.get(i);
@@ -203,7 +202,7 @@ public class LlamadaMetodo extends Compilador {
     private Metodo getMetodo(String id) {
         Metodo metodo = buscarMetodo(id, actual);
         if (metodo == null) {
-                metodo = buscarMetodo(id,superClase);
+            metodo = buscarMetodo(id, superClase);
         }
         return metodo;
     }
@@ -227,9 +226,12 @@ public class LlamadaMetodo extends Compilador {
                 Arreglo arr;
                 switch (raiz.valor.toLowerCase()) {
                     case "map":
-                    case "filtrar":    
-                    case "buscar":        
+                    case "filtrar":
+                    case "buscar":
+                    case "reduce":
                         proceder = false;
+                        Resultado resReduce = null;
+
                         Arreglo ARR = new Arreglo();
                         ArrayList<Resultado> params;
                         Nodo LTExp1 = raiz.get(0);
@@ -243,108 +245,131 @@ public class LlamadaMetodo extends Compilador {
                                     arr = (Arreglo) actualResultado.valor;
 
                                     for (Object dato : arr.getDatos()) {
-                                        Resultado resFilter ;
+                                        Resultado resFilter;
                                         Resultado res = (Resultado) dato;
                                         try {
+                                            if (raiz.valor.toLowerCase().equals("reduce")) {
+                                                JOptionPane.showMessageDialog(null, "soy reduce");
+
+                                                if (resReduce == null) {
+                                                    switch (res.tipo) {
+                                                        case "String":
+                                                            resReduce = new Resultado("String", "");
+                                                            break;
+                                                        case "Integer":
+                                                            resReduce = new Resultado("Integer", 0);
+                                                            break;
+                                                        case "Double":
+                                                            resReduce = new Resultado("Double", 0.0);
+                                                            break;
+                                                        case "Boolean":
+                                                            resReduce = new Resultado("Boolean", true);
+                                                            break;
+                                                        default:
+                                                            resReduce = new Resultado("$nulo", "nulo");
+                                                            break;
+                                                    }
+                                                    params.add(resReduce);
+                                                } else {
+                                                    params.add(resReduce);
+                                                }
+                                            }
+
                                             params.add(res);
-                                            JOptionPane.showMessageDialog(null, "soy map");
+
                                             LlamadaMetodo llamada = new LlamadaMetodo(this.actual, 0, subEXP);
                                             Metodo metodo = llamada.ejecutarFuncion_Arreglo(params, subEXP.valor);
                                             //---------------------------------------------------
                                             if (metodo != null) {
                                                 metodo.estadoRetorno = false;
                                                 if (!esNulo(metodo.retorno)) {
-                                                    
-                                                    if(raiz.valor.toLowerCase().equals("map"))
-                                                    {
+
+                                                    if (raiz.valor.toLowerCase().equals("map")) {
                                                         ARR.AGREGAR(metodo.retorno);
-                                                    }else if(raiz.valor.toLowerCase().equals("filtrar"))
-                                                    {
+                                                    } else if (raiz.valor.toLowerCase().equals("filtrar")) {
                                                         resFilter = metodo.retorno;
-                                                        if(resFilter.tipo.equals("Boolean"))
-                                                        {
-                                                            if((Boolean)resFilter.valor)
-                                                            {
+                                                        if (resFilter.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resFilter.valor) {
                                                                 ARR.AGREGAR(res);
                                                             }
                                                         }
-                                                    }else if(raiz.valor.toLowerCase().equals("buscar"))
-                                                    {
+                                                    } else if (raiz.valor.toLowerCase().equals("buscar")) {
                                                         resFilter = metodo.retorno;
-                                                        if(resFilter.tipo.equals("Boolean"))
-                                                        {
-                                                            if((Boolean)resFilter.valor)
-                                                            {
+                                                        if (resFilter.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resFilter.valor) {
                                                                 res_nativas = res;
                                                                 return;
                                                             }
                                                         }
+                                                    } else if (raiz.valor.toLowerCase().equals("reduce")) {
+                                                        resReduce = metodo.retorno;
                                                     }
                                                 }
                                             } else {
                                                 if (llamada.res_nativas != null) {
-                                                    
-                                                    if(raiz.valor.toLowerCase().equals("map"))
-                                                    {
+
+                                                    if (raiz.valor.toLowerCase().equals("map")) {
                                                         ARR.AGREGAR(llamada.res_nativas);
-                                                    }else if(raiz.valor.toLowerCase().equals("filtrar"))
-                                                    {
+                                                    } else if (raiz.valor.toLowerCase().equals("filtrar")) {
                                                         resFilter = llamada.res_nativas;
-                                                        if(resFilter.tipo.equals("Boolean"))
-                                                        {
-                                                            if((Boolean)resFilter.valor)
-                                                            {
+                                                        if (resFilter.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resFilter.valor) {
                                                                 ARR.AGREGAR(res);
                                                             }
                                                         }
-                                                    }else if(raiz.valor.toLowerCase().equals("buscar"))
-                                                    {
+                                                    } else if (raiz.valor.toLowerCase().equals("buscar")) {
                                                         resFilter = llamada.res_nativas;
-                                                        if(resFilter.tipo.equals("Boolean"))
-                                                        {
-                                                            if((Boolean)resFilter.valor)
-                                                            {
+                                                        if (resFilter.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resFilter.valor) {
                                                                 res_nativas = res;
                                                                 return;
                                                             }
                                                         }
+                                                    } else if (raiz.valor.toLowerCase().equals("reduce")) {
+                                                        resReduce = llamada.res_nativas;
                                                     }
+
                                                     //ARR.AGREGAR(llamada.res_nativas);
                                                 }
                                                 if (llamada.ComponenteRes != null) {
-                                                    if(raiz.valor.toLowerCase().equals("map"))
-                                                    {
+                                                    if (raiz.valor.toLowerCase().equals("map")) {
                                                         ARR.AGREGAR(llamada.ComponenteRes);
-                                                    }else if(raiz.valor.toLowerCase().equals("filtrar"))
-                                                    {
+                                                    } else if (raiz.valor.toLowerCase().equals("filtrar")) {
                                                         resFilter = llamada.ComponenteRes;
-                                                        if(resFilter.tipo.equals("Boolean"))
-                                                        {
-                                                            if((Boolean)resFilter.valor)
-                                                            {
+                                                        if (resFilter.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resFilter.valor) {
                                                                 ARR.AGREGAR(res);
                                                             }
                                                         }
-                                                    }else if(raiz.valor.toLowerCase().equals("buscar"))
-                                                    {
+                                                    } else if (raiz.valor.toLowerCase().equals("buscar")) {
                                                         resFilter = llamada.ComponenteRes;
-                                                        if(resFilter.tipo.equals("Boolean"))
-                                                        {
-                                                            if((Boolean)resFilter.valor)
-                                                            {
+                                                        if (resFilter.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resFilter.valor) {
                                                                 res_nativas = res;
                                                                 return;
                                                             }
                                                         }
+                                                    } else if (raiz.valor.toLowerCase().equals("reduce")) {
+                                                        resReduce = llamada.ComponenteRes;
                                                     }
                                                     //ARR.AGREGAR(llamada.ComponenteRes);
                                                 }
                                             }
                                             //---------------------------------------------------
-                                            
+
                                             params.clear();
                                         } catch (Exception e) {
-                                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al ejecutar funcion "+raiz.valor.toLowerCase()+" con:" + subEXP.valor + e.getMessage());
+                                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al ejecutar funcion " + raiz.valor.toLowerCase() + " con:" + subEXP.valor + e.getMessage());
+                                        }
+
+                                    }
+                                    if (raiz.valor.toLowerCase().equals("reduce")) {
+                                        try {
+                                            res_nativas = resReduce;
+                                            return;
+                                        } catch (Exception e) {
+                                            res_nativas = new Resultado("-1", null);
+                                            return;
                                         }
 
                                     }
@@ -353,7 +378,7 @@ public class LlamadaMetodo extends Compilador {
                             }
                         }
                         res_nativas = new Resultado("", ARR);
-                        
+
                         break;
                     case "ascendente":
                         proceder = false;
