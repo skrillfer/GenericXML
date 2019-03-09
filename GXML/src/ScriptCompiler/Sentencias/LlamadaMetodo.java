@@ -230,6 +230,8 @@ public class LlamadaMetodo extends Compilador {
                     case "buscar":
                     case "reduce":
                         proceder = false;
+                        boolean todosFlag = true;
+                        boolean algunoFlag = false;
                         Resultado resReduce = null;
                         int contReduce = 0;
                         Arreglo ARR = new Arreglo();
@@ -246,42 +248,35 @@ public class LlamadaMetodo extends Compilador {
 
                                     for (Object dato : arr.getDatos()) {
                                         Resultado resFilter;
+                                        Resultado resTodos;
+                                        Resultado resAlguno;
+
                                         Resultado res = (Resultado) dato;
                                         try {
                                             if (raiz.valor.toLowerCase().equals("reduce")) {
                                                 //JOptionPane.showMessageDialog(null, "soy reduce");
-                                                
-                                                if(contReduce==0)
-                                                {
+
+                                                if (contReduce == 0) {
                                                     params.add(res);
-                                                    if((contReduce+1)<arr.getDatos().size())
-                                                    {
-                                                        params.add((Resultado)arr.getDatos().get(contReduce+1));
-                                                    }else
-                                                    {
+                                                    if ((contReduce + 1) < arr.getDatos().size()) {
+                                                        params.add((Resultado) arr.getDatos().get(contReduce + 1));
+                                                    } else {
                                                         //Solo existe un elemento
                                                         res_nativas = res;
                                                         return;
                                                     }
-                                                }else
-                                                {
-                                                    if((contReduce+1)<arr.getDatos().size())
-                                                    {
+                                                } else {
+                                                    if ((contReduce + 1) < arr.getDatos().size()) {
                                                         params.add(resReduce);
-                                                        params.add((Resultado)arr.getDatos().get(contReduce+1));
-                                                    }else
-                                                    {
+                                                        params.add((Resultado) arr.getDatos().get(contReduce + 1));
+                                                    } else {
                                                         res_nativas = resReduce;
                                                         return;
                                                     }
                                                 }
-                                            }else
-                                            {
+                                            } else {
                                                 params.add(res);
                                             }
-
-                                            
-                                            
 
                                             LlamadaMetodo llamada = new LlamadaMetodo(this.actual, 0, subEXP);
                                             Metodo metodo = llamada.ejecutarFuncion_Arreglo(params, subEXP.valor);
@@ -305,6 +300,23 @@ public class LlamadaMetodo extends Compilador {
                                                             if ((Boolean) resFilter.valor) {
                                                                 res_nativas = res;
                                                                 return;
+                                                            }
+                                                        }
+                                                    } else if (raiz.valor.toLowerCase().equals("todos")) {
+                                                        resTodos = metodo.retorno;
+                                                        if (resTodos.tipo.equals("Boolean")) {
+                                                            if (!(Boolean) resTodos.valor) {
+                                                                todosFlag = false;
+                                                            }
+                                                        } else {
+                                                            todosFlag = false;
+                                                        }
+                                                    } else if (raiz.valor.toLowerCase().equals("alguno")) {
+                                                        resAlguno = metodo.retorno;
+                                                        if (resAlguno.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resAlguno.valor) {
+                                                                algunoFlag = true;
+                                                                break;
                                                             }
                                                         }
                                                     } else if (raiz.valor.toLowerCase().equals("reduce")) {
@@ -331,6 +343,23 @@ public class LlamadaMetodo extends Compilador {
                                                                 return;
                                                             }
                                                         }
+                                                    } else if (raiz.valor.toLowerCase().equals("todos")) {
+                                                        resTodos = llamada.res_nativas;
+                                                        if (resTodos.tipo.equals("Boolean")) {
+                                                            if (!(Boolean) resTodos.valor) {
+                                                                todosFlag = false;
+                                                            }
+                                                        } else {
+                                                            todosFlag = false;
+                                                        }
+                                                    } else if (raiz.valor.toLowerCase().equals("alguno")) {
+                                                        resAlguno = llamada.res_nativas;
+                                                        if (resAlguno.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resAlguno.valor) {
+                                                                algunoFlag = true;
+                                                                break;
+                                                            }
+                                                        }
                                                     } else if (raiz.valor.toLowerCase().equals("reduce")) {
                                                         resReduce = llamada.res_nativas;
                                                     }
@@ -355,6 +384,23 @@ public class LlamadaMetodo extends Compilador {
                                                                 return;
                                                             }
                                                         }
+                                                    } else if (raiz.valor.toLowerCase().equals("todos")) {
+                                                        resTodos = llamada.ComponenteRes;
+                                                        if (resTodos.tipo.equals("Boolean")) {
+                                                            if (!(Boolean) resTodos.valor) {
+                                                                todosFlag = false;
+                                                            }
+                                                        } else {
+                                                            todosFlag = false;
+                                                        }
+                                                    } else if (raiz.valor.toLowerCase().equals("alguno")) {
+                                                        resAlguno = llamada.ComponenteRes;
+                                                        if (resAlguno.tipo.equals("Boolean")) {
+                                                            if ((Boolean) resAlguno.valor) {
+                                                                algunoFlag = true;
+                                                                break;
+                                                            }
+                                                        }
                                                     } else if (raiz.valor.toLowerCase().equals("reduce")) {
                                                         resReduce = llamada.ComponenteRes;
                                                     }
@@ -369,16 +415,27 @@ public class LlamadaMetodo extends Compilador {
                                         }
                                         contReduce++;
                                     }
-                                    /*if (raiz.valor.toLowerCase().equals("reduce")) {
-                                        try {
-                                            res_nativas = resReduce;
+                                    //Fin Foreach
+                                    if (raiz.valor.toLowerCase().equals("todos")) {
+                                        if (todosFlag) {
+                                            res_nativas = new Resultado("Boolean", true);
                                             return;
-                                        } catch (Exception e) {
-                                            res_nativas = new Resultado("-1", null);
+                                        } else {
+                                            res_nativas = new Resultado("Boolean", false);
                                             return;
                                         }
+                                    }
 
-                                    }*/
+                                    if (raiz.valor.toLowerCase().equals("alguno")) {
+                                        if (algunoFlag) {
+                                            res_nativas = new Resultado("Boolean", true);
+                                            return;
+                                        } else {
+                                            res_nativas = new Resultado("Boolean", false);
+                                            return;
+                                        }
+                                    }
+
                                     ARR.SETDIM();
                                 }
                             }
