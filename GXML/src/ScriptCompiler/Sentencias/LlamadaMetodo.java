@@ -228,6 +228,7 @@ public class LlamadaMetodo extends Compilador {
                 switch (raiz.valor.toLowerCase()) {
                     case "map":
                     case "filtrar":    
+                    case "buscar":        
                         proceder = false;
                         Arreglo ARR = new Arreglo();
                         ArrayList<Resultado> params;
@@ -267,6 +268,17 @@ public class LlamadaMetodo extends Compilador {
                                                                 ARR.AGREGAR(res);
                                                             }
                                                         }
+                                                    }else if(raiz.valor.toLowerCase().equals("buscar"))
+                                                    {
+                                                        resFilter = metodo.retorno;
+                                                        if(resFilter.tipo.equals("Boolean"))
+                                                        {
+                                                            if((Boolean)resFilter.valor)
+                                                            {
+                                                                res_nativas = res;
+                                                                return;
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             } else {
@@ -285,6 +297,17 @@ public class LlamadaMetodo extends Compilador {
                                                                 ARR.AGREGAR(res);
                                                             }
                                                         }
+                                                    }else if(raiz.valor.toLowerCase().equals("buscar"))
+                                                    {
+                                                        resFilter = llamada.res_nativas;
+                                                        if(resFilter.tipo.equals("Boolean"))
+                                                        {
+                                                            if((Boolean)resFilter.valor)
+                                                            {
+                                                                res_nativas = res;
+                                                                return;
+                                                            }
+                                                        }
                                                     }
                                                     //ARR.AGREGAR(llamada.res_nativas);
                                                 }
@@ -300,6 +323,17 @@ public class LlamadaMetodo extends Compilador {
                                                             if((Boolean)resFilter.valor)
                                                             {
                                                                 ARR.AGREGAR(res);
+                                                            }
+                                                        }
+                                                    }else if(raiz.valor.toLowerCase().equals("buscar"))
+                                                    {
+                                                        resFilter = llamada.ComponenteRes;
+                                                        if(resFilter.tipo.equals("Boolean"))
+                                                        {
+                                                            if((Boolean)resFilter.valor)
+                                                            {
+                                                                res_nativas = res;
+                                                                return;
                                                             }
                                                         }
                                                     }

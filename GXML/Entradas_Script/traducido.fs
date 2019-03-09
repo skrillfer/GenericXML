@@ -10,13 +10,13 @@ var arr1={arreglo:[1,2,3,4,5,6,7]};
 var xx = 100;
 
 
-var fix = arr1.arreglo.filtrar(comparar);
+var fix = arr1.arreglo.buscar(comparar);
+imprimir("fix es:"+fix);
 
-fix.map(print);
 
 funcion comparar(item)
 {
-    retornar item>5;
+    retornar item>2;
 }
 
 funcion print(item)
