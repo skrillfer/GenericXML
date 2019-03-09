@@ -307,9 +307,11 @@ public class LlamadaMetodo extends Compilador {
                                                         if (resTodos.tipo.equals("Boolean")) {
                                                             if (!(Boolean) resTodos.valor) {
                                                                 todosFlag = false;
+                                                                break;
                                                             }
                                                         } else {
                                                             todosFlag = false;
+                                                            break;
                                                         }
                                                     } else if (raiz.valor.toLowerCase().equals("alguno")) {
                                                         resAlguno = metodo.retorno;
@@ -348,9 +350,11 @@ public class LlamadaMetodo extends Compilador {
                                                         if (resTodos.tipo.equals("Boolean")) {
                                                             if (!(Boolean) resTodos.valor) {
                                                                 todosFlag = false;
+                                                                break;
                                                             }
                                                         } else {
                                                             todosFlag = false;
+                                                            break;
                                                         }
                                                     } else if (raiz.valor.toLowerCase().equals("alguno")) {
                                                         resAlguno = llamada.res_nativas;
@@ -389,9 +393,11 @@ public class LlamadaMetodo extends Compilador {
                                                         if (resTodos.tipo.equals("Boolean")) {
                                                             if (!(Boolean) resTodos.valor) {
                                                                 todosFlag = false;
+                                                                break;
                                                             }
                                                         } else {
                                                             todosFlag = false;
+                                                            break;
                                                         }
                                                     } else if (raiz.valor.toLowerCase().equals("alguno")) {
                                                         resAlguno = llamada.ComponenteRes;
