@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public abstract class Compilador {
-
+    public static Clase superClase;
     public static String PathRoot = "";
             
     public static ArrayList<VentanaGenerica> listaVentanas;

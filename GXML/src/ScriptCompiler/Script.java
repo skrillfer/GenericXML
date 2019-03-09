@@ -60,7 +60,7 @@ public class Script extends Compilador {
         pilaMetodos = new Stack<>();
         pilaTablas = new Stack<>();
         claseActual = getClasePrincipal();
-
+        superClase = getClasePrincipal();
         if (claseActual == null) {
             Template.reporteError_CJS.agregar("Semantico", 0, 0, "Metodo inicio no encontrado");
             return;

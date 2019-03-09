@@ -83,8 +83,16 @@ public class LlamadaMetodo extends Compilador {
             nivelCiclo = 0;
 
             pilaTablas.push(tabla);
+            
+            
+            //---------     CAMBIO DE AMBITO    --------------  ----------  --------
             TablaSimbolo tablaTemp = new TablaSimbolo();
+            tablaTemp.cambiarAmbito(superClase.global);
             tabla = tablaTemp;
+            //--------      -------------   --------------  -----------------   ----
+            //TablaSimbolo tablaTemp = new TablaSimbolo();
+            //tabla = tablaTemp;
+            
             for (int i = 0; i < metodoTemp.parametros.size(); i++) {
                 Nodo parametro = metodoTemp.parametros.get(i);
                 Resultado valor = parametros.get(i);
@@ -122,8 +130,16 @@ public class LlamadaMetodo extends Compilador {
             nivelCiclo = 0;
 
             pilaTablas.push(tabla);
+            
+            //TablaSimbolo tablaTemp = new TablaSimbolo();
+            //tabla = tablaTemp;
+            
+             //---------     CAMBIO DE AMBITO    --------------  ----------  --------
             TablaSimbolo tablaTemp = new TablaSimbolo();
+            tablaTemp.cambiarAmbito(superClase.global);
             tabla = tablaTemp;
+            //--------      -------------   --------------  -----------------   ----
+            
             for (int i = 0; i < metodoTemp.parametros.size(); i++) {
                 Nodo parametro = metodoTemp.parametros.get(i);
                 Resultado valor = parametros.get(i);
@@ -201,12 +217,7 @@ public class LlamadaMetodo extends Compilador {
     private Metodo getMetodo(String id) {
         Metodo metodo = buscarMetodo(id, actual);
         if (metodo == null) {
-            //NOTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //aqui deberia de buscarlo en los importados
-            /*if (actual.herencia != null) {
-                actual = actual.herencia;
-                metodo = getMetodo(id);
-            }*/
+                metodo = buscarMetodo(id,superClase);
         }
 
         return metodo;
@@ -248,6 +259,7 @@ public class LlamadaMetodo extends Compilador {
                                         Resultado res = (Resultado) dato;
                                         try {
                                             params.add(res);
+                                            JOptionPane.showMessageDialog(null, "soy map");
                                             LlamadaMetodo llamada = new LlamadaMetodo(this.actual, 0, subEXP);
                                             Metodo metodo = llamada.ejecutarFuncion_Arreglo(params, subEXP.valor);
                                             //---------------------------------------------------
