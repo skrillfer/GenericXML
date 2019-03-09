@@ -131,9 +131,6 @@ public class LlamadaMetodo extends Compilador {
 
             pilaTablas.push(tabla);
             
-            //TablaSimbolo tablaTemp = new TablaSimbolo();
-            //tabla = tablaTemp;
-            
              //---------     CAMBIO DE AMBITO    --------------  ----------  --------
             TablaSimbolo tablaTemp = new TablaSimbolo();
             tablaTemp.cambiarAmbito(superClase.global);
@@ -169,16 +166,6 @@ public class LlamadaMetodo extends Compilador {
     }
 
     private String getId(String nombre, ArrayList<Resultado> parametros) {
-        /*for (Resultado resultado : parametros) {
-            if (resultado.valor != null) {
-                if (resultado.valor.getClass().getSimpleName().equalsIgnoreCase("arreglo")) {
-                    Arreglo arr = (Arreglo) resultado.valor;
-                    nombre += resultado.tipo + arr.dimensiones.size();
-                } else {
-                    nombre += resultado.tipo;
-                }
-            }
-        }*/
         nombre += "_" + parametros.size();
         return nombre;
     }
@@ -192,7 +179,6 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(resultado)) {
                 parametros.add(resultado);
             }
-
         }
         return parametros;
     }
@@ -219,7 +205,6 @@ public class LlamadaMetodo extends Compilador {
         if (metodo == null) {
                 metodo = buscarMetodo(id,superClase);
         }
-
         return metodo;
     }
 
@@ -242,6 +227,7 @@ public class LlamadaMetodo extends Compilador {
                 Arreglo arr;
                 switch (raiz.valor.toLowerCase()) {
                     case "map":
+                    case "filtrar":    
                         proceder = false;
                         Arreglo ARR = new Arreglo();
                         ArrayList<Resultado> params;
@@ -256,6 +242,7 @@ public class LlamadaMetodo extends Compilador {
                                     arr = (Arreglo) actualResultado.valor;
 
                                     for (Object dato : arr.getDatos()) {
+                                        Resultado resFilter ;
                                         Resultado res = (Resultado) dato;
                                         try {
                                             params.add(res);
@@ -266,21 +253,64 @@ public class LlamadaMetodo extends Compilador {
                                             if (metodo != null) {
                                                 metodo.estadoRetorno = false;
                                                 if (!esNulo(metodo.retorno)) {
-                                                    ARR.AGREGAR(metodo.retorno);
+                                                    
+                                                    if(raiz.valor.toLowerCase().equals("map"))
+                                                    {
+                                                        ARR.AGREGAR(metodo.retorno);
+                                                    }else if(raiz.valor.toLowerCase().equals("filtrar"))
+                                                    {
+                                                        resFilter = metodo.retorno;
+                                                        if(resFilter.tipo.equals("Boolean"))
+                                                        {
+                                                            if((Boolean)resFilter.valor)
+                                                            {
+                                                                ARR.AGREGAR(res);
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             } else {
                                                 if (llamada.res_nativas != null) {
-                                                    ARR.AGREGAR(llamada.res_nativas);
+                                                    
+                                                    if(raiz.valor.toLowerCase().equals("map"))
+                                                    {
+                                                        ARR.AGREGAR(llamada.res_nativas);
+                                                    }else if(raiz.valor.toLowerCase().equals("filtrar"))
+                                                    {
+                                                        resFilter = llamada.res_nativas;
+                                                        if(resFilter.tipo.equals("Boolean"))
+                                                        {
+                                                            if((Boolean)resFilter.valor)
+                                                            {
+                                                                ARR.AGREGAR(res);
+                                                            }
+                                                        }
+                                                    }
+                                                    //ARR.AGREGAR(llamada.res_nativas);
                                                 }
                                                 if (llamada.ComponenteRes != null) {
-                                                    ARR.AGREGAR(llamada.ComponenteRes);
+                                                    if(raiz.valor.toLowerCase().equals("map"))
+                                                    {
+                                                        ARR.AGREGAR(llamada.ComponenteRes);
+                                                    }else if(raiz.valor.toLowerCase().equals("filtrar"))
+                                                    {
+                                                        resFilter = llamada.ComponenteRes;
+                                                        if(resFilter.tipo.equals("Boolean"))
+                                                        {
+                                                            if((Boolean)resFilter.valor)
+                                                            {
+                                                                ARR.AGREGAR(res);
+                                                            }
+                                                        }
+                                                    }
+                                                    //ARR.AGREGAR(llamada.ComponenteRes);
                                                 }
                                             }
                                             //---------------------------------------------------
                                             
                                             params.clear();
                                         } catch (Exception e) {
-                                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al ejecutar funcion map con:" + subEXP.valor + e.getMessage());
+                                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al ejecutar funcion "+raiz.valor.toLowerCase()+" con:" + subEXP.valor + e.getMessage());
                                         }
 
                                     }
