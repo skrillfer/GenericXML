@@ -1418,13 +1418,15 @@ public class OperacionesARL {
                                             nuevoR.tipo = simbolo.tipo;
                                             nuevoR.valor = simbolo.valor;
                                             nuevoR.simbolo = simbolo;
-                                        }else
-                                        {
+                                        } else {
                                             nuevoR.tipo = simbolo.tipo;
                                             nuevoR.valor = simbolo.valor;
                                             nuevoR.simbolo = simbolo;
                                         }
                                     } catch (Exception e) {
+                                        nuevoR.tipo = simbolo.tipo;
+                                        nuevoR.valor = simbolo.valor;
+                                        nuevoR.simbolo = simbolo;
                                     }
 
                                     break;

@@ -455,6 +455,39 @@ public class LlamadaMetodo extends Compilador {
                         ComponenteRes = new Resultado("", arr1);
                         break;
 
+                    case "obtenerporid":
+                        Arreglo arr2 = new Arreglo();
+                        proceder = false;
+                        try {
+                            Clase clas = (Clase) actualResultado.valor;
+                            if (clas.raiz_GXML != null) {
+                                Nodo LTExp = raiz.get(0);
+                                if (LTExp.size() > 0) {
+
+                                    Nodo EXP = LTExp.get(0);
+                                    opL = new OperacionesARL(global, tabla, miTemplate);
+                                    Resultado resultado = opL.ejecutar(EXP);
+
+                                    if (!esNulo(resultado)) {
+                                        if (resultado.tipo.equals("String")) {
+                                            obtenerPorID_NODO(clas.raiz_GXML, resultado.valor.toString(), arr2);
+                                            arr2.SETDIM();
+                                            if (arr2.getDatos().size() == 1) {
+                                                ComponenteRes = (Resultado) arr2.getDatos().get(0);
+                                            } else {
+                                                ComponenteRes = (Resultado) arr2.getDatos().get(0);
+                                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "Existe mas de un componente con id=" + resultado.valor.toString());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
+                        }
+
+                        break;
+
                 }
             }
         } else {
@@ -1775,7 +1808,7 @@ public class LlamadaMetodo extends Compilador {
             try {
                 generarClase_de_NodoGXML(padre, arr, padre.nombre.toLowerCase());
             } catch (Exception e) {
-                Template.reporteError_CJS.agregar("Ejecucion", padre.linea, padre.columna, "Error en obtenerIdporEtiqueta [" + etiqueta + "] " + e.getMessage());
+                Template.reporteError_CJS.agregar("Ejecucion", padre.linea, padre.columna, "Error en obtenerPorEtiqueta [" + etiqueta + "] " + e.getMessage());
             }
         }
 
@@ -1800,6 +1833,54 @@ public class LlamadaMetodo extends Compilador {
                     componentesH = padre.get(1);
                     for (Nodo hijo : componentesH.hijos) {
                         obtenerPorEtiqueta_NODO(hijo, etiqueta, arr);
+                    }
+                } catch (Exception e) {
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void obtenerPorID_NODO(Nodo padre, String id, Arreglo arr) {
+
+        Nodo atributos = padre.get(0);
+        for (Nodo att : atributos.hijos) {
+            Nodo n_Atributo = att.get(0);
+            Nodo n_Valor = att.get(1);
+
+            if (n_Atributo.nombre.equalsIgnoreCase("id") && n_Valor.valor.equalsIgnoreCase(id.toLowerCase()) ) {
+                try {
+                    JOptionPane.showMessageDialog(null, "yeah");
+                    generarClase_de_NodoGXML(padre, arr, padre.nombre.toLowerCase());
+                    return ;
+                } catch (Exception e) {
+                    Template.reporteError_CJS.agregar("Ejecucion", padre.linea, padre.columna, "Error en obtenerPorId [" + id + "] " + e.getMessage());
+                }
+            }
+        }
+
+        Nodo componentesH;
+        switch (padre.nombre.toLowerCase()) {
+            case "ventana":
+            case "control":
+            case "boton":
+            case "listadatos":
+            case "enviar":
+            case "contenedor":
+                try {
+                    componentesH = padre.get(2);
+                    for (Nodo hijo : componentesH.hijos) {
+                        obtenerPorID_NODO(hijo, id, arr);
+                    }
+                } catch (Exception e) {
+                }
+                break;
+            case "raiz":
+                try {
+                    componentesH = padre.get(1);
+                    for (Nodo hijo : componentesH.hijos) {
+                        obtenerPorID_NODO(hijo, id, arr);
                     }
                 } catch (Exception e) {
                 }

@@ -1,13 +1,18 @@
 
 
+
+
+
+
+
+
+
 var container = leerGxml("Inicio.gxml");
 
-var arrTexto = container.obtenerporEtiqueta("texto");
+var ventana1 = container[0];
 
-imprimir(arrTexto[0].y);
+var boton    = ventana1.obtenerporId("ContBtn");
 
+imprimir(boton.alto);
 
-arrTexto[0].y = 77;
-
-imprimir(arrTexto[0].y);
 
