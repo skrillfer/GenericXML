@@ -113,6 +113,45 @@ public class LlamadaMetodo extends Compilador {
         return metodoTemp;
     }
 
+    public Metodo ejecutarFuncion_Arreglo(ArrayList<Resultado> parametros, String nombre) {
+        String id = getId(nombre, parametros);
+        Metodo metodoTemp = getMetodo(id);
+        //----------------------------------------------------------------------
+        if (metodoTemp != null) {
+            pilaNivelCiclo.push(nivelCiclo);
+            nivelCiclo = 0;
+
+            pilaTablas.push(tabla);
+            TablaSimbolo tablaTemp = new TablaSimbolo();
+            tabla = tablaTemp;
+            for (int i = 0; i < metodoTemp.parametros.size(); i++) {
+                Nodo parametro = metodoTemp.parametros.get(i);
+                Resultado valor = parametros.get(i);
+                new Declaracion(parametro, valor, actual.global, tabla, miTemplate);
+            }
+
+            pilaMetodos.push(metodoActual);
+            metodoActual = metodoTemp;
+
+            global = actual.global;
+            pilaClases.push(claseActual);
+            claseActual = actual;
+
+            metodoTemp = ejecutarSentencias(metodoActual.sentencias);
+            metodoTemp.estadoRetorno = false;
+            metodoTemp.estadoContinuar = false;
+            metodoTemp.estadoTerminar = false;
+            metodoActual = pilaMetodos.pop();
+            claseActual = pilaClases.pop();
+            global = claseActual.global;
+            tabla = pilaTablas.pop();
+            nivelCiclo = pilaNivelCiclo.pop();
+        } else {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El metodo " + nombre + " no existe en el ambito donde fue invocado");
+        }
+        return metodoTemp;
+    }
+
     private String getId(String nombre, ArrayList<Resultado> parametros) {
         /*for (Resultado resultado : parametros) {
             if (resultado.valor != null) {
@@ -191,6 +230,55 @@ public class LlamadaMetodo extends Compilador {
             if (esArreglo(actualResultado.valor)) {
                 Arreglo arr;
                 switch (raiz.valor.toLowerCase()) {
+                    case "map":
+                        proceder = false;
+                        Arreglo ARR = new Arreglo();
+                        ArrayList<Resultado> params;
+                        Nodo LTExp1 = raiz.get(0);
+                        if (LTExp1.size() > 0) {
+                            params = new ArrayList<>();
+                            Nodo EXP = LTExp1.get(0);
+                            if (EXP.size() > 0) {
+                                Nodo subEXP = EXP.get(0);
+                                if (subEXP.nombre.equalsIgnoreCase("id")) {
+
+                                    arr = (Arreglo) actualResultado.valor;
+
+                                    for (Object dato : arr.getDatos()) {
+                                        Resultado res = (Resultado) dato;
+                                        try {
+                                            params.add(res);
+                                            LlamadaMetodo llamada = new LlamadaMetodo(this.actual, 0, subEXP);
+                                            Metodo metodo = llamada.ejecutarFuncion_Arreglo(params, subEXP.valor);
+                                            //---------------------------------------------------
+                                            if (metodo != null) {
+                                                metodo.estadoRetorno = false;
+                                                if (!esNulo(metodo.retorno)) {
+                                                    ARR.AGREGAR(metodo.retorno);
+                                                }
+                                            } else {
+                                                if (llamada.res_nativas != null) {
+                                                    ARR.AGREGAR(llamada.res_nativas);
+                                                }
+                                                if (llamada.ComponenteRes != null) {
+                                                    ARR.AGREGAR(llamada.ComponenteRes);
+                                                }
+                                            }
+                                            //---------------------------------------------------
+                                            
+                                            params.clear();
+                                        } catch (Exception e) {
+                                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al ejecutar funcion map con:" + subEXP.valor + e.getMessage());
+                                        }
+
+                                    }
+                                    ARR.SETDIM();
+                                }
+                            }
+                        }
+                        res_nativas = new Resultado("", ARR);
+                        
+                        break;
                     case "ascendente":
                         proceder = false;
                         arr = (Arreglo) actualResultado.valor;
