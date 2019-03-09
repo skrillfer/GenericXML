@@ -28,10 +28,10 @@ public class Template {
 
         File padre = new File(absolutePath);
         
+        
         //File file = new File(padre.getParent());
         File files[] = {padre};
         Script graphik = new Script(files, nombreArchivoActual,this,padre.getParent());
-
         
     }
     

@@ -391,20 +391,14 @@ public class LlamadaMetodo extends Compilador {
                         }
                         break;
                     case "obtenerporetiqueta":
-                        ComponenteRes = new Resultado();
-
+                        //ComponenteRes = new Resultado();
+                        Arreglo arr1 = new Arreglo();
                         proceder = false;
                         try {
                             Clase clas = (Clase) actualResultado.valor;
-                            if (clas.Componente != null) {
-
-                                switch (clas.nombre.toLowerCase()) {
-                                    case "ventana":
-                                        break;
-                                    case "panel":
-                                        break;
-                                }
-                                /*Nodo LTExp = raiz.get(0);
+                            if(clas.raiz_GXML!=null)
+                            {
+                                Nodo LTExp = raiz.get(0);
                                 if (LTExp.size() > 0) {
                                     
                                     Nodo EXP = LTExp.get(0);
@@ -412,12 +406,18 @@ public class LlamadaMetodo extends Compilador {
                                     Resultado resultado = opL.ejecutar(EXP);
 
                                     if (!esNulo(resultado)) {
-                                        
+                                        if(resultado.tipo.equals("String"))
+                                        {
+                                            obtenerPorEtiqueta_NODO(clas.raiz_GXML, resultado.valor.toString(), arr1);
+                                        }
                                     }
-                                }*/
+                                }
                             }
                         } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
                         }
+                        arr1.SETDIM();
+                        ComponenteRes = new Resultado("", arr1);
                         break;
 
                 }
@@ -1734,8 +1734,45 @@ public class LlamadaMetodo extends Compilador {
         return nuevo;
     }
 
+    
+    public void obtenerPorEtiqueta_NODO(Nodo padre, String etiqueta, Arreglo arr) {
+
+        if (padre.nombre.equalsIgnoreCase(etiqueta)) {
+            try {
+                generarClase_de_NodoGXML(padre, arr, padre.nombre.toLowerCase());
+            } catch (Exception e) {
+                Template.reporteError_CJS.agregar("Ejecucion", padre.linea, padre.columna, "Error en obtenerIdporEtiqueta ["+etiqueta+"] "+e.getMessage());
+            }
+        }
+
+        Nodo componentesH;
+        switch (padre.nombre.toLowerCase()) {
+            case "ventana":
+            case "control":
+            case "boton":
+            case "listadatos":
+            case "enviar":
+            case "contenedor":
+                try {
+                    componentesH = padre.get(2);
+                    for (Nodo hijo : componentesH.hijos) {
+                        obtenerPorEtiqueta_NODO(hijo, etiqueta, arr);
+                    }
+                } catch (Exception e) {
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     public void parserImportGXML(Nodo impor_t, Arreglo arr) {
         String cad_ruta = impor_t.valor;
+        cad_ruta = cad_ruta.replaceAll("\n", "");
+        cad_ruta = cad_ruta.replaceAll("\t", "");
+        cad_ruta = cad_ruta.replaceAll(">", "");
+        cad_ruta = cad_ruta.replaceAll("<", "");
+        cad_ruta = cad_ruta.trim();
         String rutaBuena = existeArchivo(cad_ruta);
         if (!rutaBuena.equals("")) {
             File file = new File(rutaBuena);
@@ -1762,6 +1799,23 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
+    public void generarClase_de_NodoGXML(Nodo raiz, Arreglo arr, String nm_componente) {
+        Nodo vAtributos = raiz.get(0);
+        Nodo EXP = crearObjdesdeNodo(vAtributos);
+        opL = new OperacionesARL(global, tabla, miTemplate);
+        Resultado res = opL.ejecutar(EXP);
+        if (!esNulo(res)) {
+            if (esClase(res.valor)) {
+                Clase clase = (Clase) res.valor;
+                clase.nombre = nm_componente;
+                clase.ejecutar(miTemplate);
+                clase.Inicializada = true;
+                clase.raiz_GXML = raiz;
+            }
+            arr.AGREGAR(res);
+        }
+    }
+
     public void crearArrayDesdeArchivo(Nodo raiz, Arreglo arr) {
         Nodo imports = raiz.get(0);
 
@@ -1775,16 +1829,19 @@ public class LlamadaMetodo extends Compilador {
             opL = new OperacionesARL(global, tabla, miTemplate);
             res = opL.ejecutar(EXP);
             if (!esNulo(res)) {
-                if(esClase(res.valor))
-                {
+                if (esClase(res.valor)) {
                     Clase clase = (Clase) res.valor;
                     clase.nombre = "Ventana";
                     clase.ejecutar(miTemplate);
                     clase.Inicializada = true;
+                    clase.raiz_GXML = vt;
                 }
                 arr.AGREGAR(res);
             }
 
+        }
+        for (Nodo hijo : imports.hijos) {
+            parserImportGXML(hijo, arr);
         }
     }
 

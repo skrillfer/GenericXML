@@ -1,2 +1,16 @@
+
+
+
+
+
 var container = creararraydesdearchivo("Inicio.gxml");
-imprimir(container[0].tipo);
+
+var arrTexto = container[0].obtenerporEtiqueta("texto");
+
+imprimir(arrTexto[0].y);
+
+
+arrTexto[0].y = 77;
+
+imprimir(arrTexto[0].y);
+

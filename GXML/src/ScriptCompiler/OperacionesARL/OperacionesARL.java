@@ -1286,7 +1286,7 @@ public class OperacionesARL {
     }
 
     public Resultado acceso(Nodo raiz) {
-        Resultado tmpRet;
+
         //JOptionPane.showMessageDialog(null, "dame");
         Clase aux = Script.claseActual;
         TablaSimbolo tablaAux = tabla;
@@ -1302,20 +1302,22 @@ public class OperacionesARL {
                 case "accesoar":
                     aux.tabla = tabla;
                     tabla = tablaAux;
-                    tmpRet = accesoAr(acceso, nivel, aux);
-                    switch (retorno.tipo) {
+                    Resultado nR = new Resultado("-1", null);
+                    Resultado tmpRet = accesoAr(acceso, nivel, aux);
+                    switch (tmpRet.tipo) {
                         case "Integer":
                         case "Double":
                         case "String":
                         case "Boolean":
                         case "$nulo":
-                            if (x == raiz.size() - 1) {
-                                retorno.valor = tmpRet.valor;
-                                retorno.tipo = tmpRet.tipo;
-                                if (tmpRet.simbolo != null) {
-                                    retorno.simbolo = tmpRet.simbolo;
-                                }
+                            //if (x == raiz.size() - 1) {
+                            nR.valor = tmpRet.valor;
+                            nR.tipo = tmpRet.tipo;
+                            if (tmpRet.simbolo != null) {
+                                nR.simbolo = tmpRet.simbolo;
                             }
+                            retorno = nR;
+                            //}
 
                             break;
                         default:
@@ -1324,14 +1326,14 @@ public class OperacionesARL {
                                 aux = (Clase) tmpRet.valor;
                                 tabla = aux.tabla;
 
-                                if (x == raiz.size() - 1) {
-                                    retorno.valor = tmpRet.valor;
-                                    retorno.tipo = tmpRet.tipo;
-                                    if (tmpRet.simbolo != null) {
-                                        retorno.simbolo = tmpRet.simbolo;
-                                    }
+                                //if (x == raiz.size() - 1) {
+                                nR.valor = tmpRet.valor;
+                                nR.tipo = tmpRet.tipo;
+                                if (tmpRet.simbolo != null) {
+                                    nR.simbolo = tmpRet.simbolo;
                                 }
-
+                                //}
+                                retorno = nR;
                             } catch (Exception ex) {
                             }
                             break;
@@ -1383,6 +1385,8 @@ public class OperacionesARL {
                 }*/
                     break;
                 case "id":
+                    Resultado nuevoR = new Resultado("-1", null);
+
                     nombre = acceso.valor;
                     simbolo = tabla.getSimbolo(nombre, aux);
                     if (simbolo != null) {
@@ -1394,9 +1398,9 @@ public class OperacionesARL {
                                 case "Boolean":
                                 case "$nulo":
 
-                                    retorno.valor = simbolo.valor;
-                                    retorno.tipo = simbolo.tipo;
-                                    retorno.simbolo = simbolo;
+                                    nuevoR.valor = simbolo.valor;
+                                    nuevoR.tipo = simbolo.tipo;
+                                    nuevoR.simbolo = simbolo;
                                     break;
 
                                 default:
@@ -1405,30 +1409,24 @@ public class OperacionesARL {
                                         if (!simbolo.esArreglo) {
                                             aux = (Clase) simbolo.valor;
                                             tabla = aux.tabla;
-                                            retorno.tipo = simbolo.tipo;
-                                            retorno.valor = simbolo.valor;
-                                            retorno.simbolo = simbolo;
+                                            nuevoR.tipo = simbolo.tipo;
+                                            nuevoR.valor = simbolo.valor;
+                                            nuevoR.simbolo = simbolo;
                                         }
                                     } catch (Exception e) {
                                     }
 
                                     break;
                             }
-                            /*if (simbolo.esArreglo) {
-                                retorno.valor = simbolo.valor;
-                                retorno.tipo = "Arreglo";
-                                retorno.simbolo = simbolo;
-                            }*/
+                            retorno = nuevoR;
                         } else {
-                            retorno.tipo = "";
-                            retorno.valor = null;
                             Template.reporteError_CJS.agregar("Semantico", acceso.linea, acceso.columna, "La variable " + nombre + " no ha sido inicializada");
-                            return retorno;
+                            return nuevoR;
                         }
                     } else {
-                        //retorno.tipo = "-1";
-                        //retorno.valor = null;
                         Template.reporteError_CJS.agregar("Semantico", acceso.linea, acceso.columna, "La variable " + nombre + " no existe en el ambito donde fue invocada");
+                        return nuevoR;
+
                     }
                     break;
 
@@ -1443,7 +1441,7 @@ public class OperacionesARL {
                         try {
                             metodo = llamada.ejecutar(acceso);
                         } catch (Exception e) {
-                            Template.reporteError_CJS.agregar("Ejecucion", acceso.linea, acceso.columna, " Error al ejecutar el metodo "+ e.getMessage());
+                            Template.reporteError_CJS.agregar("Ejecucion", acceso.linea, acceso.columna, " Error al ejecutar el metodo " + e.getMessage());
                         }
                         if (metodo != null) {
                             if (metodo.retorno != null) {
