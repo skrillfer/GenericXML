@@ -6,7 +6,7 @@ var control    = container.obtenerpornombre("CTCorreo","Inicio");
 imprimir("Tipo:"+control.tipo);
 */
 
-var arr1={arreglo:[1,2,3,4,5,6,7]};
+var arr1={arreglo:[12]};
 var xx = 100;
 
 

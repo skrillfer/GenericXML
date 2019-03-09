@@ -231,7 +231,7 @@ public class LlamadaMetodo extends Compilador {
                     case "reduce":
                         proceder = false;
                         Resultado resReduce = null;
-
+                        int contReduce = 0;
                         Arreglo ARR = new Arreglo();
                         ArrayList<Resultado> params;
                         Nodo LTExp1 = raiz.get(0);
@@ -249,33 +249,39 @@ public class LlamadaMetodo extends Compilador {
                                         Resultado res = (Resultado) dato;
                                         try {
                                             if (raiz.valor.toLowerCase().equals("reduce")) {
-                                                JOptionPane.showMessageDialog(null, "soy reduce");
-
-                                                if (resReduce == null) {
-                                                    switch (res.tipo) {
-                                                        case "String":
-                                                            resReduce = new Resultado("String", "");
-                                                            break;
-                                                        case "Integer":
-                                                            resReduce = new Resultado("Integer", 0);
-                                                            break;
-                                                        case "Double":
-                                                            resReduce = new Resultado("Double", 0.0);
-                                                            break;
-                                                        case "Boolean":
-                                                            resReduce = new Resultado("Boolean", true);
-                                                            break;
-                                                        default:
-                                                            resReduce = new Resultado("$nulo", "nulo");
-                                                            break;
+                                                //JOptionPane.showMessageDialog(null, "soy reduce");
+                                                
+                                                if(contReduce==0)
+                                                {
+                                                    params.add(res);
+                                                    if((contReduce+1)<arr.getDatos().size())
+                                                    {
+                                                        params.add((Resultado)arr.getDatos().get(contReduce+1));
+                                                    }else
+                                                    {
+                                                        //Solo existe un elemento
+                                                        res_nativas = res;
+                                                        return;
                                                     }
-                                                    params.add(resReduce);
-                                                } else {
-                                                    params.add(resReduce);
+                                                }else
+                                                {
+                                                    if((contReduce+1)<arr.getDatos().size())
+                                                    {
+                                                        params.add(resReduce);
+                                                        params.add((Resultado)arr.getDatos().get(contReduce+1));
+                                                    }else
+                                                    {
+                                                        res_nativas = resReduce;
+                                                        return;
+                                                    }
                                                 }
+                                            }else
+                                            {
+                                                params.add(res);
                                             }
 
-                                            params.add(res);
+                                            
+                                            
 
                                             LlamadaMetodo llamada = new LlamadaMetodo(this.actual, 0, subEXP);
                                             Metodo metodo = llamada.ejecutarFuncion_Arreglo(params, subEXP.valor);
@@ -361,9 +367,9 @@ public class LlamadaMetodo extends Compilador {
                                         } catch (Exception e) {
                                             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al ejecutar funcion " + raiz.valor.toLowerCase() + " con:" + subEXP.valor + e.getMessage());
                                         }
-
+                                        contReduce++;
                                     }
-                                    if (raiz.valor.toLowerCase().equals("reduce")) {
+                                    /*if (raiz.valor.toLowerCase().equals("reduce")) {
                                         try {
                                             res_nativas = resReduce;
                                             return;
@@ -372,7 +378,7 @@ public class LlamadaMetodo extends Compilador {
                                             return;
                                         }
 
-                                    }
+                                    }*/
                                     ARR.SETDIM();
                                 }
                             }
