@@ -1,6 +1,8 @@
 var container = leerGxml("Inicio.gxml");
 
-var boton    = container.obtenerporId("ContBtn1");
+//var ventana1   = container[0];
 
-imprimir("Alto:"+boton.alto);
+var control    = container.obtenerpornombre("CTCorreo","Inicio");
+
+imprimir("Tipo:"+control.tipo);
 

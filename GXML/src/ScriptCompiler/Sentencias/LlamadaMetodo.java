@@ -15,6 +15,7 @@ import ScriptCompiler.Compilador;
 import ScriptCompiler.Metodo;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Resultado;
+import ScriptCompiler.Simbolo;
 import ScriptCompiler.TablaSimbolo;
 import WRAPERS.AreaTextoGenerica;
 import WRAPERS.BotonGenerico;
@@ -293,11 +294,11 @@ public class LlamadaMetodo extends Compilador {
                                                 Nodo EXP = LTExp.get(0);
                                                 opL = new OperacionesARL(global, tabla, miTemplate);
                                                 Resultado resultado = opL.ejecutar(EXP);
-                                                
+
                                                 if (!esNulo(resultado)) {
                                                     if (resultado.tipo.equals("String")) {
-                                                        idxTMP  = resultado.valor.toString();
-                                                        obtenerPorID_NODO(clss.raiz_GXML, resultado.valor.toString(), arrx1);
+                                                        idxTMP = resultado.valor.toString();
+                                                        obtenerPorID_NODO(clss.raiz_GXML, resultado.valor.toString(), arrx1, "id");
                                                         arrx1.SETDIM();
                                                         if (arrx1.getDatos().size() == 1) {
                                                             ComponenteRes = (Resultado) arrx1.getDatos().get(0);
@@ -317,6 +318,68 @@ public class LlamadaMetodo extends Compilador {
                         if (arrx1.getDatos().isEmpty()) {
                             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "obtenerporId No existe un componente con id=" + idxTMP);
                         }
+                        break;
+                    case "obtenerpornombre":
+                        arr = (Arreglo) actualResultado.valor;
+
+                        proceder = false;
+                        for (Object dato : arr.getDatos()) {
+                            try {
+                                Resultado dato1 = (Resultado) dato;
+                                if (esClase(dato1.valor)) {
+                                    Clase clss = (Clase) dato1.valor;
+
+                                    try {
+                                        if (clss.raiz_GXML != null) {
+
+                                            Nodo LTExp = raiz.get(0);
+
+                                            if (LTExp.size() >= 2) {
+
+                                                Nodo EXP1 = LTExp.get(0);
+                                                Nodo EXP2 = LTExp.get(1);
+                                                opL = new OperacionesARL(global, tabla, miTemplate);
+                                                Resultado nombreHijo = opL.ejecutar(EXP1);
+                                                Resultado idPadre = opL.ejecutar(EXP2);
+
+                                                if (!esNulo(idPadre) && !esNulo(nombreHijo)) {
+                                                    if (idPadre.tipo.equals("String")) {
+
+                                                        Simbolo sim = clss.tabla.getSimbolo("id", clss);
+                                                        if (sim != null) {
+                                                            try {
+                                                                if (sim.valor.toString().equalsIgnoreCase(idPadre.valor.toString())) {
+
+                                                                    if (clss.raiz_GXML != null) {
+                                                                        Arreglo nuevoArr = new Arreglo();
+                                                                        obtenerPorID_NODO(clss.raiz_GXML, nombreHijo.valor.toString(), nuevoArr, "nombre");
+                                                                        nuevoArr.SETDIM();
+                                                                        if (nuevoArr.getDatos().size() > 0) {
+                                                                            ComponenteRes = (Resultado) nuevoArr.getDatos().get(0);
+                                                                        } else {
+                                                                            Template.reporteError_CJS.agregar("Semantico", EXP1.linea, EXP1.columna, "obtenerporNombre No existe un componente con nombre : " + nombreHijo.valor.toString());
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            } catch (Exception e) {
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                Template.reporteError_CJS.agregar("Semantico", LTExp.linea, LTExp.columna, "obtenerporNombre necesita al menos dos parametros ");
+                                            }
+
+                                        }
+                                    } catch (Exception e) {
+                                        JOptionPane.showMessageDialog(null, "obtener por id error:" + e.getMessage());
+                                    }
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+
                         break;
                 }
             } else if (esClase(actualResultado.valor)) {
@@ -472,6 +535,7 @@ public class LlamadaMetodo extends Compilador {
                             JOptionPane.showMessageDialog(null, "alcerrar error:" + e.getMessage());
                         }
                         break;
+
                     case "obtenerporetiqueta":
                         Arreglo arr1 = new Arreglo();
                         proceder = false;
@@ -514,7 +578,7 @@ public class LlamadaMetodo extends Compilador {
 
                                     if (!esNulo(resultado)) {
                                         if (resultado.tipo.equals("String")) {
-                                            obtenerPorID_NODO(clas.raiz_GXML, resultado.valor.toString(), arr2);
+                                            obtenerPorID_NODO(clas.raiz_GXML, resultado.valor.toString(), arr2, "id");
                                             arr2.SETDIM();
                                             if (arr2.getDatos().size() == 1) {
                                                 ComponenteRes = (Resultado) arr2.getDatos().get(0);
@@ -530,7 +594,54 @@ public class LlamadaMetodo extends Compilador {
                         }
 
                         break;
+                    case "obtenerpornombre":
+                        Arreglo arr3 = new Arreglo();
+                        proceder = false;
+                        try {
+                            Clase clas = (Clase) actualResultado.valor;
+                            if (clas.raiz_GXML != null) {
+                                Nodo LTExp = raiz.get(0);
+                                if (LTExp.size() >= 2) {
 
+                                    Nodo EXP1 = LTExp.get(0);
+                                    Nodo EXP2 = LTExp.get(1);
+                                    opL = new OperacionesARL(global, tabla, miTemplate);
+                                    Resultado nombreHijo = opL.ejecutar(EXP1);
+                                    Resultado idPadre = opL.ejecutar(EXP2);
+
+                                    if (!esNulo(idPadre) && !esNulo(nombreHijo)) {
+                                        if (idPadre.tipo.equals("String")) {
+                                            obtenerPorID_NODO(clas.raiz_GXML, idPadre.valor.toString(), arr3, "id");
+                                            arr3.SETDIM();
+
+                                            if (arr3.getDatos().size() > 0) {
+                                                try {
+                                                    Clase clas2 = (Clase) ((Resultado) arr3.getDatos().get(0)).valor;
+                                                    if (clas2.raiz_GXML != null) {
+                                                        Arreglo nuevoArr = new Arreglo();
+                                                        obtenerPorID_NODO(clas2.raiz_GXML, nombreHijo.valor.toString(), nuevoArr, "nombre");
+                                                        nuevoArr.SETDIM();
+                                                        if (nuevoArr.getDatos().size() > 0) {
+                                                            ComponenteRes = (Resultado) nuevoArr.getDatos().get(0);
+                                                        } else {
+                                                            Template.reporteError_CJS.agregar("Semantico", EXP1.linea, EXP1.columna, "obtenerporNombre No existe un componente con nombre : " + nombreHijo.valor.toString());
+                                                        }
+                                                    }
+                                                } catch (Exception e) {
+                                                }
+                                            } else {
+                                                Template.reporteError_CJS.agregar("Semantico", EXP2.linea, EXP2.columna, "obtenerporNombre No existe un componente con id : " + idPadre.valor.toString());
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Template.reporteError_CJS.agregar("Semantico", LTExp.linea, LTExp.columna, "obtenerporNombre necesita al menos dos parametros ");
+                                }
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "obtener por nombre error:" + e.getMessage());
+                        }
+                        break;
                 }
             }
         } else {
@@ -1885,14 +1996,14 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
-    public void obtenerPorID_NODO(Nodo padre, String id, Arreglo arr) {
+    public void obtenerPorID_NODO(Nodo padre, String id, Arreglo arr, String nomATRIBUTO) {
 
         Nodo atributos = padre.get(0);
         for (Nodo att : atributos.hijos) {
             Nodo n_Atributo = att.get(0);
             Nodo n_Valor = att.get(1);
 
-            if (n_Atributo.nombre.equalsIgnoreCase("id") && n_Valor.valor.equalsIgnoreCase(id.toLowerCase())) {
+            if (n_Atributo.nombre.equalsIgnoreCase(nomATRIBUTO.toLowerCase()) && n_Valor.valor.equalsIgnoreCase(id.toLowerCase())) {
                 try {
                     JOptionPane.showMessageDialog(null, "yeah");
                     generarClase_de_NodoGXML(padre, arr, padre.nombre.toLowerCase());
@@ -1914,7 +2025,7 @@ public class LlamadaMetodo extends Compilador {
                 try {
                     componentesH = padre.get(2);
                     for (Nodo hijo : componentesH.hijos) {
-                        obtenerPorID_NODO(hijo, id, arr);
+                        obtenerPorID_NODO(hijo, id, arr, nomATRIBUTO);
                     }
                 } catch (Exception e) {
                 }
@@ -1923,7 +2034,7 @@ public class LlamadaMetodo extends Compilador {
                 try {
                     componentesH = padre.get(1);
                     for (Nodo hijo : componentesH.hijos) {
-                        obtenerPorID_NODO(hijo, id, arr);
+                        obtenerPorID_NODO(hijo, id, arr, nomATRIBUTO);
                     }
                 } catch (Exception e) {
                 }
