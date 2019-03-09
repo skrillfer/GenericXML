@@ -229,6 +229,6 @@ public class TipoAsignacion extends Compilador {
         {
             return r1;
         }
-        return new Resultado("-1", null);
+        return resultado;
     }
 }
