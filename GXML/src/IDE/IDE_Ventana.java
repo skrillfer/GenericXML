@@ -377,9 +377,19 @@ public class IDE_Ventana extends JFrame {
                     BufferedReader br = new BufferedReader(fr);
                     String completo = "";
                     String linea = "";
+                    boolean flg=true;
                     while ((linea = br.readLine()) != null) {
-                        completo += "\n" + linea;
+                        if(flg)
+                        {
+                            completo += linea;
+                            flg=!flg;
+                        }else
+                        {
+                            completo += "\n" + linea;
+                        }
+                        
                     }
+                    br.close();
                     GenerarPesta(completo, archivo.getName(), rutanueva);
                 } else {
                     System.out.println("Es una carpeta");

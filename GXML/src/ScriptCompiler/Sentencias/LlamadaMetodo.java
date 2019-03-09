@@ -183,6 +183,7 @@ public class LlamadaMetodo extends Compilador {
 
     /*------------------------------------------------------------------------*/
     public void FuncionesNativasScript() {
+        String idxTMP = "";
 
         if (!esNulo(actualResultado)) {
             //El resultado anterior fu un arreglo
@@ -273,6 +274,49 @@ public class LlamadaMetodo extends Compilador {
                         arr1.SETDIM();
                         ComponenteRes = new Resultado("", arr1);
                         JOptionPane.showMessageDialog(null, arr1.getDatos().size());
+                        break;
+                    case "obtenerporid":
+                        Arreglo arrx1 = new Arreglo();
+                        arr = (Arreglo) actualResultado.valor;
+
+                        proceder = false;
+                        for (Object dato : arr.getDatos()) {
+                            try {
+                                Resultado dato1 = (Resultado) dato;
+                                if (esClase(dato1.valor)) {
+                                    Clase clss = (Clase) dato1.valor;
+                                    try {
+                                        if (clss.raiz_GXML != null) {
+                                            Nodo LTExp = raiz.get(0);
+                                            if (LTExp.size() > 0) {
+
+                                                Nodo EXP = LTExp.get(0);
+                                                opL = new OperacionesARL(global, tabla, miTemplate);
+                                                Resultado resultado = opL.ejecutar(EXP);
+                                                
+                                                if (!esNulo(resultado)) {
+                                                    if (resultado.tipo.equals("String")) {
+                                                        idxTMP  = resultado.valor.toString();
+                                                        obtenerPorID_NODO(clss.raiz_GXML, resultado.valor.toString(), arrx1);
+                                                        arrx1.SETDIM();
+                                                        if (arrx1.getDatos().size() == 1) {
+                                                            ComponenteRes = (Resultado) arrx1.getDatos().get(0);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        JOptionPane.showMessageDialog(null, "obtener por id error:" + e.getMessage());
+                                    }
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+                        if (arrx1.getDatos().isEmpty()) {
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "obtenerporId No existe un componente con id=" + idxTMP);
+                        }
                         break;
                 }
             } else if (esClase(actualResultado.valor)) {
@@ -475,8 +519,7 @@ public class LlamadaMetodo extends Compilador {
                                             if (arr2.getDatos().size() == 1) {
                                                 ComponenteRes = (Resultado) arr2.getDatos().get(0);
                                             } else {
-                                                ComponenteRes = (Resultado) arr2.getDatos().get(0);
-                                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "Existe mas de un componente con id=" + resultado.valor.toString());
+                                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "obtenerporId No existe un componente con id=" + resultado.valor.toString());
                                             }
                                         }
                                     }
@@ -1849,11 +1892,11 @@ public class LlamadaMetodo extends Compilador {
             Nodo n_Atributo = att.get(0);
             Nodo n_Valor = att.get(1);
 
-            if (n_Atributo.nombre.equalsIgnoreCase("id") && n_Valor.valor.equalsIgnoreCase(id.toLowerCase()) ) {
+            if (n_Atributo.nombre.equalsIgnoreCase("id") && n_Valor.valor.equalsIgnoreCase(id.toLowerCase())) {
                 try {
                     JOptionPane.showMessageDialog(null, "yeah");
                     generarClase_de_NodoGXML(padre, arr, padre.nombre.toLowerCase());
-                    return ;
+                    return;
                 } catch (Exception e) {
                     Template.reporteError_CJS.agregar("Ejecucion", padre.linea, padre.columna, "Error en obtenerPorId [" + id + "] " + e.getMessage());
                 }
