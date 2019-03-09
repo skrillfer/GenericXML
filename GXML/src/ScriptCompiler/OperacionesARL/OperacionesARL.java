@@ -1335,6 +1335,12 @@ public class OperacionesARL {
                                 //}
                                 retorno = nR;
                             } catch (Exception ex) {
+                                nR.valor = tmpRet.valor;
+                                nR.tipo = tmpRet.tipo;
+                                if (tmpRet.simbolo != null) {
+                                    nR.simbolo = tmpRet.simbolo;
+                                }
+                                retorno = nR;
                             }
                             break;
                     }
@@ -1409,6 +1415,11 @@ public class OperacionesARL {
                                         if (!simbolo.esArreglo) {
                                             aux = (Clase) simbolo.valor;
                                             tabla = aux.tabla;
+                                            nuevoR.tipo = simbolo.tipo;
+                                            nuevoR.valor = simbolo.valor;
+                                            nuevoR.simbolo = simbolo;
+                                        }else
+                                        {
                                             nuevoR.tipo = simbolo.tipo;
                                             nuevoR.valor = simbolo.valor;
                                             nuevoR.simbolo = simbolo;

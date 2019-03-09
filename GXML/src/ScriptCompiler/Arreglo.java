@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class Arreglo {
-
+    public  Nodo raiz_GXML = null;
     private Hashtable<String, ListaGenerica> VALORES;
     public ArrayList<Integer> dimensiones;
     private ArrayList<Object> datos;

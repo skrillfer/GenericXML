@@ -1,11 +1,8 @@
 
 
+var container = leerGxml("Inicio.gxml");
 
-
-
-var container = creararraydesdearchivo("Inicio.gxml");
-
-var arrTexto = container[0].obtenerporEtiqueta("texto");
+var arrTexto = container.obtenerporEtiqueta("texto");
 
 imprimir(arrTexto[0].y);
 

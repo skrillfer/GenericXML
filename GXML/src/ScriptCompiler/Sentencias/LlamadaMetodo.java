@@ -235,7 +235,45 @@ public class LlamadaMetodo extends Compilador {
                             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al ejecutar invertir:" + e.getMessage());
                         }
                         break;
+                    case "obtenerporetiqueta":
+                        Arreglo arr1 = new Arreglo();
+                        arr = (Arreglo) actualResultado.valor;
 
+                        proceder = false;
+
+                        for (Object dato : arr.getDatos()) {
+                            try {
+                                Resultado dato1 = (Resultado) dato;
+                                if (esClase(dato1.valor)) {
+                                    Clase clss = (Clase) dato1.valor;
+                                    try {
+                                        if (clss.raiz_GXML != null) {
+                                            Nodo LTExp = raiz.get(0);
+                                            if (LTExp.size() > 0) {
+
+                                                Nodo EXP = LTExp.get(0);
+                                                opL = new OperacionesARL(global, tabla, miTemplate);
+                                                Resultado resultado = opL.ejecutar(EXP);
+
+                                                if (!esNulo(resultado)) {
+                                                    if (resultado.tipo.equals("String")) {
+                                                        obtenerPorEtiqueta_NODO(clss.raiz_GXML, resultado.valor.toString(), arr1);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
+                                    }
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+
+                        arr1.SETDIM();
+                        ComponenteRes = new Resultado("", arr1);
+                        JOptionPane.showMessageDialog(null, arr1.getDatos().size());
+                        break;
                 }
             } else if (esClase(actualResultado.valor)) {
                 //Creacion de componentes GRAFICOS
@@ -391,23 +429,20 @@ public class LlamadaMetodo extends Compilador {
                         }
                         break;
                     case "obtenerporetiqueta":
-                        //ComponenteRes = new Resultado();
                         Arreglo arr1 = new Arreglo();
                         proceder = false;
                         try {
                             Clase clas = (Clase) actualResultado.valor;
-                            if(clas.raiz_GXML!=null)
-                            {
+                            if (clas.raiz_GXML != null) {
                                 Nodo LTExp = raiz.get(0);
                                 if (LTExp.size() > 0) {
-                                    
+
                                     Nodo EXP = LTExp.get(0);
                                     opL = new OperacionesARL(global, tabla, miTemplate);
                                     Resultado resultado = opL.ejecutar(EXP);
 
                                     if (!esNulo(resultado)) {
-                                        if(resultado.tipo.equals("String"))
-                                        {
+                                        if (resultado.tipo.equals("String")) {
                                             obtenerPorEtiqueta_NODO(clas.raiz_GXML, resultado.valor.toString(), arr1);
                                         }
                                     }
@@ -437,7 +472,7 @@ public class LlamadaMetodo extends Compilador {
                     }
 
                     break;
-                case "creararraydesdearchivo":
+                case "leergxml":
                     proceder = false;
                     Arreglo arr = new Arreglo();
                     Nodo LTExp = raiz.get(0);
@@ -470,15 +505,14 @@ public class LlamadaMetodo extends Compilador {
                                         if (r_GXML != null) {
                                             //mandar a realizar el arreglo de ventanas
                                             crearArrayDesdeArchivo(r_GXML, arr);
+                                            arr.raiz_GXML = r_GXML;
                                         }
-                                    } else if (ext.equals("gdato")) {
-
                                     } else {
-                                        Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de creararraydesdearchivo tiene extension ." + ext + " solo se soporta .gdato y .gxml");
+                                        Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de funcion leerGxml tiene extension ." + ext + " solo se soporta .gxml");
                                     }
                                 }
                             } else {
-                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de creararraydesdearchivo tiene que ser un string");
+                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de funcion leerGxml tiene que ser un string");
                             }
                         }
                     } else {
@@ -486,6 +520,7 @@ public class LlamadaMetodo extends Compilador {
                     }
                     arr.SETDIM();
                     res_nativas = new Resultado("", arr);
+                    JOptionPane.showMessageDialog(null, "termine perro");
                     break;
             }
         }
@@ -1734,14 +1769,13 @@ public class LlamadaMetodo extends Compilador {
         return nuevo;
     }
 
-    
     public void obtenerPorEtiqueta_NODO(Nodo padre, String etiqueta, Arreglo arr) {
 
         if (padre.nombre.equalsIgnoreCase(etiqueta)) {
             try {
                 generarClase_de_NodoGXML(padre, arr, padre.nombre.toLowerCase());
             } catch (Exception e) {
-                Template.reporteError_CJS.agregar("Ejecucion", padre.linea, padre.columna, "Error en obtenerIdporEtiqueta ["+etiqueta+"] "+e.getMessage());
+                Template.reporteError_CJS.agregar("Ejecucion", padre.linea, padre.columna, "Error en obtenerIdporEtiqueta [" + etiqueta + "] " + e.getMessage());
             }
         }
 
@@ -1755,6 +1789,15 @@ public class LlamadaMetodo extends Compilador {
             case "contenedor":
                 try {
                     componentesH = padre.get(2);
+                    for (Nodo hijo : componentesH.hijos) {
+                        obtenerPorEtiqueta_NODO(hijo, etiqueta, arr);
+                    }
+                } catch (Exception e) {
+                }
+                break;
+            case "raiz":
+                try {
+                    componentesH = padre.get(1);
                     for (Nodo hijo : componentesH.hijos) {
                         obtenerPorEtiqueta_NODO(hijo, etiqueta, arr);
                     }
