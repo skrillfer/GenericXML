@@ -40,11 +40,11 @@ comm_linea = ["#"] ["#"] [^\r\n]* [^\r\n]
 <YYINITIAL> "}" {return new Symbol(sym.clla, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> ";" {return new Symbol(sym.pyc, new token(yycolumn, yyline, yytext()));}
 
->([^<]*)< {System.out.println("tk:"+yytext()); return new Symbol(sym.explicit, new token(yycolumn, yyline, yytext()));}
-"{"([^}]*)"}" {System.out.println("Yk:"+yytext()); return new Symbol(sym.event, new token(yycolumn, yyline, yytext()));}
+>([^<]*)<       { return new Symbol(sym.explicit, new token(yycolumn, yyline, yytext()));}
+"{"([^}]*)"}"   { return new Symbol(sym.event, new token(yycolumn, yyline, yytext()));}
 
-<YYINITIAL> "<" {System.out.println("tk:"+yytext()); return new Symbol(sym.menq, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> ">" {System.out.println("tk:"+yytext()); return new Symbol(sym.mayq, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "<" { return new Symbol(sym.menq, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> ">" { return new Symbol(sym.mayq, new token(yycolumn, yyline, yytext()));}
 
 
 /* PALABRAS RESERVADAS - COMPONENTES */
@@ -52,54 +52,54 @@ comm_linea = ["#"] ["#"] [^\r\n]* [^\r\n]
 <YYINITIAL> "<importar"    { return new Symbol(sym.importarA2, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "importar>"    {return new Symbol(sym.importarF1, new token(yycolumn, yyline, yytext()));}
 
-<YYINITIAL> "<ventana"     {System.out.println("tk:"+yytext()); return new Symbol(sym.ventanaA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "ventana>"     {System.out.println("tk:"+yytext()); return new Symbol(sym.ventanaF1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "<ventana"     { return new Symbol(sym.ventanaA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "ventana>"     { return new Symbol(sym.ventanaF1, new token(yycolumn, yyline, yytext()));}
 
 
 
-<YYINITIAL> "<contenedor"  {System.out.println("tk:"+yytext()); return new Symbol(sym.contenedorA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "contenedor"   {System.out.println("tk:"+yytext()); return new Symbol(sym.contenedorA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "<contenedor"  { return new Symbol(sym.contenedorA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "contenedor"   { return new Symbol(sym.contenedorA2, new token(yycolumn, yyline, yytext()));}
 
-<YYINITIAL> "/contenedor>"  {System.out.println("tk:"+yytext()); return new Symbol(sym.contenedorF1, new token(yycolumn, yyline, yytext()));}
-
-
-<YYINITIAL> "<boton"        {System.out.println("tk:"+yytext()); return new Symbol(sym.botonA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "boton"         {System.out.println("tk:"+yytext()); return new Symbol(sym.botonA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/boton>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.botonF1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/contenedor>"  { return new Symbol(sym.contenedorF1, new token(yycolumn, yyline, yytext()));}
 
 
-<YYINITIAL> "<texto"        {System.out.println("tk:"+yytext()); return new Symbol(sym.textoA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "texto"         {System.out.println("tk:"+yytext()); return new Symbol(sym.textoA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/texto>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.textoF1, new token(yycolumn, yyline, yytext()));}
-
-<YYINITIAL> "<control"        {System.out.println("tk:"+yytext()); return new Symbol(sym.controlA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "control"         {System.out.println("tk:"+yytext()); return new Symbol(sym.controlA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/control>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.controlF1, new token(yycolumn, yyline, yytext()));}
-
-<YYINITIAL> "<dato"        {System.out.println("tk:"+yytext()); return new Symbol(sym.datoA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "dato"         {System.out.println("tk:"+yytext()); return new Symbol(sym.datoA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/dato>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.datoF1, new token(yycolumn, yyline, yytext()));}
-
-<YYINITIAL> "<defecto"        {System.out.println("tk:"+yytext()); return new Symbol(sym.defectoA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "defecto"         {System.out.println("tk:"+yytext()); return new Symbol(sym.defectoA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/defecto>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.defectoF1, new token(yycolumn, yyline, yytext()));}
-
-<YYINITIAL> "<listadatos"        {System.out.println("tk:"+yytext()); return new Symbol(sym.listadatosA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "listadatos"         {System.out.println("tk:"+yytext()); return new Symbol(sym.listadatosA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/listadatos>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.listadatosF1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "<boton"        { return new Symbol(sym.botonA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "boton"         { return new Symbol(sym.botonA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/boton>"       { return new Symbol(sym.botonF1, new token(yycolumn, yyline, yytext()));}
 
 
-<YYINITIAL> "<listadatos"        {System.out.println("tk:"+yytext()); return new Symbol(sym.listadatosA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "listadatos"         {System.out.println("tk:"+yytext()); return new Symbol(sym.listadatosA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/listadatos>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.listadatosF1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "<texto"        { return new Symbol(sym.textoA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "texto"         { return new Symbol(sym.textoA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/texto>"       { return new Symbol(sym.textoF1, new token(yycolumn, yyline, yytext()));}
 
-<YYINITIAL> "<enviar"        {System.out.println("tk:"+yytext()); return new Symbol(sym.enviarA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "enviar"         {System.out.println("tk:"+yytext()); return new Symbol(sym.enviarA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/enviar>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.enviarF1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "<control"        { return new Symbol(sym.controlA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "control"         { return new Symbol(sym.controlA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/control>"       { return new Symbol(sym.controlF1, new token(yycolumn, yyline, yytext()));}
 
-<YYINITIAL> "<multimedia"        {System.out.println("tk:"+yytext()); return new Symbol(sym.multimediaA1, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "multimedia"         {System.out.println("tk:"+yytext()); return new Symbol(sym.multimediaA2, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "/multimedia>"       {System.out.println("tk:"+yytext()); return new Symbol(sym.multimediaF1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "<dato"        { return new Symbol(sym.datoA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "dato"         { return new Symbol(sym.datoA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/dato>"       { return new Symbol(sym.datoF1, new token(yycolumn, yyline, yytext()));}
+
+<YYINITIAL> "<defecto"        { return new Symbol(sym.defectoA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "defecto"         { return new Symbol(sym.defectoA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/defecto>"       { return new Symbol(sym.defectoF1, new token(yycolumn, yyline, yytext()));}
+
+<YYINITIAL> "<listadatos"        { return new Symbol(sym.listadatosA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "listadatos"         { return new Symbol(sym.listadatosA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/listadatos>"       { return new Symbol(sym.listadatosF1, new token(yycolumn, yyline, yytext()));}
+
+
+<YYINITIAL> "<listadatos"        { return new Symbol(sym.listadatosA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "listadatos"         { return new Symbol(sym.listadatosA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/listadatos>"       { return new Symbol(sym.listadatosF1, new token(yycolumn, yyline, yytext()));}
+
+<YYINITIAL> "<enviar"        { return new Symbol(sym.enviarA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "enviar"         { return new Symbol(sym.enviarA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/enviar>"       { return new Symbol(sym.enviarF1, new token(yycolumn, yyline, yytext()));}
+
+<YYINITIAL> "<multimedia"        { return new Symbol(sym.multimediaA1, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "multimedia"         { return new Symbol(sym.multimediaA2, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "/multimedia>"       { return new Symbol(sym.multimediaF1, new token(yycolumn, yyline, yytext()));}
 
 /*
 HAY que preguntar sobre BOTON

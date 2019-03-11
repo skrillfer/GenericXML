@@ -1,0 +1,45 @@
+<Importar>
+/Funciones.fs
+</Importar>
+<Ventana id = "Registrar" tipo = "Secundaria" AccionInicial = {MensajeBienvenida("Julio ")} AccionFinal = {MensajeDespedida("Julio" + " Arango")}>
+	<Contenedor id = "ContRegistro"  x = 10 y = 10 Alto = 300 Ancho = 200>
+		<Texto Nombre = "lblNombre" X = 10 Y = 20>
+			Nombre
+		</Texto>
+		<Control tipo = "texto" Nombre = "CTNombre" X = 40 Y = 20 Alto = 10 Ancho = 100>
+			<Defecto>
+				Ingrese aqui su nombre
+			</Defecto>
+		</Control>
+		<Texto Nombre = "lblEdad" X = 10 Y = 50>
+			Edad
+		</Texto>
+		<Control tipo = "Numerico" Nombre = "CEdad" X = 40 Y = 50 Alto = 10 Ancho = 50 Minimo = 18>
+			<Defecto>
+				18
+			</Defecto>
+		</Control>
+		<Texto Nombre = "lblDescripcion" X = 10 Y = 80>
+			Descripcion
+		</Texto>
+		<Control tipo = "TextoArea" Nombre = "CADescripcion" X = 40 Y = 80 Alto = 100 Ancho = 100>
+			<Defecto>
+				Ingrese aqui la descripcion de
+				su registro
+			</Defecto>
+		</Control>
+		<Texto Nombre = "lblCorreo" X = 10 Y = 200>
+			Correo
+		</Texto>
+		<Control tipo = "texto" Nombre = "CTCorreo" X = 40 Y = 200 Alto = 10 Ancho = 100>
+			<Defecto>
+				Ingrese aqui su correo
+			</Defecto>
+		</Control>
+	</Contenedor>
+	<Contenedor id = "ContBtn" x = 10 Y = 320 Alto = 100 Ancho = 200>
+		<Enviar Nombre = "btnEnviar" X = 75 Y = 30 Alto = 70 Ancho = 40 Referencia = "Inicio">
+			Registrar
+		</Enviar>
+	</Contenedor>
+</Ventana>

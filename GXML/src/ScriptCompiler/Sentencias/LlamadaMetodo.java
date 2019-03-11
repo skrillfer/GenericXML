@@ -988,6 +988,7 @@ public class LlamadaMetodo extends Compilador {
                                     if (ext.equals("gdato")) {
                                         Nodo r_GXML = null;
                                         try {
+                                            
                                             LexGdato lex = new LexGdato(new FileReader(rutaBuena));
                                             SintacticoGdato sin = new SintacticoGdato(lex);
                                             try {
@@ -2538,4 +2539,5 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
+    
 }

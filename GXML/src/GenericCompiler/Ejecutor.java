@@ -16,6 +16,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,12 +30,12 @@ public class Ejecutor {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        new Ejecutor().MAIN();
-        /*try {
+        //new Ejecutor().MAIN();
+        try {
             new Ejecutor().compilar();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Ejecutor.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }
 
     public void MAIN() {
@@ -133,12 +135,14 @@ public class Ejecutor {
         }
          */
 
-        LexGxml lex = new LexGxml(new FileReader("EntradaGxml.txt"));
+        File file = new File("EntradasGXML/Inicio.gxml");
+        LexGxml lex = new LexGxml(new FileReader("EntradasGXML/Inicio.gxml"));
         SintacticoGxml sin = new SintacticoGxml(lex);
         try {
             sin.parse();
             TraduccionGxml_Script tra = new TraduccionGxml_Script();
-            tra.IniciarTraduccion(sin.getRoot());
+            tra.IniciarTraduccion(sin.getRoot(),file.getParent());
+            System.out.println(tra.codigoScript);
             /*Nodo raiz = sin.getRoot();
             AST_Script   genTcjs = new AST_Script();
             genTcjs.generacion_arbolScript(raiz);*/
