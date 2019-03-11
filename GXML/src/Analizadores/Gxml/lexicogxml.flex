@@ -18,8 +18,8 @@ import java_cup.runtime.*;
 LineTerminator = \r|\n|\r\n|\n\r|\t
 WhiteSpace = {LineTerminator} | [ \t\f]|\t
 Id = [:jletter:]["�"|"�"|"�"|"�"|"�"|[:jletterdigit:]|"_"|]*
-Numero = [:digit:][[:digit:]]* 
-Decimal = ([:digit:][[:digit:]]*)? ([.][:digit:][[:digit:]]*)?
+Numero = ([-])?[:digit:][[:digit:]]* 
+Decimal = ([-])?([:digit:][[:digit:]]*)? ([.][:digit:][[:digit:]]*)?
 cadena = [\"] [^(\")]* [\"]
 
 
@@ -142,4 +142,4 @@ HAY que preguntar sobre BOTON
 
 {LineTerminator} {/* ignorar */}
 {WhiteSpace} {/* ignorar */}
-. {System.out.println(yyline+","+yycolumn+"=["+yytext()+"],"+yychar); }
+. {System.err.println(yyline+","+yycolumn+"=["+yytext()+"],"+yychar); }

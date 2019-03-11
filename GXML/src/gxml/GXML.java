@@ -8,6 +8,8 @@ package gxml;
 import Analizadores.Gdato.LexGdato;
 import Analizadores.Gdato.SintacticoGdato;
 import Analizadores.Gdato.StringMatcher;
+import Analizadores.Gxml.LexGxml;
+import Analizadores.Gxml.SintacticoGxml;
 import Ast_Generator.AST_Script;
 import Estructuras.Nodo;
 import WRAPERS.PanelGenerico;
@@ -56,16 +58,16 @@ public class GXML {
         //reproductor.iniciarReproduccion();
         
         
-        LexGdato lex = new LexGdato(new FileReader("Entrada.gdato"));
-        SintacticoGdato parser = new SintacticoGdato(lex);
+        LexGxml lex = new LexGxml(new FileReader("EntradaGxml.txt"));
+        SintacticoGxml parser = new SintacticoGxml(lex);
 
         Nodo retorno = null;
         try {
             parser.parse();
             Nodo raiz = parser.getRoot();
             retorno = raiz;
-            Ast_Generator.AST_Script ppp = new AST_Script();
-            ppp.generacion_arbolScript(raiz);
+            //Ast_Generator.AST_Script ppp = new AST_Script();
+            //ppp.generacion_arbolScript(raiz);
         } catch (Exception e) {
             System.out.println("Error al parsear Gdato:" + e.getMessage());
         }
