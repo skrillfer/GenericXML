@@ -1,0 +1,222 @@
+
+package Analizadores.Gdato; 
+
+import java_cup.runtime.*;
+import java.util.*;
+import Estructuras.Nodo;
+
+action code {:
+    //se declaran variables globales etc.
+        public int Index=1;
+        public Nodo root = new Nodo();
+
+:}
+
+
+parser code 
+{:
+    /**
+     * Este metodo retorna la RAIZ del arbol  generado 
+     **/ 
+    
+    public Nodo getRoot(){
+        return action_obj.root;
+    }
+
+    /**
+     * Esta funcion recorta el token cualquier cosa
+    */
+    public String recortarString(String text)
+    {
+        try
+        {
+            text = text.substring(1, text.length()-1);
+        }catch(Exception ex)
+        {
+            text = "";
+        }                                        
+        text = text.replaceAll("\n", " ");
+        text = text.replaceAll("\t", " ");
+        text = text.trim();
+        return text;
+    }
+
+    public String recortarString2(int inicio,int fin,String text)
+    {
+        try
+        {
+            text = text.substring(inicio, fin);
+        }catch(Exception ex)
+        {
+            text = "";
+        }                                        
+        text = text.replaceAll("\n", " ");
+        text = text.replaceAll("\t", " ");
+        text = text.trim();
+        return text;
+    }
+    
+    /**
+     * Método al que se llama para crear un nuevo nodo
+     **/ 
+    public Nodo crearNodo(String nombre,String valor,int linea,int columna){
+        Nodo nuevo = new Nodo(nombre,valor,linea,columna,action_obj.Index);
+        action_obj.Index++;
+        return nuevo;
+    }
+    /**
+     * Método al que se llama automáticamente ante algún error sintactico.
+     **/ 
+    public void syntax_error(Symbol s){ 
+        System.out.println("Error Sintáctico en la Línea " + (s.left) +
+        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+    } 
+
+    /**
+     * Método al que se llama automáticamente ante algún error sintáctico 
+     * en el que ya no es posible una recuperación de errores.
+     **/ 
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error síntactico irrecuperable en la Línea " + 
+        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
+        " no reconocido."); 
+    }  
+:} 
+
+
+terminal token explicit,menq,mayq,listaA1,listaF1,principalA1,principalA2,principalF1,idA1,idA2,idF1,div;
+
+
+non terminal Nodo INICIO,S_X,LISTAX,CONTENIDOLISTA,CONTENIDOCUERPO,ETIQUETASforma1,ETIQUETASforma2,CONTENIDOPrincipal,
+                 CONTENIDOCUERPO2,ETIQUETASformax2,ETIQUETASformax1;
+
+
+start with INICIO;
+
+
+INICIO ::= S_X:h {:
+                    root = h;
+               :};
+
+
+S_X    ::= {:       RESULT = parser.crearNodo("lista","",0,0);
+                    RESULT.add(parser.crearNodo("","",0,0));
+                    RESULT.add(parser.crearNodo("","",0,0));
+             
+           :}
+          |LISTAX:h {:  RESULT = h; :};
+
+
+LISTAX    ::= listaA1:m  explicit:h2 CONTENIDOLISTA:h3 
+               {:
+                    RESULT = parser.crearNodo("lista","",m.getLinea(),m.getColumna());
+                    RESULT.add(parser.crearNodo("","",m.getLinea(),m.getColumna()));//estos seria como los imports
+                    RESULT.add(h3);
+                    
+                    
+               :};
+                
+
+CONTENIDOLISTA ::=   CONTENIDOCUERPO:r menq   listaF1  {:    RESULT = r; :}
+                      | listaF1 {: RESULT = parser.crearNodo("principales","",0,0); :};
+
+
+/*-----------------------------TODAS LAS POSIBLES ETIQUETAS--------------------*/
+
+CONTENIDOCUERPO  ::= CONTENIDOCUERPO:r ETIQUETASforma2:h
+                   {:
+                        r.add(h);   RESULT = r;
+                   :}
+                   |ETIQUETASforma1:h
+                   {:
+                        RESULT = parser.crearNodo("principales","",h.linea,h.columna);
+                        RESULT.add(h);
+                   :};
+   
+
+ETIQUETASforma2  ::= principalA1:m      explicit:e CONTENIDOPrincipal:R      
+                    {: 
+                        RESULT = parser.crearNodo("principal","",m.getLinea(),m.getColumna());
+                        RESULT.add(R); 
+                        RESULT.add(parser.crearNodo("","",m.getLinea(),m.getColumna()));
+                        RESULT.add(parser.crearNodo("","",m.getLinea(),m.getColumna()));
+                    :};
+                     
+
+ETIQUETASforma1  ::= principalA2:m      explicit:e CONTENIDOPrincipal:R      
+                    {: 
+                        RESULT = parser.crearNodo("principal","",m.getLinea(),m.getColumna());
+                        RESULT.add(R); 
+                        RESULT.add(parser.crearNodo("","",m.getLinea(),m.getColumna()));
+                        RESULT.add(parser.crearNodo("","",m.getLinea(),m.getColumna()));
+                    :};
+ 
+
+/*-----------------------------TODAS LAS POSIBLES ETIQUETAS--------------------*/
+
+
+/*-----------------CONTENIDO DE Principal --------------------------------*/
+CONTENIDOPrincipal ::= principalF1             {: RESULT = parser.crearNodo("atributos","",0,0);  :}
+                       |CONTENIDOCUERPO2:m menq principalF1 {: RESULT = m;  :};
+
+
+/*-----------------------------------------------------------------------------*/
+CONTENIDOCUERPO2  ::= CONTENIDOCUERPO2:r ETIQUETASformax2:h
+                   {:
+                        r.add(h);   RESULT = r;
+                   :}
+                   |ETIQUETASformax1:h
+                   {:
+                        RESULT = parser.crearNodo("atributos","",h.linea,h.columna);
+                        RESULT.add(h);
+                   :};
+
+ETIQUETASformax2  ::= idA1:m             explicit:e  idF1                      
+                      {: 
+                            String text = parser.recortarString(e.getCadena());
+                            //System.out.println(text);
+
+                            String etq  = parser.recortarString2(1,m.getCadena().length(),m.getCadena());
+                            //System.out.println(etq);
+                            
+                            StringMatcher sss = new StringMatcher();
+                            String tipo = sss.esTipo(text);
+                            //System.out.println("es tipo:"+tipo);
+                            
+                            if(tipo.equals("string_literal"))
+                            {
+                                text = text.substring(1, text.length()-1);
+                            }
+                            if(tipo.equals(""))
+                            {
+                                tipo = "string_literal";
+                            }
+
+                            RESULT = parser.crearNodo("atributo","",m.getLinea(),m.getColumna());       
+                            RESULT.add(parser.crearNodo(etq,etq,m.getLinea(),m.getColumna()));       
+                            RESULT.add(parser.crearNodo(tipo,text,e.getLinea(),e.getColumna())); 
+                      :};
+                     
+
+ETIQUETASformax1  ::= idA2:m             explicit:e idF1                      
+                      {: 
+                            String text = parser.recortarString(e.getCadena());
+                            
+                            StringMatcher sss = new StringMatcher();
+                            String tipo = sss.esTipo(text);
+
+                            if(tipo.equals("string_literal"))
+                            {
+                                text = text.substring(1, text.length()-1);
+                            }
+                            if(tipo.equals(""))
+                            {
+                                tipo = "string_literal";
+                            }
+
+                            RESULT = parser.crearNodo("atributo","",m.getLinea(),m.getColumna());       
+                            RESULT.add(parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna()));      
+                            RESULT.add(parser.crearNodo(tipo,text,e.getLinea(),e.getColumna())); 
+                      :};
+ 
+
