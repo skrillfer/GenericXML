@@ -5,6 +5,8 @@
  */
 package ScriptCompiler.Sentencias;
 
+import Analizadores.Gdato.LexGdato;
+import Analizadores.Gdato.SintacticoGdato;
 import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
 import Estructuras.Nodo;
@@ -967,6 +969,56 @@ public class LlamadaMetodo extends Compilador {
                     res_nativas = new Resultado("", arr);
                     JOptionPane.showMessageDialog(null, "termine perro");
                     break;
+                case "creararraydesdearchivo":
+                    proceder = false;
+                    Arreglo arrX = new Arreglo();
+                    Nodo LTExpC = raiz.get(0);
+                    if (LTExpC.size() > 0) {
+                        EXP = LTExpC.get(0);
+                        opL = new OperacionesARL(global, tabla, miTemplate);
+                        resultado = opL.ejecutar(EXP);
+                        if (!esNulo(resultado)) {
+                            if (resultado.tipo.equals("String")) {
+                                cad_ruta = (String) resultado.valor;
+                                rutaBuena = existeArchivo(cad_ruta);
+                                if (!rutaBuena.equals("")) {
+                                    File file = new File(rutaBuena);
+                                    String nombre_ = file.getName();
+                                    String ext = Arrays.stream(nombre_.split("\\.")).reduce((a, b) -> b).orElse(null);
+                                    if (ext.equals("gdato")) {
+                                        Nodo r_GXML = null;
+                                        try {
+                                            LexGdato lex = new LexGdato(new FileReader(rutaBuena));
+                                            SintacticoGdato sin = new SintacticoGdato(lex);
+                                            try {
+                                                sin.parse();
+                                                r_GXML = sin.getRoot();
+                                            } catch (Exception e) {
+                                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "Erro al compilar archivo " + nombre_);
+                                            }
+                                        } catch (FileNotFoundException ex) {
+                                            Logger.getLogger(LlamadaMetodo.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                        if (r_GXML != null) {
+                                            //mandar a realizar el arreglo de ventanas
+                                            crearArrayDesdeArchivoGdato(r_GXML, arrX);
+                                            arrX.raiz_GXML = r_GXML;
+                                        }
+                                    } else {
+                                        Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de funcion leerGxml tiene extension ." + ext + " solo se soporta .gxml");
+                                    }
+                                }
+                            } else {
+                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "El parametro de funcion leerGxml tiene que ser un string");
+                            }
+                        }
+                    } else {
+                        //es para guardar en gdato
+                    }
+                    arrX.SETDIM();
+                    res_nativas = new Resultado("", arrX);
+                    JOptionPane.showMessageDialog(null, "termine perro");
+                    break;    
             }
         }
     }
@@ -2352,6 +2404,30 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
+    public void crearArrayDesdeArchivoGdato(Nodo raiz, Arreglo arr) {
+        Nodo Lventanas = raiz.get(1);
+
+        Resultado res;
+        for (Nodo vt : Lventanas.hijos) {
+            Nodo vAtributos = vt.get(0);
+
+            Nodo EXP = crearObjdesdeNodo(vAtributos);
+            opL = new OperacionesARL(global, tabla, miTemplate);
+            res = opL.ejecutar(EXP);
+            if (!esNulo(res)) {
+                if (esClase(res.valor)) {
+                    Clase clase = (Clase) res.valor;
+                    clase.nombre = "Principal";
+                    clase.ejecutar(miTemplate);
+                    clase.Inicializada = true;
+                    clase.raiz_GXML = vt;
+                }
+                arr.AGREGAR(res);
+            }
+
+        }
+    }
+    
     public void crearArrayDesdeArchivo(Nodo raiz, Arreglo arr) {
         Nodo imports = raiz.get(0);
 

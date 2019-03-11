@@ -1,0 +1,27 @@
+<lista>
+    <principal>
+         <CTNombre>"Julio Arango"</CTNombre>
+         <CTPregunta>"Ackermann"</CTPregunta>
+         <CAckerman>16382</CAckerman>
+    </principal>
+    <principal>
+          <CTNombre>"Julia Sierra"</CTNombre>
+         <CTPregunta>"Ackermann"</CTPregunta>
+         <CAckerman>16383</CAckerman>
+    </principal>
+    <principal>
+         <CTNombre>"Alba Chinchilla"</CTNombre>
+         <CTPregunta>"Ackermann"</CTPregunta>
+         <CAckerman>16384</CAckerman>
+    </principal>
+    <principal>
+         <CTNombre>"Gustavo Gamboa"</CTNombre>
+         <CTPregunta>"Ackermann"</CTPregunta>
+         <CAckerman>16385</CAckerman>
+    </principal>
+    <principal>
+         <CTNombre>"Juan Carlos Alberto"</CTNombre>
+         <CTPregunta>"Ackermann"</CTPregunta>
+         <CAckerman>16386</CAckerman>
+    </principal>
+</lista>
