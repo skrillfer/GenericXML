@@ -36,7 +36,7 @@
 			Ingresar
 		</Enviar>
 		<Boton Nombre = "btnRegistrar" X = 125 Y = 30 Alto = 70 Ancho = 50 Referencia = "Registrar">
-			Registrar
+			<texto>Registrar</texto>
 		</Boton>
 	</Contenedor>
 </Ventana>
