@@ -109,6 +109,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setFuente(String family) {
+        if(family.equals("nulo"))
+            return;
         try {
             Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
             Map atributes = ft.getAttributes();
@@ -119,6 +121,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setTam(Object tam) {
+        if(tam.toString().equals("nulo"))
+            return;
         try {
             Font ft = new Font(this.getFont().getName(), this.getFont().getStyle(), castToInt(tam));
 
@@ -130,6 +134,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setColor(String hex) {
+        if(hex.equals("nulo"))
+            return;
         try {
             this.setForeground(Color.decode(hex));
         } catch (NumberFormatException e) {
@@ -138,6 +144,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setX(Object x) {
+        if(x.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
@@ -146,6 +154,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setY(Object y) {
+        if(y.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
@@ -162,6 +172,8 @@ public class BotonGenerico extends JButton {
     }
     
     public void setReferencia(Object referencia) {
+        if(referencia.toString().equals("nulo"))
+            return;
         try {
             this.referencia = referencia;
         } catch (Exception e) {
@@ -171,6 +183,8 @@ public class BotonGenerico extends JButton {
     
     //Al clik
     public void setAlClick(Object clik) {
+        if(clik.toString().equals("nulo"))
+            return;
         try {
             this.click = clik;
         } catch (Exception e) {
@@ -180,6 +194,8 @@ public class BotonGenerico extends JButton {
 
     //Valor
     public void setTexto(String txt) {
+        if(txt.equals("nulo"))
+            return;
         try {
 
             this.setText(txt);
@@ -190,6 +206,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setAncho(Object ancho) {
+        if(ancho.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
@@ -199,6 +217,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setAlto(Object alto) {
+        if(alto.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
@@ -208,6 +228,8 @@ public class BotonGenerico extends JButton {
     }
 
     public void setId(String id) {
+        if(id.toString().equals("nulo"))
+            return;
         try {
             this.setName(id);
         } catch (Exception e) {
