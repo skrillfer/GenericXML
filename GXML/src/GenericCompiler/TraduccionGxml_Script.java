@@ -526,16 +526,22 @@ public class TraduccionGxml_Script {
         String str_Defecto;
         vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
         vExplicit.valor = cleanExplicit(vExplicit.valor);
-        str_Defecto = "\"" + vExplicit.valor + "\"";
+        if(match.isString(vExplicit.valor))
+        {
+            str_Defecto = vExplicit.valor ;
+        }else
+        {
+            str_Defecto = "\"" + vExplicit.valor + "\"";
+        }
+        
 
-        parametros.add(obtenerAtributo(hashMap, "fuente"));
-        parametros.add(obtenerAtributo(hashMap, "tam"));
-        parametros.add(obtenerAtributo(hashMap, "color"));
-        parametros.add(obtenerAtributo(hashMap, "x"));
-        parametros.add(obtenerAtributo(hashMap, "y"));
-        parametros.add(obtenerAtributo(hashMap, "negrilla"));
-        parametros.add(obtenerAtributo(hashMap, "cursiva"));
-        parametros.add(obtenerAtributo(hashMap, "referencia"));
+        parametros.add(getValorFinal("fuente", obtenerAtributo(hashMap, "fuente")));
+        parametros.add(getValorFinal("tam", obtenerAtributo(hashMap, "tam")));
+        parametros.add(getValorFinal("color", obtenerAtributo(hashMap, "color")));
+        parametros.add(getValorFinal("x", obtenerAtributo(hashMap, "x")));
+        parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
+        parametros.add(getValorFinal("negrilla", obtenerAtributo(hashMap, "negrilla")));
+        parametros.add(getValorFinal("cursiva", obtenerAtributo(hashMap, "cursiva")));
         parametros.add(str_Defecto);//valor
 
         codigoScript += "\n//Valores de " + RAIZ.valor + "";
@@ -564,7 +570,7 @@ public class TraduccionGxml_Script {
         if (hashMap.containsKey(key.toLowerCase())) {
             return "\"" + hashMap.get(key) + "\"";
         } else {
-            return "\"\"";
+            return "nulo";
         }
     }
 
@@ -652,6 +658,8 @@ public class TraduccionGxml_Script {
             case "tam":
             case "maximo":
             case "minimo":
+            case "x":
+            case "y":    
                 if (match.isString(valor)) {
                     return recortarString(valor, 1, valor.length() - 1);
                 }
@@ -659,12 +667,20 @@ public class TraduccionGxml_Script {
             case "negrilla":
             case "cursiva":
                 if (match.isString(valor)) {
-                    return recortarString(valor, 1, valor.length() - 1);
+                    String recort = recortarString(valor, 1, valor.length() - 1);
+                    if(match.isTrue(recort))
+                    {
+                        return recort;
+                    }else
+                    {
+                        return "\"" + recort + "\"";
+                    }
+                    
                 }
                 return valor;
 
             default:
-                if (!match.isString(valor)) {
+                if (!match.isString(valor) && !valor.equals("nulo")) {
                     return "\""+valor+"\"";
                 }
                 return valor;

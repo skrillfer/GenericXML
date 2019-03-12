@@ -1373,41 +1373,49 @@ public class LlamadaMetodo extends Compilador {
         try {
             fuente = parametros.get(0);
         } catch (Exception e) {
+            fuente = new Resultado("$nulo", "nulo");
         }
 
         try {
             tam = parametros.get(1);
         } catch (Exception e) {
+            tam = new Resultado("$nulo", "nulo");
         }
 
         try {
             color = parametros.get(2);
         } catch (Exception e) {
+            color = new Resultado("$nulo", "nulo");
         }
 
         try {
             x = parametros.get(3);
         } catch (Exception e) {
+            x = new Resultado("$nulo", "nulo");
         }
 
         try {
             y = parametros.get(4);
         } catch (Exception e) {
+            y = new Resultado("$nulo", "nulo");
         }
 
         try {
             negrilla = parametros.get(5);
         } catch (Exception e) {
+            negrilla = new Resultado("$nulo", "nulo");
         }
 
         try {
             cursiva = parametros.get(6);
         } catch (Exception e) {
+            cursiva = new Resultado("$nulo", "nulo");
         }
 
         try {
             valor = parametros.get(7);
         } catch (Exception e) {
+            valor = new Resultado("$nulo", "nulo");
         }
 
         /*----------------###############################---------------------*/
@@ -1431,7 +1439,7 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(fuente)) {
-                nuevaTexto.setFuente((String) fuente.valor);
+                nuevaTexto.setFuente(fuente.valor.toString());
             }
 
             if (!esNulo(tam)) {

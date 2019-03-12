@@ -36,18 +36,22 @@ public class TextoGenerico extends JLabel {
         this.classe = classe;
     }
 
-    public void setFuente(String family) {
+    public void setFuente(Object family) {
+        if(family.toString().equals("nulo"))
+            return;
         try {
-            Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
+            Font ft = new Font(family.toString(), this.getFont().getStyle(), this.getFont().getSize());
 
             Map atributes = ft.getAttributes();
             this.setFont(ft.deriveFont(atributes));
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Fuente [" + family + "] en TextoGenerico " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Fuente [" + family.toString() + "] en TextoGenerico " + this.getName());
         }
     }
 
     public void setTam(Object tam) {
+        if(tam.toString().equals("nulo"))
+            return;
         try {
             Font ft = new Font(this.getFont().getName(), this.getFont().getStyle(), castToInt(tam));
 
@@ -58,15 +62,19 @@ public class TextoGenerico extends JLabel {
         }
     }
 
-    public void setColor(String hex) {
+    public void setColor(Object hex) {
+        if(hex.toString().equals("nulo"))
+            return;
         try {
-            this.setForeground(Color.decode(hex));
+            this.setForeground(Color.decode(hex.toString()));
         } catch (NumberFormatException e) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex + "] en TextoGenerico " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Color [" + hex.toString() + "] en TextoGenerico " + this.getName());
         }
     }
 
     public void setX(Object x) {
+        if(x.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
@@ -75,6 +83,8 @@ public class TextoGenerico extends JLabel {
     }
 
     public void setY(Object y) {
+        if(y.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
@@ -83,6 +93,8 @@ public class TextoGenerico extends JLabel {
     }
 
     public void setNegrilla(Object check) {
+        if(check.toString().equals("nulo"))
+            return;
         try {
 
             Font ft = null;
@@ -108,6 +120,8 @@ public class TextoGenerico extends JLabel {
     }
 
     public void setCurvisa(Object check) {
+        if(check.toString().equals("nulo"))
+            return;
         try {
 
             Font ft = null;
