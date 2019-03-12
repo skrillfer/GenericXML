@@ -314,14 +314,14 @@ public class TraduccionGxml_Script {
                     FRecursiva(RAIZ, RAIZ.valor);
                     break;
                 case "numerico":
-                    parametros.add(obtenerAtributo(hashMap, "alto"));
-                    parametros.add(obtenerAtributo(hashMap, "ancho"));
-                    parametros.add(obtenerAtributo(hashMap, "maximo"));
-                    parametros.add(obtenerAtributo(hashMap, "minimo"));
-                    parametros.add(obtenerAtributo(hashMap, "x"));
-                    parametros.add(obtenerAtributo(hashMap, "y"));
+                    parametros.add(getValorFinal("alto", obtenerAtributo(hashMap, "alto")));
+                    parametros.add(getValorFinal("ancho", obtenerAtributo(hashMap, "ancho")));
+                    parametros.add(getValorFinal("maximo", obtenerAtributo(hashMap, "maximo")));
+                    parametros.add(getValorFinal("minimo", obtenerAtributo(hashMap, "minimo")));
+                    parametros.add(getValorFinal("x", obtenerAtributo(hashMap, "x")));
+                    parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
                     parametros.add(str_Defecto);
-                    parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    parametros.add(getValorFinal("nombre", obtenerAtributo(hashMap, "nombre")));
                     codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, "crearcontrolnumerico");
                     FRecursiva(RAIZ, RAIZ.valor);
