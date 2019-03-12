@@ -8,5 +8,9 @@ funcion ImprimirGanadores(item){
 }
 
 
+var v1;
+
+imprimir(v1);
+
 
 

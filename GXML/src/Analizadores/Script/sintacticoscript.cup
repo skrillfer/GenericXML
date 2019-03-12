@@ -65,7 +65,7 @@ terminal token  asigmas,asigmen,asigpor,asigdiv,
                 leergxml,obtenerporetiqueta,obtenerporid,obtenerpornombre,
                 crearventana,crearcontenedor,creartexto,crearcajatexto,crearareatexto,
                 crearcontrolnumerico,creardesplegable,crearboton,crearimagen,crearreproductor,
-                crearvideo,alclic,alcargar,alcerrar,nulo;
+                crearvideo,alclic,alcargar,alcerrar,nulo,undefined;
   
 non terminal Nodo INICIO,DECLARA,LIST_ID,ASIGN,DATO,LIST_EXP,CONTARRAY,LIST_ATRI,
                   PARAM_ENVIAR,IMPRIMIR,S_IMPORT,IMPORTS,IMPORTAR,DETENER,EXP,EXP_R,EXP_A,
@@ -603,4 +603,5 @@ DATO    ::=  string_literal:a         {:  String cad = a.getCadena(); cad= cad.s
             |double_literal:a         {:  RESULT = parser.crearNodo("double_literal",a.getCadena(),a.getLinea(),a.getColumna());  :}
             |int_literal:a            {:  RESULT = parser.crearNodo("int_literal",a.getCadena(),a.getLinea(),a.getColumna());  :}
             |bool_literal:a           {:  RESULT = parser.crearNodo("bool_literal",a.getCadena(),a.getLinea(),a.getColumna());  :}
-            |nulo:a                   {:  RESULT = parser.crearNodo("nulo",a.getCadena(),a.getLinea(),a.getColumna());  :};
+            |nulo:a                   {:  RESULT = parser.crearNodo("nulo",a.getCadena(),a.getLinea(),a.getColumna());  :}
+            |undefined:a              {:  RESULT = parser.crearNodo("undefined",a.getCadena(),a.getLinea(),a.getColumna());  :};

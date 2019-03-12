@@ -143,22 +143,17 @@ public class Declaracion extends Compilador {
             if (ASIGN.size() > 0) {
                 //Se obtiene la expresion de asignacion y entonces se trata de obtener el resultado
                 Nodo EXP = ASIGN.get(0);
-                
+
                 Resultado resultado = null;
-                if(claseActual.Componente==null)
-                {
+                if (claseActual.Componente == null) {
                     resultado = opL.ejecutar(EXP);
-                }else
-                {
-                    if(!nombre.equals("referencia"))
-                    {
+                } else {
+                    if (!nombre.equals("referencia")) {
                         resultado = opL.ejecutar(EXP);
-                    }else
-                    {
+                    } else {
                         resultado = new Resultado("String", EXP);
                     }
                 }
-                
 
                 if (!esNulo(resultado)) {
 
@@ -184,15 +179,18 @@ public class Declaracion extends Compilador {
 
                         if (esClase(resultado.valor)) {
                             Clase clase = (Clase) resultado.valor;
-                            if(!clase.Inicializada)
-                            {
+                            if (!clase.Inicializada) {
                                 clase.nombre = nombre;
                                 clase.ejecutar(miTemplate);
                                 clase.Inicializada = true;
                             }
-                            
+
                         }
 
+                    } else {
+                        RESULTADO = "nulo";
+                        tipo = "$nulo";
+                        INICIALIZADO = true;//pero con nulo
                     }
 
                     Simbolo simbolo = new Simbolo(tipo, nombre, "", RESULTADO);
@@ -201,20 +199,22 @@ public class Declaracion extends Compilador {
                         Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
                     }
                 } else {
-                    Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
+                    Simbolo simbolo = new Simbolo("$nulo", nombre, "", "nulo");
+                    simbolo.inicializado = true;//pero con nulo
                     if (!global.setSimbolo(simbolo)) {
                         Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
                     }
                 }
             } else {
-                Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
+                Simbolo simbolo = new Simbolo("$nulo", nombre, "", "nulo");
+                simbolo.inicializado = true;//pero con nulo
                 if (!global.setSimbolo(simbolo)) {
                     Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
                 }
             }
         }
     }
-    
+
     public void declaracionvar() {
         String tipo = "";//el tipo de la  variable depende del valor que tenga
 
@@ -227,22 +227,17 @@ public class Declaracion extends Compilador {
             if (ASIGN.size() > 0) {
                 //Se obtiene la expresion de asignacion y entonces se trata de obtener el resultado
                 Nodo EXP = ASIGN.get(0);
-                
+
                 Resultado resultado = null;
-                if(claseActual.Componente==null)
-                {
+                if (claseActual.Componente == null) {
                     resultado = opL.ejecutar(EXP);
-                }else
-                {
-                    if(!nombre.equals("referencia"))
-                    {
+                } else {
+                    if (!nombre.equals("referencia")) {
                         resultado = opL.ejecutar(EXP);
-                    }else
-                    {
+                    } else {
                         resultado = new Resultado("String", EXP);
                     }
                 }
-                
 
                 if (!esNulo(resultado)) {
 
@@ -268,13 +263,12 @@ public class Declaracion extends Compilador {
 
                         if (esClase(resultado.valor)) {
                             Clase clase = (Clase) resultado.valor;
-                            if(!clase.Inicializada)
-                            {
+                            if (!clase.Inicializada) {
                                 clase.nombre = nombre;
                                 clase.ejecutar(miTemplate);
                                 clase.Inicializada = true;
                             }
-                            
+
                         }
 
                     }

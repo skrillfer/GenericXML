@@ -84,7 +84,9 @@ comm_linea = ["/"] ["/"] [^\r\n]* [^\r\n]
 
 /* PALABRAS RESERVADAS - FunctionalScript */
 <YYINITIAL> "var"               {return new Symbol(sym.var, new token(yycolumn, yyline, yytext()));}
-<YYINITIAL> "nulo"               {return new Symbol(sym.nulo, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "nulo"              {return new Symbol(sym.nulo, new token(yycolumn, yyline, yytext()));}
+<YYINITIAL> "undefined"         {return new Symbol(sym.undefined, new token(yycolumn, yyline, yytext()));}
+
 
 <YYINITIAL> "imprimir"          {return new Symbol(sym.imprimir, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> "importar"          {return new Symbol(sym.importar, new token(yycolumn, yyline, yytext()));}

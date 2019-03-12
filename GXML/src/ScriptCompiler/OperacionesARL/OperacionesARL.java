@@ -238,7 +238,9 @@ public class OperacionesARL {
             case "nulo":
                 result = new Resultado("$nulo", "nulo");
                 break;
-
+            case "undefined":
+                result = new Resultado("$nulo", "nulo");
+                break;
             case "double_literal":
                 result = new Resultado("Double", Double.parseDouble(nodo.valor));
                 break;
