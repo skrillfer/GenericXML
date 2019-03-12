@@ -1,6 +1,9 @@
 <Importar>
 /Ventanas.gxml
 </Importar>
+<Importar>
+/Ventanas.fs
+</Importar>
 <Ventana id = "Inicio" tipo = "principal">
 	<Contenedor id = "Cont1" x = 10 y = 10 Alto = 200 Ancho = 200>
 		<Texto Nombre = "lblNombre" X = 10 Y = 20>
@@ -19,6 +22,14 @@
 				Ingrese aqui su correo
 			</Defecto>
 		</Control>
+
+        <Control tipo = "TextoArea" Nombre = "CADescripcion" X = 40 Y = 80 Alto = 100 Ancho = 100>
+			<Defecto>
+				Ingrese aqui la descripcion de
+				su registro
+			</Defecto>
+		</Control>
+
 	</Contenedor>
 	<Contenedor id = "ContBtn" x = 10 Y = 220 Alto = 100 Ancho = 200>
 		<Enviar Nombre = "btnIngresar" X = 25 Y = 30 Alto = 70 Ancho = 50>

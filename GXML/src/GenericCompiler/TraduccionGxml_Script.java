@@ -10,6 +10,8 @@ import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
 import Estructuras.Nodo;
 import ScriptCompiler.Compilador;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -30,7 +34,7 @@ import javax.swing.JOptionPane;
         Metodo Accion en Venta existe?
  */
 public class TraduccionGxml_Script {
-
+    public String codigoImports = "";
     public String rutaPadre = "";
     public String codigoScript = "";
     public String salto = "\n";
@@ -58,7 +62,7 @@ public class TraduccionGxml_Script {
                     String ext = Arrays.stream(importString.split("\\.")).reduce((a, b) -> b).orElse(null);
                     switch (ext) {
                         case "fs":
-                            //codigoScript = "importar(\"" + importString + "\");\n" + codigoScript;
+                            codigoImports = "importar(\"" + importString + "\");\n" + codigoImports;
                             break;
                         case "gxml":
                             String ruta = existeArchivo(importString);
@@ -77,17 +81,16 @@ public class TraduccionGxml_Script {
                             }
                             break;
                         default:
-                            //codigoScript = "importar(\"" + importString + "\");\n" + codigoScript;
+                            codigoImports = "importar(\"" + importString + "\");\n"+codigoImports;
                             break;
                     }
-                    //System.out.println("ext:" + ext);
-                    //System.out.println(importString);
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(TraduccionGxml_Script.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
         }
+
     }
 
     public void ListaVentanas(Nodo RAIZ) {
@@ -101,10 +104,15 @@ public class TraduccionGxml_Script {
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit = RAIZ.get(1);
         Nodo vHijos = null;
-        if (RAIZ.size() == 3) {
-            vHijos = RAIZ.get(2);
-        } else {
-            vHijos = new Nodo();
+
+        try {
+            if (RAIZ.size() == 3) {
+                vHijos = RAIZ.get(2);
+            } else {
+                vHijos = new Nodo();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
 
         for (Nodo hijo : vHijos.hijos) {
@@ -221,9 +229,7 @@ public class TraduccionGxml_Script {
         //Texto que mostrara el boton
         String str_Defecto;
         vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
-        vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
-        vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
-        vExplicit.valor = vExplicit.valor.trim();
+        vExplicit.valor = cleanExplicit(vExplicit.valor);
         str_Defecto = "\"" + vExplicit.valor + "\"";
 
         parametros.add(obtenerAtributo(hashMap, "fuente"));
@@ -260,8 +266,6 @@ public class TraduccionGxml_Script {
             Nodo at_nombre = atributo.get(0);
             Nodo at_valor = atributo.get(1);
             if (!hashMap.containsKey(at_nombre.nombre.toLowerCase())) {
-                //System.out.println("key:"+at_nombre.nombre.toLowerCase());
-                //System.out.println("valor:"+at_valor.valor.toLowerCase());
                 hashMap.put(at_nombre.nombre.toLowerCase(), at_valor.valor);
             } else {
                 //Error Atributo Repetido
@@ -284,9 +288,7 @@ public class TraduccionGxml_Script {
         if (DEFECTO != null) {
             Nodo vExplicit = DEFECTO.get(1);
             vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
-            vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
-            vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
-            vExplicit.valor = vExplicit.valor.trim();
+            vExplicit.valor = cleanExplicit(vExplicit.valor);
             str_Defecto = "\"" + vExplicit.valor + "\"";
         }
 
@@ -353,6 +355,8 @@ public class TraduccionGxml_Script {
                     agregarAPadre(RAIZ, parametros, padre, "creardesplegable");
                     FRecursiva(RAIZ, RAIZ.valor);
 
+                    break;
+                default:
                     break;
 
             }
@@ -519,9 +523,7 @@ public class TraduccionGxml_Script {
         //Texto que mostrara el boton
         String str_Defecto;
         vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
-        vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
-        vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
-        vExplicit.valor = vExplicit.valor.trim();
+        vExplicit.valor = cleanExplicit(vExplicit.valor);
         str_Defecto = "\"" + vExplicit.valor + "\"";
 
         parametros.add(obtenerAtributo(hashMap, "fuente"));
@@ -551,7 +553,7 @@ public class TraduccionGxml_Script {
         codigoScript = recortarString(codigoScript, 0, codigoScript.length() - 1);
         codigoScript += ");";
 
-        codigoScript += salto + padre + "." + type + "(" + RAIZ.valor + ");";
+        codigoScript += salto + padre + "." + type + "(" + RAIZ.valor + ");\n\n\n";
 
     }
 
@@ -581,6 +583,7 @@ public class TraduccionGxml_Script {
         try {
             return cad.substring(inicio, fin);
         } catch (Exception e) {
+            System.err.println("error al recortar:" + e.getMessage());
             return "";
         }
     }
@@ -594,9 +597,7 @@ public class TraduccionGxml_Script {
                 for (Nodo dato : vHijos.hijos) {
                     Nodo vExplicit = dato.get(1);
                     vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
-                    vExplicit.valor = vExplicit.valor.replaceAll("\n", " ");
-                    vExplicit.valor = vExplicit.valor.replaceAll("\t", " ");
-                    vExplicit.valor = vExplicit.valor.trim();
+                    vExplicit.valor = cleanExplicit(vExplicit.valor);
                     array += "\"" + vExplicit.valor + "\",";
                 }
 
@@ -605,6 +606,14 @@ public class TraduccionGxml_Script {
 
         }
         return array + "]";
+    }
+
+    public String cleanExplicit(String cad) {
+        cad = cad.replaceAll("\n", " ");
+        cad = cad.replaceAll("\r", " ");
+        cad = cad.replaceAll("\t", " ");
+        cad = cad.trim();
+        return cad;
     }
 
     public String existeArchivo(String path) {

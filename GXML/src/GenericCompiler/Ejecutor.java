@@ -9,6 +9,8 @@ import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
 import Estructuras.Nodo;
 import ScriptCompiler.Script;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,6 +20,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -47,7 +52,6 @@ public class Ejecutor {
         File files[] = file.listFiles();
         //Script graphik = new Script(files, "pruebitas.txt");
 
-        
         /*
         
          if (pestaniaActiva != null) {
@@ -58,8 +62,8 @@ public class Ejecutor {
             }
         }
         
-        */
-        /*lista_cjs = new Hashtable<>();
+         */
+ /*lista_cjs = new Hashtable<>();
 
         addCjs("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script/pruebitas.txt");
 
@@ -138,17 +142,25 @@ public class Ejecutor {
         File file = new File("EntradasGXML/Inicio.gxml");
         LexGxml lex = new LexGxml(new FileReader("EntradasGXML/Inicio.gxml"));
         SintacticoGxml sin = new SintacticoGxml(lex);
+        TraduccionGxml_Script tra = new TraduccionGxml_Script();
         try {
             sin.parse();
-            TraduccionGxml_Script tra = new TraduccionGxml_Script();
-            tra.IniciarTraduccion(sin.getRoot(),file.getParent());
-            System.out.println(tra.codigoScript);
+
+            tra.IniciarTraduccion(sin.getRoot(), file.getParent());
             /*Nodo raiz = sin.getRoot();
             AST_Script   genTcjs = new AST_Script();
             genTcjs.generacion_arbolScript(raiz);*/
         } catch (Exception e) {
             System.err.println("error al compilar:" + e.getMessage());
         }
+        tra.codigoScript = tra.codigoImports+tra.codigoScript;
+        JTextArea ar = new JTextArea(tra.codigoScript);
+        JScrollPane scroll = new JScrollPane(ar);
+        scroll.setBackground(Color.red);
+        scroll.setPreferredSize(new Dimension(700, 700));
+        //JOptionPane.showMessageDialog(null, scroll);
+        System.err.println(tra.codigoScript);
+
     }
 
 }
