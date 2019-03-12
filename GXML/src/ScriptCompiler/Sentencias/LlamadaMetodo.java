@@ -915,7 +915,7 @@ public class LlamadaMetodo extends Compilador {
                     try {
                         crearVentana();
                     } catch (Exception e) {
-                        JOptionPane.showMessageDialog(null, "crearVentana error:" + e.getMessage());
+                        Template.reporteError_CJS.agregar("Ejecucion", raiz.linea, raiz.columna, "crearVentana Error:"+e.getMessage());
                     }
 
                     break;
@@ -1026,7 +1026,7 @@ public class LlamadaMetodo extends Compilador {
 
     /*  ====    ====            CREAR VENTANA            ====    ====    */
     public void crearVentana() {
-        String[] stilos = {"color", "ancho", "alto", "id"};
+        String[] stilos = {"color", "alto", "ancho", "id"};
         proceder = false;
         ArrayList<Resultado> parametros = getParametros(raiz);
 
@@ -1037,16 +1037,19 @@ public class LlamadaMetodo extends Compilador {
         try {
             color = parametros.get(0);
         } catch (Exception e) {
+            color = new Resultado("$nulo", "nulo");
         }
 
         try {
             alto = parametros.get(1);
         } catch (Exception e) {
+            alto = new Resultado("$nulo", "nulo");
         }
 
         try {
             ancho = parametros.get(2);
         } catch (Exception e) {
+            ancho = new Resultado("$nulo", "nulo");
         }
 
         try {
@@ -1078,7 +1081,7 @@ public class LlamadaMetodo extends Compilador {
                 if (id.tipo.equals("String")) {
                     nuevaVentana.setId((String) id.valor);
                 } else {
-                    nuevaVentana.setId("");
+                    nuevaVentana.setId(id.valor.toString());
                 }
             } else {
                 nuevaVentana.setId("");
@@ -1095,14 +1098,9 @@ public class LlamadaMetodo extends Compilador {
             if (!esNulo(ancho)) {
                 nuevaVentana.setAncho(ancho.valor.toString());
             }
-
-            System.out.println("VENTANA = >");
-            System.out.println(alto.valor.toString() + "-" + ancho.valor.toString());
             /*---------------------------------------------------------------------*/
 
-            listaVentanas.add(nuevaVentana);//Pensar bien si si o no
-
-            //nuevaVentana.add(new PanelGenerico(raiz));
+            listaVentanas.add(nuevaVentana);//Si se usara para cuando se haga la referencia en el boton
         }
 
     }

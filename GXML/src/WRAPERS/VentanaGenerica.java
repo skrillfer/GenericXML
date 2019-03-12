@@ -26,6 +26,7 @@ import javax.swing.JFrame;
  * @author fernando
  */
 public class VentanaGenerica extends JFrame {
+    /*Solo tiene ID */
     public Clase classe;
     
     protected TablaSimbolo tabla;

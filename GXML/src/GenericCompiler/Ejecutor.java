@@ -159,7 +159,7 @@ public class Ejecutor {
         scroll.setBackground(Color.red);
         scroll.setPreferredSize(new Dimension(700, 700));
         //JOptionPane.showMessageDialog(null, scroll);
-        System.err.println(tra.codigoScript);
+        System.out.println(tra.codigoScript);
 
     }
 

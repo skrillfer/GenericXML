@@ -9,21 +9,14 @@ import Analizadores.Gdato.StringMatcher;
 import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
 import Estructuras.Nodo;
-import ScriptCompiler.Compilador;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -34,6 +27,9 @@ import javax.swing.JTextArea;
         Metodo Accion en Venta existe?
  */
 public class TraduccionGxml_Script {
+
+    StringMatcher match = new StringMatcher();
+
     public String codigoImports = "";
     public String rutaPadre = "";
     public String codigoScript = "";
@@ -54,7 +50,6 @@ public class TraduccionGxml_Script {
             importString = importString.trim();
             if (!importString.equals("")) {
                 try {
-                    StringMatcher match = new StringMatcher();
                     if (match.isString(importString)) {
                         importString = recortarString(importString, 1, importString.length() - 1);
                     }
@@ -81,7 +76,7 @@ public class TraduccionGxml_Script {
                             }
                             break;
                         default:
-                            codigoImports = "importar(\"" + importString + "\");\n"+codigoImports;
+                            codigoImports = "importar(\"" + importString + "\");\n" + codigoImports;
                             break;
                     }
                 } catch (FileNotFoundException ex) {
@@ -243,6 +238,7 @@ public class TraduccionGxml_Script {
         parametros.add(obtenerAtributo(hashMap, "alto"));
         parametros.add(obtenerAtributo(hashMap, "ancho"));
 
+        codigoScript += "\n//Valores de " + RAIZ.valor + "";
         agregarAPadre(RAIZ, parametros, padre, "crearboton");
 
         /*  Si tiene el atributo Accion*/
@@ -314,6 +310,7 @@ public class TraduccionGxml_Script {
                     parametros.add(obtenerAtributo(hashMap, "cursiva"));
                     parametros.add(str_Defecto);
                     parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, type);
                     FRecursiva(RAIZ, RAIZ.valor);
                     break;
@@ -326,6 +323,7 @@ public class TraduccionGxml_Script {
                     parametros.add(obtenerAtributo(hashMap, "y"));
                     parametros.add(str_Defecto);
                     parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, "crearcontrolnumerico");
                     FRecursiva(RAIZ, RAIZ.valor);
 
@@ -352,6 +350,7 @@ public class TraduccionGxml_Script {
                     parametros.add(str_Defecto);
 
                     parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, "creardesplegable");
                     FRecursiva(RAIZ, RAIZ.valor);
 
@@ -370,9 +369,10 @@ public class TraduccionGxml_Script {
         Nodo vHijos = RAIZ.get(2);
 
         ArrayList<String> parametros = new ArrayList<>();
-        parametros.add("\"\"");
-        parametros.add("\"0\"");
-        parametros.add("\"0\"");
+        parametros.add("nulo");//color
+        parametros.add("nulo");//alto
+        parametros.add("nulo");//ancho
+        parametros.add("\"\"");//id
         String alCargar = "";
         String alCerrar = "";
 
@@ -388,15 +388,16 @@ public class TraduccionGxml_Script {
                     alCerrar = val;
                     break;
                 case "color":
-                    parametros.set(0, n_valor);
+                    parametros.set(0, getValorFinal("color", n_valor));
                     break;
                 case "alto":
-                    parametros.set(1, n_valor);
+                    parametros.set(1, getValorFinal("alto", val));
                     break;
                 case "ancho":
-                    parametros.set(2, n_valor);
+                    parametros.set(2, getValorFinal("ancho", val));
                     break;
                 case "id":
+                    parametros.set(3, getValorFinal("id", n_valor));
                     RAIZ.valor = val;
                     codigoScript += "\n//---------------------------" + "\n//---------------------------";
                     codigoScript += "\n//---------------------" + RAIZ.valor;
@@ -410,7 +411,7 @@ public class TraduccionGxml_Script {
         }
 
         if (RAIZ.valor.equals("")) {
-            RAIZ.valor = String.valueOf(RAIZ.index);
+            RAIZ.valor = "ventana_"+String.valueOf(RAIZ.index);
         }
 
         codigoScript += "var " + RAIZ.valor + " = crearventana(";
@@ -489,6 +490,7 @@ public class TraduccionGxml_Script {
             }
         }
 
+        codigoScript += "\n//Valores de " + RAIZ.valor + "";
         agregarAPadre(RAIZ, parametros, padre, "crearcontenedor");
         FRecursiva(RAIZ, RAIZ.valor);
 
@@ -536,13 +538,15 @@ public class TraduccionGxml_Script {
         parametros.add(obtenerAtributo(hashMap, "referencia"));
         parametros.add(str_Defecto);//valor
 
+        codigoScript += "\n//Valores de " + RAIZ.valor + "";
         agregarAPadre(RAIZ, parametros, padre, "creartexto");
         FRecursiva(RAIZ, RAIZ.valor);
 
     }
 
     public void agregarAPadre(Nodo RAIZ, ArrayList<String> parametros, String padre, String type) {
-        codigoScript += salto + "var " + RAIZ.valor + " = " + type + "(";
+        codigoScript += salto + "var " + RAIZ.valor + "_" + padre + " = " + padre + "." + type + "(";
+        //String strPrs="*";
         parametros.forEach((cad) -> {
             if (!cad.equals("")) {
                 codigoScript += cad + ",";
@@ -551,10 +555,9 @@ public class TraduccionGxml_Script {
         });
 
         codigoScript = recortarString(codigoScript, 0, codigoScript.length() - 1);
-        codigoScript += ");";
+        codigoScript += ");\n";
 
-        codigoScript += salto + padre + "." + type + "(" + RAIZ.valor + ");\n\n\n";
-
+        //codigoScript += salto + padre + "." + type + "(" + RAIZ.valor + ");\n\n\n";
     }
 
     public String obtenerAtributo(HashMap<String, String> hashMap, String key) {
@@ -640,5 +643,31 @@ public class TraduccionGxml_Script {
             return file4.getAbsolutePath();
         }
         return "";
+    }
+
+    public String getValorFinal(String tipo, String valor) {
+        switch (tipo.toLowerCase()) {
+            case "ancho":
+            case "alto":
+            case "tam":
+            case "maximo":
+            case "minimo":
+                if (match.isString(valor)) {
+                    return recortarString(valor, 1, valor.length() - 1);
+                }
+                return valor;
+            case "negrilla":
+            case "cursiva":
+                if (match.isString(valor)) {
+                    return recortarString(valor, 1, valor.length() - 1);
+                }
+                return valor;
+
+            default:
+                if (!match.isString(valor)) {
+                    return "\""+valor+"\"";
+                }
+                return valor;
+        }
     }
 }

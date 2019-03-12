@@ -4,7 +4,7 @@
 <Importar>
 /Ventanas.fs
 </Importar>
-<Ventana id = "Inicio" tipo = "principal">
+<Ventana color= "#fff0" id = "Inicio" tipo = "principal" alto="200" ancho =45>
 	<Contenedor id = "Cont1" x = 10 y = 10 Alto = 200 Ancho = 200>
 		<Texto Nombre = "lblNombre" X = 10 Y = 20>
 			Nombre
