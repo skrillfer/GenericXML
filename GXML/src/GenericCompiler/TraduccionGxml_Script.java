@@ -298,18 +298,17 @@ public class TraduccionGxml_Script {
                     if (tipoControl.equals("textoarea")) {
                         type = "crearareatexto";
                     }
-                    parametros.add(obtenerAtributo(hashMap, "alto"));
-                    parametros.add(obtenerAtributo(hashMap, "ancho"));
-                    parametros.add(obtenerAtributo(hashMap, "fuente"));
-                    parametros.add(obtenerAtributo(hashMap, "alto"));
-                    parametros.add(obtenerAtributo(hashMap, "tam"));
-                    parametros.add(obtenerAtributo(hashMap, "color"));
-                    parametros.add(obtenerAtributo(hashMap, "x"));
-                    parametros.add(obtenerAtributo(hashMap, "y"));
-                    parametros.add(obtenerAtributo(hashMap, "negrilla"));
-                    parametros.add(obtenerAtributo(hashMap, "cursiva"));
+                    parametros.add(getValorFinal("alto", obtenerAtributo(hashMap, "alto")));
+                    parametros.add(getValorFinal("ancho", obtenerAtributo(hashMap, "ancho")));
+                    parametros.add(getValorFinal("fuente", obtenerAtributo(hashMap, "fuente")));
+                    parametros.add(getValorFinal("tam", obtenerAtributo(hashMap, "tam")));
+                    parametros.add(getValorFinal("color", obtenerAtributo(hashMap, "color")));
+                    parametros.add(getValorFinal("x", obtenerAtributo(hashMap, "x")));
+                    parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
+                    parametros.add(getValorFinal("negrilla", obtenerAtributo(hashMap, "negrilla")));
+                    parametros.add(getValorFinal("cursiva", obtenerAtributo(hashMap, "cursiva")));
                     parametros.add(str_Defecto);
-                    parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    parametros.add(getValorFinal("nombre", obtenerAtributo(hashMap, "nombre")));
                     codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, type);
                     FRecursiva(RAIZ, RAIZ.valor);

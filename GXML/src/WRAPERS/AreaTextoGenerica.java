@@ -71,6 +71,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setAncho(Object ancho) {
+        if(ancho.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
@@ -80,6 +82,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setAlto(Object alto) {
+        if(alto.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
@@ -89,6 +93,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setFuente(String family) {
+        if(family.equals("nulo"))
+            return;
         try {
             Font ft = new Font(family, this.getFont().getStyle(), this.getFont().getSize());
 
@@ -100,6 +106,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setTam(Object tam) {
+        if(tam.toString().equals("nulo"))
+            return;
         try {
             Font ft = new Font(this.getFont().getName(), this.getFont().getStyle(), castToInt(tam));
 
@@ -111,6 +119,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setColor(String hex) {
+        if(hex.toString().equals("nulo"))
+            return;
         try {
             this.setForeground(Color.decode(hex));
         } catch (NumberFormatException e) {
@@ -119,6 +129,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setX(Object x) {
+        if(x.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
@@ -127,6 +139,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setY(Object y) {
+        if(y.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
@@ -135,6 +149,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setNegrilla(Object check) {
+        if(check.toString().equals("nulo"))
+            return;
         try {
 
             Font ft = null;
@@ -160,6 +176,8 @@ public class AreaTextoGenerica extends JTextArea {
     }
 
     public void setCurvisa(Object check) {
+        if(check.toString().equals("nulo"))
+            return;
         try {
 
             Font ft = null;
@@ -186,6 +204,8 @@ public class AreaTextoGenerica extends JTextArea {
 
     //Defecto
     public void setTexto(String txt) {
+        if(txt.equals("nulo"))
+            return;
         try {
 
             this.setText(txt);
