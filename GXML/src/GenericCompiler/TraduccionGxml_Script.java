@@ -545,6 +545,7 @@ public class TraduccionGxml_Script {
         parametros.add(str_Defecto);//valor
 
         codigoScript += "\n//Valores de " + RAIZ.valor + "";
+        
         agregarAPadre(RAIZ, parametros, padre, "creartexto");
         FRecursiva(RAIZ, RAIZ.valor);
 
