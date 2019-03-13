@@ -18,6 +18,7 @@ public class Simbolo {
     public boolean esArreglo = false;
 
     public boolean vieneReferido = false;
+    public Object valorRef=null;
     
     public String ambito;
     public String rol;

@@ -84,7 +84,17 @@ public class Asignacion extends Compilador {
 
                     try {
                         TipoAsignacion tipoAsig = new TipoAsignacion();
+                        
                         resultado = tipoAsig.aplicarAsignacion(simbolo, raiz.get(1), resultado);
+                        
+                        if(simbolo.vieneReferido)
+                        {
+                            try {
+                                ((Resultado)simbolo.valorRef).valor = resultado.valor;
+                            } catch (Exception e) {
+                            }
+                            
+                        }
 
                         simbolo.valor = resultado.valor;
                         simbolo.tipo = resultado.tipo;
@@ -205,6 +215,7 @@ public class Asignacion extends Compilador {
                             sim = metodo.retorno.simbolo;
                             if (!sim.tipo.equalsIgnoreCase("String") && !sim.tipo.equalsIgnoreCase("Integer") && !sim.tipo.equalsIgnoreCase("Double") && !sim.tipo.equalsIgnoreCase("Boolean")) {
                                 try {
+                                    nivel++;
                                     aux = (Clase) sim.valor;
                                     tabla = aux.tabla;
                                 } catch (Exception e) {
@@ -252,12 +263,27 @@ public class Asignacion extends Compilador {
                     if (obtenido != null) {
                         Resultado res_obtenido = (Resultado) obtenido;
                         if (!esNulo(res_obtenido)) {
-                            Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
-                            nuevoSim.valor = res_obtenido.valor;
-                            nuevoSim.tipo = res_obtenido.tipo;
-                            nuevoSim.inicializado = true;
-                            nuevoSim.vieneReferido = true;
-                            return nuevoSim;
+                            if(res_obtenido.valor.getClass().getSimpleName().equals("Clase") || res_obtenido.valor.getClass().getSimpleName().equals("Arreglo"))
+                            {
+                                Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
+                                nuevoSim.valor = res_obtenido.valor;
+                                nuevoSim.tipo = res_obtenido.tipo;
+                                nuevoSim.inicializado = true;
+                                nuevoSim.vieneReferido = false;
+                                return nuevoSim;
+                            }else
+                            {
+                                //Cuando la posicion de un arreglo es un String, Integer, Double, Boolean
+                                Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
+                                nuevoSim.valorRef = res_obtenido;
+                                nuevoSim.valor = res_obtenido;
+                                nuevoSim.tipo = res_obtenido.tipo;
+                                nuevoSim.inicializado = true;
+                                nuevoSim.vieneReferido = true;
+                                return nuevoSim;
+                            }
+                            
+                            
                         } else {
                             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El indice obtenido [" + indices.get(0) + "] para el arreglo:" + raiz.valor + " es nulo");
                             return null;

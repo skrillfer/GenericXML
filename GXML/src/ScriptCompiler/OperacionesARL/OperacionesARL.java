@@ -9,6 +9,7 @@ import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.Arreglo;
 import ScriptCompiler.Clase;
+import static ScriptCompiler.Compilador.miTemplate;
 import ScriptCompiler.Metodo;
 import ScriptCompiler.Resultado;
 import ScriptCompiler.Script;
@@ -26,6 +27,7 @@ import javax.swing.JOptionPane;
  */
 public class OperacionesARL {
 
+    protected OperacionesARL opL;
     protected TablaSimbolo tabla;
     protected TablaSimbolo global;
 
@@ -1569,7 +1571,7 @@ public class OperacionesARL {
         try {
             return Integer.parseInt(valor);
         } catch (Exception e) {
-            //Inicio.reporteError.agregar("Semantico", raiz.linea, raiz.columna, "No se pudo castear la cadena a tipo Bool");
+            //Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se pudo castear la cadena a tipo Bool");
             return -1;
         }
     }
@@ -1657,4 +1659,298 @@ public class OperacionesARL {
             return false;
         }
     }
+
+    private Resultado operacionSimplificada(String tipo, Nodo raiz) {
+
+        Simbolo simbolo = null;
+        if (raiz.nombre.equalsIgnoreCase("acceso")) {
+            int ent = 0;
+            double doble;
+            char c;
+            simbolo = getSimbolo(raiz, tipo);
+            if (simbolo != null) {
+                if (tipo.equals("++")) {
+                    switch (simbolo.tipo) {
+                        case "Integer":
+                            ent = (int) simbolo.valor;
+                            simbolo.valor = (int) simbolo.valor + 1;
+                            return new Resultado(simbolo.tipo, ent);
+                        case "Double":
+                            doble = (double) simbolo.valor;
+                            simbolo.valor = (double) simbolo.valor + 1;
+                            return new Resultado(simbolo.tipo, doble);
+                        default:
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
+                            break;
+                    }
+                } else {
+                    switch (simbolo.tipo) {
+                        case "Integer":
+                            ent = (int) simbolo.valor;
+                            simbolo.valor = (int) simbolo.valor - 1;
+                            return new Resultado(simbolo.tipo, ent);
+                        case "Double":
+                            doble = (double) simbolo.valor;
+                            simbolo.valor = (double) simbolo.valor - 1;
+                            return new Resultado(simbolo.tipo, doble);
+                        default:
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
+                            return new Resultado("-1", null);
+                    }
+                }
+            }
+        } else {
+            /*Resultado resultado = ejecutar(raiz);
+            Object valor = resultado.valor;
+            if (resultado.tipo.equals("entero") || resultado.tipo.equals("decimal") || resultado.tipo.equals("caracter")) {
+                if (tipo.equals("++")) {
+                    switch (resultado.tipo) {
+                        case "entero":
+                            valor = (int) resultado.valor + 1;
+                            break;
+                        case "decimal":
+                            valor = (Double) resultado.valor + 1;
+                            break;
+                        case "caracter":
+                            valor = (char) resultado.valor + 1;
+                    }
+                    return new Resultado(resultado.tipo, valor);
+                } else {//si es --
+                    switch (resultado.tipo) {
+                        case "entero":
+                            valor = (int) resultado.valor - 1;
+                            break;
+                        case "decimal":
+                            valor = (Double) resultado.valor - 1;
+                            break;
+                        case "caracter":
+                            valor = (char) resultado.valor - 1;
+                    }
+                    return new Resultado(resultado.tipo, valor);
+                }
+            } else {
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se pueden realizar operaciones simplificadas sobre datos tipo cadena y bool");
+                return new Resultado("-1", null);
+            }*/
+        }
+        return new Resultado("-1", null);
+    }
+
+    private Simbolo getSimbolo(Nodo raiz, String tipo) {
+
+        Clase aux = ScriptCompiler.Script.claseActual;
+        TablaSimbolo tablaAux = tabla;
+
+        Simbolo sim = null;
+        //----------------------------------------------------------------------
+        int nivel = 0;
+        for (Nodo acceso : raiz.hijos) {
+            String nombre;
+            Simbolo simbolo;
+            switch (acceso.nombre) {
+                case "accesoar":
+                    nombre = acceso.valor;
+                    aux.tabla = tabla;
+                    tabla = tablaAux;
+                    simbolo = accesoArSet(acceso, aux, tipo);
+
+                    if (simbolo != null) {
+                        switch (simbolo.tipo) {
+                            case "Integer":
+                            case "Double":
+                            case "String":
+                            case "Boolean":
+                                sim = simbolo;
+                                break;
+
+                            default:
+
+                                if (!simbolo.esArreglo) {
+                                    try {
+                                        nivel++;
+                                        aux = (Clase) simbolo.valor;
+                                        tabla = aux.tabla;
+                                        sim = simbolo;
+                                    } catch (Exception e) {
+                                        nivel++;
+                                        sim = simbolo;
+                                    }
+
+                                }
+
+                                break;
+                        }
+
+                    } else {
+                        Template.reporteError_CJS.agregar("Semantico", acceso.linea, acceso.columna, "La variable " + nombre + " no existe en el ambito donde fue invocada");
+                        return null;
+                    }
+                    break;
+                case "id":
+                    nombre = acceso.valor;
+                    simbolo = tabla.getSimbolo(nombre, aux);
+
+                    if (simbolo != null) {
+                        switch (simbolo.tipo) {
+                            case "Integer":
+                            case "Double":
+                            case "String":
+                            case "Boolean":
+                                sim = simbolo;
+                                break;
+
+                            default:
+                                if (!simbolo.esArreglo) {
+                                    try {
+                                        nivel++;
+                                        aux = (Clase) simbolo.valor;
+                                        tabla = aux.tabla;
+                                        sim = simbolo;
+                                    } catch (Exception e) {
+                                        nivel++;
+                                        sim = simbolo;
+                                    }
+
+                                }
+                                break;
+                        }
+
+                    } else {
+                        Template.reporteError_CJS.agregar("Semantico", acceso.linea, acceso.columna, "La variable " + nombre + " no existe en el ambito donde fue invocada");
+                        return null;
+                    }
+                    break;
+
+                case "llamada":
+                    LlamadaMetodo llamada = new LlamadaMetodo(aux, nivel, acceso);
+                    Metodo metodo = llamada.ejecutar(acceso);
+
+                    if (metodo != null) {
+                        if (metodo.retorno != null) {
+                            sim = metodo.retorno.simbolo;
+                            if (!sim.tipo.equalsIgnoreCase("String") && !sim.tipo.equalsIgnoreCase("Integer") && !sim.tipo.equalsIgnoreCase("Double") && !sim.tipo.equalsIgnoreCase("Boolean")) {
+                                try {
+                                    //Para mi que deberia ir un nivel++ aca  NOTA!!!!!!!!!!!!
+                                    nivel++;
+                                    aux = (Clase) sim.valor;
+                                    tabla = aux.tabla;
+                                } catch (Exception e) {
+                                }
+                            }
+                        }
+                    } else {
+                        sim = null;
+                    }
+
+                    break;
+            }
+        }
+
+        tabla = tablaAux;
+        return sim;
+    }
+
+    private Simbolo accesoArSet(Nodo raiz, Clase aux, String tipo) {
+        Simbolo simbolo;
+        simbolo = aux.tabla.getSimbolo((String) raiz.valor, aux);
+
+        if (simbolo != null) {
+            if (simbolo.inicializado) {
+                if (simbolo.esArreglo) {
+                    Arreglo arreglo = (Arreglo) simbolo.valor;
+                    ArrayList<Integer> indices = new ArrayList<>();
+
+                    if (raiz.get(0).size() > 1) {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Todos los arreglos son de una dimension, por lo tanto ha sobrepasado el acceso de una dimension al arreglo:" + simbolo.nombre);
+                        return null;
+                    }
+                    Nodo nodo = raiz.get(0).get(0);
+                    opL = new OperacionesARL(global, tabla, miTemplate);
+                    Resultado indice = opL.ejecutar(nodo);
+                    if (indice.tipo.equalsIgnoreCase("Integer")) {
+                        indices.add((Integer) indice.valor);
+                    } else {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Solo se permiten valores enteros al acceder a un indce de un arreglo");
+                        return null;
+                    }
+
+                    boolean estado = false;
+                    //Obtengo el Resultado de la posicion en el arreglo
+                    Object obtenido = arreglo.getValor(indices);
+                    if (obtenido != null) {
+                        Resultado res_obtenido = (Resultado) obtenido;
+                        Resultado r;
+                        if (!verNulabilidad(res_obtenido)) {
+                            Simbolo nuevoSim;
+
+                            //Resultado enviar = null;
+                            /*if (tipo.equals("++")) {
+                                switch (res_obtenido.tipo) {
+                                    case "Integer":
+                                        enviar = new Resultado("Integer", (Integer) res_obtenido.valor);
+                                        res_obtenido.valor = (Integer) res_obtenido.valor + 1;
+                                        estado = true;
+                                        break;
+                                    case "Double":
+                                        enviar = new Resultado("Double", (Double) res_obtenido.valor);
+                                        res_obtenido.valor = (Double) res_obtenido.valor + 1;
+                                        estado = true;
+                                        break;
+                                    default:
+                                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
+                                        break;
+                                }
+                            }else
+                            {
+                                switch (res_obtenido.tipo) {
+                                    case "Integer":
+                                        enviar = new Resultado("Integer", (Integer) res_obtenido.valor);
+                                        res_obtenido.valor = (Integer) res_obtenido.valor - 1;
+                                        estado = true;
+                                        break;
+                                    case "Double":
+                                        enviar = new Resultado("Double", (Double) res_obtenido.valor);
+                                        res_obtenido.valor = (Double) res_obtenido.valor - 1;
+                                        estado = true;
+                                        break;
+                                    default:
+                                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
+                                        break;
+                                }
+                            }*/
+                            if (estado) {
+                                nuevoSim = new Simbolo(res_obtenido.tipo, simbolo.nombre, "", res_obtenido);
+                                nuevoSim.valor = res_obtenido.valor;
+                                nuevoSim.tipo = res_obtenido.tipo;
+                                nuevoSim.inicializado = true;
+                                nuevoSim.vieneReferido = true;
+                                return nuevoSim;
+                            } else {
+                                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se puedo ingresar el dato al arreglo " + simbolo.nombre + " porque el indice no es correcto");
+                            }
+
+                        } else {
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El indice obtenido [" + indices.get(0) + "] para el arreglo:" + raiz.valor + " es nulo");
+                            return null;
+                        }
+                    } else {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El indice fuera del alcance [" + indices.get(0) + "] para el arreglo:" + raiz.valor + " no es arreglo");
+                        return null;
+                    }
+
+                } else {
+                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + raiz.valor + " no es arreglo");
+                    return null;
+                }
+            } else {
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + raiz.valor + " no ha sido inicializada");
+                return null;
+            }
+        } else {
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + raiz.valor + " no existe");
+            return null;
+        }
+        return null;
+    }
+
 }
