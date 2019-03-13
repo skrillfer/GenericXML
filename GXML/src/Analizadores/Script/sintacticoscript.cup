@@ -82,7 +82,7 @@ precedence left pot;
 precedence right add,sub;
 precedence left apar,cpar;
 precedence left ig_ig,mayq,menq,mayiq,meniq,dif;
-precedence right trn;
+precedence right trn; 
 precedence left or;
 precedence left and;
 precedence right not;
