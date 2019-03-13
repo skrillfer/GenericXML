@@ -86,7 +86,14 @@ public abstract class Compilador {
 
                             try {
                                 //miTemplate.CONSOLA+="\n"+(String)rs.valor;
-                                System.out.println(rs.valor.toString());
+                                if(Template.CONSOLA!=null)
+                                {
+                                    Template.CONSOLA.append(rs.valor.toString());
+                                }else
+                                {
+                                    System.out.println(rs.valor.toString());
+                                }
+                                
                             } catch (Exception e) {
                                 Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Imprimir:" + e.getMessage());
                             }

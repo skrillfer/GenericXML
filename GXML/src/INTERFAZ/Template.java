@@ -10,12 +10,14 @@ import Errores.ReporteSimbolo;
 import ScriptCompiler.Script;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author fernando
  */
 public class Template {
+    public static JTextArea CONSOLA;
     //----------------------------------------------------//
     public static ReporteError reporteError_CJS = new ReporteError(); // este REPORTE es para CJS
     public static ReporteSimbolo reporteSimbolos_CJS = new ReporteSimbolo(); // este REPORTE es para CJS

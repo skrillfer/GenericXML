@@ -30,6 +30,8 @@ imprimir(obj.arr[0]);*/
 var num1 = 10;
 imprimir((num1++)*(num1--)*(num1++));
 
+imprimir(num1++--++);
+
 
 
 

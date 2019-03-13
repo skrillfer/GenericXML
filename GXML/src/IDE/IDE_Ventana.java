@@ -111,11 +111,11 @@ public class IDE_Ventana extends JFrame {
         initComponents();
         arbol = jTree1;
         iniciarTree();
-        agregarPesta_Consola();
         agregar_Tabla();
         agregar_Errores();
-        agregarPesta();
-
+        
+        agregarPesta_Consola();
+        
         this.setSize(1350, 700);
         this.setLocationRelativeTo(null);
     }
@@ -275,7 +275,7 @@ public class IDE_Ventana extends JFrame {
         });
         jMenu2.add(jMenuItem9);
 
-        jMenuBar1.add(jMenu2);
+        //jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -285,7 +285,7 @@ public class IDE_Ventana extends JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(335, 335, 335)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                //.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(150, 150, 150))
@@ -307,7 +307,7 @@ public class IDE_Ventana extends JFrame {
                                         .addComponent(jTabbedPane1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        //.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -544,8 +544,9 @@ public class IDE_Ventana extends JFrame {
                             JOptionPane.showMessageDialog(null, "has pedido compilar:" + pesta.getName());
                             
                         } else if (separado[1].equals("fs")) {
-                            JOptionPane.showMessageDialog(null, "has pedido compilar:" + pesta.getName());
+                            template.CONSOLA  = CONSOLA;
                             template.ParsearArchivoFs(pesta.path, pesta.getName());
+                            
                         } else {
                             JOptionPane.showMessageDialog(null, "El archivo " + pesta.getName() + " que intentas compilar NO ES EXTENSION .fs o .gxml", "Error de Compilacion", JOptionPane.ERROR_MESSAGE);
                         }
@@ -919,7 +920,7 @@ public class IDE_Ventana extends JFrame {
         sp1.setSize(10, 20);
         panel.add(BorderLayout.CENTER, sp1);
         panel.add(sp1);
-        this.jTabbedPane2.add(panel, "DASM", 0);
+        //this.jTabbedPane2.add(panel, "DASM", 0);
         this.jTabbedPane2.setSelectedIndex(0);
 
         System.out.println("¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿");
