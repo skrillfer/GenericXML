@@ -79,13 +79,14 @@ non terminal Nodo INICIO,DECLARA,LIST_ID,ASIGN,DATO,LIST_EXP,CONTARRAY,LIST_ATRI
 precedence left mas, menos;
 precedence left por, div;
 precedence left pot;
-precedence left add,sub;
+precedence right add,sub;
 precedence left apar,cpar;
 precedence left ig_ig,mayq,menq,mayiq,meniq,dif;
+precedence right trn;
 precedence left or;
 precedence left and;
 precedence right not;
-precedence left trn;
+
 
 start with INICIO;
 
@@ -147,7 +148,8 @@ SENTENCIAF      ::= DECLARA:g                {: g.nombre += "G"; RESULT = g; :}
                    |RETORNAR:X          pyc  {: RESULT = X; :}
                    |DETENER:X           pyc  {: RESULT = X; :}
                    |ASIGNACION:X        pyc  {: RESULT = X; :}
-                   |ACCESO:X            pyc  {: RESULT = X; :} ;
+                   |ACCESO:X            pyc  {: RESULT = X; :} 
+                   |SIMPLIFICADA:X      pyc {: RESULT = X; :} ;
 
 
 
@@ -308,7 +310,8 @@ SENTENCIA      ::= DECLARA:g                {: RESULT = g; :}
                    |RETORNAR:X          pyc {: RESULT = X; :}
                    |DETENER:X           pyc {: RESULT = X; :}
                    |ASIGNACION:X        pyc {: RESULT = X; :}
-                   |ACCESO:X            pyc {: RESULT = X; :} ;
+                   |ACCESO:X            pyc {: RESULT = X; :} 
+                   |SIMPLIFICADA:X      pyc {: RESULT = X; :} ;
 
 //*************************____Asignacion____***********************************
 ASIGNACION     ::= ACCESO:h1 TIPOASIG:h2 EXP:h3 
@@ -508,12 +511,12 @@ EXP_A ::= EXP_A:b mas:a EXP_A:c    {:
 
 SIMPLIFICADA ::= EXP_A:h1 add:w {:                                 
 
-                    RESULT = parser.crearNodo("ADD","",w.getLinea(),w.getColumna());
+                    RESULT = parser.crearNodo("add","",w.getLinea(),w.getColumna());
                     RESULT.add(h1);
                 :}
                 |EXP_A:h1 sub:w{:
 
-                    RESULT = parser.crearNodo("SUB","",w.getLinea(),w.getColumna());
+                    RESULT = parser.crearNodo("sub","",w.getLinea(),w.getColumna());
                     RESULT.add(h1);
                 :};
 

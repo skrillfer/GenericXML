@@ -311,6 +311,17 @@ public abstract class Compilador {
                     }
                     
                     break;
+                case "add":
+                case "sub":
+                    try {
+                        opL = new OperacionesARL(global, tabla,miTemplate);
+                        opL.ejecutar(sentencia);
+                    } catch (Exception e) {
+                        Template.reporteError_CJS.agregar("Semantico", sentencia.linea, sentencia.columna, "Error al ejecutar Sentencia Simplificadas:" + e.getMessage());
+                    }
+                    
+                    break;
+                    
             }
         }
         return metodoActual;

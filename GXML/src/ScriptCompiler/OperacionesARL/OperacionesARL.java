@@ -169,8 +169,8 @@ public class OperacionesARL {
                 columna1 = nodo.hijos.get(0).columna;
                 linea2 = 0;
                 columna2 = 0;
-                Resultado r_add1 = ejecutar(nodo.hijos.get(0));
-                result = operacionesSimplificadas(r_add1, "ADD");
+                //Resultado r_add1 = ejecutar(nodo.hijos.get(0));
+                result = operacionSimplificada("ADD", nodo.hijos.get(0));
                 //
                 break;
             case "sub":
@@ -178,9 +178,9 @@ public class OperacionesARL {
                 columna1 = nodo.hijos.get(0).columna;
                 linea2 = 0;
                 columna2 = 0;
-                Resultado r_sub1 = ejecutar(nodo.hijos.get(0));
+                //Resultado r_sub1 = ejecutar(nodo.hijos.get(0));
                 //System.out.println("voy a DECREMENTAR:"+r_sub1.valor);
-                result = operacionesSimplificadas(r_sub1, "SUB");
+                result = operacionSimplificada("SUB", nodo.hijos.get(0));
                 //System.out.println("===>"+result.valor);
                 //imprimirResultado(result.valor);
                 break;
@@ -1257,7 +1257,7 @@ public class OperacionesARL {
         return result;
     }
 
-    public Resultado operacionesSimplificadas(Resultado r1, String op) {
+    /*public Resultado operacionesSimplificadas(Resultado r1, String op) {
 
         Resultado resultado = new Resultado("-1", null);
         if (verNulabilidad(r1)) {
@@ -1287,7 +1287,7 @@ public class OperacionesARL {
             }
         }
         return resultado;
-    }
+    }*/
 
     public Resultado acceso(Nodo raiz) {
 
@@ -1669,15 +1669,34 @@ public class OperacionesARL {
             char c;
             simbolo = getSimbolo(raiz, tipo);
             if (simbolo != null) {
-                if (tipo.equals("++")) {
+                if (tipo.equals("ADD")) {
                     switch (simbolo.tipo) {
                         case "Integer":
-                            ent = (int) simbolo.valor;
-                            simbolo.valor = (int) simbolo.valor + 1;
+                            ent = (Integer) simbolo.valor;
+                            if(simbolo.vieneReferido)
+                            {
+                                try {
+                                    ((Resultado)simbolo.valorRef).valor = (Integer)((Resultado)simbolo.valorRef).valor +1;
+                                } catch (Exception e) {
+                                }
+                            }else
+                            {
+                                simbolo.valor = (Integer) simbolo.valor + 1;
+                            }
+                            
                             return new Resultado(simbolo.tipo, ent);
                         case "Double":
-                            doble = (double) simbolo.valor;
-                            simbolo.valor = (double) simbolo.valor + 1;
+                            doble = (Double) simbolo.valor;
+                            if(simbolo.vieneReferido)
+                            {
+                                try {
+                                    ((Resultado)simbolo.valorRef).valor = (Double)((Resultado)simbolo.valorRef).valor +1;
+                                } catch (Exception e) {
+                                }
+                            }else
+                            {
+                                simbolo.valor = (Double) simbolo.valor + 1;
+                            }
                             return new Resultado(simbolo.tipo, doble);
                         default:
                             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
@@ -1686,12 +1705,30 @@ public class OperacionesARL {
                 } else {
                     switch (simbolo.tipo) {
                         case "Integer":
-                            ent = (int) simbolo.valor;
-                            simbolo.valor = (int) simbolo.valor - 1;
+                            ent = (Integer) simbolo.valor;
+                            if(simbolo.vieneReferido)
+                            {
+                                try {
+                                    ((Resultado)simbolo.valorRef).valor = (Integer)((Resultado)simbolo.valorRef).valor -1;
+                                } catch (Exception e) {
+                                }
+                            }else
+                            {
+                                simbolo.valor = (Integer) simbolo.valor - 1;
+                            }
                             return new Resultado(simbolo.tipo, ent);
                         case "Double":
-                            doble = (double) simbolo.valor;
-                            simbolo.valor = (double) simbolo.valor - 1;
+                            doble = (Double) simbolo.valor;
+                            if(simbolo.vieneReferido)
+                            {
+                                try {
+                                    ((Resultado)simbolo.valorRef).valor = (Double)((Resultado)simbolo.valorRef).valor -1;
+                                } catch (Exception e) {
+                                }
+                            }else
+                            {
+                                simbolo.valor = (Double) simbolo.valor - 1;
+                            }
                             return new Resultado(simbolo.tipo, doble);
                         default:
                             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
@@ -1881,52 +1918,24 @@ public class OperacionesARL {
                         Resultado res_obtenido = (Resultado) obtenido;
                         Resultado r;
                         if (!verNulabilidad(res_obtenido)) {
-                            Simbolo nuevoSim;
-
-                            //Resultado enviar = null;
-                            /*if (tipo.equals("++")) {
-                                switch (res_obtenido.tipo) {
-                                    case "Integer":
-                                        enviar = new Resultado("Integer", (Integer) res_obtenido.valor);
-                                        res_obtenido.valor = (Integer) res_obtenido.valor + 1;
-                                        estado = true;
-                                        break;
-                                    case "Double":
-                                        enviar = new Resultado("Double", (Double) res_obtenido.valor);
-                                        res_obtenido.valor = (Double) res_obtenido.valor + 1;
-                                        estado = true;
-                                        break;
-                                    default:
-                                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
-                                        break;
-                                }
+                            if(res_obtenido.valor.getClass().getSimpleName().equals("Clase") || res_obtenido.valor.getClass().getSimpleName().equals("Arreglo"))
+                            {
+                                Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
+                                nuevoSim.valor = res_obtenido.valor;
+                                nuevoSim.tipo = res_obtenido.tipo;
+                                nuevoSim.inicializado = true;
+                                nuevoSim.vieneReferido = false;
+                                return nuevoSim;
                             }else
                             {
-                                switch (res_obtenido.tipo) {
-                                    case "Integer":
-                                        enviar = new Resultado("Integer", (Integer) res_obtenido.valor);
-                                        res_obtenido.valor = (Integer) res_obtenido.valor - 1;
-                                        estado = true;
-                                        break;
-                                    case "Double":
-                                        enviar = new Resultado("Double", (Double) res_obtenido.valor);
-                                        res_obtenido.valor = (Double) res_obtenido.valor - 1;
-                                        estado = true;
-                                        break;
-                                    default:
-                                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas con datos tipo entero,decimal y caracter");
-                                        break;
-                                }
-                            }*/
-                            if (estado) {
-                                nuevoSim = new Simbolo(res_obtenido.tipo, simbolo.nombre, "", res_obtenido);
-                                nuevoSim.valor = res_obtenido.valor;
+                                //Cuando la posicion de un arreglo es un String, Integer, Double, Boolean
+                                Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
+                                nuevoSim.valorRef = res_obtenido;
+                                nuevoSim.valor = res_obtenido;
                                 nuevoSim.tipo = res_obtenido.tipo;
                                 nuevoSim.inicializado = true;
                                 nuevoSim.vieneReferido = true;
                                 return nuevoSim;
-                            } else {
-                                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se puedo ingresar el dato al arreglo " + simbolo.nombre + " porque el indice no es correcto");
                             }
 
                         } else {
@@ -1950,7 +1959,6 @@ public class OperacionesARL {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La variable " + raiz.valor + " no existe");
             return null;
         }
-        return null;
     }
 
 }
