@@ -153,13 +153,12 @@ public class TraduccionGxml_Script {
         ArrayList<String> parametros = new ArrayList<>();
 
         //Obtener id o nombre del control y setear el nombre que tomara
-        String nombre = obtenerAtributo(hashMap, "nombre");
+        /*String nombre = obtenerAtributo(hashMap, "nombre");
         if (!nombre.equals("\"\"")) {
             RAIZ.valor = recortarString(nombre, 1, nombre.length() - 1);
         } else {
             RAIZ.valor = RAIZ.valor + String.valueOf(RAIZ.index);
-        }
-
+        }*/
         //Obtener el atributo TIPO de Control
         if (hashMap.containsKey("tipo")) {
             String tipoControl = hashMap.get("tipo").toLowerCase();
@@ -168,25 +167,31 @@ public class TraduccionGxml_Script {
                 case "video":
                     String type = "crear" + tipoControl;
 
-                    parametros.add(obtenerAtributo(hashMap, "path"));
+                    parametros.add(getValorFinal("path", obtenerAtributo(hashMap, "path")));
                     parametros.add(obtenerAtributo(hashMap, "x"));
                     parametros.add(obtenerAtributo(hashMap, "y"));
                     parametros.add(obtenerAtributo(hashMap, "auto-reproduccion"));
                     parametros.add(obtenerAtributo(hashMap, "alto"));
                     parametros.add(obtenerAtributo(hashMap, "ancho"));
+
+                    RAIZ.valor = tipoControl + "_" + RAIZ.index;
                     agregarAPadre(RAIZ, parametros, padre, type);
                     FRecursiva(RAIZ, RAIZ.valor);
                     break;
                 case "musica":
                     parametros.add(obtenerAtributo(hashMap, "path"));
-                    parametros.add(obtenerAtributo(hashMap, "x"));
-                    parametros.add(obtenerAtributo(hashMap, "y"));
-                    parametros.add(obtenerAtributo(hashMap, "auto-reproduccion"));
-                    parametros.add(obtenerAtributo(hashMap, "alto"));
-                    parametros.add(obtenerAtributo(hashMap, "ancho"));
+
+                    parametros.add(getValorFinal("x", obtenerAtributo(hashMap, "x")));
+                    parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
+
+                    parametros.add(getValorFinal("auto-reproduccion", obtenerAtributo(hashMap, "auto-reproduccion")));
+                    
+                    parametros.add(getValorFinal("alto", obtenerAtributo(hashMap, "alto")));
+                    parametros.add(getValorFinal("ancho", obtenerAtributo(hashMap, "ancho")));
+
+                    RAIZ.valor = tipoControl + "_" + RAIZ.index;
                     agregarAPadre(RAIZ, parametros, padre, "crearreproductor");
                     FRecursiva(RAIZ, RAIZ.valor);
-
                     break;
 
             }
@@ -196,6 +201,8 @@ public class TraduccionGxml_Script {
     public void crearBoton(Nodo RAIZ, String padre) {
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit = RAIZ.get(1);
+
+        RAIZ.valor = "boton_" + RAIZ.index;
 
         HashMap<String, String> hashMap = new HashMap<>();
 
@@ -214,13 +221,12 @@ public class TraduccionGxml_Script {
         ArrayList<String> parametros = new ArrayList<>();
 
         //Obtener id o nombre del control y setear el nombre que tomara
-        String nombre = obtenerAtributo(hashMap, "nombre");
+        /*String nombre = obtenerAtributo(hashMap, "nombre");
         if (!nombre.equals("\"\"")) {
             RAIZ.valor = recortarString(nombre, 1, nombre.length() - 1);
         } else {
             RAIZ.valor = RAIZ.valor + String.valueOf(RAIZ.index);
-        }
-
+        }*/
         String str_Defecto;
         //Texto que mostrara el boton
         vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
@@ -234,7 +240,6 @@ public class TraduccionGxml_Script {
             v2Explicit.valor = cleanExplicit(v2Explicit.valor);
             str_Defecto = "\"" + v2Explicit.valor + "\"";
         }
-        
 
         parametros.add(getValorFinal("fuente", obtenerAtributo(hashMap, "fuente")));
         parametros.add(getValorFinal("tam", obtenerAtributo(hashMap, "tam")));
@@ -264,7 +269,6 @@ public class TraduccionGxml_Script {
 
     public void crearControl(Nodo RAIZ, String padre) {
         Nodo vAtributos = RAIZ.get(0);
-
         HashMap<String, String> hashMap = new HashMap<>();
 
         for (Nodo atributo : vAtributos.hijos) {
@@ -280,13 +284,12 @@ public class TraduccionGxml_Script {
         ArrayList<String> parametros = new ArrayList<>();
 
         //Obtener id o nombre del control y setear el nombre que tomara
-        String nombre = obtenerAtributo(hashMap, "nombre");
+        /*String nombre = obtenerAtributo(hashMap, "nombre");
         if (!nombre.equals("\"\"")) {
             RAIZ.valor = recortarString(nombre, 1, nombre.length() - 1);;
         } else {
             RAIZ.valor = RAIZ.valor + String.valueOf(RAIZ.index);
-        }
-
+        }*/
         //Obtener <defecto> </defecto>
         Nodo DEFECTO = obtenerHijo(RAIZ, "defecto");
         String str_Defecto = "\"\"";
@@ -318,6 +321,8 @@ public class TraduccionGxml_Script {
                     parametros.add(getValorFinal("cursiva", obtenerAtributo(hashMap, "cursiva")));
                     parametros.add(str_Defecto);
                     parametros.add(getValorFinal("nombre", obtenerAtributo(hashMap, "nombre")));
+
+                    RAIZ.valor = tipoControl + "_" + RAIZ.index;
                     codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, type);
                     FRecursiva(RAIZ, RAIZ.valor);
@@ -331,6 +336,8 @@ public class TraduccionGxml_Script {
                     parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
                     parametros.add(str_Defecto);
                     parametros.add(getValorFinal("nombre", obtenerAtributo(hashMap, "nombre")));
+
+                    RAIZ.valor = tipoControl + "_" + RAIZ.index;
                     codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, "crearcontrolnumerico");
                     FRecursiva(RAIZ, RAIZ.valor);
@@ -355,9 +362,11 @@ public class TraduccionGxml_Script {
                     parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
 
                     //defecto
-                    parametros.add(getValorFinal("defecto",str_Defecto));
+                    parametros.add(getValorFinal("defecto", str_Defecto));
 
                     parametros.add(getValorFinal("nombre", obtenerAtributo(hashMap, "nombre")));
+
+                    RAIZ.valor = tipoControl + "_" + RAIZ.index;
                     codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, "creardesplegable");
                     FRecursiva(RAIZ, RAIZ.valor);
@@ -375,6 +384,8 @@ public class TraduccionGxml_Script {
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit = RAIZ.get(1);
         Nodo vHijos = RAIZ.get(2);
+
+        RAIZ.valor = "ventana_" + RAIZ.index;
 
         ArrayList<String> parametros = new ArrayList<>();
         parametros.add("nulo");//color
@@ -406,7 +417,7 @@ public class TraduccionGxml_Script {
                     break;
                 case "id":
                     parametros.set(3, getValorFinal("id", n_valor));
-                    RAIZ.valor = val;
+                    //RAIZ.valor = val;
                     codigoScript += "\n//---------------------------" + "\n//---------------------------";
                     codigoScript += "\n//---------------------" + RAIZ.valor;
                     codigoScript += "\n//---------------------------" + "\n//---------------------------\n";
@@ -418,10 +429,9 @@ public class TraduccionGxml_Script {
             }
         }
 
-        if (RAIZ.valor.equals("\"\"") ||  RAIZ.valor.equals("")) {
+        /*if (RAIZ.valor.equals("\"\"") ||  RAIZ.valor.equals("")) {
             RAIZ.valor = "ventana_" + String.valueOf(RAIZ.index);
-        }
-
+        }*/
         codigoScript += "var " + RAIZ.valor + " = crearventana(";
         parametros.forEach((cad) -> {
             if (!cad.equals("")) {
@@ -489,7 +499,7 @@ public class TraduccionGxml_Script {
                     parametros.set(5, getValorFinal("y", n_valor));
                     break;
                 case "id":
-                    RAIZ.valor = getValorFinal("id", val);
+                    //RAIZ.valor = getValorFinal("id", val);
                     break;
 
                 default:
@@ -498,10 +508,11 @@ public class TraduccionGxml_Script {
             }
         }
 
-        if (RAIZ.valor.equals("\"\"") || RAIZ.valor.equals("")) {
+        /*if (RAIZ.valor.equals("\"\"") || RAIZ.valor.equals("")) {
             RAIZ.valor = "contenedor_" + String.valueOf(RAIZ.index);
-        }
-        
+        }*/
+        RAIZ.valor = "contenedor_" + RAIZ.index;
+
         codigoScript += "\n//Valores de " + RAIZ.valor + "";
         agregarAPadre(RAIZ, parametros, padre, "crearcontenedor");
         FRecursiva(RAIZ, RAIZ.valor);
@@ -509,6 +520,8 @@ public class TraduccionGxml_Script {
     }
 
     public void crearTexto(Nodo RAIZ, String padre) {
+        RAIZ.valor = "texto_" + RAIZ.index;
+
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit = RAIZ.get(1);
 
@@ -527,13 +540,12 @@ public class TraduccionGxml_Script {
         ArrayList<String> parametros = new ArrayList<>();
 
         //Obtener id o nombre del control y setear el nombre que tomara
-        String nombre = obtenerAtributo(hashMap, "nombre");
-        if (!nombre.equals("\"\"")) {
+        //String nombre = obtenerAtributo(hashMap, "nombre");
+        /*if (!nombre.equals("\"\"")) {
             RAIZ.valor = recortarString(nombre, 1, nombre.length() - 1);;
         } else {
             RAIZ.valor = RAIZ.valor + String.valueOf(RAIZ.index);
-        }
-
+        }*/
         //Texto que mostrara el boton
         String str_Defecto;
         vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
@@ -676,6 +688,7 @@ public class TraduccionGxml_Script {
                 return valor;
             case "negrilla":
             case "cursiva":
+            case "auto-reproduccion":    
                 if (match.isString(valor)) {
                     String recort = recortarString(valor, 1, valor.length() - 1);
                     if (match.isTrue(recort)) {

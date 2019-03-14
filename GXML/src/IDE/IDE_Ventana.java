@@ -560,6 +560,9 @@ public class IDE_Ventana extends JFrame {
                                 GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath());
                                 jTreeFiles.init();
                                 //jTreeFiles.init();
+                            }else
+                            {//Ya existe
+                                File nuevo = new File(path_nuevo);
                             }
 
                         } else if (separado[1].equals("fs")) {
