@@ -550,20 +550,15 @@ public class IDE_Ventana extends JFrame {
                         if (separado[1].equals("gxml")) {
 
                             String txtEntrada = template.ParsearArchivoGxml(pesta.path, pesta.getName());
-                            
+
                             File fileToSave = new File(pesta.path);
-                            String path_nuevo = fileToSave.getParent()+"/"+separado[0]+".fs";
+                            String path_nuevo = fileToSave.getParent() + "/" + separado[0] + ".fs";
                             JOptionPane.showMessageDialog(null, path_nuevo);
-                            
-                            if (Crear_Archivo(path_nuevo)) {
-                                File nuevo = new File(path_nuevo);
-                                GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath());
-                                jTreeFiles.init();
-                                //jTreeFiles.init();
-                            }else
-                            {//Ya existe
-                                File nuevo = new File(path_nuevo);
-                            }
+
+                            File nuevo = new File(path_nuevo);
+                            EscribirArchivo(path_nuevo, txtEntrada);
+                            GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath());
+                            jTreeFiles.init();
 
                         } else if (separado[1].equals("fs")) {
                             template.CONSOLA = CONSOLA;
