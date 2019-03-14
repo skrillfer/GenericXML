@@ -70,7 +70,7 @@ public abstract class Compilador {
                     break;
                 case "acceso":
                     try {
-                        JOptionPane.showMessageDialog(null, "acceso");
+                        //JOptionPane.showMessageDialog(null, "acceso");
                         opL = new OperacionesARL(global, tabla, miTemplate);
                         opL.ejecutar(sentencia);
                     } catch (Exception e) {

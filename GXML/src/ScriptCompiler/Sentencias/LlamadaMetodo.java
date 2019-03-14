@@ -1502,6 +1502,14 @@ public class LlamadaMetodo extends Compilador {
                                 nuevaTexto.setBounds(nuevaTexto.getLocation().x, nuevaTexto.getLocation().y, nuevaTexto.getPreferredSize().width, nuevaTexto.getPreferredSize().height);
                                 ((PanelGenerico) clase.Componente).add(nuevaTexto);
                                 break;
+                            case "boton":
+                                BotonGenerico btn=((BotonGenerico) clase.Componente);
+                                btn.setFont(nuevaTexto.getFont());
+                                btn.setForeground(nuevaTexto.getForeground());
+                                btn.setText(nuevaTexto.getText());
+                                btn.repaint();
+                                break;
+                                
                         }
 
                     }
