@@ -47,7 +47,19 @@ public class VentanaGenerica extends JFrame {
 
             @Override
             public void componentHidden(ComponentEvent e) {
-
+                if (alCerrar != null) {
+                    if (alCerrar.getClass().getSimpleName().equalsIgnoreCase("nodo")) {
+                        Nodo llamada = (Nodo) alCerrar;
+                        if (llamada.nombre.equalsIgnoreCase("acceso")) {
+                            opL = new OperacionesARL(global, tabla, miTemplate);
+                            opL.ejecutar(llamada);
+                        } else {
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Al cerrar  de la ventana no es una llamada :" + alCargar.toString());
+                        }
+                    } else {
+                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Al cerrar  dela ventana es incorrecta:" + alCargar.toString());
+                    }
+                }
             }
 
             @Override

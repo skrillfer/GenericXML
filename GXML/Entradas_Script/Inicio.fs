@@ -40,8 +40,8 @@ var boton_160 = contenedor_162.crearboton(nulo,nulo,nulo,125,30,"Registrar","Reg
 //---------------------------
 //---------------------------
 var ventana_228 = crearventana(nulo,nulo,nulo,"Registrar");
-ventana_228.alcargar(MensajeBienvenida("Julio "));
-ventana_228.alcerrar(MensajeDespedida("Julio" + " Arango"));
+ventana_164.alcargar(MensajeBienvenida("Julio "));
+ventana_164.alcerrar(MensajeDespedida("Julio" + " Arango"));
 //Valores de contenedor_184
 var contenedor_184 = ventana_228.crearcontenedor(300,200,nulo,nulo,10,10);
 
@@ -80,4 +80,20 @@ funcion boton_223_enviar(){
 }
 
 ventana_164.alcargar();
+
+
+funcion MensajeBienvenida(var dd)
+{
+	imprimir(dd);
+}
+
+funcion MensajeDespedida(var dd)
+{
+	imprimir(dd);
+}
+
+
+
+
+
 
