@@ -1,11 +1,11 @@
-package Gramatica_D;
+package Elementos_Interfaz;
 import java.io.*;   
 import javax.swing.text.Segment;   
 import org.fife.ui.rsyntaxtextarea.*;   
 %%   
 %public   
 %caseless
-%class colores_Draco
+%class colores_GXML
 %extends AbstractJFlexCTokenMaker   
 %unicode   
 %type org.fife.ui.rsyntaxtextarea.Token   
@@ -17,7 +17,7 @@ import org.fife.ui.rsyntaxtextarea.*;
     * Constructor.  This must be here because JFlex does not generate a   
     * no-parameter constructor.   
     */   
-   public ExampleTokenMaker() {   
+   public color_GXML() {   
    }   
    
    /**   
@@ -167,9 +167,7 @@ CUALQUIERCARACTER2   = ([^\\\"\n])
 CARACTER               = ([\']({CUALQUIERCARACTER1})[\'])      
 CADENA            = ([\"]({CUALQUIERCARACTER2})*[\"])      
   
-ACOMEN               = "$*"   
-CCOMEN               = "*$"   
-COMENSIMPLE         = "$$"   
+COMENSIMPLE         = "##"   
    
 NUMEROS         = ({DIGITO}+)  
 %state MLC   
@@ -178,28 +176,50 @@ NUMEROS         = ({DIGITO}+)
    
 <YYINITIAL> {   
     /* palabras reservadas*/   
-    "var" |   
-    "if" |
-    "not" |
-    "elif" |
-    "smash" |
-    "while" |
-    "for" |
-    "print" |
-    "true" |
-    "false" |
-    "runmultdasm" |
-    "point" |
-    "quadrate" |
-    "oval" |
-    "string" |  
-    "line"      { addToken(Token.RESERVED_WORD); }   
+    "importar" |   
+    "ventana" |   
+    "contenedor" |
+    "texto" |
+    "control" |
+    "defecto" |
+    "listadatos" |
+    "dato" |
+    "multimedia" |
+    "boton" |
+    "enviar" |
+    "id" |
+    "tipo" |
+    "color" |
+    "x" |
+    "y" |
+    "alto" |
+    "ancho" | 
+    "borde" |
+    "nombre" |
+    "fuente" |
+    "tam" |
+    "negrita" |
+    "cursiva" |
+    "maximo" |
+    "minimo" |
+    "path" |
+    "auto-reproduccion" |
+    "principal" |
+    "secundaria" |
+    "accioninicial" |
+    "accionfinal" |
+    "accion" |
+    "referencia" |
+    "musica" |
+    "video" |
+    "imagen" |
+    "verdadero" |  
+    "falso"      { addToken(Token.RESERVED_WORD); }   
    
     {CARACTER}            { addToken(Token.LITERAL_CHAR); }
     {CADENA}            { addToken(Token.LITERAL_STRING_DOUBLE_QUOTE); }   
 
-   /* COMENTARIOS */   
-   {ACOMEN}               { start = zzMarkedPos-2; yybegin(MLC); }   
+   /* COMENTARIOS */    
    {COMENSIMPLE}.*      { addToken(Token.COMMENT_EOL); addNullToken(); return firstToken; }   
    
    /* Numbers */   
@@ -214,10 +234,3 @@ NUMEROS         = ({DIGITO}+)
    
 }   
    
-<MLC> {   
-   [^\n*]+            {}   
-   {CCOMEN}         { yybegin(YYINITIAL); addToken(start,zzStartRead+2-1, Token.COMMENT_MULTILINE); }   
-   "*"               {}   
-   \n |   
-   <<EOF>>            { addToken(start,zzStartRead-1, Token.COMMENT_MULTILINE); return firstToken; }   
-}   

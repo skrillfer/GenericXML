@@ -29,6 +29,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -331,12 +332,12 @@ public class IDE_Ventana extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void GenerarPesta(String entrada, String nombre, String path) {
+    public void GenerarPesta(String entrada, String nombre, String path, String tipo) {
         try {
 
             //if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
             if (this.jTabbedPane1.getTabCount()>0) {
-                nueva = new Pestaña(path);
+                nueva = new Pestaña(path,tipo);
                 nueva.setContenido(entrada);
                 nueva.setName(nombre);
                 this.jTabbedPane1.addTab(nombre, new ImageIcon("Icons/tag.png"), nueva, path);
@@ -344,7 +345,7 @@ public class IDE_Ventana extends JFrame {
                 contador_pesta++;
             }else
             {
-                nueva = new Pestaña(path);
+                nueva = new Pestaña(path,tipo);
                 nueva.setContenido(entrada);
                 nueva.setName(nombre);
                 this.jTabbedPane1.addTab(nombre, new ImageIcon("Icons/tag.png"), nueva, path);
@@ -368,8 +369,8 @@ public class IDE_Ventana extends JFrame {
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
                 if (Crear_Archivo(fileToSave.getAbsolutePath())) {
-
-                    GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath());
+                    String ext = Arrays.stream(fileToSave.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
+                    GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath(),ext);
                     jTreeFiles.init();
                 }
             }
@@ -412,7 +413,8 @@ public class IDE_Ventana extends JFrame {
 
                     }
                     br.close();
-                    GenerarPesta(completo, archivo.getName(), rutanueva);
+                    String ext = Arrays.stream(archivo.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
+                    GenerarPesta(completo, archivo.getName(), rutanueva,ext);
 
                 } else {
                     //System.out.println("Es una carpeta");
@@ -542,16 +544,7 @@ public class IDE_Ventana extends JFrame {
         // TODO add your handling code here:
         //System.out.println("BOTON COMPILAR");
 
-        if (control_ambientes == true) {
-            if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
-                nueva = new Pestaña(listAreas.get(0).getText());
-                nueva.setContenido(listAreas.get(1).getText());
-                //x,y,ancho,alto
-                this.jTabbedPane1.add(nueva, "", this.jTabbedPane1.getTabCount());
-                this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount() - 1);
-                contador_pesta++;
-            }
-        }
+       
         if (contador_pesta > 0) {
             //System.out.println(this.jTabbedPane1.getSelectedIndex());
             Pestaña pesta = (Pestaña) this.jTabbedPane1.getComponentAt(this.jTabbedPane1.getSelectedIndex());
@@ -573,7 +566,7 @@ public class IDE_Ventana extends JFrame {
 
                             File nuevo = new File(path_nuevo);
                             EscribirArchivo(path_nuevo, txtEntrada);
-                            GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath());
+                            GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath(),separado[1]);
                             jTreeFiles.init();
 
                         } else if (separado[1].equals("fs")) {
@@ -595,16 +588,6 @@ public class IDE_Ventana extends JFrame {
 
     }
 
-    public void GenerarNueva(String entrada) {
-        if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
-            nueva = new Pestaña(entrada);
-            nueva.setContenido(entrada);
-            //x,y,ancho,alto
-            this.jTabbedPane1.add(nueva, "", this.jTabbedPane1.getTabCount());
-            this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount() - 1);
-            contador_pesta++;
-        }
-    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:

@@ -1,11 +1,11 @@
-package Gramatica_D;
+package Elementos_Interfaz;
 import java.io.*;   
 import javax.swing.text.Segment;   
 import org.fife.ui.rsyntaxtextarea.*;   
 %%   
 %public   
 %caseless
-%class colores_D
+%class colores_FS
 %extends AbstractJFlexCTokenMaker   
 %unicode   
 %type org.fife.ui.rsyntaxtextarea.Token   
@@ -178,28 +178,29 @@ NUMEROS         = ({DIGITO}+)
    
 <YYINITIAL> {   
     /* palabras reservadas*/   
-    "nulo" |   
-    "entero" |   
-    "decimal" |
-    "cadena" |
-    "caracter" |
-    "booleano" |
-    "verdadero" |
-    "falso" |
-    "si" |
-    "sino" |
-    "mientras" |
-    "para" |
-    "detener" |
-    "retornar" |
+    "var" |   
+    "ascendente" |   
+    "descendente" |
+    "invertir" |
+    "maximo" |
+    "minimo" |
+    "filtrar" |
+    "buscar" |
+    "map" |
+    "reduce" |
+    "todos" |
+    "alguno" |
     "imprimir" |
     "importar" |
-    "estructura" |
-    "vacio" | 
-    "punto" |
-    "cuadrado" |
-    "ovalo" |  
-    "linea"      { addToken(Token.RESERVED_WORD); }   
+    "imprimir" |
+    "selecciona" |
+    "caso" |
+    "defecto" | 
+    "detener" |
+    "retornar" |
+    "si" |
+    "funcion" |  
+    "sino"      { addToken(Token.RESERVED_WORD); }   
    
     {CARACTER}            { addToken(Token.LITERAL_CHAR); }
     {CADENA}            { addToken(Token.LITERAL_STRING_DOUBLE_QUOTE); }   

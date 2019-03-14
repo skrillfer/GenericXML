@@ -30,9 +30,27 @@ public class GXML {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException {
-        int num1 = 10;
-        System.out.println((num1++)*(num1--)*(num1++));
-        
+        String num1 = "10";
+        //System.out.println((num1++)*(num1--)*(num1++));
+        switch (num1) {
+            case "1":
+                System.out.println("1");
+                break;
+            case "2":
+                System.out.println("1");
+                break;
+            case "10":
+                System.out.println("10");
+
+            case "11":
+                System.out.println("11");
+                break;
+            default:
+                System.out.println("defecto");
+
+                break;
+        }
+
         //JFrame frame = new JFrame("Capture");
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -58,7 +76,6 @@ public class GXML {
         frame.setVisible(true);*/
         // Reproduce el vídeo.
         //reproductor.iniciarReproduccion();
-        
         /*
         LexGxml lex = new LexGxml(new FileReader("EntradaGxml.txt"));
         SintacticoGxml parser = new SintacticoGxml(lex);
@@ -73,10 +90,8 @@ public class GXML {
         } catch (Exception e) {
             System.out.println("Error al parsear Gdato:" + e.getMessage());
         }*/
-        
         //StringMatcher sss = new StringMatcher();
         //System.out.println(sss.esTipo(".3."));
-        
     }
 
     public int ackermann(int m, int n) {

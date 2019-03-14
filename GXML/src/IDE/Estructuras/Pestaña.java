@@ -42,13 +42,21 @@ public class Pestaña extends JPanel implements ActionListener {
         Pestaña.textArea = textArea;
     }
 
-    public Pestaña(String path) {
+    public Pestaña(String path,String tipo) {
         try {
             this.path = path;
             textArea = new RSyntaxTextArea(22, 125);
             textArea.setLocation(200, 200);
             AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
-            atmf.putMapping("text/mi_lenguaje", "colores.colores_D");
+            
+            if(tipo.toLowerCase().equals("fs"))
+            {
+                atmf.putMapping("text/mi_lenguaje", "colores.colores_FS");
+            }else if(tipo.toLowerCase().equals("gxml"))
+            {
+                atmf.putMapping("text/mi_lenguaje", "colores.colores_GXML");
+            }
+            
 
             textArea.setSyntaxEditingStyle("text/mi_lenguaje");
             textArea.setName("textArea");
