@@ -1,3 +1,8 @@
+var v1 = crearventana(nulo,nulo,nulo,"Registrar");
+
+var contenedor1 = v1.crearcontenedor(500,500,nulo,nulo,10,10);
+contenedor1.crearreproductor("/home/fernando/Vídeos/Young Money - Bed Rock.mp3",10,10,verdadero,100,100);
+v1.alcargar();
 /*var contenido = CrearArrayDesdeArchivo("ventana1.gdato");
 contenido.map(ImprimirGanadores);
 
@@ -43,7 +48,7 @@ imprimir(a1[0]);
 
 
 imprimir(v2*8);*/
-Paisaje(40);
+/*Paisaje(40);
 funcion Paisaje(var clasificacion){
 	Selecciona(clasificacion / 10){
 		caso 1: {
@@ -106,8 +111,7 @@ funcion Paisaje(var clasificacion){
 			Imprimir("No debio haber entrado al defecto");
 		}
 	}
-}
-
+}*/
 
 
 

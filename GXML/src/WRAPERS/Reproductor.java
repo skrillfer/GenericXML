@@ -15,14 +15,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.io.File;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -135,7 +129,7 @@ public class Reproductor extends JPanel {
 
             @Override
             public void ancestorRemoved(AncestorEvent event) {
-                
+                mediaPlayer.stop();
             }
 
             @Override
