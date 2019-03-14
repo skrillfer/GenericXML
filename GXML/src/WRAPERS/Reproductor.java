@@ -135,7 +135,7 @@ public class Reproductor extends JPanel {
 
             @Override
             public void ancestorRemoved(AncestorEvent event) {
-
+                
             }
 
             @Override

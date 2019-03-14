@@ -8,6 +8,7 @@ package IDE;
 import Analizadores.Gxml.LexGxml;
 import Analizadores.Gxml.SintacticoGxml;
 import GenericCompiler.TraduccionGxml_Script;
+import IDE.Estructuras.JTabla;
 import IDE.Estructuras.Pestaña;
 import IDE.Estructuras.Pintar;
 import IDE.Estructuras.jtree;
@@ -64,6 +65,10 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  * @author fernando
  */
 public class IDE_Ventana extends JFrame {
+
+    public static JTabla tablaSemantico;
+    public static JTabla tablaSintactico;
+    public static JTabla tablaEjecucion;
 
     public static JTextArea CONSOLA = new JTextArea();
     JMenu jMenu3;
@@ -319,7 +324,7 @@ public class IDE_Ventana extends JFrame {
                                         //.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
 
@@ -568,15 +573,6 @@ public class IDE_Ventana extends JFrame {
                             JOptionPane.showMessageDialog(null, "El archivo " + pesta.getName() + " que intentas compilar NO ES EXTENSION .fs o .gxml", "Error de Compilacion", JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                    //AQUI!!!!!!!!!!!
-                    /*Ejecucion_D.Interpretacion ttt = new Ejecucion_D.Interpretacion();
-                    try {
-                        
-                        ttt.iniciar_interpretacion(pesta.path,scroll.getTextArea().getText().toString());
-                    } catch (IOException ex) {
-                        Logger.getLogger(IDE_Ventana.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                     */
                 }
             }
         } else {
@@ -824,18 +820,55 @@ public class IDE_Ventana extends JFrame {
     }
 
     public void agregar_Errores() {
-        JPanel panel_errores = new JPanel();
+        //JPanel panel_errores = new JPanel();
+        //panel_errores.setLayout(new BorderLayout());  //give your JPanel a BorderLayout
+        /*JPanel panel_errores = new JPanel();
         panel_errores.setName("errores");
         panel_errores.setLayout(new BorderLayout());  //give your JPanel a BorderLayout
-        JTextArea text = new JTextArea();
+        
+         String initialText = "<html>\n" +
+                "Color and font test:\n" +
+                "<ul>\n" +
+                "<li><font color=red>red</font>\n" +
+                "<li><font color=blue>blue</font>\n" +
+                "<li><font color=green>green</font>\n" +
+                "<li><font size=-2>small</font>\n" +
+                "<li><font size=+2>large</font>\n" +
+                "<li><i>italic</i>\n" +
+                "<li><b>bold</b>\n" +
+                "</ul>\n";
+         
+        JTextArea text = new JTextArea(initialText);
         text.setName("texto_errores");
         listAreas.add(text);
         JScrollPane scroll = new JScrollPane(text); //place the JTextArea in a scroll pane
         scroll.setName("scroll_errores");
-        panel_errores.add(scroll, BorderLayout.CENTER);
-        this.jTabbedPane2.add(panel_errores, "ERRORES", 0);
+        panel_errores.add(scroll, BorderLayout.CENTER);*/
+        //panel_errores.add(new JTabla(), BorderLayout.CENTER);
+
+        //---------------             Semantico       -----------------------------------
+        tablaSemantico = new JTabla();
+        JScrollPane scrollSE = new JScrollPane(tablaSemantico);
+        scrollSE.setName("scroll_errores");
+        this.jTabbedPane2.add(scrollSE, "ERRORES SEMANTICOS", 0);
+        this.jTabbedPane2.setSelectedIndex(0);
+        
+        //---------------             Ejecucion       -----------------------------------        
+        tablaEjecucion = new JTabla();
+        JScrollPane scrollE = new JScrollPane(tablaEjecucion);
+        scrollE.setName("scroll_errores");
+        this.jTabbedPane2.add(scrollE, "ERRORES EJECUCION", 1);
+        this.jTabbedPane2.setSelectedIndex(0);
+        //---------------             Sintactico       ----------------------------------
+        
+        tablaSintactico = new JTabla();
+        JScrollPane scrollS = new JScrollPane(tablaSintactico);
+        scrollS.setName("scroll_errores");
+        this.jTabbedPane2.add(scrollS, "ERRORES SINTACTICOS", 2);
         this.jTabbedPane2.setSelectedIndex(0);
 
+        
+        
     }
 
     public static void iniciarTree() throws IOException, IOException {

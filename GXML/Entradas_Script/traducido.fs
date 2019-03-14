@@ -42,7 +42,7 @@ imprimir(a1[0]);
 
 
 
-
+imprimir(v2*8);
 
 
 
