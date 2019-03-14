@@ -35,6 +35,7 @@ import javax.swing.event.AncestorListener;
  * @author fernando
  */
 public class CajaNumericaGenerica extends JPanel {
+
     public Clase classe;
 
     JTextField caja = new JTextField();
@@ -76,8 +77,7 @@ public class CajaNumericaGenerica extends JPanel {
         btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
         btns.add(subir);
         btns.add(bajar);
-        
-        
+
         this.addAncestorListener(new AncestorListener() {
 
             @Override
@@ -101,25 +101,22 @@ public class CajaNumericaGenerica extends JPanel {
         this.add(caja);
         this.add(btns);
     }
-    
-    public void setearClasse(Clase classe)
-    {
+
+    public void setearClasse(Clase classe) {
         this.classe = classe;
     }
 
-    public void reset()
-    {
-        if(classe!=null)
-        {
-            Simbolo defecto  = classe.tabla.getSimbolo("defecto", classe);
+    public void reset() {
+        if (classe != null) {
+            Simbolo defecto = classe.tabla.getSimbolo("defecto", classe);
             try {
                 setTexto(defecto.valor.toString());
             } catch (Exception e) {
-                Template.reporteError_CJS.agregar("Ejecucion",raiz.linea, raiz.columna, "Error al reset defecti de CajaNumerica "+e.getMessage());
+                Template.reporteError_CJS.agregar("Ejecucion", raiz.linea, raiz.columna, "Error al reset defecti de CajaNumerica " + e.getMessage());
             }
         }
     }
-    
+
     public void setControlNumerico() {
         caja.addKeyListener(new KeyAdapter() {
             @Override
@@ -228,9 +225,10 @@ public class CajaNumericaGenerica extends JPanel {
     }
 
     public void setAlto(Object alto) {
-        if(alto.toString().equals("nulo"))
+        if (alto.toString().equals("nulo")) {
             return;
-        
+        }
+
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
@@ -241,9 +239,10 @@ public class CajaNumericaGenerica extends JPanel {
     }
 
     public void setAncho(Object ancho) {
-        if(ancho.toString().equals("nulo"))
+        if (ancho.toString().equals("nulo")) {
             return;
-        
+        }
+
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
@@ -254,9 +253,10 @@ public class CajaNumericaGenerica extends JPanel {
     }
 
     public void setMaximo(Object maximo) {
-        if(maximo.toString().equals("nulo"))
+        if (maximo.toString().equals("nulo")) {
             return;
-        
+        }
+
         try {
             this.maximo = castToDouble(maximo);
         } catch (Exception e) {
@@ -267,9 +267,10 @@ public class CajaNumericaGenerica extends JPanel {
     }
 
     public void setMinimo(Object minimo) {
-        if(minimo.toString().equals("nulo"))
+        if (minimo.toString().equals("nulo")) {
             return;
-        
+        }
+
         try {
             this.minimo = castToDouble(minimo);
         } catch (Exception e) {
@@ -280,9 +281,10 @@ public class CajaNumericaGenerica extends JPanel {
     }
 
     public void setX(Object x) {
-        if(x.toString().equals("nulo"))
+        if (x.toString().equals("nulo")) {
             return;
-        
+        }
+
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
@@ -291,9 +293,10 @@ public class CajaNumericaGenerica extends JPanel {
     }
 
     public void setY(Object y) {
-        if(y.toString().equals("nulo"))
+        if (y.toString().equals("nulo")) {
             return;
-        
+        }
+
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
@@ -303,9 +306,7 @@ public class CajaNumericaGenerica extends JPanel {
 
     //Valor por Defecto
     public void setTexto(String txt) {
-        if(txt.equals("nulo"))
-            return;
-        
+
         try {
 
             caja.setText(txt);
@@ -318,9 +319,7 @@ public class CajaNumericaGenerica extends JPanel {
     }
 
     public void setId(String id) {
-        if(id.toString().equals("nulo"))
-            return;
-        
+
         try {
             this.setName(id);
         } catch (Exception e) {

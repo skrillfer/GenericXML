@@ -34,6 +34,8 @@ public class PanelGenerico extends JPanel {
     }
 
     public void setAncho(Object ancho) {
+        if(ancho.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
             updateUI();
@@ -45,6 +47,8 @@ public class PanelGenerico extends JPanel {
     }
 
     public void setAlto(Object alto) {
+        if(alto.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
             updateUI();
@@ -56,6 +60,8 @@ public class PanelGenerico extends JPanel {
     }
 
     public void setColor(String hex) {
+        if(hex.equals("nulo"))
+            return;
         try {
             this.setBackground(Color.decode(hex));
         } catch (NumberFormatException e) {
@@ -64,7 +70,8 @@ public class PanelGenerico extends JPanel {
     }
 
     public void setBorde(Object borde) {
-
+        if(borde.toString().equals("nulo"))
+            return;
         try {
             if (castToBoolean(borde)) {
                 this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
@@ -77,6 +84,8 @@ public class PanelGenerico extends JPanel {
     }
 
     public void setX(Object x) {
+        if(x.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
             updateUI();
@@ -86,6 +95,8 @@ public class PanelGenerico extends JPanel {
     }
 
     public void setY(Object y) {
+        if(y.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
             updateUI();

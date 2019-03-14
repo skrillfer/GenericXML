@@ -212,8 +212,6 @@ public class CajaTextoGenerica extends JTextField {
 
     //Defecto
     public void setTexto(String txt) {
-        if(txt.equals("nulo"))
-            return;
         try {
 
             this.setText(txt);

@@ -418,7 +418,7 @@ public class TraduccionGxml_Script {
             }
         }
 
-        if (RAIZ.valor.equals("")) {
+        if (RAIZ.valor.equals("\"\"") ||  RAIZ.valor.equals("")) {
             RAIZ.valor = "ventana_" + String.valueOf(RAIZ.index);
         }
 
@@ -458,12 +458,12 @@ public class TraduccionGxml_Script {
         Nodo vExplicit = RAIZ.get(1);
 
         ArrayList<String> parametros = new ArrayList<>();
-        parametros.add("\"0\"");//alto
-        parametros.add("\"0\"");//ancho
-        parametros.add("\"\"");//color
-        parametros.add("\"falso\"");//borde
-        parametros.add("\"0\"");//iniciox
-        parametros.add("\"0\"");//inicioY
+        parametros.add("nulo");//alto
+        parametros.add("nulo");//ancho
+        parametros.add("nulo");//color
+        parametros.add("nulo");//borde
+        parametros.add("nulo");//iniciox
+        parametros.add("nulo");//inicioY
 
         for (Nodo atributo : vAtributos.hijos) {
             Nodo n_atributo = atributo.get(0);
@@ -471,25 +471,25 @@ public class TraduccionGxml_Script {
             String val = atributo.get(1).valor;
             switch (n_atributo.nombre.toLowerCase()) {
                 case "alto":
-                    parametros.set(0, n_valor);
+                    parametros.set(0, getValorFinal("alto", n_valor));
                     break;
                 case "ancho":
-                    parametros.set(1, n_valor);
+                    parametros.set(1, getValorFinal("ancho", n_valor));
                     break;
                 case "color":
-                    parametros.set(2, n_valor);
+                    parametros.set(2, getValorFinal("color", n_valor));
                     break;
                 case "borde":
-                    parametros.set(3, n_valor);
+                    parametros.set(3, getValorFinal("borde", n_valor));
                     break;
                 case "x":
-                    parametros.set(4, n_valor);
+                    parametros.set(4, getValorFinal("x", n_valor));
                     break;
                 case "y":
-                    parametros.set(5, n_valor);
+                    parametros.set(5, getValorFinal("y", n_valor));
                     break;
                 case "id":
-                    RAIZ.valor = val;
+                    RAIZ.valor = getValorFinal("id", val);
                     break;
 
                 default:
@@ -498,6 +498,10 @@ public class TraduccionGxml_Script {
             }
         }
 
+        if (RAIZ.valor.equals("\"\"") || RAIZ.valor.equals("")) {
+            RAIZ.valor = "contenedor_" + String.valueOf(RAIZ.index);
+        }
+        
         codigoScript += "\n//Valores de " + RAIZ.valor + "";
         agregarAPadre(RAIZ, parametros, padre, "crearcontenedor");
         FRecursiva(RAIZ, RAIZ.valor);

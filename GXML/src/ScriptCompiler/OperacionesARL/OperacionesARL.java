@@ -1664,7 +1664,7 @@ public class OperacionesARL {
         Simbolo simbolo = null;
         if (raiz.nombre.equalsIgnoreCase("acceso")) {
             int ent = 0;
-            double doble;
+            double doble=0;
             char c;
             simbolo = getSimbolo(raiz, tipo);
             if (simbolo != null) {

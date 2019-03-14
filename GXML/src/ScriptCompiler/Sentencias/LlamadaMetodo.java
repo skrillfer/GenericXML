@@ -1117,31 +1117,37 @@ public class LlamadaMetodo extends Compilador {
         try {
             alto = parametros.get(0);
         } catch (Exception e) {
+            alto = new Resultado("$nulo", "nulo");
         }
 
         try {
             ancho = parametros.get(1);
         } catch (Exception e) {
+            ancho = new Resultado("$nulo", "nulo");
         }
 
         try {
             color = parametros.get(2);
         } catch (Exception e) {
+            color = new Resultado("$nulo", "nulo");
         }
 
         try {
             borde = parametros.get(3);
         } catch (Exception e) {
+            borde = new Resultado("$nulo", "nulo");
         }
 
         try {
             x = parametros.get(4);
         } catch (Exception e) {
+            x = new Resultado("$nulo", "nulo");
         }
 
         try {
             y = parametros.get(5);
         } catch (Exception e) {
+            y = new Resultado("$nulo", "nulo");
         }
 
 
@@ -1474,7 +1480,10 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(valor)) {
-                nuevaTexto.setTexto(valor.valor.toString());
+                if(!valor.tipo.equals("$nulo"))
+                {
+                    nuevaTexto.setTexto(valor.valor.toString());
+                }
             }
             /*---------------------------------------------------------------------*/
 
@@ -1680,11 +1689,18 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(defecto)) {
-                nuevoDesple.setDefecto(defecto.valor.toString());
+                if(!defecto.tipo.equals("$nulo"))
+                {
+                    nuevoDesple.setDefecto(defecto.valor.toString());
+                }
+                
             }
 
             if (!esNulo(nombre)) {
-                nuevoDesple.setId(nombre.valor.toString());
+                if(!nombre.tipo.equals("$nulo"))
+                {
+                    nuevoDesple.setId(nombre.valor.toString());
+                }
             }
 
             if (!esNulo(x)) {
@@ -1840,11 +1856,19 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(defecto)) {
-                nuevaNumerica.setTexto(defecto.valor.toString());
+                if(!defecto.tipo.equals("$nulo"))
+                {
+                    nuevaNumerica.setTexto(defecto.valor.toString());
+                }
+                
             }
 
             if (!esNulo(nombre)) {
-                nuevaNumerica.setId(nombre.valor.toString());
+                if(!nombre.tipo.equals("$nulo"))
+                {
+                    nuevaNumerica.setId(nombre.valor.toString());
+                }
+                
             }
 
 
@@ -2010,11 +2034,17 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(defecto)) {
-                nuevaCajaText.setTexto(defecto.valor.toString());
+                if(!defecto.tipo.equals("$nulo"))
+                {
+                    nuevaCajaText.setTexto(defecto.valor.toString());
+                }   
             }
 
             if (!esNulo(nombre)) {
-                nuevaCajaText.setId(nombre.valor.toString());
+                if(!nombre.tipo.equals("$nulo"))
+                {
+                    nuevaCajaText.setId(nombre.valor.toString());
+                }
             }
 
 
@@ -2178,11 +2208,18 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(defecto)) {
-                nuevaAreaText.setTexto(defecto.valor.toString());
+                if(!defecto.tipo.equals("$nulo"))
+                {
+                    nuevaAreaText.setTexto(defecto.valor.toString());
+                }
+                
             }
 
             if (!esNulo(nombre)) {
-                nuevaAreaText.setId(nombre.valor.toString());
+                if(!nombre.tipo.equals("$nulo"))
+                {
+                    nuevaAreaText.setId(nombre.valor.toString());
+                }
             }
 
 
