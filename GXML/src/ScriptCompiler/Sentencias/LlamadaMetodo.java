@@ -764,6 +764,7 @@ public class LlamadaMetodo extends Compilador {
 
                                         vt.setLocationRelativeTo(null);
                                         vt.setVisible(true);
+                                        VT_ACTUAL = vt;
 
                                     }
                                 }
@@ -1078,14 +1079,13 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(id)) {
-                if (id.tipo.equals("String")) {
-                    nuevaVentana.setId((String) id.valor);
-                } else {
+                if(!id.tipo.equals("$nulo"))
+                {
                     nuevaVentana.setId(id.valor.toString());
+                }else {
+                    nuevaVentana.setId("");
                 }
-            } else {
-                nuevaVentana.setId("");
-            }
+            } 
 
             if (!esNulo(color)) {
                 nuevaVentana.setColor(color.valor.toString());

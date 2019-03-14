@@ -280,8 +280,8 @@ public class TraduccionGxml_Script {
             //codigoScript += salto + RAIZ.valor + ".alclic(" + accion + ");";
         }
         //3. Referencia
-        accionPadre +=acciones+ "\t\n}";
         
+        accionPadre +=acciones+ "\t\n}";
         
         FRecursiva(RAIZ, RAIZ.valor);
         codigoScript += salto + RAIZ.valor + ".alclic(" + RAIZ.valor+"_OnClick()" + ");";

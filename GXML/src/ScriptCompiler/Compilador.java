@@ -31,6 +31,7 @@ public abstract class Compilador {
     public static Clase superClase;
     public static String PathRoot = "";
             
+    public static VentanaGenerica VT_ACTUAL = null;
     public static ArrayList<VentanaGenerica> listaVentanas;
 
     public static ArrayList<Archivo> archivos;
