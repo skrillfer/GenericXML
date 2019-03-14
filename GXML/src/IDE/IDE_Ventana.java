@@ -5,6 +5,9 @@
  */
 package IDE;
 
+import Analizadores.Gxml.LexGxml;
+import Analizadores.Gxml.SintacticoGxml;
+import GenericCompiler.TraduccionGxml_Script;
 import IDE.Estructuras.Pestaña;
 import IDE.Estructuras.Pintar;
 import IDE.Estructuras.jtree;
@@ -19,6 +22,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -113,9 +117,9 @@ public class IDE_Ventana extends JFrame {
         iniciarTree();
         agregar_Tabla();
         agregar_Errores();
-        
+
         agregarPesta_Consola();
-        
+
         this.setSize(1350, 700);
         this.setLocationRelativeTo(null);
     }
@@ -177,7 +181,13 @@ public class IDE_Ventana extends JFrame {
         jButton2.setForeground(Color.WHITE);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                try {
+                    jButton2ActionPerformed(evt);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(IDE_Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(IDE_Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -276,7 +286,6 @@ public class IDE_Ventana extends JFrame {
         jMenu2.add(jMenuItem9);
 
         //jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -377,17 +386,15 @@ public class IDE_Ventana extends JFrame {
                     BufferedReader br = new BufferedReader(fr);
                     String completo = "";
                     String linea = "";
-                    boolean flg=true;
+                    boolean flg = true;
                     while ((linea = br.readLine()) != null) {
-                        if(flg)
-                        {
+                        if (flg) {
                             completo += linea;
-                            flg=!flg;
-                        }else
-                        {
+                            flg = !flg;
+                        } else {
                             completo += "\n" + linea;
                         }
-                        
+
                     }
                     br.close();
                     GenerarPesta(completo, archivo.getName(), rutanueva);
@@ -515,7 +522,7 @@ public class IDE_Ventana extends JFrame {
         return respuesta;
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) throws FileNotFoundException, IOException {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         //System.out.println("BOTON COMPILAR");
 
@@ -541,12 +548,24 @@ public class IDE_Ventana extends JFrame {
                     String[] separado = pesta.getName().split("\\.");
                     if (separado.length > 1) {
                         if (separado[1].equals("gxml")) {
-                            JOptionPane.showMessageDialog(null, "has pedido compilar:" + pesta.getName());
+
+                            String txtEntrada = template.ParsearArchivoGxml(pesta.path, pesta.getName());
                             
+                            File fileToSave = new File(pesta.path);
+                            String path_nuevo = fileToSave.getParent()+"/"+separado[0]+".fs";
+                            JOptionPane.showMessageDialog(null, path_nuevo);
+                            
+                            if (Crear_Archivo(path_nuevo)) {
+                                File nuevo = new File(path_nuevo);
+                                GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath());
+                                jTreeFiles.init();
+                                //jTreeFiles.init();
+                            }
+
                         } else if (separado[1].equals("fs")) {
-                            template.CONSOLA  = CONSOLA;
+                            template.CONSOLA = CONSOLA;
                             template.ParsearArchivoFs(pesta.path, pesta.getName());
-                            
+
                         } else {
                             JOptionPane.showMessageDialog(null, "El archivo " + pesta.getName() + " que intentas compilar NO ES EXTENSION .fs o .gxml", "Error de Compilacion", JOptionPane.ERROR_MESSAGE);
                         }

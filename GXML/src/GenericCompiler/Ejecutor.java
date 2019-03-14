@@ -147,9 +147,6 @@ public class Ejecutor {
             sin.parse();
 
             tra.IniciarTraduccion(sin.getRoot(), file.getParent());
-            /*Nodo raiz = sin.getRoot();
-            AST_Script   genTcjs = new AST_Script();
-            genTcjs.generacion_arbolScript(raiz);*/
         } catch (Exception e) {
             System.err.println("error al compilar:" + e.getMessage());
         }
