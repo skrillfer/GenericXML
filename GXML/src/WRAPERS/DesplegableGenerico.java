@@ -38,6 +38,8 @@ public class DesplegableGenerico extends JComboBox {
     }
 
     public void setAncho(Object ancho) {
+        if(ancho.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
@@ -47,6 +49,8 @@ public class DesplegableGenerico extends JComboBox {
     }
 
     public void setAlto(Object alto) {
+        if(alto.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
@@ -106,6 +110,8 @@ public class DesplegableGenerico extends JComboBox {
     }
 
     public void setX(Object x) {
+        if(x.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
@@ -114,6 +120,8 @@ public class DesplegableGenerico extends JComboBox {
     }
 
     public void setY(Object y) {
+        if(y.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {

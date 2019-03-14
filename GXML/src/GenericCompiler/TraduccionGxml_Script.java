@@ -351,13 +351,13 @@ public class TraduccionGxml_Script {
                         str_Defecto = "\"\"";
                     }
 
-                    parametros.add(obtenerAtributo(hashMap, "x"));
-                    parametros.add(obtenerAtributo(hashMap, "y"));
+                    parametros.add(getValorFinal("x", obtenerAtributo(hashMap, "x")));
+                    parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
 
                     //defecto
-                    parametros.add(str_Defecto);
+                    parametros.add(getValorFinal("defecto",str_Defecto));
 
-                    parametros.add(obtenerAtributo(hashMap, "nombre"));
+                    parametros.add(getValorFinal("nombre", obtenerAtributo(hashMap, "nombre")));
                     codigoScript += "\n//Valores de " + RAIZ.valor + "";
                     agregarAPadre(RAIZ, parametros, padre, "creardesplegable");
                     FRecursiva(RAIZ, RAIZ.valor);

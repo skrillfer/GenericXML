@@ -1636,36 +1636,43 @@ public class LlamadaMetodo extends Compilador {
         try {
             alto = parametros.get(0);
         } catch (Exception e) {
+            alto = new Resultado("$nulo", "nulo");
         }
 
         try {
             ancho = parametros.get(1);
         } catch (Exception e) {
+            ancho = new Resultado("$nulo", "nulo");
         }
 
         try {
             lista = parametros.get(2);
         } catch (Exception e) {
+            lista = new Resultado("$nulo", "nulo");
         }
 
         try {
             x = parametros.get(3);
         } catch (Exception e) {
+            x = new Resultado("$nulo", "nulo");
         }
 
         try {
             y = parametros.get(4);
         } catch (Exception e) {
+            y = new Resultado("$nulo", "nulo");
         }
 
         try {
             defecto = parametros.get(5);
         } catch (Exception e) {
+            defecto = new Resultado("$nulo", "nulo");
         }
 
         try {
             nombre = parametros.get(6);
         } catch (Exception e) {
+            nombre = new Resultado("$nulo", "nulo");
         }
 
         /*----------------###############################---------------------*/
