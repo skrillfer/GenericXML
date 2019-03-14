@@ -260,10 +260,13 @@ public class TraduccionGxml_Script {
         codigoScript += "\n//Valores de " + RAIZ.valor + "";
         agregarAPadre(RAIZ, parametros, padre, "crearboton");
 
+        String accionPadre ="\nfuncion "+RAIZ.valor+"_OnClick()"+"{\n";
+        String acciones="";
         //1. Guardar Datos
+        String funcion_enviar = "";
         if (esEnviar) {
-            String funcion_enviar = "\nfuncion " + RAIZ.valor + "_enviar(){\n\t" + padreVentana + ".creararraydesdearchivo();" + " \n}\n";
-            codigoScript += funcion_enviar;
+            funcion_enviar = "\nfuncion " + RAIZ.valor + "_enviar(){\n\t" + padreVentana + ".creararraydesdearchivo();" + " \n}\n";
+            acciones +="\n\t"+RAIZ.valor + "_enviar();";
         }
 
         //2. Accion Click
@@ -272,12 +275,20 @@ public class TraduccionGxml_Script {
         if (!accion.equals("\"\"") && !accion.equals("") && !accion.equals("nulo")) {
             accion = recortarString(accion, 1, accion.length() - 1);
             accion = recortarString(accion, 1, accion.length() - 1);
-
-            codigoScript += salto + RAIZ.valor + ".alclic(" + accion + ");";
+            
+            acciones+="\n\t"+accion+";\n";
+            //codigoScript += salto + RAIZ.valor + ".alclic(" + accion + ");";
         }
         //3. Referencia
-
+        accionPadre +=acciones+ "\t\n}";
+        
+        
         FRecursiva(RAIZ, RAIZ.valor);
+        codigoScript += salto + RAIZ.valor + ".alclic(" + RAIZ.valor+"_OnClick()" + ");";
+        
+        codigoScript += salto + accionPadre;
+        codigoScript += salto + funcion_enviar;
+
     }
 
     public void crearControl(Nodo RAIZ, String padre) {

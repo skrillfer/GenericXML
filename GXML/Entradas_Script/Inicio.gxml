@@ -21,7 +21,7 @@
 		</Control>
 	</Contenedor>
 	<Contenedor id = "ContBtn" x = 10 Y = 220 Alto = 100 Ancho = 200>
-		<Enviar Nombre = "btnIngresar" X = 25 Y = 30 Alto = 70 Ancho = 50>
+		<Enviar Nombre = "btnIngresar" X = 25 Y = 30 Alto = 70 Ancho = 50 Accion={prueba()}>
 			Ingresar
 		</Enviar>
 		<Boton Nombre = "btnRegistrar" X = 125 Y = 30 Alto = 70 Ancho = 50 Referencia = "Registrar">
