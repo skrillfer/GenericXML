@@ -120,6 +120,7 @@ public class Reproductor extends JPanel {
                 }
             }
         });
+        
         this.addAncestorListener(new AncestorListener() {
 
             @Override

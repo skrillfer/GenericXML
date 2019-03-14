@@ -2,6 +2,40 @@ importar("/Funciones.fs");
 
 //---------------------------
 //---------------------------
+//---------------------ventana_164
+//---------------------------
+//---------------------------
+var ventana_164 = crearventana(nulo,nulo,nulo,"Inicio");
+//Valores de contenedor_101
+var contenedor_101 = ventana_164.crearcontenedor(200,200,nulo,nulo,10,10);
+
+//Valores de texto_36
+var texto_36 = contenedor_101.creartexto(nulo,nulo,nulo,10,20,nulo,nulo,"Nombre");
+
+//Valores de texto_62
+var texto_62 = contenedor_101.crearcajatexto(10,100,nulo,nulo,nulo,40,20,nulo,nulo,"Ingrese aqui su nombre","CTNombre");
+
+//Valores de texto_74
+var texto_74 = contenedor_101.creartexto(nulo,nulo,nulo,10,50,nulo,nulo,"Correo");
+
+//Valores de texto_99
+var texto_99 = contenedor_101.crearcajatexto(10,100,nulo,nulo,nulo,40,50,nulo,nulo,"Ingrese aqui su correo","CTCorreo");
+
+//Valores de contenedor_162
+var contenedor_162 = ventana_164.crearcontenedor(100,200,nulo,nulo,10,220);
+
+//Valores de boton_137
+var boton_137 = contenedor_162.crearboton(nulo,nulo,nulo,25,30,nulo,"Ingresar",70,50);
+
+funcion boton_137_enviar(){
+	ventana_164.creararraydesdearchivo(); 
+}
+
+//Valores de boton_160
+var boton_160 = contenedor_162.crearboton(nulo,nulo,nulo,125,30,"Registrar","Registrar",70,50);
+
+//---------------------------
+//---------------------------
 //---------------------ventana_228
 //---------------------------
 //---------------------------
@@ -44,4 +78,6 @@ var boton_223 = contenedor_226.crearboton(nulo,nulo,nulo,75,30,"Inicio","Registr
 funcion boton_223_enviar(){
 	ventana_228.creararraydesdearchivo(); 
 }
+
+ventana_164.alcargar();
 

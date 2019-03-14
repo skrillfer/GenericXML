@@ -49,6 +49,12 @@ public class Template {
             Template.reporteError_CJS.agregar("Ejecucion", 0, 0, "Error al Parsear GXML a Fs:"+e.getMessage());
         }
         tra.codigoScript = tra.codigoImports + tra.codigoScript;
+        
+        
+        if(!tra.ventanaPrincipal.equals(""))
+        {
+            tra.codigoScript += "\n"+tra.ventanaPrincipal+".alcargar();\n";
+        }
         //************************************************************************************
         return tra.codigoScript;
         

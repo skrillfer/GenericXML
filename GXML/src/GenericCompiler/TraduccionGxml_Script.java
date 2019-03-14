@@ -28,6 +28,8 @@ import java.util.logging.Logger;
  */
 public class TraduccionGxml_Script {
 
+    public String ventanaPrincipal="";
+    public String padreVentana = "";
     StringMatcher match = new StringMatcher();
 
     public String codigoImports = "";
@@ -122,7 +124,10 @@ public class TraduccionGxml_Script {
                     crearControl(hijo, padre);
                     break;
                 case "boton":
-                    crearBoton(hijo, padre);
+                    crearBoton(hijo, padre, false);
+                    break;
+                case "enviar":
+                    crearBoton(hijo, padre, true);
                     break;
                 case "multimedia":
                     crearMultimedia(hijo, padre);
@@ -185,7 +190,7 @@ public class TraduccionGxml_Script {
                     parametros.add(getValorFinal("y", obtenerAtributo(hashMap, "y")));
 
                     parametros.add(getValorFinal("auto-reproduccion", obtenerAtributo(hashMap, "auto-reproduccion")));
-                    
+
                     parametros.add(getValorFinal("alto", obtenerAtributo(hashMap, "alto")));
                     parametros.add(getValorFinal("ancho", obtenerAtributo(hashMap, "ancho")));
 
@@ -198,7 +203,7 @@ public class TraduccionGxml_Script {
         }
     }
 
-    public void crearBoton(Nodo RAIZ, String padre) {
+    public void crearBoton(Nodo RAIZ, String padre, boolean esEnviar) {
         Nodo vAtributos = RAIZ.get(0);
         Nodo vExplicit = RAIZ.get(1);
 
@@ -255,14 +260,22 @@ public class TraduccionGxml_Script {
         codigoScript += "\n//Valores de " + RAIZ.valor + "";
         agregarAPadre(RAIZ, parametros, padre, "crearboton");
 
+        //1. Guardar Datos
+        if (esEnviar) {
+            String funcion_enviar = "\nfuncion " + RAIZ.valor + "_enviar(){\n\t" + padreVentana + ".creararraydesdearchivo();" + " \n}\n";
+            codigoScript += funcion_enviar;
+        }
+
+        //2. Accion Click
         /*  Si tiene el atributo Accion*/
         String accion = obtenerAtributo(hashMap, "accion");
-        if (!accion.equals("\"\"")) {
+        if (!accion.equals("\"\"") && !accion.equals("") && !accion.equals("nulo")) {
             accion = recortarString(accion, 1, accion.length() - 1);
             accion = recortarString(accion, 1, accion.length() - 1);
 
             codigoScript += salto + RAIZ.valor + ".alclic(" + accion + ");";
         }
+        //3. Referencia
 
         FRecursiva(RAIZ, RAIZ.valor);
     }
@@ -385,8 +398,9 @@ public class TraduccionGxml_Script {
         Nodo vExplicit = RAIZ.get(1);
         Nodo vHijos = RAIZ.get(2);
 
+        boolean esPrincipal = false;
         RAIZ.valor = "ventana_" + RAIZ.index;
-
+        padreVentana = RAIZ.valor;
         ArrayList<String> parametros = new ArrayList<>();
         parametros.add("nulo");//color
         parametros.add("nulo");//alto
@@ -414,6 +428,12 @@ public class TraduccionGxml_Script {
                     break;
                 case "ancho":
                     parametros.set(2, getValorFinal("ancho", val));
+                    break;
+                case "tipo":
+                    if(val.trim().toLowerCase().equals("principal"))
+                    {
+                        esPrincipal = true;
+                    }
                     break;
                 case "id":
                     parametros.set(3, getValorFinal("id", n_valor));
@@ -450,7 +470,21 @@ public class TraduccionGxml_Script {
             alCerrar = recortarString(alCerrar, 1, alCerrar.length() - 1);
             codigoScript += salto + RAIZ.valor + "." + "alcerrar(" + alCerrar + ");";
         }
-
+        
+        if(esPrincipal && ventanaPrincipal.equals(""))
+        {
+            
+            ventanaPrincipal = RAIZ.valor;
+            
+        }else
+        {
+            if(!ventanaPrincipal.equals(""))
+            {
+                IDE.IDE_Ventana.tablaSemantico.addRow("Semantico", RAIZ.linea, RAIZ.columna, "Ya existe una ventana principal ["+ventanaPrincipal+"] solo puede venir una");
+            }
+        }
+        
+        
         FRecursiva(RAIZ, RAIZ.valor);
 
     }
@@ -573,7 +607,7 @@ public class TraduccionGxml_Script {
     }
 
     public void agregarAPadre(Nodo RAIZ, ArrayList<String> parametros, String padre, String type) {
-        codigoScript += salto + "var " + RAIZ.valor  + " = " + padre + "." + type + "(";
+        codigoScript += salto + "var " + RAIZ.valor + " = " + padre + "." + type + "(";
         //String strPrs="*";
         parametros.forEach((cad) -> {
             if (!cad.equals("")) {
@@ -688,7 +722,7 @@ public class TraduccionGxml_Script {
                 return valor;
             case "negrilla":
             case "cursiva":
-            case "auto-reproduccion":    
+            case "auto-reproduccion":
                 if (match.isString(valor)) {
                     String recort = recortarString(valor, 1, valor.length() - 1);
                     if (match.isTrue(recort)) {
