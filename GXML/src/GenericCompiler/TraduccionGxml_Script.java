@@ -573,7 +573,7 @@ public class TraduccionGxml_Script {
     }
 
     public void agregarAPadre(Nodo RAIZ, ArrayList<String> parametros, String padre, String type) {
-        codigoScript += salto + "var " + RAIZ.valor + "_" + padre + " = " + padre + "." + type + "(";
+        codigoScript += salto + "var " + RAIZ.valor  + " = " + padre + "." + type + "(";
         //String strPrs="*";
         parametros.forEach((cad) -> {
             if (!cad.equals("")) {

@@ -120,7 +120,7 @@ public class IDE_Ventana extends JFrame {
         initComponents();
         arbol = jTree1;
         iniciarTree();
-        agregar_Tabla();
+        //agregar_Tabla();
         agregar_Errores();
 
         agregarPesta_Consola();
@@ -333,17 +333,26 @@ public class IDE_Ventana extends JFrame {
 
     public void GenerarPesta(String entrada, String nombre, String path) {
         try {
-            if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
+
+            //if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
+            if (this.jTabbedPane1.getTabCount()>0) {
                 nueva = new Pestaña(path);
                 nueva.setContenido(entrada);
-                //x,y,ancho,alto
                 nueva.setName(nombre);
                 this.jTabbedPane1.addTab(nombre, new ImageIcon("Icons/tag.png"), nueva, path);
-                //this.jTabbedPane1.//.setToolTipText(path);
-
                 this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount() - 1);
                 contador_pesta++;
+            }else
+            {
+                nueva = new Pestaña(path);
+                nueva.setContenido(entrada);
+                nueva.setName(nombre);
+                this.jTabbedPane1.addTab(nombre, new ImageIcon("Icons/tag.png"), nueva, path);
+                this.jTabbedPane1.setSelectedIndex(0);
+                contador_pesta++;
             }
+
+            //}
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "O4currio un error " + e.toString());
         }
@@ -372,6 +381,7 @@ public class IDE_Ventana extends JFrame {
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
         // TODO add your handling code here:
         try {
+            
             DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
             if (nodo == null) {
                 return;
@@ -403,8 +413,9 @@ public class IDE_Ventana extends JFrame {
                     }
                     br.close();
                     GenerarPesta(completo, archivo.getName(), rutanueva);
+
                 } else {
-                    System.out.println("Es una carpeta");
+                    //System.out.println("Es una carpeta");
                 }
             }
         } catch (Exception e) {
@@ -820,55 +831,28 @@ public class IDE_Ventana extends JFrame {
     }
 
     public void agregar_Errores() {
-        //JPanel panel_errores = new JPanel();
-        //panel_errores.setLayout(new BorderLayout());  //give your JPanel a BorderLayout
-        /*JPanel panel_errores = new JPanel();
-        panel_errores.setName("errores");
-        panel_errores.setLayout(new BorderLayout());  //give your JPanel a BorderLayout
-        
-         String initialText = "<html>\n" +
-                "Color and font test:\n" +
-                "<ul>\n" +
-                "<li><font color=red>red</font>\n" +
-                "<li><font color=blue>blue</font>\n" +
-                "<li><font color=green>green</font>\n" +
-                "<li><font size=-2>small</font>\n" +
-                "<li><font size=+2>large</font>\n" +
-                "<li><i>italic</i>\n" +
-                "<li><b>bold</b>\n" +
-                "</ul>\n";
-         
-        JTextArea text = new JTextArea(initialText);
-        text.setName("texto_errores");
-        listAreas.add(text);
-        JScrollPane scroll = new JScrollPane(text); //place the JTextArea in a scroll pane
-        scroll.setName("scroll_errores");
-        panel_errores.add(scroll, BorderLayout.CENTER);*/
-        //panel_errores.add(new JTabla(), BorderLayout.CENTER);
 
         //---------------             Semantico       -----------------------------------
         tablaSemantico = new JTabla();
         JScrollPane scrollSE = new JScrollPane(tablaSemantico);
         scrollSE.setName("scroll_errores");
-        this.jTabbedPane2.add(scrollSE, "ERRORES SEMANTICOS", 0);
+        this.jTabbedPane2.add(scrollSE, "ER SEMANTICOS", 0);
         this.jTabbedPane2.setSelectedIndex(0);
-        
+
         //---------------             Ejecucion       -----------------------------------        
         tablaEjecucion = new JTabla();
         JScrollPane scrollE = new JScrollPane(tablaEjecucion);
         scrollE.setName("scroll_errores");
-        this.jTabbedPane2.add(scrollE, "ERRORES EJECUCION", 1);
+        this.jTabbedPane2.add(scrollE, "ER EJECUCION", 1);
         this.jTabbedPane2.setSelectedIndex(0);
         //---------------             Sintactico       ----------------------------------
-        
+
         tablaSintactico = new JTabla();
         JScrollPane scrollS = new JScrollPane(tablaSintactico);
         scrollS.setName("scroll_errores");
-        this.jTabbedPane2.add(scrollS, "ERRORES SINTACTICOS", 2);
+        this.jTabbedPane2.add(scrollS, "ER SINTACTICOS", 2);
         this.jTabbedPane2.setSelectedIndex(0);
 
-        
-        
     }
 
     public static void iniciarTree() throws IOException, IOException {
@@ -885,6 +869,8 @@ public class IDE_Ventana extends JFrame {
 
         CONSOLA.setName("texto_consola");
         listAreas.add(CONSOLA);
+
+        CONSOLA.setFont(new Font("monospaced", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(CONSOLA); //place the JTextArea in a scroll pane
         scroll.setName("scroll_consola");
         panel.add(scroll, BorderLayout.CENTER);

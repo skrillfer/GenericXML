@@ -108,6 +108,10 @@ public class VentanaGenerica extends JFrame {
     }
 
     public void setColor(String hex) {
+        if(hex.equals("nulo"))
+        {
+            return;
+        }
         try {
             getContentPane().setBackground(Color.decode(hex));
 
@@ -117,6 +121,10 @@ public class VentanaGenerica extends JFrame {
     }
 
     public void setAncho(Object ancho) {
+        if(ancho.toString().equals("nulo"))
+        {
+            return;
+        }
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
             repaint();
@@ -126,6 +134,10 @@ public class VentanaGenerica extends JFrame {
     }
 
     public void setAlto(Object alto) {
+        if(alto.toString().equals("nulo"))
+        {
+            return;
+        }
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
             repaint();
