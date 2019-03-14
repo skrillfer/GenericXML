@@ -100,9 +100,10 @@ public class BotonGenerico extends JButton {
                                         }
                                         cargar.setBounds(100, 10, maxWidth, maxHeigth);
                                     }
-                                    for (Component component : cargar.getContentPane().getComponents()) {
+                                    
+                                    /*for (Component component : cargar.getContentPane().getComponents()) {
                                         System.out.println(component.getClass().getSimpleName());
-                                    }
+                                    }*/
 
                                     if (Script.VT_ACTUAL != null) {
                                         Script.VT_ACTUAL.dispose();

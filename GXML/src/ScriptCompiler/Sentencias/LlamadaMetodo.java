@@ -758,9 +758,9 @@ public class LlamadaMetodo extends Compilador {
                                             }
                                             vt.setBounds(100, 10, maxWidth, maxHeigth);
                                         }
-                                        for (Component component : vt.getContentPane().getComponents()) {
+                                        /*for (Component component : vt.getContentPane().getComponents()) {
                                             System.out.println(component.getClass().getSimpleName());
-                                        }
+                                        }*/
 
                                         vt.setLocationRelativeTo(null);
                                         vt.setVisible(true);
