@@ -1526,31 +1526,37 @@ public class LlamadaMetodo extends Compilador {
         try {
             ruta = parametros.get(0);
         } catch (Exception e) {
+            ruta = new Resultado("$nulo", "nulo");
         }
 
         try {
             x = parametros.get(1);
         } catch (Exception e) {
+            x = new Resultado("$nulo", "nulo");
         }
 
         try {
             y = parametros.get(2);
         } catch (Exception e) {
+            y = new Resultado("$nulo", "nulo");
         }
 
         try {
             auto_reproductor = parametros.get(3);
         } catch (Exception e) {
+            auto_reproductor = new Resultado("$nulo", "nulo");
         }
 
         try {
             alto = parametros.get(4);
         } catch (Exception e) {
+            alto = new Resultado("$nulo", "nulo");
         }
 
         try {
             ancho = parametros.get(5);
         } catch (Exception e) {
+            ancho = new Resultado("$nulo", "nulo");
         }
 
         /*----------------###############################---------------------*/
@@ -1574,7 +1580,10 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(ruta)) {
-                nuevoReproductor.setRuta(ruta.valor.toString());
+                if(!ruta.tipo.equals("$nulo"))
+                {
+                    nuevoReproductor.setRuta(ruta.valor.toString());
+                }
             }
 
             if (!esNulo(x)) {

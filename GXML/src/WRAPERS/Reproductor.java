@@ -168,6 +168,8 @@ public class Reproductor extends JPanel {
     }
 
     public void setX(Object x) {
+        if(x.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
@@ -176,6 +178,8 @@ public class Reproductor extends JPanel {
     }
 
     public void setY(Object y) {
+        if(y.toString().equals("nulo"))
+            return;
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
@@ -184,6 +188,8 @@ public class Reproductor extends JPanel {
     }
 
     public void setAutoReproduccion(Object check) {
+        if(check.toString().equals("nulo"))
+            return;
         try {
             this.auto = castToBoolean(check);
         } catch (Exception e) {
@@ -192,6 +198,8 @@ public class Reproductor extends JPanel {
     }
 
     public void setAncho(Object ancho) {
+        if(ancho.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
@@ -201,6 +209,8 @@ public class Reproductor extends JPanel {
     }
 
     public void setAlto(Object alto) {
+        if(alto.toString().equals("nulo"))
+            return;
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
