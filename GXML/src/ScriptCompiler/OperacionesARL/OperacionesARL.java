@@ -1288,7 +1288,6 @@ public class OperacionesARL {
         }
         return resultado;
     }*/
-
     public Resultado acceso(Nodo raiz) {
 
         //JOptionPane.showMessageDialog(null, "dame");
@@ -1672,29 +1671,28 @@ public class OperacionesARL {
                 if (tipo.equals("ADD")) {
                     switch (simbolo.tipo) {
                         case "Integer":
-                            ent = (Integer) simbolo.valor;
-                            if(simbolo.vieneReferido)
-                            {
+
+                            if (simbolo.vieneReferido) {
+                                ent = (Integer) ((Resultado) simbolo.valorRef).valor;
                                 try {
-                                    ((Resultado)simbolo.valorRef).valor = (Integer)((Resultado)simbolo.valorRef).valor +1;
+                                    ((Resultado) simbolo.valorRef).valor = (Integer) ((Resultado) simbolo.valorRef).valor + 1;
                                 } catch (Exception e) {
                                 }
-                            }else
-                            {
+                            } else {
+                                ent = (Integer) simbolo.valor;
                                 simbolo.valor = (Integer) simbolo.valor + 1;
                             }
-                            
+
                             return new Resultado(simbolo.tipo, ent);
                         case "Double":
-                            doble = (Double) simbolo.valor;
-                            if(simbolo.vieneReferido)
-                            {
+                            if (simbolo.vieneReferido) {
+                                doble = (Double) ((Resultado) simbolo.valorRef).valor;
                                 try {
-                                    ((Resultado)simbolo.valorRef).valor = (Double)((Resultado)simbolo.valorRef).valor +1;
+                                    ((Resultado) simbolo.valorRef).valor = (Double) ((Resultado) simbolo.valorRef).valor + 1;
                                 } catch (Exception e) {
                                 }
-                            }else
-                            {
+                            } else {
+                                doble = (Double) simbolo.valor;
                                 simbolo.valor = (Double) simbolo.valor + 1;
                             }
                             return new Resultado(simbolo.tipo, doble);
@@ -1705,28 +1703,28 @@ public class OperacionesARL {
                 } else {
                     switch (simbolo.tipo) {
                         case "Integer":
-                            ent = (Integer) simbolo.valor;
-                            if(simbolo.vieneReferido)
-                            {
+                            
+                            if (simbolo.vieneReferido) {
+                                ent = (Integer) ((Resultado) simbolo.valorRef).valor;
                                 try {
-                                    ((Resultado)simbolo.valorRef).valor = (Integer)((Resultado)simbolo.valorRef).valor -1;
+                                    ((Resultado) simbolo.valorRef).valor = (Integer) ((Resultado) simbolo.valorRef).valor - 1;
                                 } catch (Exception e) {
                                 }
-                            }else
-                            {
+                            } else {
+                                ent = (Integer) simbolo.valor;
                                 simbolo.valor = (Integer) simbolo.valor - 1;
                             }
                             return new Resultado(simbolo.tipo, ent);
                         case "Double":
-                            doble = (Double) simbolo.valor;
-                            if(simbolo.vieneReferido)
-                            {
+                            
+                            if (simbolo.vieneReferido) {
+                                doble = (Double) ((Resultado) simbolo.valorRef).valor;
                                 try {
-                                    ((Resultado)simbolo.valorRef).valor = (Double)((Resultado)simbolo.valorRef).valor -1;
+                                    ((Resultado) simbolo.valorRef).valor = (Double) ((Resultado) simbolo.valorRef).valor - 1;
                                 } catch (Exception e) {
                                 }
-                            }else
-                            {
+                            } else {
+                                doble = (Double) simbolo.valor;
                                 simbolo.valor = (Double) simbolo.valor - 1;
                             }
                             return new Resultado(simbolo.tipo, doble);
@@ -1737,38 +1735,8 @@ public class OperacionesARL {
                 }
             }
         } else {
-            /*Resultado resultado = ejecutar(raiz);
-            Object valor = resultado.valor;
-            if (resultado.tipo.equals("entero") || resultado.tipo.equals("decimal") || resultado.tipo.equals("caracter")) {
-                if (tipo.equals("++")) {
-                    switch (resultado.tipo) {
-                        case "entero":
-                            valor = (int) resultado.valor + 1;
-                            break;
-                        case "decimal":
-                            valor = (Double) resultado.valor + 1;
-                            break;
-                        case "caracter":
-                            valor = (char) resultado.valor + 1;
-                    }
-                    return new Resultado(resultado.tipo, valor);
-                } else {//si es --
-                    switch (resultado.tipo) {
-                        case "entero":
-                            valor = (int) resultado.valor - 1;
-                            break;
-                        case "decimal":
-                            valor = (Double) resultado.valor - 1;
-                            break;
-                        case "caracter":
-                            valor = (char) resultado.valor - 1;
-                    }
-                    return new Resultado(resultado.tipo, valor);
-                }
-            } else {
-                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "No se pueden realizar operaciones simplificadas sobre datos tipo cadena y bool");
-                return new Resultado("-1", null);
-            }*/
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Las operaciones simplificadas solo son validas para variables, no para tipos");
+            return new Resultado("-1", null);
         }
         return new Resultado("-1", null);
     }
@@ -1918,16 +1886,14 @@ public class OperacionesARL {
                         Resultado res_obtenido = (Resultado) obtenido;
                         Resultado r;
                         if (!verNulabilidad(res_obtenido)) {
-                            if(res_obtenido.valor.getClass().getSimpleName().equals("Clase") || res_obtenido.valor.getClass().getSimpleName().equals("Arreglo"))
-                            {
+                            if (res_obtenido.valor.getClass().getSimpleName().equals("Clase") || res_obtenido.valor.getClass().getSimpleName().equals("Arreglo")) {
                                 Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
                                 nuevoSim.valor = res_obtenido.valor;
                                 nuevoSim.tipo = res_obtenido.tipo;
                                 nuevoSim.inicializado = true;
                                 nuevoSim.vieneReferido = false;
                                 return nuevoSim;
-                            }else
-                            {
+                            } else {
                                 //Cuando la posicion de un arreglo es un String, Integer, Double, Boolean
                                 Simbolo nuevoSim = new Simbolo(res_obtenido.tipo, "", "", res_obtenido);
                                 nuevoSim.valorRef = res_obtenido;

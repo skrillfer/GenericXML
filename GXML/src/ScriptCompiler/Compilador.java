@@ -88,7 +88,7 @@ public abstract class Compilador {
                                 //miTemplate.CONSOLA+="\n"+(String)rs.valor;
                                 if(Template.CONSOLA!=null)
                                 {
-                                    Template.CONSOLA.append(rs.valor.toString());
+                                    Template.CONSOLA.append(rs.valor.toString()+"\n");
                                 }else
                                 {
                                     System.out.println(rs.valor.toString());

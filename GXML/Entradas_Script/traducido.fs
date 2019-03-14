@@ -26,11 +26,31 @@ imprimir(a1[1].nombre);
  
 imprimir(obj.arr[0]);*/
 
-
+/*
 var num1 = 10;
 imprimir((num1++)*(num1--)*(num1++));
 
-imprimir(num1++--++);
+imprimir(num1++--++);*/
+
+
+var a1 = [20,30,40];
+
+a1[0]++;
+
+imprimir(a1[0]);
+imprimir(a1[0]);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
