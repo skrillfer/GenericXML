@@ -39,7 +39,6 @@ public class JTabla extends JTable {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-
     }
 
 }
