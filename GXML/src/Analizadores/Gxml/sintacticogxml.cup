@@ -192,10 +192,9 @@ ETIQUETASforma2  ::= textoA1:m          LIST_ATTSTART:h explicit:e textoF1
                         atr.add(nv);
                         h.add(atr);
                         /*Extra*/
-        
-        
+
                         RESULT.add(h); 
-                        RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna()));
+                        RESULT.add(parser.crearNodo("explicit",cad,e.getLinea(),e.getColumna()));
                      :}
                     |controlA1:m        LIST_ATTSTART:h explicit:e CONTENIDOControl:R      
                     {: 
@@ -204,6 +203,7 @@ ETIQUETASforma2  ::= textoA1:m          LIST_ATTSTART:h explicit:e textoF1
                         String cad = e.getCadena();
                         cad = parser.recortarString(cad, 1, cad.length() - 1);
                         cad = parser.cleanExplicit(cad);
+
                         /*Extra*/
                         Nodo nm = new  Nodo("defecto", "defecto", h.linea, h.columna, h.index);
                         Nodo nv = new  Nodo(cad, cad, h.linea, h.columna, h.index);
@@ -214,7 +214,7 @@ ETIQUETASforma2  ::= textoA1:m          LIST_ATTSTART:h explicit:e textoF1
                         /*Extra*/
         
                         RESULT.add(h); 
-                        RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); 
+                        RESULT.add(parser.crearNodo("explicit",cad,e.getLinea(),e.getColumna())); 
                         RESULT.add(R); 
                     :}
                     |datoA1:m           LIST_ATTSTART:h explicit:e datoF1                  {: RESULT = parser.crearNodo("dato","dato",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
@@ -229,7 +229,7 @@ ETIQUETASforma2  ::= textoA1:m          LIST_ATTSTART:h explicit:e textoF1
 ETIQUETASforma1  ::= textoA2:m          LIST_ATTSTART:h explicit:e textoF1                 
                     {: 
                         RESULT = parser.crearNodo("texto","texto",m.getLinea(),m.getColumna()); 
-
+   
                         String cad = e.getCadena();
                         cad = parser.recortarString(cad, 1, cad.length() - 1);
                         cad = parser.cleanExplicit(cad);
@@ -241,9 +241,9 @@ ETIQUETASforma1  ::= textoA2:m          LIST_ATTSTART:h explicit:e textoF1
                         atr.add(nv);
                         h.add(atr);
                         /*Extra*/
-        
+
                         RESULT.add(h); 
-                        RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
+                        RESULT.add(parser.crearNodo("explicit",cad,e.getLinea(),e.getColumna())); :}
                     |controlA2:m        LIST_ATTSTART:h explicit:e CONTENIDOControl:R      
                     {: 
                         RESULT = parser.crearNodo("control","control",m.getLinea(),m.getColumna()); 
@@ -261,7 +261,7 @@ ETIQUETASforma1  ::= textoA2:m          LIST_ATTSTART:h explicit:e textoF1
                         /*Extra*/
         
                         RESULT.add(h); 
-                        RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); 
+                        RESULT.add(parser.crearNodo("explicit",cad,e.getLinea(),e.getColumna())); 
                         RESULT.add(R); 
                     :}
                     |datoA2:m           LIST_ATTSTART:h explicit:e datoF1                  {: RESULT = parser.crearNodo("dato","dato",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}

@@ -238,13 +238,13 @@ public class TraduccionGxml_Script {
         vExplicit.valor = cleanExplicit(vExplicit.valor);
         str_Defecto = "\"" + vExplicit.valor + "\"";
 
-        Nodo TEXTO = obtenerHijo(RAIZ, "texto");
+        /*Nodo TEXTO = obtenerHijo(RAIZ, "texto");
         if (TEXTO != null) {
             Nodo v2Explicit = TEXTO.get(1);
             v2Explicit.valor = recortarString(v2Explicit.valor, 1, vExplicit.valor.length() - 1);
             v2Explicit.valor = cleanExplicit(v2Explicit.valor);
             str_Defecto = "\"" + v2Explicit.valor + "\"";
-        }
+        }*/
 
         parametros.add(getValorFinal("fuente", obtenerAtributo(hashMap, "fuente")));
         parametros.add(getValorFinal("tam", obtenerAtributo(hashMap, "tam")));
@@ -307,13 +307,7 @@ public class TraduccionGxml_Script {
 
         ArrayList<String> parametros = new ArrayList<>();
 
-        //Obtener id o nombre del control y setear el nombre que tomara
-        /*String nombre = obtenerAtributo(hashMap, "nombre");
-        if (!nombre.equals("\"\"")) {
-            RAIZ.valor = recortarString(nombre, 1, nombre.length() - 1);;
-        } else {
-            RAIZ.valor = RAIZ.valor + String.valueOf(RAIZ.index);
-        }*/
+        
         //Obtener <defecto> </defecto>
         Nodo DEFECTO = obtenerHijo(RAIZ, "defecto");
         String str_Defecto = "\"\"";
@@ -593,14 +587,20 @@ public class TraduccionGxml_Script {
         }*/
         //Texto que mostrara el boton
         String str_Defecto;
-        vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
-        vExplicit.valor = cleanExplicit(vExplicit.valor);
+        System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+        System.err.println(vExplicit.valor);
+
+        //vExplicit.valor = recortarString(vExplicit.valor, 1, vExplicit.valor.length() - 1);
+        //vExplicit.valor = cleanExplicit(vExplicit.valor);
+        
+        System.err.println(vExplicit.valor);
         if (match.isString(vExplicit.valor)) {
             str_Defecto = vExplicit.valor;
         } else {
             str_Defecto = "\"" + vExplicit.valor + "\"";
         }
-
+        System.err.println(str_Defecto);
+        
         parametros.add(getValorFinal("fuente", obtenerAtributo(hashMap, "fuente")));
         parametros.add(getValorFinal("tam", obtenerAtributo(hashMap, "tam")));
         parametros.add(getValorFinal("color", obtenerAtributo(hashMap, "color")));

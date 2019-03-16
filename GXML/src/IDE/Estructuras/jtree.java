@@ -40,21 +40,21 @@ public class jtree implements TreeExpansionListener {
 
     public void init() throws IOException {  
         File archivo=new File ("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script");
-        System.out.println("llego aqui2");
+        //System.out.println("llego aqui2");
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script");
-        System.out.println("llego aqui3");
+        //System.out.println("llego aqui3");
         modelo = new DefaultTreeModel(top);
-        System.out.println("llego aqui4");
+        //System.out.println("llego aqui4");
         
         jTree1.setModel(modelo);
         jTree1.addTreeExpansionListener(this);
-        System.out.println("llego aqui5");
+        //System.out.println("llego aqui5");
         for (File f : archivo.listFiles()) {
             DefaultMutableTreeNode raiz = new DefaultMutableTreeNode(f);    
-            System.out.println("Llego aqui 6");
+            //System.out.println("Llego aqui 6");
             top.add(raiz);
             actualizaNodo(raiz, f);    
-            System.out.println("llego aqui7");
+            //System.out.println("llego aqui7");
         }
     }
     private boolean actualizaNodo(DefaultMutableTreeNode nodo, File f) {

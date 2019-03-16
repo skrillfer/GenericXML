@@ -1,0 +1,9 @@
+<Ventana id = "Inicio" tipo = "principal">
+	<Contenedor id = "Cont1" x = 10 y = 10 Alto = 200 Ancho = 200>
+		<Control Tipo="numerico" Nombre = "ctnRegistrar" X = 10 Y = 30 Alto = 70 Ancho = 100 Referencia = "Registrar">
+			<Defecto Nombre = "lblNombre" X = 10 Y = 20>
+				Nombre
+			</Defecto>
+		</Control>
+	</contenedor>
+</Ventana>

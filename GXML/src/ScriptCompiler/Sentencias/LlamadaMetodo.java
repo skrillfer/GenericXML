@@ -1724,6 +1724,9 @@ public class LlamadaMetodo extends Compilador {
                 if(!nombre.tipo.equals("$nulo"))
                 {
                     nuevoDesple.setId(nombre.valor.toString());
+                }else
+                {
+                    nuevoDesple.setId("");
                 }
             }
 
@@ -1891,6 +1894,9 @@ public class LlamadaMetodo extends Compilador {
                 if(!nombre.tipo.equals("$nulo"))
                 {
                     nuevaNumerica.setId(nombre.valor.toString());
+                }else
+                {
+                    nuevaNumerica.setId("");
                 }
                 
             }
@@ -2068,6 +2074,9 @@ public class LlamadaMetodo extends Compilador {
                 if(!nombre.tipo.equals("$nulo"))
                 {
                     nuevaCajaText.setId(nombre.valor.toString());
+                }else
+                {
+                    nuevaCajaText.setId("");
                 }
             }
 
@@ -2243,6 +2252,9 @@ public class LlamadaMetodo extends Compilador {
                 if(!nombre.tipo.equals("$nulo"))
                 {
                     nuevaAreaText.setId(nombre.valor.toString());
+                }else
+                {
+                    nuevaAreaText.setId("");
                 }
             }
 

@@ -308,11 +308,18 @@ public class CajaNumericaGenerica extends JPanel {
     public void setTexto(String txt) {
 
         try {
-
-            caja.setText(txt);
+            if(castToInt(txt)!=null)
+            {
+                caja.setText(String.valueOf(castToInt(txt)));
+            }else
+            {
+                caja.setText("0");
+                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Numero por Defecto [" + txt + "] en CajaNumerica " + this.getName());
+            }
+            
             lastText = txt;
         } catch (Exception ex) {
-            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Texto por Defecto [" + txt + "] en CajaNumerica " + this.getName());
+            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear Numero por Defecto [" + txt + "] en CajaNumerica " + this.getName());
 
         }
         updateUI();
