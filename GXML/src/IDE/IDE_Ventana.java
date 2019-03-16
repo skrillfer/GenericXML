@@ -122,12 +122,14 @@ public class IDE_Ventana extends JFrame {
         arbol = jTree1;
         iniciarTree();
         //agregar_Tabla();
-        agregar_Errores();
-
         agregarPesta_Consola();
 
+        agregar_Errores();
+
+        this.setTitle("GENERIC GXML - IDE");
         this.setSize(1350, 700);
         this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(Color.decode("#00FF7F"));
     }
 
     /**
@@ -819,21 +821,21 @@ public class IDE_Ventana extends JFrame {
         tablaSemantico = new JTabla();
         JScrollPane scrollSE = new JScrollPane(tablaSemantico);
         scrollSE.setName("scroll_errores");
-        this.jTabbedPane2.add(scrollSE, "ER SEMANTICOS", 0);
+        this.jTabbedPane2.add(scrollSE, "ER SEMANTICOS", 1);
         this.jTabbedPane2.setSelectedIndex(0);
 
         //---------------             Ejecucion       -----------------------------------        
         tablaEjecucion = new JTabla();
         JScrollPane scrollE = new JScrollPane(tablaEjecucion);
         scrollE.setName("scroll_errores");
-        this.jTabbedPane2.add(scrollE, "ER EJECUCION", 1);
+        this.jTabbedPane2.addTab("",new ImageIcon("Icons/Ejecucion.png"),scrollE);
         this.jTabbedPane2.setSelectedIndex(0);
         //---------------             Sintactico       ----------------------------------
 
         tablaSintactico = new JTabla();
         JScrollPane scrollS = new JScrollPane(tablaSintactico);
         scrollS.setName("scroll_errores");
-        this.jTabbedPane2.add(scrollS, "ER SINTACTICOS", 2);
+        this.jTabbedPane2.add(scrollS, "ER SINTACTICOS", 3);
         this.jTabbedPane2.setSelectedIndex(0);
 
     }
@@ -856,9 +858,9 @@ public class IDE_Ventana extends JFrame {
         CONSOLA.setFont(new Font("monospaced", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(CONSOLA); //place the JTextArea in a scroll pane
         scroll.setName("scroll_consola");
-        panel.add(scroll, BorderLayout.CENTER);
-        this.jTabbedPane2.add(panel, "CONSOLA", 0);
-        this.jTabbedPane2.setSelectedIndex(0);
+        panel.add(scroll, BorderLayout.CENTER);//panel, "CONSOLA", 0
+        this.jTabbedPane2.addTab("",new ImageIcon("Icons/terminal.png"),panel);
+        //this.jTabbedPane2.setSelectedIndex(0);
 
     }
 
