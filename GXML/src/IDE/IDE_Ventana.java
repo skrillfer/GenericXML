@@ -63,6 +63,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  * @author fernando
  */
 public class IDE_Ventana extends JFrame {
+
     public static String JTREE_DIR_ROOT;
     public static JTabla tablaSemantico;
     public static JTabla tablaSintactico;
@@ -770,34 +771,19 @@ public class IDE_Ventana extends JFrame {
         }
         //</editor-fold>
 
-        JTextField txt = new JTextField();
-        int n = JOptionPane.showOptionDialog(null, txt, "Ingrese Carpeta Raiz", JOptionPane.NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, null, null);
+        try (BufferedReader br = new BufferedReader(new FileReader("dir_root.txt"))) {
+            String sCurrentLine;
+            if ((sCurrentLine = br.readLine()) != null) {
 
-        switch (n) {
-            case JOptionPane.YES_OPTION:
-                File file = new File(txt.getText());
-                if(file.exists() && file.isDirectory())
-                {
-                    IDE_Ventana.JTREE_DIR_ROOT= txt.getText();
+                File fi = new File(sCurrentLine);
+                if (fi.exists() && fi.isDirectory()) {
+                    IDE_Ventana.JTREE_DIR_ROOT = fi.getAbsolutePath();
                 }
-                break;
-            case JOptionPane.NO_OPTION:
-                File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
-                if(jarDir.exists() && jarDir.isDirectory())
-                {
-                    IDE_Ventana.JTREE_DIR_ROOT= jarDir.getAbsolutePath();
-                }
-                break;
-            default:
-                
-                File fi = new File(System.getProperty("user.dir"));
-                if(fi.exists() && fi.isDirectory())
-                {
-                    IDE_Ventana.JTREE_DIR_ROOT= fi.getAbsolutePath();
-                }
-                break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
