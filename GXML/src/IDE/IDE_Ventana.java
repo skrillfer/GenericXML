@@ -375,14 +375,33 @@ public class IDE_Ventana extends JFrame {
             JFrame parentFrame = new JFrame();
             JFileChooser fileChooser = new JFileChooser("ruta");
             fileChooser.setDialogTitle("Specify a file to save");
+
             int userSelection = fileChooser.showSaveDialog(parentFrame);
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
-                if (Crear_Archivo(fileToSave.getAbsolutePath())) {
+                
                     String ext = Arrays.stream(fileToSave.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
-                    GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath(), ext);
-                    jTreeFiles.init();
-                }
+                    switch (ext.toLowerCase()) {
+                        case "fs":
+                        case "gxml":
+                            if (Crear_Archivo(fileToSave.getAbsolutePath())) 
+                            {
+                                GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath(), ext);
+                                jTreeFiles.init();  
+                            }else
+                            {
+                                String msj="Ya existe el archivo:"+fileToSave.getName()+" en la carpeta seleccionada\n"
+                                           +"si lo desea modificar/sobreescribir abrelo y luego guardalo";
+                                JOptionPane.showMessageDialog(null, msj);
+                            }
+                            
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(null, "Solo se permite crear archivos con extension .fs o .gxml");
+                            break;
+                    }
+
+                
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "O5currio un error " + e.toString());
@@ -475,15 +494,25 @@ public class IDE_Ventana extends JFrame {
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setAcceptAllFileFilterUsed(false);
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                System.out.println("getCurrentDirectory(): "
+                /*System.out.println("getCurrentDirectory(): "
                         + chooser.getCurrentDirectory());
                 System.out.println("getSelectedFile() : "
-                        + chooser.getSelectedFile());
+                        + chooser.getSelectedFile());*/
+                File file = chooser.getSelectedFile();
+                if(!file.exists())
+                {
+                    file.mkdir();
+                    JOptionPane.showMessageDialog(null, "Carpeta Creada Correctamente en:" + file.getAbsolutePath());
+                }else
+                {
+                    JOptionPane.showMessageDialog(null, "El directorio ya existe:" + file.getAbsolutePath());
+                }
+                
             } else {
                 System.out.println("No Selection ");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "O8currio un error " + e.toString());
+            //JOptionPane.showMessageDialog(null, "O8currio un error " + e.toString());
         }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -810,7 +839,7 @@ public class IDE_Ventana extends JFrame {
             }
             bw.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "O2currio un error " + e.toString());
+            //JOptionPane.showMessageDialog(null, "O2currio un error " + e.toString());
         }
         return respuesta;
     }
