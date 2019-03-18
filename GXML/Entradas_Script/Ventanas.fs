@@ -41,7 +41,16 @@ var contenedor_226 = ventana_228.crearcontenedor(100,200,nulo,nulo,10,320);
 //Valores de boton_223
 var boton_223 = contenedor_226.crearboton(nulo,nulo,nulo,75,30,"Inicio","Registrar",70,40);
 
+boton_223.alclic(boton_223_OnClick());
+
+funcion boton_223_OnClick(){
+
+	boton_223_enviar();	
+}
+
 funcion boton_223_enviar(){
 	ventana_228.creararraydesdearchivo(); 
 }
+
+ventana_228.alcargar();
 

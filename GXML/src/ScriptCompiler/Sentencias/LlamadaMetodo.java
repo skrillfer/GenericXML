@@ -756,7 +756,7 @@ public class LlamadaMetodo extends Compilador {
                                                     maxHeigth = component.getPreferredSize().height + y;
                                                 }
                                             }
-                                            vt.setBounds(100, 10, maxWidth, maxHeigth);
+                                            vt.setBounds(100, 10, maxWidth+50, maxHeigth+50);
                                         }
                                         /*for (Component component : vt.getContentPane().getComponents()) {
                                             System.out.println(component.getClass().getSimpleName());

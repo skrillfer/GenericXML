@@ -5,9 +5,6 @@
  */
 package IDE;
 
-import Analizadores.Gxml.LexGxml;
-import Analizadores.Gxml.SintacticoGxml;
-import GenericCompiler.TraduccionGxml_Script;
 import IDE.Estructuras.JTabla;
 import IDE.Estructuras.Pestaña;
 import IDE.Estructuras.Pintar;
@@ -32,9 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -48,6 +43,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
@@ -58,7 +55,6 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.Gutter;
-import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
@@ -126,10 +122,21 @@ public class IDE_Ventana extends JFrame {
 
         agregar_Errores();
 
+        Border raisedbevel, loweredbevel, empty;
+        raisedbevel = BorderFactory.createRaisedBevelBorder();
+        loweredbevel = BorderFactory.createLoweredBevelBorder();
+
         this.setTitle("GENERIC GXML - IDE");
         this.setSize(1350, 700);
         this.setLocationRelativeTo(null);
-        this.getContentPane().setBackground(Color.decode("#00FF7F"));
+        this.getContentPane().setBackground(Color.decode("#e8dfdb"));
+        
+        jTabbedPane2.setBorder(BorderFactory.createCompoundBorder(
+                raisedbevel, loweredbevel));
+        jTree1.setBorder(BorderFactory.createCompoundBorder(
+                raisedbevel, loweredbevel));
+        
+
     }
 
     /**
@@ -184,9 +191,10 @@ public class IDE_Ventana extends JFrame {
         });
 
         jButton2.setText("COMPILAR");
-        jButton2.setFont(new Font("Arial", Font.BOLD, 18));
-        jButton2.setBackground(Color.BLUE);
+        jButton2.setFont(new Font("Arial", Font.BOLD, 14));
         jButton2.setForeground(Color.WHITE);
+        jButton2.setBackground(Color.decode("#347b67"));
+        jButton2.setBorder(BorderFactory.createRaisedBevelBorder());
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -313,7 +321,7 @@ public class IDE_Ventana extends JFrame {
                                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(10, 10, 10)
                                                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1050, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1330, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -325,7 +333,7 @@ public class IDE_Ventana extends JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         //.addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
@@ -338,16 +346,15 @@ public class IDE_Ventana extends JFrame {
         try {
 
             //if ((this.jTabbedPane1.getTabCount() - 1) == this.jTabbedPane1.getSelectedIndex()) {
-            if (this.jTabbedPane1.getTabCount()>0) {
-                nueva = new Pestaña(path,tipo);
+            if (this.jTabbedPane1.getTabCount() > 0) {
+                nueva = new Pestaña(path, tipo);
                 nueva.setContenido(entrada);
                 nueva.setName(nombre);
                 this.jTabbedPane1.addTab(nombre, new ImageIcon("Icons/tag.png"), nueva, path);
                 this.jTabbedPane1.setSelectedIndex(this.jTabbedPane1.getTabCount() - 1);
                 contador_pesta++;
-            }else
-            {
-                nueva = new Pestaña(path,tipo);
+            } else {
+                nueva = new Pestaña(path, tipo);
                 nueva.setContenido(entrada);
                 nueva.setName(nombre);
                 this.jTabbedPane1.addTab(nombre, new ImageIcon("Icons/tag.png"), nueva, path);
@@ -372,7 +379,7 @@ public class IDE_Ventana extends JFrame {
                 File fileToSave = fileChooser.getSelectedFile();
                 if (Crear_Archivo(fileToSave.getAbsolutePath())) {
                     String ext = Arrays.stream(fileToSave.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
-                    GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath(),ext);
+                    GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath(), ext);
                     jTreeFiles.init();
                 }
             }
@@ -384,7 +391,7 @@ public class IDE_Ventana extends JFrame {
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
         // TODO add your handling code here:
         try {
-            
+
             DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
             if (nodo == null) {
                 return;
@@ -416,7 +423,7 @@ public class IDE_Ventana extends JFrame {
                     }
                     br.close();
                     String ext = Arrays.stream(archivo.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
-                    GenerarPesta(completo, archivo.getName(), rutanueva,ext);
+                    GenerarPesta(completo, archivo.getName(), rutanueva, ext);
 
                 } else {
                     //System.out.println("Es una carpeta");
@@ -546,7 +553,6 @@ public class IDE_Ventana extends JFrame {
         // TODO add your handling code here:
         //System.out.println("BOTON COMPILAR");
 
-       
         if (contador_pesta > 0) {
             //System.out.println(this.jTabbedPane1.getSelectedIndex());
             Pestaña pesta = (Pestaña) this.jTabbedPane1.getComponentAt(this.jTabbedPane1.getSelectedIndex());
@@ -568,7 +574,7 @@ public class IDE_Ventana extends JFrame {
 
                             File nuevo = new File(path_nuevo);
                             EscribirArchivo(path_nuevo, txtEntrada);
-                            GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath(),separado[1]);
+                            GenerarPesta(txtEntrada, nuevo.getName(), nuevo.getAbsolutePath(), separado[1]);
                             jTreeFiles.init();
 
                         } else if (separado[1].equals("fs")) {
@@ -589,7 +595,6 @@ public class IDE_Ventana extends JFrame {
     public void Lectura(String direccion) {
 
     }
-
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -828,7 +833,7 @@ public class IDE_Ventana extends JFrame {
         tablaEjecucion = new JTabla();
         JScrollPane scrollE = new JScrollPane(tablaEjecucion);
         scrollE.setName("scroll_errores");
-        this.jTabbedPane2.addTab("",new ImageIcon("Icons/Ejecucion.png"),scrollE);
+        this.jTabbedPane2.addTab("", new ImageIcon("Icons/Ejecucion.png"), scrollE);
         this.jTabbedPane2.setSelectedIndex(0);
         //---------------             Sintactico       ----------------------------------
 
@@ -859,7 +864,7 @@ public class IDE_Ventana extends JFrame {
         JScrollPane scroll = new JScrollPane(CONSOLA); //place the JTextArea in a scroll pane
         scroll.setName("scroll_consola");
         panel.add(scroll, BorderLayout.CENTER);//panel, "CONSOLA", 0
-        this.jTabbedPane2.addTab("",new ImageIcon("Icons/terminal.png"),panel);
+        this.jTabbedPane2.addTab("", new ImageIcon("Icons/terminal.png"), panel);
         //this.jTabbedPane2.setSelectedIndex(0);
 
     }
