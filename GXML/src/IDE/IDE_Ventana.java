@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -62,7 +63,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  * @author fernando
  */
 public class IDE_Ventana extends JFrame {
-
+    public static String JTREE_DIR_ROOT;
     public static JTabla tablaSemantico;
     public static JTabla tablaSintactico;
     public static JTabla tablaEjecucion;
@@ -130,12 +131,11 @@ public class IDE_Ventana extends JFrame {
         this.setSize(1350, 700);
         this.setLocationRelativeTo(null);
         this.getContentPane().setBackground(Color.decode("#e8dfdb"));
-        
+
         jTabbedPane2.setBorder(BorderFactory.createCompoundBorder(
                 raisedbevel, loweredbevel));
         jTree1.setBorder(BorderFactory.createCompoundBorder(
                 raisedbevel, loweredbevel));
-        
 
     }
 
@@ -751,11 +751,7 @@ public class IDE_Ventana extends JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -774,6 +770,34 @@ public class IDE_Ventana extends JFrame {
         }
         //</editor-fold>
 
+        JTextField txt = new JTextField();
+        int n = JOptionPane.showOptionDialog(null, txt, "Ingrese Carpeta Raiz", JOptionPane.NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+        switch (n) {
+            case JOptionPane.YES_OPTION:
+                File file = new File(txt.getText());
+                if(file.exists() && file.isDirectory())
+                {
+                    IDE_Ventana.JTREE_DIR_ROOT= txt.getText();
+                }
+                break;
+            case JOptionPane.NO_OPTION:
+                File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+                if(jarDir.exists() && jarDir.isDirectory())
+                {
+                    IDE_Ventana.JTREE_DIR_ROOT= jarDir.getAbsolutePath();
+                }
+                break;
+            default:
+                
+                File fi = new File(System.getProperty("user.dir"));
+                if(fi.exists() && fi.isDirectory())
+                {
+                    IDE_Ventana.JTREE_DIR_ROOT= fi.getAbsolutePath();
+                }
+                break;
+        }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

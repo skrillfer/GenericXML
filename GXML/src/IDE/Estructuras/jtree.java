@@ -41,9 +41,10 @@ public class jtree implements TreeExpansionListener {
     }
 
     public void init() throws IOException {
-        File archivo = new File("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script");
+        //"/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script"
+        File archivo = new File(IDE.IDE_Ventana.JTREE_DIR_ROOT);
         //System.out.println("llego aqui2");
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode("/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script");
+        DefaultMutableTreeNode top = new DefaultMutableTreeNode(IDE.IDE_Ventana.JTREE_DIR_ROOT);
         //System.out.println("llego aqui3");
         modelo = new DefaultTreeModel(top);
         
