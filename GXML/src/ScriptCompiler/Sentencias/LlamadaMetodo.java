@@ -717,6 +717,9 @@ public class LlamadaMetodo extends Compilador {
                                         ((BotonGenerico) clas.Componente).setAlClick(LTExp.get(0));
                                         break;
                                 }
+                            } else {
+                                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "alclic error, el evento es para un boton");
+
                             }
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "alclic error:" + e.getMessage());
@@ -756,7 +759,7 @@ public class LlamadaMetodo extends Compilador {
                                                     maxHeigth = component.getPreferredSize().height + y;
                                                 }
                                             }
-                                            vt.setBounds(100, 10, maxWidth+50, maxHeigth+50);
+                                            vt.setBounds(100, 10, maxWidth + 50, maxHeigth + 50);
                                         }
                                         /*for (Component component : vt.getContentPane().getComponents()) {
                                             System.out.println(component.getClass().getSimpleName());
@@ -903,6 +906,37 @@ public class LlamadaMetodo extends Compilador {
                             JOptionPane.showMessageDialog(null, "obtener por nombre error:" + e.getMessage());
                         }
                         break;
+                    case "creararraydesdearchivo":
+                        proceder = false;
+                        try {
+                            Clase clas = (Clase) actualResultado.valor;
+                            if (clas.Componente != null) {
+                                if (clas.nombre.equalsIgnoreCase("ventana")) {
+                                    Nodo LTExp = raiz.get(0);
+                                    if (LTExp.size() == 0) {
+                                        VentanaGenerica vt = (VentanaGenerica) clas.Componente;
+                                        if (!vt.getName().equals("")) {
+                                            for (Object component : vt.getContentPane().getComponents()) {
+                                                System.out.println("->" + component.getClass().getSimpleName());
+                                            }
+                                        } else {
+                                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "creararraydesdearchivo() ventana necesita un nombre para acceder/crear su gdato");
+                                        }
+
+                                    } else {
+                                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "creararraydesdearchivo() es sin parametros");
+                                    }
+                                } else {
+                                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "creararraydesdearchivo() aplica solo a ventanas");
+                                }
+                            } else {
+                                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Uso incorrecto de creararraydesdearchivo()");
+                            }
+                        } catch (Exception e) {
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al creararraydesdearchivo():" + e.getMessage());
+                        }
+
+                        break;
                 }
             }
         } else {
@@ -916,7 +950,7 @@ public class LlamadaMetodo extends Compilador {
                     try {
                         crearVentana();
                     } catch (Exception e) {
-                        Template.reporteError_CJS.agregar("Ejecucion", raiz.linea, raiz.columna, "crearVentana Error:"+e.getMessage());
+                        Template.reporteError_CJS.agregar("Ejecucion", raiz.linea, raiz.columna, "crearVentana Error:" + e.getMessage());
                     }
 
                     break;
@@ -989,7 +1023,7 @@ public class LlamadaMetodo extends Compilador {
                                     if (ext.equals("gdato")) {
                                         Nodo r_GXML = null;
                                         try {
-                                            
+
                                             LexGdato lex = new LexGdato(new FileReader(rutaBuena));
                                             SintacticoGdato sin = new SintacticoGdato(lex);
                                             try {
@@ -1020,7 +1054,7 @@ public class LlamadaMetodo extends Compilador {
                     arrX.SETDIM();
                     res_nativas = new Resultado("", arrX);
                     JOptionPane.showMessageDialog(null, "termine perro");
-                    break;    
+                    break;
             }
         }
     }
@@ -1079,13 +1113,12 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(id)) {
-                if(!id.tipo.equals("$nulo"))
-                {
+                if (!id.tipo.equals("$nulo")) {
                     nuevaVentana.setId(id.valor.toString());
-                }else {
+                } else {
                     nuevaVentana.setId("");
                 }
-            } 
+            }
 
             if (!esNulo(color)) {
                 nuevaVentana.setColor(color.valor.toString());
@@ -1480,8 +1513,7 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(valor)) {
-                if(!valor.tipo.equals("$nulo"))
-                {
+                if (!valor.tipo.equals("$nulo")) {
                     nuevaTexto.setTexto(valor.valor.toString());
                 }
             }
@@ -1503,13 +1535,13 @@ public class LlamadaMetodo extends Compilador {
                                 ((PanelGenerico) clase.Componente).add(nuevaTexto);
                                 break;
                             case "boton":
-                                BotonGenerico btn=((BotonGenerico) clase.Componente);
+                                BotonGenerico btn = ((BotonGenerico) clase.Componente);
                                 btn.setFont(nuevaTexto.getFont());
                                 btn.setForeground(nuevaTexto.getForeground());
                                 btn.setText(nuevaTexto.getText());
                                 btn.repaint();
                                 break;
-                                
+
                         }
 
                     }
@@ -1588,8 +1620,7 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(ruta)) {
-                if(!ruta.tipo.equals("$nulo"))
-                {
+                if (!ruta.tipo.equals("$nulo")) {
                     nuevoReproductor.setRuta(ruta.valor.toString());
                 }
             }
@@ -1713,19 +1744,16 @@ public class LlamadaMetodo extends Compilador {
 
             /*---------------------------------------------------------------------*/
             if (!esNulo(defecto)) {
-                if(!defecto.tipo.equals("$nulo"))
-                {
+                if (!defecto.tipo.equals("$nulo")) {
                     nuevoDesple.setDefecto(defecto.valor.toString());
                 }
-                
+
             }
 
             if (!esNulo(nombre)) {
-                if(!nombre.tipo.equals("$nulo"))
-                {
+                if (!nombre.tipo.equals("$nulo")) {
                     nuevoDesple.setId(nombre.valor.toString());
-                }else
-                {
+                } else {
                     nuevoDesple.setId("");
                 }
             }
@@ -1883,22 +1911,19 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(defecto)) {
-                if(!defecto.tipo.equals("$nulo"))
-                {
+                if (!defecto.tipo.equals("$nulo")) {
                     nuevaNumerica.setTexto(defecto.valor.toString());
                 }
-                
+
             }
 
             if (!esNulo(nombre)) {
-                if(!nombre.tipo.equals("$nulo"))
-                {
+                if (!nombre.tipo.equals("$nulo")) {
                     nuevaNumerica.setId(nombre.valor.toString());
-                }else
-                {
+                } else {
                     nuevaNumerica.setId("");
                 }
-                
+
             }
 
 
@@ -2064,18 +2089,15 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(defecto)) {
-                if(!defecto.tipo.equals("$nulo"))
-                {
+                if (!defecto.tipo.equals("$nulo")) {
                     nuevaCajaText.setTexto(defecto.valor.toString());
-                }   
+                }
             }
 
             if (!esNulo(nombre)) {
-                if(!nombre.tipo.equals("$nulo"))
-                {
+                if (!nombre.tipo.equals("$nulo")) {
                     nuevaCajaText.setId(nombre.valor.toString());
-                }else
-                {
+                } else {
                     nuevaCajaText.setId("");
                 }
             }
@@ -2241,19 +2263,16 @@ public class LlamadaMetodo extends Compilador {
             }
 
             if (!esNulo(defecto)) {
-                if(!defecto.tipo.equals("$nulo"))
-                {
+                if (!defecto.tipo.equals("$nulo")) {
                     nuevaAreaText.setTexto(defecto.valor.toString());
                 }
-                
+
             }
 
             if (!esNulo(nombre)) {
-                if(!nombre.tipo.equals("$nulo"))
-                {
+                if (!nombre.tipo.equals("$nulo")) {
                     nuevaAreaText.setId(nombre.valor.toString());
-                }else
-                {
+                } else {
                     nuevaAreaText.setId("");
                 }
             }
@@ -2543,7 +2562,7 @@ public class LlamadaMetodo extends Compilador {
 
         }
     }
-    
+
     public void crearArrayDesdeArchivo(Nodo raiz, Arreglo arr) {
         Nodo imports = raiz.get(0);
 
@@ -2654,5 +2673,4 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
-    
 }

@@ -82,6 +82,7 @@ public class IDE_Ventana extends JFrame {
     JMenuItem jMenuItem5;
     JMenuItem jMenuItem4;
     JMenuItem jMenuItem3;
+    JMenuItem jMenuItemAbrir;
     JMenuItem jMenuItem2;
     JMenuItem jMenuItem1;
     JMenuItem jMenuItem1_1;
@@ -162,6 +163,7 @@ public class IDE_Ventana extends JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItemAbrir = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         jMenuItem1_1 = new javax.swing.JMenuItem();
@@ -225,6 +227,14 @@ public class IDE_Ventana extends JFrame {
             }
         });
         jMenu1.add(jMenuItem4);
+
+        jMenuItemAbrir.setText("Abrir Archivo");
+        jMenuItemAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAbrirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemAbrir);
 
         jMenuItem2.setText("Guardar (tab Actual)");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -379,29 +389,26 @@ public class IDE_Ventana extends JFrame {
             int userSelection = fileChooser.showSaveDialog(parentFrame);
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
-                
-                    String ext = Arrays.stream(fileToSave.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
-                    switch (ext.toLowerCase()) {
-                        case "fs":
-                        case "gxml":
-                            if (Crear_Archivo(fileToSave.getAbsolutePath())) 
-                            {
-                                GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath(), ext);
-                                jTreeFiles.init();  
-                            }else
-                            {
-                                String msj="Ya existe el archivo:"+fileToSave.getName()+" en la carpeta seleccionada\n"
-                                           +"si lo desea modificar/sobreescribir abrelo y luego guardalo";
-                                JOptionPane.showMessageDialog(null, msj);
-                            }
-                            
-                            break;
-                        default:
-                            JOptionPane.showMessageDialog(null, "Solo se permite crear archivos con extension .fs o .gxml");
-                            break;
-                    }
 
-                
+                String ext = Arrays.stream(fileToSave.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
+                switch (ext.toLowerCase()) {
+                    case "fs":
+                    case "gxml":
+                        if (Crear_Archivo(fileToSave.getAbsolutePath())) {
+                            GenerarPesta("", fileToSave.getName(), fileToSave.getAbsolutePath(), ext);
+                            jTreeFiles.init();
+                        } else {
+                            String msj = "Ya existe el archivo:" + fileToSave.getName() + " en la carpeta seleccionada\n"
+                                    + "si lo desea modificar/sobreescribir abrelo y luego guardalo";
+                            JOptionPane.showMessageDialog(null, msj);
+                        }
+
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Solo se permite crear archivos con extension .fs o .gxml");
+                        break;
+                }
+
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "O5currio un error " + e.toString());
@@ -499,15 +506,13 @@ public class IDE_Ventana extends JFrame {
                 System.out.println("getSelectedFile() : "
                         + chooser.getSelectedFile());*/
                 File file = chooser.getSelectedFile();
-                if(!file.exists())
-                {
+                if (!file.exists()) {
                     file.mkdir();
                     JOptionPane.showMessageDialog(null, "Carpeta Creada Correctamente en:" + file.getAbsolutePath());
-                }else
-                {
+                } else {
                     JOptionPane.showMessageDialog(null, "El directorio ya existe:" + file.getAbsolutePath());
                 }
-                
+
             } else {
                 System.out.println("No Selection ");
             }
@@ -540,6 +545,41 @@ public class IDE_Ventana extends JFrame {
             }
         }
     }
+
+    private void jMenuItemAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+        int returnValue = jfc.showOpenDialog(null);
+        // int returnValue = jfc.showSaveDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = jfc.getSelectedFile();
+
+            String ext = Arrays.stream(selectedFile.getName().split("\\.")).reduce((a, b) -> b).orElse(null);
+
+            switch (ext.toLowerCase()) {
+                case "fs":
+                case "gxml":
+                        
+                    String txtEntrada = "";
+                    try (BufferedReader br = new BufferedReader(new FileReader(selectedFile.getAbsolutePath()))) {
+                        String sCurrentLine;
+                        while ((sCurrentLine = br.readLine()) != null) {
+                            txtEntrada += sCurrentLine+"\n";
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    GenerarPesta(txtEntrada, selectedFile.getName(), selectedFile.getAbsolutePath(), ext);
+                    
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Abrir solamente archivos con extension .fs y .gxml");
+                    break;
+            }
+            //System.out.println(selectedFile.getAbsolutePath());
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         if (contador_pesta > 0) {
