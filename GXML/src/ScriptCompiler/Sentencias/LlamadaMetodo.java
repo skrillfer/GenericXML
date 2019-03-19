@@ -926,7 +926,7 @@ public class LlamadaMetodo extends Compilador {
                                             String contenidoGDATO = "";
                                             String rutaBuena = existeArchivo(vt.getName() + ".gdato");
                                             if (rutaBuena.equals("")) {
-                                                rutaBuena = vt.getName() + ".gdato";
+                                                rutaBuena = PathRoot+"/"+vt.getName() + ".gdato";
                                             }
 
                                             Nodo r_GXML = null;

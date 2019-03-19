@@ -1,0 +1,19 @@
+<lista>
+	<principal>
+		<cj1>"texto"</cj1>
+		<cj2>13</cj2>
+	</principal>
+	<principal>
+		<cj1>"texto"</cj1>
+		<cj2>13</cj2>
+	</principal>
+	<principal>
+		<cj1>"texto"</cj1>
+		<cj2>13</cj2>
+	</principal>
+	<principal>
+		<cj1>texto</cj1>
+		<cj2>13</cj2>
+	</principal>
+</lista>
+
