@@ -648,6 +648,10 @@ public class IDE_Ventana extends JFrame {
                             jTreeFiles.init();
 
                         } else if (separado[1].equals("fs")) {
+                            CONSOLA.setText("");
+                            tablaEjecucion.RemoveAllRows();
+                            tablaSemantico.RemoveAllRows();
+                            tablaSintactico.RemoveAllRows();
                             template.CONSOLA = CONSOLA;
                             template.ParsearArchivoFs(pesta.path, pesta.getName());
 

@@ -20,14 +20,13 @@ import javax.swing.table.DefaultTableModel;
 public class JTabla extends JTable {
 
     //JTable j;
-
     public JTabla() {
         DefaultTableModel model = new DefaultTableModel();
-        
+
         model.addColumn("Linea");
         model.addColumn("Columna");
         model.addColumn("Descripcion");
-        
+
         setModel(model);
         setLocation(10, 50);
     }
@@ -38,6 +37,15 @@ public class JTabla extends JTable {
             model.addRow(new Object[]{String.valueOf(linea), String.valueOf(columna), descripcion});
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    public void RemoveAllRows() {
+        DefaultTableModel dm = (DefaultTableModel) this.getModel();
+        int rowCount = dm.getRowCount();
+        //Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
         }
     }
 
