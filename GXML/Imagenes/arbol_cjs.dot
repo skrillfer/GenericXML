@@ -1,123 +1,129 @@
 digraph G {
 node[shape=Mrecord]
-63[label="raiz | ",style=bold]
+67[label="raiz | ",style=bold]
 1[label="imports | ",style=bold]
-{63}->{1}
-62[label="sentencias | ",style=bold]
-{63}->{62}
-60[label="funcion | ",style=bold]
-{62}->{60}
-61[label="id | ackermann",style=bold]
-{60}->{61}
-2[label="parametros | ",style=bold]
-{60}->{2}
-3[label="parametro | m",style=bold]
-{2}->{3}
-4[label="parametro | n",style=bold]
-{2}->{4}
-59[label="sentencias | ",style=bold]
-{60}->{59}
-58[label="si | ",style=bold]
-{59}->{58}
-8[label="ig_ig | ",style=bold]
-{58}->{8}
-6[label="acceso | ",style=bold]
-{8}->{6}
-5[label="id | m",style=bold]
-{6}->{5}
-7[label="int_literal | 0",style=bold]
+{67}->{1}
+9[label="sentencias | ",style=bold]
+{67}->{9}
+8[label="imprimir | ",style=bold]
+{9}->{8}
+7[label="lista_exp | ",style=bold]
 {8}->{7}
-14[label="sentencias | ",style=bold]
-{58}->{14}
-13[label="retorno | ",style=bold]
-{14}->{13}
-12[label="mas | ",style=bold]
+6[label="acceso | ",style=bold]
+{7}->{6}
+5[label="llamada | invertirNumero",style=bold]
+{6}->{5}
+4[label="lista_exp | ",style=bold]
+{5}->{4}
+3[label="int_literal | 2000",style=bold]
+{4}->{3}
+39[label="funcion | ",style=bold]
+{9}->{39}
+40[label="id | invertirNumero",style=bold]
+{39}->{40}
+10[label="parametros | ",style=bold]
+{39}->{10}
+11[label="parametro | n",style=bold]
+{10}->{11}
+38[label="sentencias | ",style=bold]
+{39}->{38}
+37[label="retorno | ",style=bold]
+{38}->{37}
+36[label="trn | ",style=bold]
+{37}->{36}
+15[label="menq | ",style=bold]
+{36}->{15}
+13[label="acceso | ",style=bold]
+{15}->{13}
+12[label="id | n",style=bold]
 {13}->{12}
-10[label="acceso | ",style=bold]
-{12}->{10}
-9[label="id | n",style=bold]
-{10}->{9}
-11[label="int_literal | 1",style=bold]
-{12}->{11}
-36[label="lista_sinosi | ",style=bold]
-{58}->{36}
-35[label="sinosi | ",style=bold]
+14[label="int_literal | 10",style=bold]
+{15}->{14}
+17[label="acceso | ",style=bold]
+{36}->{17}
+16[label="id | n",style=bold]
+{17}->{16}
+35[label="mas | ",style=bold]
 {36}->{35}
-23[label="and | ",style=bold]
-{35}->{23}
-18[label="mayq | ",style=bold]
-{23}->{18}
-16[label="acceso | ",style=bold]
-{18}->{16}
-15[label="id | m",style=bold]
-{16}->{15}
-17[label="int_literal | 0",style=bold]
-{18}->{17}
-22[label="ig_ig | ",style=bold]
-{23}->{22}
+24[label="acceso | ",style=bold]
+{35}->{24}
+23[label="llamada | modulo",style=bold]
+{24}->{23}
+21[label="lista_exp | ",style=bold]
+{23}->{21}
 20[label="acceso | ",style=bold]
-{22}->{20}
+{21}->{20}
 19[label="id | n",style=bold]
 {20}->{19}
-21[label="int_literal | 0",style=bold]
-{22}->{21}
-34[label="sentencias | ",style=bold]
+22[label="int_literal | 10",style=bold]
+{21}->{22}
+34[label="por | ",style=bold]
 {35}->{34}
-33[label="retorno | ",style=bold]
-{34}->{33}
 32[label="acceso | ",style=bold]
-{33}->{32}
-31[label="llamada | ackermann",style=bold]
+{34}->{32}
+31[label="llamada | invertirNumero",style=bold]
 {32}->{31}
-29[label="lista_exp | ",style=bold]
-{31}->{29}
-28[label="menos | ",style=bold]
+30[label="lista_exp | ",style=bold]
+{31}->{30}
+29[label="div | ",style=bold]
+{30}->{29}
+27[label="acceso | ",style=bold]
+{29}->{27}
+26[label="id | n",style=bold]
+{27}->{26}
+28[label="int_literal | 10",style=bold]
 {29}->{28}
-26[label="acceso | ",style=bold]
-{28}->{26}
-25[label="id | m",style=bold]
-{26}->{25}
-27[label="int_literal | 1",style=bold]
-{28}->{27}
-30[label="int_literal | 1",style=bold]
-{29}->{30}
-57[label="sino | ",style=bold]
-{36}->{57}
-56[label="sentencias | ",style=bold]
-{57}->{56}
-55[label="retorno | ",style=bold]
-{56}->{55}
-54[label="acceso | ",style=bold]
-{55}->{54}
-53[label="llamada | ackermann",style=bold]
-{54}->{53}
-42[label="lista_exp | ",style=bold]
-{53}->{42}
-41[label="menos | ",style=bold]
-{42}->{41}
-39[label="acceso | ",style=bold]
-{41}->{39}
-38[label="id | m",style=bold]
-{39}->{38}
-40[label="int_literal | 1",style=bold]
-{41}->{40}
-52[label="acceso | ",style=bold]
-{42}->{52}
-51[label="llamada | ackermann",style=bold]
-{52}->{51}
-46[label="lista_exp | ",style=bold]
-{51}->{46}
+33[label="int_literal | 10",style=bold]
+{34}->{33}
+65[label="funcion | ",style=bold]
+{9}->{65}
+66[label="id | modulo",style=bold]
+{65}->{66}
+41[label="parametros | ",style=bold]
+{65}->{41}
+42[label="parametro | n",style=bold]
+{41}->{42}
+43[label="parametro | p",style=bold]
+{41}->{43}
+64[label="sentencias | ",style=bold]
+{65}->{64}
+63[label="retorno | ",style=bold]
+{64}->{63}
+62[label="trn | ",style=bold]
+{63}->{62}
+48[label="menq | ",style=bold]
+{62}->{48}
 45[label="acceso | ",style=bold]
-{46}->{45}
-44[label="id | m",style=bold]
+{48}->{45}
+44[label="id | n",style=bold]
 {45}->{44}
-50[label="menos | ",style=bold]
-{46}->{50}
-48[label="acceso | ",style=bold]
-{50}->{48}
-47[label="id | n",style=bold]
+47[label="acceso | ",style=bold]
 {48}->{47}
-49[label="int_literal | 1",style=bold]
+46[label="id | p",style=bold]
+{47}->{46}
+50[label="acceso | ",style=bold]
+{62}->{50}
+49[label="id | n",style=bold]
 {50}->{49}
+61[label="acceso | ",style=bold]
+{62}->{61}
+60[label="llamada | modulo",style=bold]
+{61}->{60}
+57[label="lista_exp | ",style=bold]
+{60}->{57}
+56[label="menos | ",style=bold]
+{57}->{56}
+53[label="acceso | ",style=bold]
+{56}->{53}
+52[label="id | n",style=bold]
+{53}->{52}
+55[label="acceso | ",style=bold]
+{56}->{55}
+54[label="id | p",style=bold]
+{55}->{54}
+59[label="acceso | ",style=bold]
+{57}->{59}
+58[label="id | p",style=bold]
+{59}->{58}
 
 }

@@ -7,6 +7,7 @@ package ScriptCompiler;
 
 import Analizadores.Script.LexScript;
 import Analizadores.Script.SintacticoScript;
+import Ast_Generator.AST_Script;
 import Errores.ReporteError;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
@@ -46,6 +47,8 @@ public class Script extends Compilador {
                 sin.parse();
                 Nodo raizz = sin.getRoot();
                 if (raizz != null) {
+                    Ast_Generator.AST_Script ss = new AST_Script();
+                    ss.generacion_arbolScript(raizz);
                     Archivo archivo = new Archivo(nombre, raizz);
                     archivos.add(archivo);
                 }

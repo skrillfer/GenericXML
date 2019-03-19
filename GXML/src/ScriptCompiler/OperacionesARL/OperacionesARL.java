@@ -353,12 +353,14 @@ public class OperacionesARL {
 
     public Resultado operacionTernaria(Nodo raiz) {
         Resultado result = new Resultado("-1", null);
-        JOptionPane.showMessageDialog(null, "es operacion ternaria " + raiz.linea + "-" + raiz.columna);
+        //JOptionPane.showMessageDialog(null, "es operacion ternaria " + raiz.linea + "-" + raiz.columna);
         try {
-            Resultado condicion = ejecutar(raiz.hijos.get(0));
-            Resultado sentenciaV = ejecutar(raiz.hijos.get(1));
-            Resultado sentenciaF = ejecutar(raiz.hijos.get(2));
+            //JOptionPane.showMessageDialog(null, "1");
 
+            Resultado condicion = ejecutar(raiz.hijos.get(0));
+            
+
+            //JOptionPane.showMessageDialog(null, "2");
             if (condicion.tipo.equalsIgnoreCase("Integer")) {
                 if ((Integer) condicion.valor == 1) {
                     return new Resultado("Boolean", true);
@@ -366,10 +368,13 @@ public class OperacionesARL {
                     return new Resultado("Boolean", false);
                 }
             }
+            //JOptionPane.showMessageDialog(null, condicion.valor.toString());
             if (condicion.tipo.equalsIgnoreCase("Boolean")) {
                 if ((Boolean) condicion.valor) {
+                    Resultado sentenciaV = ejecutar(raiz.hijos.get(1));
                     return sentenciaV;
                 } else {
+                    Resultado sentenciaF = ejecutar(raiz.hijos.get(2));
                     return sentenciaF;
                 }
             } else {
