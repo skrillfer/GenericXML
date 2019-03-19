@@ -117,7 +117,11 @@ public class BotonGenerico extends JButton {
                                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Accion Referencia: La ventana con id " + nombre_ventana + " no existe ");
                                 }
                             } else {
-                                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La refencia del boton no es una llamada :" + referencia.toString());
+                                if(!llamada.nombre.equalsIgnoreCase("nulo"))
+                                {
+                                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La refencia del boton no es una llamada :" + referencia.toString());
+                                }
+                                
                             }
                         }
                     } else {

@@ -159,4 +159,14 @@ public class DesplegableGenerico extends JComboBox {
             return null;
         }
     }
+    
+    public String getSeleccionado()
+    {
+        try {
+            String s=String.valueOf(this.getSelectedItem());  //Assigns "Hello Nepal" to s.
+            return s;
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }

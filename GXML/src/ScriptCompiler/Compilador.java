@@ -238,7 +238,7 @@ public abstract class Compilador {
         return "";
     }
 
-    String obtenerTextoArchivo(File file) {
+    public String obtenerTextoArchivo(File file) {
         String texto = "";
         try {
             BufferedReader bufer = new BufferedReader(

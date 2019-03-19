@@ -349,5 +349,11 @@ public class CajaNumericaGenerica extends JPanel {
             return null;
         }
     }
+    
+    public String getTexto()
+    {
+        return caja.getText();
+    }
 
+    
 }

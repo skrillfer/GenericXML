@@ -32,6 +32,8 @@ import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -916,9 +918,77 @@ public class LlamadaMetodo extends Compilador {
                                     if (LTExp.size() == 0) {
                                         VentanaGenerica vt = (VentanaGenerica) clas.Componente;
                                         if (!vt.getName().equals("")) {
+                                            ArrayList<String> lista = new ArrayList<>();
                                             for (Object component : vt.getContentPane().getComponents()) {
-                                                System.out.println("->" + component.getClass().getSimpleName());
+                                                controlesRecursivos(lista, component, raiz);
                                             }
+
+                                            String contenidoGDATO = "";
+                                            String rutaBuena = existeArchivo(vt.getName() + ".gdato");
+                                            if (rutaBuena.equals("")) {
+                                                rutaBuena = vt.getName() + ".gdato";
+                                            }
+
+                                            Nodo r_GXML = null;
+                                            File file = new File(rutaBuena);
+
+                                            if (file.exists()) {
+                                                try {
+                                                    LexGdato lex = new LexGdato(new FileReader(rutaBuena));
+                                                    SintacticoGdato sin = new SintacticoGdato(lex);
+                                                    try {
+                                                        sin.parse();
+                                                        r_GXML = sin.getRoot();
+                                                    } catch (Exception e) {
+                                                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Erro al compilar archivo " + file.getName());
+                                                    }
+                                                } catch (FileNotFoundException ex) {
+                                                    Logger.getLogger(LlamadaMetodo.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+                                                if (r_GXML != null) {
+                                                    try {
+                                                        Nodo principales = r_GXML.get(1);
+                                                        for (Nodo principal : principales.hijos) {
+                                                            Nodo atributos = principal.get(0);
+
+                                                            contenidoGDATO += "\t<principal>\n";
+                                                            for (Nodo atributo : atributos.hijos) {
+                                                                Nodo etq = atributo.get(0);
+                                                                Nodo val = atributo.get(1);
+                                                                String txtVal = val.valor;
+                                                                if (val.nombre.equals("string_literal")) {
+                                                                    txtVal = "\"" + txtVal + "\"";
+                                                                }
+
+                                                                contenidoGDATO += "\t\t" + "<" + etq.nombre + ">" + txtVal + "</" + etq.nombre + ">\n";
+                                                            }
+                                                            contenidoGDATO += "\t</principal>\n";
+                                                        }
+                                                    } catch (Exception e) {
+                                                    }
+                                                    String tmp="";
+                                                    tmp += "<lista>\n";
+                                                    tmp += contenidoGDATO;
+                                                    tmp += "\t<principal>\n";
+                                                    for (String string : lista) {
+                                                        tmp += string;
+                                                    }
+                                                    tmp += "\t</principal>\n";
+                                                    tmp += "</lista>\n";
+                                                    contenidoGDATO = tmp;
+                                                }
+                                            } else {
+                                                contenidoGDATO += "<lista>\n";
+                                                contenidoGDATO += "\t<principal>\n";
+                                                for (String string : lista) {
+                                                    contenidoGDATO += string;
+                                                }
+                                                contenidoGDATO += "\t</principal>\n";
+                                                contenidoGDATO += "</lista>\n";
+                                            }
+
+                                            //Escribir Archivo gdato
+                                            escribir(rutaBuena, contenidoGDATO);
                                         } else {
                                             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "creararraydesdearchivo() ventana necesita un nombre para acceder/crear su gdato");
                                         }
@@ -2655,6 +2725,59 @@ public class LlamadaMetodo extends Compilador {
 
     }
 
+    public void controlesRecursivos(ArrayList<String> str, Object padre, Nodo raiz) {
+
+        String tipo = padre.getClass().getSimpleName().toLowerCase();
+        System.out.println("()=>" + tipo);
+        switch (tipo) {
+
+            case "panelgenerico":
+                PanelGenerico panel = (PanelGenerico) padre;
+                for (Object component : panel.getComponents()) {
+                    controlesRecursivos(str, component, raiz);
+                }
+                break;
+            case "cajatextogenerica":
+                CajaTextoGenerica cajaTxt = (CajaTextoGenerica) padre;
+                if (!cajaTxt.getName().equals("")) {
+                    str.add(generarGDato(cajaTxt.getText(), cajaTxt.getName()));
+                } else {
+                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
+                }
+                break;
+            case "areatextogenerica":
+                AreaTextoGenerica areaTxt = (AreaTextoGenerica) padre;
+                if (!areaTxt.getName().equals("")) {
+                    str.add(generarGDato(areaTxt.getText(), areaTxt.getName()));
+                } else {
+                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
+                }
+                break;
+            case "cajanumericagenerica":
+                CajaNumericaGenerica cajaNum = (CajaNumericaGenerica) padre;
+                if (!cajaNum.getName().equals("")) {
+                    str.add(generarGDato(cajaNum.getTexto(), cajaNum.getName()));
+                } else {
+                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
+                }
+                break;
+            case "desplegablegenerico":
+                DesplegableGenerico desple = (DesplegableGenerico) padre;
+                if (!desple.getName().equals("")) {
+                    str.add(generarGDato(desple.getSeleccionado(), desple.getName()));
+                } else {
+                    Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
+                }
+                break;
+            default:
+        }
+
+    }
+
+    public String generarGDato(String texto, String name) {
+        return "\t\t<" + name + ">" + texto + "</" + name + ">\n";
+    }
+
     public boolean esArreglo(Object valor) {
         try {
             Arreglo ar = (Arreglo) valor;
@@ -2664,6 +2787,28 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
+    public void escribir(String path,String cadena)
+    {
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter(path);
+            pw = new PrintWriter(fichero);
+            pw.println(cadena);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+    }
     public boolean esClase(Object valor) {
         try {
             Clase ar = (Clase) valor;
