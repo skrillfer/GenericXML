@@ -17,6 +17,7 @@ import ScriptCompiler.Compilador;
 import ScriptCompiler.Metodo;
 import ScriptCompiler.OperacionesARL.OperacionesARL;
 import ScriptCompiler.Resultado;
+import ScriptCompiler.Script;
 import ScriptCompiler.Simbolo;
 import ScriptCompiler.TablaSimbolo;
 import WRAPERS.AreaTextoGenerica;
@@ -765,10 +766,14 @@ public class LlamadaMetodo extends Compilador {
                                         /*for (Component component : vt.getContentPane().getComponents()) {
                                             System.out.println(component.getClass().getSimpleName());
                                         }*/
-
+                                        if (Script.VT_ACTUAL != null) {
+                                            Script.VT_ACTUAL.dispose();
+                                        }
+                                        Script.VT_ACTUAL = vt;
                                         vt.setLocationRelativeTo(null);
                                         vt.setVisible(true);
-                                        VT_ACTUAL = vt;
+                                        /*VT_ACTUAL.dispose();//Cierro ventana Actual
+                                        VT_ACTUAL = vt;//Seteo Ventana Actual*/
 
                                     }
                                 }
@@ -925,7 +930,7 @@ public class LlamadaMetodo extends Compilador {
                                             String contenidoGDATO = "";
                                             String rutaBuena = existeArchivo(vt.getName() + ".gdato");
                                             if (rutaBuena.equals("")) {
-                                                rutaBuena = PathRoot+"/"+vt.getName() + ".gdato";
+                                                rutaBuena = PathRoot + "/" + vt.getName() + ".gdato";
                                             }
 
                                             Nodo r_GXML = null;
@@ -965,7 +970,7 @@ public class LlamadaMetodo extends Compilador {
                                                         }
                                                     } catch (Exception e) {
                                                     }
-                                                    String tmp="";
+                                                    String tmp = "";
                                                     tmp += "<lista>\n";
                                                     tmp += contenidoGDATO;
                                                     tmp += "\t<principal>\n";
@@ -2786,28 +2791,28 @@ public class LlamadaMetodo extends Compilador {
         }
     }
 
-    public void escribir(String path,String cadena)
-    {
+    public void escribir(String path, String cadena) {
         FileWriter fichero = null;
         PrintWriter pw = null;
-        try
-        {
+        try {
             fichero = new FileWriter(path);
             pw = new PrintWriter(fichero);
             pw.println(cadena);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-           try {
-           // Nuevamente aprovechamos el finally para 
-           // asegurarnos que se cierra el fichero.
-           if (null != fichero)
-              fichero.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
-           }
+            try {
+                // Nuevamente aprovechamos el finally para 
+                // asegurarnos que se cierra el fichero.
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
     }
+
     public boolean esClase(Object valor) {
         try {
             Clase ar = (Clase) valor;

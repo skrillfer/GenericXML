@@ -109,9 +109,8 @@ public class BotonGenerico extends JButton {
                                     }*/
                                     if (Script.VT_ACTUAL != null) {
                                         Script.VT_ACTUAL.dispose();
-
-                                        Script.VT_ACTUAL = cargar;
                                     }
+                                    Script.VT_ACTUAL = cargar;
                                     cargar.setLocationRelativeTo(null);
                                     cargar.setVisible(true);
 
