@@ -100,7 +100,7 @@ public class Pestaña extends JPanel implements ActionListener {
             this.add(sp);
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error " + e.toString());
+            //JOptionPane.showMessageDialog(null, "Ocurrio un error " + e.toString());
         }
     }
 
@@ -116,7 +116,7 @@ public class Pestaña extends JPanel implements ActionListener {
             scheme.getStyle(Token.COMMENT_EOL).foreground = Color.GRAY;
             textArea.revalidate();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error " + e.toString());
+            //JOptionPane.showMessageDialog(null, "Ocurrio un error " + e.toString());
         }
     }
 
@@ -139,10 +139,10 @@ public class Pestaña extends JPanel implements ActionListener {
             context.setWholeWord(false);
             boolean found = SearchEngine.find(textArea, context);
             if (!found) {
-                JOptionPane.showMessageDialog(this, "Text not found");
+                //JOptionPane.showMessageDialog(this, "Text not found");
             }
         } catch (HeadlessException h) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error " + h.toString());
+            //JOptionPane.showMessageDialog(null, "Ocurrio un error " + h.toString());
         }
 
     }
@@ -151,7 +151,7 @@ public class Pestaña extends JPanel implements ActionListener {
         try {
             textArea.setText(contenido);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocurrio un error " + e.toString());
+            //JOptionPane.showMessageDialog(null, "Ocurrio un error " + e.toString());
         }
     }
 

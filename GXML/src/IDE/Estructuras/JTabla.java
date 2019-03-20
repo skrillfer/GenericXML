@@ -36,7 +36,7 @@ public class JTabla extends JTable {
             DefaultTableModel model = (DefaultTableModel) this.getModel();
             model.addRow(new Object[]{String.valueOf(linea), String.valueOf(columna), descripcion});
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            //JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 

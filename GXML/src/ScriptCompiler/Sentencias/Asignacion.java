@@ -122,7 +122,7 @@ public class Asignacion extends Compilador {
     }
 
     public Simbolo acceso(Nodo raiz) {
-        JOptionPane.showMessageDialog(null, "dame desde asignacion");
+        //JOptionPane.showMessageDialog(null, "dame desde asignacion");
         Clase aux = ScriptCompiler.Script.claseActual;
         TablaSimbolo tablaAux = tabla;
 

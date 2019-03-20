@@ -39,7 +39,6 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -258,7 +257,7 @@ public class LlamadaMetodo extends Compilador {
                                         Resultado res = (Resultado) dato;
                                         try {
                                             if (raiz.valor.toLowerCase().equals("reduce")) {
-                                                //JOptionPane.showMessageDialog(null, "soy reduce");
+                                                ////JOptionPane.showMessageDialog(null, "soy reduce");
 
                                                 if (contReduce == 0) {
                                                     params.add(res);
@@ -527,7 +526,7 @@ public class LlamadaMetodo extends Compilador {
                                             }
                                         }
                                     } catch (Exception e) {
-                                        JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
+                                        //JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
                                     }
                                 }
                             } catch (Exception e) {
@@ -536,7 +535,7 @@ public class LlamadaMetodo extends Compilador {
 
                         arr1.SETDIM();
                         ComponenteRes = new Resultado("", arr1);
-                        JOptionPane.showMessageDialog(null, arr1.getDatos().size());
+                        //JOptionPane.showMessageDialog(null, arr1.getDatos().size());
                         break;
                     case "obtenerporid":
                         Arreglo arrx1 = new Arreglo();
@@ -571,7 +570,7 @@ public class LlamadaMetodo extends Compilador {
                                             }
                                         }
                                     } catch (Exception e) {
-                                        JOptionPane.showMessageDialog(null, "obtener por id error:" + e.getMessage());
+                                        //JOptionPane.showMessageDialog(null, "obtener por id error:" + e.getMessage());
                                     }
                                 }
                             } catch (Exception e) {
@@ -635,7 +634,7 @@ public class LlamadaMetodo extends Compilador {
 
                                         }
                                     } catch (Exception e) {
-                                        JOptionPane.showMessageDialog(null, "obtener por id error:" + e.getMessage());
+                                        //JOptionPane.showMessageDialog(null, "obtener por id error:" + e.getMessage());
                                     }
                                 }
                             } catch (Exception e) {
@@ -651,42 +650,42 @@ public class LlamadaMetodo extends Compilador {
                         try {
                             crearContenedor();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearContenedor error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearContenedor error:" + e.getMessage());
                         }
                         break;
                     case "creartexto":
                         try {
                             crearTexto();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearTexto error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearTexto error:" + e.getMessage());
                         }
                         break;
                     case "crearcajatexto":
                         try {
                             crearCajaTexto();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearCajaTexto error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearCajaTexto error:" + e.getMessage());
                         }
                         break;
                     case "crearareatexto":
                         try {
                             crearAreaTexto();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearAreaTexto error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearAreaTexto error:" + e.getMessage());
                         }
                         break;
                     case "crearcontrolnumerico":
                         try {
                             crearControlNumerico();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearControlNumerico error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearControlNumerico error:" + e.getMessage());
                         }
                         break;
                     case "crearboton":
                         try {
                             crearBoton();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearBoton error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearBoton error:" + e.getMessage());
                         }
                         break;
                     case "crearreproductor":
@@ -696,14 +695,14 @@ public class LlamadaMetodo extends Compilador {
                         try {
                             crearReproductor();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearReproductor error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearReproductor error:" + e.getMessage());
                         }
                         break;
                     case "creardesplegable":
                         try {
                             crearDesplegable();
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "crearDesplegable error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "crearDesplegable error:" + e.getMessage());
                         }
                         break;
 
@@ -724,7 +723,7 @@ public class LlamadaMetodo extends Compilador {
 
                             }
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "alclic error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "alclic error:" + e.getMessage());
                         }
                         break;
                     case "alcargar":
@@ -776,7 +775,7 @@ public class LlamadaMetodo extends Compilador {
 
                             }
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "alcargar error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "alcargar error:" + e.getMessage());
                         }
                         break;
                     case "alcerrar":
@@ -798,7 +797,7 @@ public class LlamadaMetodo extends Compilador {
                                 }
                             }
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "alcerrar error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "alcerrar error:" + e.getMessage());
                         }
                         break;
 
@@ -823,7 +822,7 @@ public class LlamadaMetodo extends Compilador {
                                 }
                             }
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
                         }
                         arr1.SETDIM();
                         ComponenteRes = new Resultado("", arr1);
@@ -856,7 +855,7 @@ public class LlamadaMetodo extends Compilador {
                                 }
                             }
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "obtener por etiqueta error:" + e.getMessage());
                         }
 
                         break;
@@ -905,7 +904,7 @@ public class LlamadaMetodo extends Compilador {
                                 }
                             }
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "obtener por nombre error:" + e.getMessage());
+                            //JOptionPane.showMessageDialog(null, "obtener por nombre error:" + e.getMessage());
                         }
                         break;
                     case "creararraydesdearchivo":
@@ -940,7 +939,7 @@ public class LlamadaMetodo extends Compilador {
                                                         sin.parse();
                                                         r_GXML = sin.getRoot();
                                                     } catch (Exception e) {
-                                                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Erro al compilar archivo " + file.getName());
+                                                        Template.reporteError_CJS.agregar("Sintactico", raiz.linea, raiz.columna, "Erro al compilar archivo " + file.getName());
                                                     }
                                                 } catch (FileNotFoundException ex) {
                                                     Logger.getLogger(LlamadaMetodo.class.getName()).log(Level.SEVERE, null, ex);
@@ -1049,7 +1048,7 @@ public class LlamadaMetodo extends Compilador {
                                                 sin.parse();
                                                 r_GXML = sin.getRoot();
                                             } catch (Exception e) {
-                                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "Erro al compilar archivo " + nombre_);
+                                                Template.reporteError_CJS.agregar("Sintactico", EXP.linea, EXP.columna, "Erro al compilar archivo " + nombre_);
                                             }
                                         } catch (FileNotFoundException ex) {
                                             Logger.getLogger(LlamadaMetodo.class.getName()).log(Level.SEVERE, null, ex);
@@ -1072,7 +1071,7 @@ public class LlamadaMetodo extends Compilador {
                     }
                     arr.SETDIM();
                     res_nativas = new Resultado("", arr);
-                    JOptionPane.showMessageDialog(null, "termine perro");
+                    //JOptionPane.showMessageDialog(null, "termine perro");
                     break;
                 case "creararraydesdearchivo":
                     proceder = false;
@@ -1100,7 +1099,7 @@ public class LlamadaMetodo extends Compilador {
                                                 sin.parse();
                                                 r_GXML = sin.getRoot();
                                             } catch (Exception e) {
-                                                Template.reporteError_CJS.agregar("Semantico", EXP.linea, EXP.columna, "Erro al compilar archivo " + nombre_);
+                                                Template.reporteError_CJS.agregar("Sintactico", EXP.linea, EXP.columna, "Erro al compilar archivo " + nombre_);
                                             }
                                         } catch (FileNotFoundException ex) {
                                             Logger.getLogger(LlamadaMetodo.class.getName()).log(Level.SEVERE, null, ex);
@@ -1123,7 +1122,7 @@ public class LlamadaMetodo extends Compilador {
                     }
                     arrX.SETDIM();
                     res_nativas = new Resultado("", arrX);
-                    JOptionPane.showMessageDialog(null, "termine perro");
+                    //JOptionPane.showMessageDialog(null, "termine perro");
                     break;
             }
         }
@@ -2520,7 +2519,7 @@ public class LlamadaMetodo extends Compilador {
 
             if (n_Atributo.nombre.equalsIgnoreCase(nomATRIBUTO.toLowerCase()) && n_Valor.valor.equalsIgnoreCase(id.toLowerCase())) {
                 try {
-                    JOptionPane.showMessageDialog(null, "yeah");
+                    //JOptionPane.showMessageDialog(null, "yeah");
                     generarClase_de_NodoGXML(padre, arr, padre.nombre.toLowerCase());
                     return;
                 } catch (Exception e) {

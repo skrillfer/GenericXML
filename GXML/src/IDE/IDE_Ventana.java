@@ -629,7 +629,7 @@ public class IDE_Ventana extends JFrame {
             for (Component cmp2 : pesta.getComponents()) {
                 if ("scroll".equals(cmp2.getName())) {
                     RTextScrollPane scroll = (RTextScrollPane) cmp2;
-                    System.out.println(scroll.getTextArea().getText());
+                    //System.out.println(scroll.getTextArea().getText());
                     EscribirArchivo(pesta.path, scroll.getTextArea().getText());
 
                     String[] separado = pesta.getName().split("\\.");

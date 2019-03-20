@@ -30,7 +30,7 @@ public class Script extends Compilador {
     public Script(File[] files, String archivoActual, Template template, String path_root) {
         //EL ARCHIVO ACTUAL ES MI PRINCIPAL
         miTemplate = template;
-        PathRoot=path_root;
+        PathRoot = path_root;
         archivos = new ArrayList();
         listaVentanas = new ArrayList<>();
         reporteError_CJS = new ReporteError();
@@ -47,12 +47,12 @@ public class Script extends Compilador {
                 sin.parse();
                 Nodo raizz = sin.getRoot();
                 if (raizz != null) {
-                    
+
                     Archivo archivo = new Archivo(nombre, raizz);
                     archivos.add(archivo);
                 }
             } catch (Exception ex) {
-                System.err.println(ex.toString());
+                Template.reporteError_CJS.agregar("Sintactico", 0, 0, "Error al Parsear ["+nombre+"]" + ex.getMessage());
             }
             //}
         }
@@ -83,10 +83,8 @@ public class Script extends Compilador {
             //System.out.println(listaVentana.getPreferredSize().width + "-" + listaVentana.getPreferredSize().height);
             //listaVentana.getContentPane().setLayout(null);
 
-
             //listaVentana.pack();
             //listaVentana.setLayout(null);
-
             //listaVentana.setBounds(100, 10, listaVentana.getSize().width, listaVentana.getSize().height);
             //listaVentana.setLocationRelativeTo(null);
             //listaVentana.setVisible(true);
@@ -175,5 +173,4 @@ public class Script extends Compilador {
         return null;
     }
 
-    
 }

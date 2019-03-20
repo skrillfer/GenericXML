@@ -46,7 +46,7 @@ public class Template {
             sin.parse();
             tra.IniciarTraduccion(sin.getRoot(), padre.getParent());
         } catch (Exception e) {
-            Template.reporteError_CJS.agregar("Ejecucion", 0, 0, "Error al Parsear GXML a Fs:"+e.getMessage());
+            Template.reporteError_CJS.agregar("Sintactico", 0, 0, "Error al Parsear ["+nombreArchivoActual+"] GXML a Fs:"+e.getMessage());
         }
         tra.codigoScript = tra.codigoImports + tra.codigoScript;
         
