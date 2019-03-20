@@ -1164,6 +1164,7 @@ public class LlamadaMetodo extends Compilador {
         try {
             id = parametros.get(3);
         } catch (Exception e) {
+            id = new Resultado("$nulo", "nulo");
         }
         /*----------------###############################---------------------*/
 

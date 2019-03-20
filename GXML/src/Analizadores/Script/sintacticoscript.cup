@@ -3,12 +3,14 @@ package Analizadores.Script;
 import java_cup.runtime.*;
 import java.util.*;
 import Estructuras.Nodo;
+import INTERFAZ.Template;
 
 action code {:
     //se declaran variables globales etc.
         public int Index=1;
         public Nodo root = new Nodo();
-
+        public int lineaA = 0;
+        public int columnaA = 0;
 :}
 
 
@@ -34,8 +36,7 @@ parser code
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){ 
-        System.out.println("Error Sintáctico en la Línea " + (s.left) +
-        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+        Template.reporteError_CJS.agregar("Sintactico", action_obj.lineaA+1, action_obj.columnaA, "No se esperaba: " +s.value);
     } 
 
     /**
@@ -43,9 +44,7 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Error síntactico irrecuperable en la Línea " + 
-        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
-        " no reconocido."); 
+        Template.reporteError_CJS.agregar("Sintactico", action_obj.lineaA+1, action_obj.columnaA, "No se esperaba: " +s.value);
     }  
 :} 
 
@@ -139,17 +138,25 @@ I_NSTRUCCIONESF ::= I_NSTRUCCIONESF:r SENTENCIAF:h {:  r.add(h); RESULT = r;  :}
                         RESULT.add(h); 
                     :};
 
-SENTENCIAF      ::= DECLARA:g                {: g.nombre += "G"; RESULT = g; :}
-                   |FUNCION:g                {: RESULT = g; :}
-                   |SELECCIONA:X             {: RESULT = X; :}
-                   |SI:X                     {: RESULT = X; :}
-                   |DETENER:X                {: RESULT = X; :}
-                   |IMPRIMIR:X          pyc  {: RESULT = X; :}
-                   |RETORNAR:X          pyc  {: RESULT = X; :}
-                   |DETENER:X           pyc  {: RESULT = X; :}
-                   |ASIGNACION:X        pyc  {: RESULT = X; :}
-                   |ACCESO:X            pyc  {: RESULT = X; :} 
-                   |SIMPLIFICADA:X      pyc {: RESULT = X; :} ;
+SENTENCIAF      ::= DECLARA:X                 {: X.nombre += "G"; RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |FUNCION:X                 {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |SELECCIONA:X              {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |SI:X                      {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |DETENER:X                 {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |IMPRIMIR:X          pyc   {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |RETORNAR:X          pyc   {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |DETENER:X           pyc   {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |ASIGNACION:X        pyc   {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |ACCESO:X            pyc   {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :} 
+                   |SIMPLIFICADA:X      pyc   {: RESULT = X;                  this.lineaA =X.linea; this.columnaA =X.columna; :} 
+                   |error               pyc:v {: 
+                                                RESULT = parser.crearNodo("#error","",0,0); 
+                                                Template.reporteError_CJS.agregar("Sintactico", v.getLinea(), v.getColumna(), "Error Sintactico");
+                                              :}
+                   |error                     {: 
+                                                RESULT = parser.crearNodo("#error","",0,0); 
+                                                Template.reporteError_CJS.agregar("Sintactico", this.lineaA+1, this.columnaA, "Error Sintactico");
+                                              :};
 
 
 
@@ -302,16 +309,24 @@ I_NSTRUCCIONES ::= I_NSTRUCCIONES:R SENTENCIA:H {:  R.add(H); RESULT = R;  :}
                     RESULT.add(H); 
                  :};
 
-SENTENCIA      ::= DECLARA:g                {: RESULT = g; :}
-                   |SELECCIONA:X            {: RESULT = X; :}
-                   |SI:X                    {: RESULT = X; :}
-                   |DETENER:X               {: RESULT = X; :}
-                   |IMPRIMIR:X          pyc {: RESULT = X; :}
-                   |RETORNAR:X          pyc {: RESULT = X; :}
-                   |DETENER:X           pyc {: RESULT = X; :}
-                   |ASIGNACION:X        pyc {: RESULT = X; :}
-                   |ACCESO:X            pyc {: RESULT = X; :} 
-                   |SIMPLIFICADA:X      pyc {: RESULT = X; :} ;
+SENTENCIA      ::= DECLARA:X                {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |SELECCIONA:X            {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |SI:X                    {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |DETENER:X               {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |IMPRIMIR:X          pyc {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |RETORNAR:X          pyc {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |DETENER:X           pyc {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |ASIGNACION:X        pyc {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :}
+                   |ACCESO:X            pyc {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :} 
+                   |SIMPLIFICADA:X      pyc {: RESULT = X; this.lineaA =X.linea; this.columnaA =X.columna; :} 
+                   |error               pyc:v {: 
+                                                RESULT = parser.crearNodo("#error","",0,0); 
+                                                Template.reporteError_CJS.agregar("Sintactico", v.getLinea(), v.getColumna(), "Error Sintactico");
+                                              :}
+                   |error                     {: 
+                                                RESULT = parser.crearNodo("#error","",0,0); 
+                                                Template.reporteError_CJS.agregar("Sintactico", this.lineaA+1, this.columnaA, "Error Sintactico");
+                                              :};
 
 //*************************____Asignacion____***********************************
 ASIGNACION     ::= ACCESO:h1 TIPOASIG:h2 EXP:h3 

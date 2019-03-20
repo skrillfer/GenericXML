@@ -1,6 +1,6 @@
 package Analizadores.Script;
 
-
+import INTERFAZ.Template;
 import java.util.LinkedList;
 import java_cup.runtime.*;
 %%
@@ -157,4 +157,4 @@ comm_linea = ["/"] ["/"] [^\r\n]* [^\r\n]
 
 {LineTerminator} {/* ignorar */}
 {WhiteSpace} {/* ignorar */}
-. {System.out.println(yyline+","+yycolumn+"=["+yytext()+"],"+yychar); }
+. {Template.reporteError_CJS.agregar("Sintactico", yyline, yycolumn, "No se esperaba: " +yytext()+" - "+yychar); }

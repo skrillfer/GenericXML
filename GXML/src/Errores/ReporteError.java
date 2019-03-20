@@ -24,6 +24,7 @@ public class ReporteError {
                 }
                 break;
             case "sintactico":
+            case "lexico":    
                 try {
                     IDE.IDE_Ventana.tablaSintactico.addRow(tipo, linea, columna, descripcion);
                 } catch (Exception e) {

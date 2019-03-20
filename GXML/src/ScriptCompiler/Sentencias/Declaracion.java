@@ -196,13 +196,13 @@ public class Declaracion extends Compilador {
                     Simbolo simbolo = new Simbolo(tipo, nombre, "", RESULTADO);
                     simbolo.inicializado = INICIALIZADO;
                     if (!global.setSimbolo(simbolo)) {
-                        Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
+                        Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
                     }
                 } else {
                     Simbolo simbolo = new Simbolo("$nulo", nombre, "", "nulo");
                     simbolo.inicializado = true;//pero con nulo
                     if (!global.setSimbolo(simbolo)) {
-                        Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
+                        Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable " + nombre + " ya existe");
                     }
                 }
             } else {
@@ -276,12 +276,12 @@ public class Declaracion extends Compilador {
                     Simbolo simbolo = new Simbolo(tipo, nombre, "", RESULTADO);
                     simbolo.inicializado = INICIALIZADO;
                     if (!tabla.setSimbolo(simbolo)) {
-                        Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable LOCAL " + nombre + " ya existe");
+                        Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable LOCAL " + nombre + " ya existe");
                     }
                 } else {
                     Simbolo simbolo = new Simbolo(tipo, nombre, "", null);
                     if (!tabla.setSimbolo(simbolo)) {
-                        Template.reporteError_CJS.agregar("Error Semantico", nodoID.linea, nodoID.columna, "La variable LOCAL " + nombre + " ya existe");
+                        Template.reporteError_CJS.agregar("Semantico", nodoID.linea, nodoID.columna, "La variable LOCAL " + nombre + " ya existe");
                     }
                 }
             } else {
