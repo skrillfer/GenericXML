@@ -1,5 +1,749 @@
 digraph G {
 node[shape=Mrecord]
-0[label="null | null",style=bold]
+393[label="raiz | ",style=bold]
+1[label="imports | ",style=bold]
+{393}->{1}
+67[label="sentencias | ",style=bold]
+{393}->{67}
+65[label="funcion | ",style=bold]
+{67}->{65}
+66[label="id | ReporteAritmetico",style=bold]
+{65}->{66}
+2[label="parametros | ",style=bold]
+{65}->{2}
+12[label="sentencias | ",style=bold]
+{65}->{12}
+11[label="declaracionvar | ",style=bold]
+{12}->{11}
+3[label="list_id | ",style=bold]
+{11}->{3}
+4[label="id | contenido",style=bold]
+{3}->{4}
+10[label="asign | ",style=bold]
+{11}->{10}
+9[label="acceso | ",style=bold]
+{10}->{9}
+8[label="llamada | CrearArrayDesdeArchivo",style=bold]
+{9}->{8}
+7[label="lista_exp | ",style=bold]
+{8}->{7}
+6[label="string_literal | VentanaAritmetica.gdato",style=bold]
+{7}->{6}
+28[label="declaracionvar | ",style=bold]
+{12}->{28}
+13[label="list_id | ",style=bold]
+{28}->{13}
+14[label="id | TodoCorrecto",style=bold]
+{13}->{14}
+27[label="asign | ",style=bold]
+{28}->{27}
+16[label="acceso | ",style=bold]
+{27}->{16}
+15[label="id | contenido",style=bold]
+{16}->{15}
+21[label="llamada | filtrar",style=bold]
+{16}->{21}
+20[label="lista_exp | ",style=bold]
+{21}->{20}
+19[label="acceso | ",style=bold]
+{20}->{19}
+18[label="id | RevisionAritmetica",style=bold]
+{19}->{18}
+26[label="llamada | map",style=bold]
+{16}->{26}
+25[label="lista_exp | ",style=bold]
+{26}->{25}
+24[label="acceso | ",style=bold]
+{25}->{24}
+23[label="id | nombresAritmeticos",style=bold]
+{24}->{23}
+30[label="acceso | ",style=bold]
+{12}->{30}
+29[label="id | TodoCorrecto",style=bold]
+{30}->{29}
+33[label="llamada | Ascendente",style=bold]
+{30}->{33}
+32[label="envios | ",style=bold]
+{33}->{32}
+36[label="imprimir | ",style=bold]
+{12}->{36}
+35[label="lista_exp | ",style=bold]
+{36}->{35}
+34[label="string_literal | Los estudiantes que ganaron la evaluacion aritmetica son:",style=bold]
+{35}->{34}
+39[label="imprimir | ",style=bold]
+{12}->{39}
+38[label="lista_exp | ",style=bold]
+{39}->{38}
+37[label="string_literal | Verificar que esten ordenados alfabeticamente",style=bold]
+{38}->{37}
+41[label="acceso | ",style=bold]
+{12}->{41}
+40[label="id | TodoCorrecto",style=bold]
+{41}->{40}
+46[label="llamada | map",style=bold]
+{41}->{46}
+45[label="lista_exp | ",style=bold]
+{46}->{45}
+44[label="acceso | ",style=bold]
+{45}->{44}
+43[label="id | ImprimirGanadores",style=bold]
+{44}->{43}
+49[label="imprimir | ",style=bold]
+{12}->{49}
+48[label="lista_exp | ",style=bold]
+{49}->{48}
+47[label="string_literal | Verificar que esten ordenados alfabeticamente invertido",style=bold]
+{48}->{47}
+51[label="acceso | ",style=bold]
+{12}->{51}
+50[label="id | TodoCorrecto",style=bold]
+{51}->{50}
+54[label="llamada | Invertir",style=bold]
+{51}->{54}
+53[label="envios | ",style=bold]
+{54}->{53}
+56[label="acceso | ",style=bold]
+{12}->{56}
+55[label="id | TodoCorrecto",style=bold]
+{56}->{55}
+61[label="llamada | map",style=bold]
+{56}->{61}
+60[label="lista_exp | ",style=bold]
+{61}->{60}
+59[label="acceso | ",style=bold]
+{60}->{59}
+58[label="id | ImprimirGanadores",style=bold]
+{59}->{58}
+64[label="imprimir | ",style=bold]
+{12}->{64}
+63[label="lista_exp | ",style=bold]
+{64}->{63}
+62[label="string_literal | reporte aritmetica",style=bold]
+{63}->{62}
+137[label="funcion | ",style=bold]
+{67}->{137}
+138[label="id | ReporteHistorico",style=bold]
+{137}->{138}
+68[label="parametros | ",style=bold]
+{137}->{68}
+78[label="sentencias | ",style=bold]
+{137}->{78}
+77[label="declaracionvar | ",style=bold]
+{78}->{77}
+69[label="list_id | ",style=bold]
+{77}->{69}
+70[label="id | contenido",style=bold]
+{69}->{70}
+76[label="asign | ",style=bold]
+{77}->{76}
+75[label="acceso | ",style=bold]
+{76}->{75}
+74[label="llamada | CrearArrayDesdeArchivo",style=bold]
+{75}->{74}
+73[label="lista_exp | ",style=bold]
+{74}->{73}
+72[label="string_literal | VentanaHistoria.gdato",style=bold]
+{73}->{72}
+94[label="declaracionvar | ",style=bold]
+{78}->{94}
+79[label="list_id | ",style=bold]
+{94}->{79}
+80[label="id | TodoCorrecto",style=bold]
+{79}->{80}
+93[label="asign | ",style=bold]
+{94}->{93}
+82[label="acceso | ",style=bold]
+{93}->{82}
+81[label="id | contenido",style=bold]
+{82}->{81}
+87[label="llamada | filtrar",style=bold]
+{82}->{87}
+86[label="lista_exp | ",style=bold]
+{87}->{86}
+85[label="acceso | ",style=bold]
+{86}->{85}
+84[label="id | RevisionHistoria",style=bold]
+{85}->{84}
+92[label="llamada | map",style=bold]
+{82}->{92}
+91[label="lista_exp | ",style=bold]
+{92}->{91}
+90[label="acceso | ",style=bold]
+{91}->{90}
+89[label="id | nombresAritmeticos",style=bold]
+{90}->{89}
+97[label="imprimir | ",style=bold]
+{78}->{97}
+96[label="lista_exp | ",style=bold]
+{97}->{96}
+95[label="string_literal | El primer alumno en contestar todo buen fue ",style=bold]
+{96}->{95}
+113[label="declaracionvar | ",style=bold]
+{78}->{113}
+98[label="list_id | ",style=bold]
+{113}->{98}
+99[label="id | primero",style=bold]
+{98}->{99}
+112[label="asign | ",style=bold]
+{113}->{112}
+101[label="acceso | ",style=bold]
+{112}->{101}
+100[label="id | contenido",style=bold]
+{101}->{100}
+106[label="llamada | filtrar",style=bold]
+{101}->{106}
+105[label="lista_exp | ",style=bold]
+{106}->{105}
+104[label="acceso | ",style=bold]
+{105}->{104}
+103[label="id | RevisionHistoria",style=bold]
+{104}->{103}
+111[label="llamada | Buscar",style=bold]
+{101}->{111}
+110[label="lista_exp | ",style=bold]
+{111}->{110}
+109[label="acceso | ",style=bold]
+{110}->{109}
+108[label="id | BuscarHistoria",style=bold]
+{109}->{108}
+118[label="imprimir | ",style=bold]
+{78}->{118}
+117[label="lista_exp | ",style=bold]
+{118}->{117}
+115[label="acceso | ",style=bold]
+{117}->{115}
+114[label="id | primero",style=bold]
+{115}->{114}
+116[label="id | CTNombre",style=bold]
+{115}->{116}
+121[label="imprimir | ",style=bold]
+{78}->{121}
+120[label="lista_exp | ",style=bold]
+{121}->{120}
+119[label="string_literal | Todos Los estudiantes que ganaron la evaluacion de historia son: (Orden Descendente)",style=bold]
+{120}->{119}
+123[label="acceso | ",style=bold]
+{78}->{123}
+122[label="id | TodoCorrecto",style=bold]
+{123}->{122}
+126[label="llamada | Descendente",style=bold]
+{123}->{126}
+125[label="envios | ",style=bold]
+{126}->{125}
+128[label="acceso | ",style=bold]
+{78}->{128}
+127[label="id | TodoCorrecto",style=bold]
+{128}->{127}
+133[label="llamada | map",style=bold]
+{128}->{133}
+132[label="lista_exp | ",style=bold]
+{133}->{132}
+131[label="acceso | ",style=bold]
+{132}->{131}
+130[label="id | ImprimirGanadores",style=bold]
+{131}->{130}
+136[label="imprimir | ",style=bold]
+{78}->{136}
+135[label="lista_exp | ",style=bold]
+{136}->{135}
+134[label="string_literal | reporte historico",style=bold]
+{135}->{134}
+175[label="funcion | ",style=bold]
+{67}->{175}
+176[label="id | ReporteIngles",style=bold]
+{175}->{176}
+139[label="parametros | ",style=bold]
+{175}->{139}
+149[label="sentencias | ",style=bold]
+{175}->{149}
+148[label="declaracionvar | ",style=bold]
+{149}->{148}
+140[label="list_id | ",style=bold]
+{148}->{140}
+141[label="id | contenido",style=bold]
+{140}->{141}
+147[label="asign | ",style=bold]
+{148}->{147}
+146[label="acceso | ",style=bold]
+{147}->{146}
+145[label="llamada | CrearArrayDesdeArchivo",style=bold]
+{146}->{145}
+144[label="lista_exp | ",style=bold]
+{145}->{144}
+143[label="string_literal | VentanaIngles.gdato",style=bold]
+{144}->{143}
+160[label="imprimir | ",style=bold]
+{149}->{160}
+159[label="lista_exp | ",style=bold]
+{160}->{159}
+158[label="mas | ",style=bold]
+{159}->{158}
+150[label="string_literal | ¿Algun estudiante contesto mal el nombre del algoritmo ackermanm? ",style=bold]
+{158}->{150}
+152[label="acceso | ",style=bold]
+{158}->{152}
+151[label="id | contenido",style=bold]
+{152}->{151}
+157[label="llamada | Alguno",style=bold]
+{152}->{157}
+156[label="lista_exp | ",style=bold]
+{157}->{156}
+155[label="acceso | ",style=bold]
+{156}->{155}
+154[label="id | NombreAckerman",style=bold]
+{155}->{154}
+171[label="imprimir | ",style=bold]
+{149}->{171}
+170[label="lista_exp | ",style=bold]
+{171}->{170}
+169[label="mas | ",style=bold]
+{170}->{169}
+161[label="string_literal | ¿Todos los estudiantes contestaron correctamente Ackermann(3,11)? ",style=bold]
+{169}->{161}
+163[label="acceso | ",style=bold]
+{169}->{163}
+162[label="id | contenido",style=bold]
+{163}->{162}
+168[label="llamada | Todos",style=bold]
+{163}->{168}
+167[label="lista_exp | ",style=bold]
+{168}->{167}
+166[label="acceso | ",style=bold]
+{167}->{166}
+165[label="id | CalculoAckerman",style=bold]
+{166}->{165}
+174[label="imprimir | ",style=bold]
+{149}->{174}
+173[label="lista_exp | ",style=bold]
+{174}->{173}
+172[label="string_literal | reporte ingles",style=bold]
+{173}->{172}
+211[label="funcion | ",style=bold]
+{67}->{211}
+212[label="id | ReporteLogico",style=bold]
+{211}->{212}
+177[label="parametros | ",style=bold]
+{211}->{177}
+187[label="sentencias | ",style=bold]
+{211}->{187}
+186[label="declaracionvar | ",style=bold]
+{187}->{186}
+178[label="list_id | ",style=bold]
+{186}->{178}
+179[label="id | contenido",style=bold]
+{178}->{179}
+185[label="asign | ",style=bold]
+{186}->{185}
+184[label="acceso | ",style=bold]
+{185}->{184}
+183[label="llamada | CrearArrayDesdeArchivo",style=bold]
+{184}->{183}
+182[label="lista_exp | ",style=bold]
+{183}->{182}
+181[label="string_literal | VentanaLogica.gdato",style=bold]
+{182}->{181}
+190[label="imprimir | ",style=bold]
+{187}->{190}
+189[label="lista_exp | ",style=bold]
+{190}->{189}
+188[label="string_literal | Imprimiendo nombres de los estudiantes que saben par e impar",style=bold]
+{189}->{188}
+206[label="declaracionvar | ",style=bold]
+{187}->{206}
+191[label="list_id | ",style=bold]
+{206}->{191}
+192[label="id | concatenacion",style=bold]
+{191}->{192}
+205[label="asign | ",style=bold]
+{206}->{205}
+194[label="acceso | ",style=bold]
+{205}->{194}
+193[label="id | contenido",style=bold]
+{194}->{193}
+199[label="llamada | map",style=bold]
+{194}->{199}
+198[label="lista_exp | ",style=bold]
+{199}->{198}
+197[label="acceso | ",style=bold]
+{198}->{197}
+196[label="id | EstudiantesParidad",style=bold]
+{197}->{196}
+204[label="llamada | Reduce",style=bold]
+{194}->{204}
+203[label="lista_exp | ",style=bold]
+{204}->{203}
+202[label="acceso | ",style=bold]
+{203}->{202}
+201[label="id | ObtencionParidad",style=bold]
+{202}->{201}
+210[label="imprimir | ",style=bold]
+{187}->{210}
+209[label="lista_exp | ",style=bold]
+{210}->{209}
+208[label="acceso | ",style=bold]
+{209}->{208}
+207[label="id | concatenacion",style=bold]
+{208}->{207}
+240[label="funcion | ",style=bold]
+{67}->{240}
+241[label="id | RevisionAritmetica",style=bold]
+{240}->{241}
+213[label="parametros | ",style=bold]
+{240}->{213}
+214[label="parametro | item",style=bold]
+{213}->{214}
+239[label="sentencias | ",style=bold]
+{240}->{239}
+238[label="retorno | ",style=bold]
+{239}->{238}
+237[label="and | ",style=bold]
+{238}->{237}
+231[label="and | ",style=bold]
+{237}->{231}
+225[label="and | ",style=bold]
+{231}->{225}
+219[label="ig_ig | ",style=bold]
+{225}->{219}
+216[label="acceso | ",style=bold]
+{219}->{216}
+215[label="id | item",style=bold]
+{216}->{215}
+217[label="id | CPotencia",style=bold]
+{216}->{217}
+218[label="int_literal | 3125",style=bold]
+{219}->{218}
+224[label="ig_ig | ",style=bold]
+{225}->{224}
+221[label="acceso | ",style=bold]
+{224}->{221}
+220[label="id | item",style=bold]
+{221}->{220}
+222[label="id | CFactorial",style=bold]
+{221}->{222}
+223[label="int_literal | 5040",style=bold]
+{224}->{223}
+230[label="ig_ig | ",style=bold]
+{231}->{230}
+227[label="acceso | ",style=bold]
+{230}->{227}
+226[label="id | item",style=bold]
+{227}->{226}
+228[label="id | CInvertido",style=bold]
+{227}->{228}
+229[label="int_literal | 743032153",style=bold]
+{230}->{229}
+236[label="ig_ig | ",style=bold]
+{237}->{236}
+233[label="acceso | ",style=bold]
+{236}->{233}
+232[label="id | item",style=bold]
+{233}->{232}
+234[label="id | CFibonacci",style=bold]
+{233}->{234}
+235[label="int_literal | 4181",style=bold]
+{236}->{235}
+275[label="funcion | ",style=bold]
+{67}->{275}
+276[label="id | RevisionHistoria",style=bold]
+{275}->{276}
+242[label="parametros | ",style=bold]
+{275}->{242}
+243[label="parametro | item",style=bold]
+{242}->{243}
+274[label="sentencias | ",style=bold]
+{275}->{274}
+273[label="retorno | ",style=bold]
+{274}->{273}
+272[label="and | ",style=bold]
+{273}->{272}
+266[label="and | ",style=bold]
+{272}->{266}
+260[label="and | ",style=bold]
+{266}->{260}
+254[label="and | ",style=bold]
+{260}->{254}
+248[label="ig_ig | ",style=bold]
+{254}->{248}
+245[label="acceso | ",style=bold]
+{248}->{245}
+244[label="id | item",style=bold]
+{245}->{244}
+246[label="id | CDPaisaje1",style=bold]
+{245}->{246}
+247[label="string_literal | Playa",style=bold]
+{248}->{247}
+253[label="ig_ig | ",style=bold]
+{254}->{253}
+250[label="acceso | ",style=bold]
+{253}->{250}
+249[label="id | item",style=bold]
+{250}->{249}
+251[label="id | CDPaisaje2",style=bold]
+{250}->{251}
+252[label="string_literal | Luna",style=bold]
+{253}->{252}
+259[label="ig_ig | ",style=bold]
+{260}->{259}
+256[label="acceso | ",style=bold]
+{259}->{256}
+255[label="id | item",style=bold]
+{256}->{255}
+257[label="id | CDPaisaje3",style=bold]
+{256}->{257}
+258[label="string_literal | Selva",style=bold]
+{259}->{258}
+265[label="ig_ig | ",style=bold]
+{266}->{265}
+262[label="acceso | ",style=bold]
+{265}->{262}
+261[label="id | item",style=bold]
+{262}->{261}
+263[label="id | CDPaisaje4",style=bold]
+{262}->{263}
+264[label="string_literal | Desierto",style=bold]
+{265}->{264}
+271[label="ig_ig | ",style=bold]
+{272}->{271}
+268[label="acceso | ",style=bold]
+{271}->{268}
+267[label="id | item",style=bold]
+{268}->{267}
+269[label="id | CDPaisaje5",style=bold]
+{268}->{269}
+270[label="string_literal | Oceano",style=bold]
+{271}->{270}
+310[label="funcion | ",style=bold]
+{67}->{310}
+311[label="id | BuscarHistoria",style=bold]
+{310}->{311}
+277[label="parametros | ",style=bold]
+{310}->{277}
+278[label="parametro | item",style=bold]
+{277}->{278}
+309[label="sentencias | ",style=bold]
+{310}->{309}
+308[label="retorno | ",style=bold]
+{309}->{308}
+307[label="and | ",style=bold]
+{308}->{307}
+301[label="and | ",style=bold]
+{307}->{301}
+295[label="and | ",style=bold]
+{301}->{295}
+289[label="and | ",style=bold]
+{295}->{289}
+283[label="ig_ig | ",style=bold]
+{289}->{283}
+280[label="acceso | ",style=bold]
+{283}->{280}
+279[label="id | item",style=bold]
+{280}->{279}
+281[label="id | CDPaisaje1",style=bold]
+{280}->{281}
+282[label="string_literal | Playa",style=bold]
+{283}->{282}
+288[label="ig_ig | ",style=bold]
+{289}->{288}
+285[label="acceso | ",style=bold]
+{288}->{285}
+284[label="id | item",style=bold]
+{285}->{284}
+286[label="id | CDPaisaje2",style=bold]
+{285}->{286}
+287[label="string_literal | Luna",style=bold]
+{288}->{287}
+294[label="ig_ig | ",style=bold]
+{295}->{294}
+291[label="acceso | ",style=bold]
+{294}->{291}
+290[label="id | item",style=bold]
+{291}->{290}
+292[label="id | CDPaisaje3",style=bold]
+{291}->{292}
+293[label="string_literal | Selva",style=bold]
+{294}->{293}
+300[label="ig_ig | ",style=bold]
+{301}->{300}
+297[label="acceso | ",style=bold]
+{300}->{297}
+296[label="id | item",style=bold]
+{297}->{296}
+298[label="id | CDPaisaje4",style=bold]
+{297}->{298}
+299[label="string_literal | Desierto",style=bold]
+{300}->{299}
+306[label="ig_ig | ",style=bold]
+{307}->{306}
+303[label="acceso | ",style=bold]
+{306}->{303}
+302[label="id | item",style=bold]
+{303}->{302}
+304[label="id | CDPaisaje5",style=bold]
+{303}->{304}
+305[label="string_literal | Oceano",style=bold]
+{306}->{305}
+319[label="funcion | ",style=bold]
+{67}->{319}
+320[label="id | ImprimirGanadores",style=bold]
+{319}->{320}
+312[label="parametros | ",style=bold]
+{319}->{312}
+313[label="parametro | item",style=bold]
+{312}->{313}
+318[label="sentencias | ",style=bold]
+{319}->{318}
+317[label="imprimir | ",style=bold]
+{318}->{317}
+316[label="lista_exp | ",style=bold]
+{317}->{316}
+315[label="acceso | ",style=bold]
+{316}->{315}
+314[label="id | item",style=bold]
+{315}->{314}
+330[label="funcion | ",style=bold]
+{67}->{330}
+331[label="id | NombreAckerman",style=bold]
+{330}->{331}
+321[label="parametros | ",style=bold]
+{330}->{321}
+322[label="parametro | item",style=bold]
+{321}->{322}
+329[label="sentencias | ",style=bold]
+{330}->{329}
+328[label="retorno | ",style=bold]
+{329}->{328}
+327[label="dif | ",style=bold]
+{328}->{327}
+324[label="acceso | ",style=bold]
+{327}->{324}
+323[label="id | item",style=bold]
+{324}->{323}
+325[label="id | CTPregunta",style=bold]
+{324}->{325}
+326[label="string_literal | Ackermann",style=bold]
+{327}->{326}
+341[label="funcion | ",style=bold]
+{67}->{341}
+342[label="id | CalculoAckerman",style=bold]
+{341}->{342}
+332[label="parametros | ",style=bold]
+{341}->{332}
+333[label="parametro | item",style=bold]
+{332}->{333}
+340[label="sentencias | ",style=bold]
+{341}->{340}
+339[label="retorno | ",style=bold]
+{340}->{339}
+338[label="ig_ig | ",style=bold]
+{339}->{338}
+335[label="acceso | ",style=bold]
+{338}->{335}
+334[label="id | item",style=bold]
+{335}->{334}
+336[label="id | CAckerman",style=bold]
+{335}->{336}
+337[label="int_literal | 16381",style=bold]
+{338}->{337}
+370[label="funcion | ",style=bold]
+{67}->{370}
+371[label="id | EstudiantesParidad",style=bold]
+{370}->{371}
+343[label="parametros | ",style=bold]
+{370}->{343}
+344[label="parametro | item",style=bold]
+{343}->{344}
+369[label="sentencias | ",style=bold]
+{370}->{369}
+368[label="si | ",style=bold]
+{369}->{368}
+355[label="and | ",style=bold]
+{368}->{355}
+349[label="ig_ig | ",style=bold]
+{355}->{349}
+346[label="acceso | ",style=bold]
+{349}->{346}
+345[label="id | item",style=bold]
+{346}->{345}
+347[label="id | CTPar",style=bold]
+{346}->{347}
+348[label="string_literal | Par",style=bold]
+{349}->{348}
+354[label="ig_ig | ",style=bold]
+{355}->{354}
+351[label="acceso | ",style=bold]
+{354}->{351}
+350[label="id | item",style=bold]
+{351}->{350}
+352[label="id | CTImpar",style=bold]
+{351}->{352}
+353[label="string_literal | Impar",style=bold]
+{354}->{353}
+362[label="sentencias | ",style=bold]
+{368}->{362}
+361[label="retorno | ",style=bold]
+{362}->{361}
+360[label="mas | ",style=bold]
+{361}->{360}
+357[label="acceso | ",style=bold]
+{360}->{357}
+356[label="id | item",style=bold]
+{357}->{356}
+358[label="id | CTNombre",style=bold]
+{357}->{358}
+359[label="string_literal |   ",style=bold]
+{360}->{359}
+367[label="lista_sinosi | ",style=bold]
+{368}->{367}
+366[label="sino | ",style=bold]
+{367}->{366}
+365[label="sentencias | ",style=bold]
+{366}->{365}
+364[label="retorno | ",style=bold]
+{365}->{364}
+363[label="string_literal | ",style=bold]
+{364}->{363}
+382[label="funcion | ",style=bold]
+{67}->{382}
+383[label="id | ObtencionParidad",style=bold]
+{382}->{383}
+372[label="parametros | ",style=bold]
+{382}->{372}
+373[label="parametro | concatenado",style=bold]
+{372}->{373}
+374[label="parametro | item",style=bold]
+{372}->{374}
+381[label="sentencias | ",style=bold]
+{382}->{381}
+380[label="retorno | ",style=bold]
+{381}->{380}
+379[label="mas | ",style=bold]
+{380}->{379}
+376[label="acceso | ",style=bold]
+{379}->{376}
+375[label="id | concatenado",style=bold]
+{376}->{375}
+378[label="acceso | ",style=bold]
+{379}->{378}
+377[label="id | item",style=bold]
+{378}->{377}
+391[label="funcion | ",style=bold]
+{67}->{391}
+392[label="id | nombresAritmeticos",style=bold]
+{391}->{392}
+384[label="parametros | ",style=bold]
+{391}->{384}
+385[label="parametro | item",style=bold]
+{384}->{385}
+390[label="sentencias | ",style=bold]
+{391}->{390}
+389[label="retorno | ",style=bold]
+{390}->{389}
+387[label="acceso | ",style=bold]
+{389}->{387}
+386[label="id | item",style=bold]
+{387}->{386}
+388[label="id | CTNombre",style=bold]
+{387}->{388}
 
 }

@@ -18,6 +18,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.JButton;
 
@@ -39,7 +40,8 @@ public class BotonGenerico extends JButton {
     Fuente, Tamaño, Color, X, Y,Referencia, valor, Alto, Ancho    
      */
     public Object referencia = null;
-    public Object click = null;
+    public ArrayList<Object> LTclick = new ArrayList<>();
+
     Nodo raiz;
 
     public BotonGenerico(Nodo raiz) {
@@ -48,18 +50,19 @@ public class BotonGenerico extends JButton {
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                if (click != null) {
-                    if (click.getClass().getSimpleName().equalsIgnoreCase("nodo")) {
-                        Nodo llamada = (Nodo) click;
-                        if (llamada.nombre.equalsIgnoreCase("acceso")) {
-                            opL = new OperacionesARL(global, tabla, miTemplate);
-                            opL.ejecutar(llamada);
+                for (Object click : LTclick) {
+                    if (click != null) {
+                        if (click.getClass().getSimpleName().equalsIgnoreCase("nodo")) {
+                            Nodo llamada = (Nodo) click;
+                            if (llamada.nombre.equalsIgnoreCase("acceso")) {
+                                opL = new OperacionesARL(global, tabla, miTemplate);
+                                opL.ejecutar(llamada);
+                            } else {
+                                Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El click del boton no es una llamada :" + click.toString());
+                            }
                         } else {
-                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El click del boton no es una llamada :" + click.toString());
+                            Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El click del boton es incorrecta:" + click.toString());
                         }
-                    } else {
-                        Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "El click del boton es incorrecta:" + click.toString());
                     }
                 }
 
@@ -100,14 +103,13 @@ public class BotonGenerico extends JButton {
                                         }
                                         cargar.setBounds(100, 10, maxWidth, maxHeigth);
                                     }
-                                    
+
                                     /*for (Component component : cargar.getContentPane().getComponents()) {
                                         System.out.println(component.getClass().getSimpleName());
                                     }*/
-
                                     if (Script.VT_ACTUAL != null) {
                                         Script.VT_ACTUAL.dispose();
-                                        
+
                                         Script.VT_ACTUAL = cargar;
                                     }
                                     cargar.setLocationRelativeTo(null);
@@ -117,11 +119,10 @@ public class BotonGenerico extends JButton {
                                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Accion Referencia: La ventana con id " + nombre_ventana + " no existe ");
                                 }
                             } else {
-                                if(!llamada.nombre.equalsIgnoreCase("nulo"))
-                                {
+                                if (!llamada.nombre.equalsIgnoreCase("nulo")) {
                                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "La refencia del boton no es una llamada :" + referencia.toString());
                                 }
-                                
+
                             }
                         }
                     } else {
@@ -236,7 +237,8 @@ public class BotonGenerico extends JButton {
             return;
         }
         try {
-            this.click = clik;
+            LTclick.add(clik);
+            //this.click = clik;
         } catch (Exception e) {
             Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Error al setear AlClic [" + clik.toString() + "] en Boton " + this.getName());
         }
