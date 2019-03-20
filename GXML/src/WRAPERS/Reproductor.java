@@ -8,6 +8,7 @@ package WRAPERS;
 import Estructuras.Nodo;
 import INTERFAZ.Template;
 import ScriptCompiler.Clase;
+import ScriptCompiler.Compilador;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -98,6 +99,10 @@ public class Reproductor extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!yainicio) {
+                        String rutabuena = existeArchivo(ruta);
+                        if (!rutabuena.equals("")) {
+                            ruta = rutabuena;
+                        }
                         File file = new File(ruta);
                         if (file.exists()) {
                             mediaPlayer.playMedia(ruta);
@@ -120,7 +125,7 @@ public class Reproductor extends JPanel {
                 }
             }
         });
-        
+
         this.addAncestorListener(new AncestorListener() {
 
             @Override
@@ -139,9 +144,8 @@ public class Reproductor extends JPanel {
             }
         });
     }
-    
-    public void setearClasse(Clase classe)
-    {
+
+    public void setearClasse(Clase classe) {
         this.classe = classe;
     }
 
@@ -149,6 +153,10 @@ public class Reproductor extends JPanel {
 
         if (auto) {
             yainicio = true;
+            String rutabuena = existeArchivo(this.ruta);
+            if (!rutabuena.equals("")) {
+                this.ruta = rutabuena;
+            }
             File file = new File(this.ruta);
             if (file.exists()) {
                 mediaPlayer.playMedia(this.ruta);
@@ -163,8 +171,9 @@ public class Reproductor extends JPanel {
     }
 
     public void setX(Object x) {
-        if(x.toString().equals("nulo"))
+        if (x.toString().equals("nulo")) {
             return;
+        }
         try {
             this.setLocation(castToInt(x), this.getLocation().y);
         } catch (Exception e) {
@@ -173,8 +182,9 @@ public class Reproductor extends JPanel {
     }
 
     public void setY(Object y) {
-        if(y.toString().equals("nulo"))
+        if (y.toString().equals("nulo")) {
             return;
+        }
         try {
             this.setLocation(this.getLocation().x, castToInt(y));
         } catch (Exception e) {
@@ -183,8 +193,9 @@ public class Reproductor extends JPanel {
     }
 
     public void setAutoReproduccion(Object check) {
-        if(check.toString().equals("nulo"))
+        if (check.toString().equals("nulo")) {
             return;
+        }
         try {
             this.auto = castToBoolean(check);
         } catch (Exception e) {
@@ -193,8 +204,9 @@ public class Reproductor extends JPanel {
     }
 
     public void setAncho(Object ancho) {
-        if(ancho.toString().equals("nulo"))
+        if (ancho.toString().equals("nulo")) {
             return;
+        }
         try {
             setPreferredSize(new Dimension(castToInt(ancho), getPreferredSize().height));
         } catch (Exception e) {
@@ -204,8 +216,9 @@ public class Reproductor extends JPanel {
     }
 
     public void setAlto(Object alto) {
-        if(alto.toString().equals("nulo"))
+        if (alto.toString().equals("nulo")) {
             return;
+        }
         try {
             setPreferredSize(new Dimension(getPreferredSize().width, castToInt(alto)));
         } catch (Exception e) {
@@ -236,5 +249,31 @@ public class Reproductor extends JPanel {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    public String existeArchivo(String path) {
+        String pathPadre = Compilador.PathRoot;
+
+        File file1 = new File(pathPadre + "" + path);
+        File file2 = new File(pathPadre + "/" + path);
+        File file3 = new File(path);
+        File file4 = new File("/" + path);
+
+        if (file1.exists()) {
+            return file1.getAbsolutePath();
+        }
+
+        if (file2.exists()) {
+            return file2.getAbsolutePath();
+        }
+
+        if (file3.exists()) {
+            return file3.getAbsolutePath();
+        }
+
+        if (file4.exists()) {
+            return file4.getAbsolutePath();
+        }
+        return "";
     }
 }
