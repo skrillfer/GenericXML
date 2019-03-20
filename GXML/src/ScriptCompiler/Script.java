@@ -47,8 +47,7 @@ public class Script extends Compilador {
                 sin.parse();
                 Nodo raizz = sin.getRoot();
                 if (raizz != null) {
-                    Ast_Generator.AST_Script ss = new AST_Script();
-                    ss.generacion_arbolScript(raizz);
+                    
                     Archivo archivo = new Archivo(nombre, raizz);
                     archivos.add(archivo);
                 }
