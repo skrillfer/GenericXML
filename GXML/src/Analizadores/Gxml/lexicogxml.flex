@@ -1,6 +1,7 @@
 
 package Analizadores.Gxml;
 
+import INTERFAZ.Template;
 
 import java.util.LinkedList;
 import java_cup.runtime.*;
@@ -142,4 +143,4 @@ HAY que preguntar sobre BOTON
 
 {LineTerminator} {/* ignorar */}
 {WhiteSpace} {/* ignorar */}
-. {System.err.println(yyline+","+yycolumn+"=["+yytext()+"],"+yychar); }
+. {Template.reporteError_CJS.agregar("Lexico", yyline, yycolumn, "Lexico : No se esperaba el token " +yytext()+" - "+yychar); }

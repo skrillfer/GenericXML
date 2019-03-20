@@ -3,13 +3,15 @@ package Analizadores.Gxml;
 import java_cup.runtime.*;
 import java.util.*;
 import Estructuras.Nodo;
+import INTERFAZ.Template;
 
 
 action code {:
     //se declaran variables globales etc.
         public int Index=1;
         public Nodo root = new Nodo();
-
+        public int lineaA = 0;
+        public int columnaA = 0;
 :}
 
 parser code 
@@ -58,8 +60,7 @@ parser code
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){ 
-        System.out.println("Error Sintáctico en la Línea " + (s.left) +
-        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+        Template.reporteError_CJS.agregar("Sintactico", action_obj.lineaA+1, action_obj.columnaA, "No se esperaba: " +s.value);
     } 
 
     /**
@@ -67,9 +68,7 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Error síntactico irrecuperable en la Línea " + 
-        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
-        " no reconocido."); 
+        Template.reporteError_CJS.agregar("Sintactico", action_obj.lineaA+1, action_obj.columnaA, "No se esperaba: " +s.value);
     }  
 :} 
 
@@ -127,13 +126,26 @@ VENTANAS    ::= {:  RESULT = parser.crearNodo("ventanas","",0,0);    :}
 
 L_VENTANAS  ::= L_VENTANAS:r VENTANAX:h
                {:
-                    r.add(h);
+                    if(h.nombre.equals("#error"))
+                    {
+                        Template.reporteError_CJS.agregar("Sintactico", this.lineaA, this.columnaA, "Error Sintactico");  
+                    }else
+                    {
+                        r.add(h);
+                    }
                     RESULT = r;
                :}
                |VENTANAX:h
                {:
                     RESULT = parser.crearNodo("ventanas","",h.linea,h.columna);
-                    RESULT.add(h);
+                    if(h.nombre.equals("#error"))
+                    {
+                        Template.reporteError_CJS.agregar("Sintactico", this.lineaA, this.columnaA, "Error Sintactico");  
+                    }else
+                    {
+                        RESULT.add(h);
+                    }
+                    
                :};
 
 
@@ -143,7 +155,7 @@ VENTANAX    ::= ventanaA1:m LIST_ATTSTART:h1 explicit:h2 CONTENIDOVENTANA:h3
                     RESULT.add(h1);
                     RESULT.add(parser.crearNodo("explicit",h2.getCadena(),h2.getLinea(),h2.getColumna()));
                     RESULT.add(h3);
-               :};
+               :}|error {: RESULT = parser.crearNodo("#error","",0,0);  :};
                 
 
 CONTENIDOVENTANA ::=   CONTENIDOCUERPO:r menq div ventanaF1  {:RESULT = r; :}
@@ -157,7 +169,7 @@ CONTENIDOCUERPO  ::= CONTENIDOCUERPO:r ETIQUETASforma2:h
                    {:
                         if(h.nombre.equals("#error"))
                         {
-                            System.out.println("Error Sintactico en la linea:"+h.linea+" columna "+ h.columna);
+                            Template.reporteError_CJS.agregar("Sintactico", this.lineaA, this.columnaA, "Error Sintactico");  
                         }else
                         {
                             r.add(h);   
@@ -170,7 +182,7 @@ CONTENIDOCUERPO  ::= CONTENIDOCUERPO:r ETIQUETASforma2:h
 
                         if(h.nombre.equals("#error"))
                         {
-                            System.out.println("Error Sintactico en la linea:"+h.linea+" columna "+ h.columna);
+                            Template.reporteError_CJS.agregar("Sintactico", this.lineaA, this.columnaA, "Error Sintactico");  
                         }else
                         {
                             RESULT.add(h);
@@ -179,6 +191,7 @@ CONTENIDOCUERPO  ::= CONTENIDOCUERPO:r ETIQUETASforma2:h
    
 ETIQUETASforma2  ::= textoA1:m          LIST_ATTSTART:h explicit:e textoF1
                     {: 
+                        this.lineaA =m.getLinea(); this.columnaA =m.getColumna();
                         RESULT = parser.crearNodo("texto","texto",m.getLinea(),m.getColumna()); 
                         
                         String cad = e.getCadena();
@@ -198,6 +211,7 @@ ETIQUETASforma2  ::= textoA1:m          LIST_ATTSTART:h explicit:e textoF1
                      :}
                     |controlA1:m        LIST_ATTSTART:h explicit:e CONTENIDOControl:R      
                     {: 
+                        this.lineaA =m.getLinea(); this.columnaA =m.getColumna();
                         RESULT = parser.crearNodo("control","control",m.getLinea(),m.getColumna()); 
 
                         String cad = e.getCadena();
@@ -217,17 +231,18 @@ ETIQUETASforma2  ::= textoA1:m          LIST_ATTSTART:h explicit:e textoF1
                         RESULT.add(parser.crearNodo("explicit",cad,e.getLinea(),e.getColumna())); 
                         RESULT.add(R); 
                     :}
-                    |datoA1:m           LIST_ATTSTART:h explicit:e datoF1                  {: RESULT = parser.crearNodo("dato","dato",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
-                    |defectoA1:m        LIST_ATTSTART:h explicit:e defectoF1               {: RESULT = parser.crearNodo("defecto","defecto",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
-                    |botonA1:m          LIST_ATTSTART:h explicit:e CONTENIDOBoton:R        {: RESULT = parser.crearNodo("boton","boton",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
-                    |listadatosA1:m     LIST_ATTSTART:h explicit:e CONTENIDOListaDatos:R   {: RESULT = parser.crearNodo("listadatos","listadatos",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
-                    |enviarA1:m         LIST_ATTSTART:h explicit:e CONTENIDOEnviar:R       {: RESULT = parser.crearNodo("enviar","enviar",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
-                    |multimediaA1:m     LIST_ATTSTART:h explicit:e multimediaF1            {: RESULT = parser.crearNodo("multimedia","multimedia",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
-                    |contenedorA1:m     LIST_ATTSTART:h explicit:e CONTENIDOContenedor:R   {: RESULT = parser.crearNodo("contenedor","contenedor",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
+                    |datoA1:m           LIST_ATTSTART:h explicit:e datoF1                  {: RESULT = parser.crearNodo("dato","dato",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna()));                              this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |defectoA1:m        LIST_ATTSTART:h explicit:e defectoF1               {: RESULT = parser.crearNodo("defecto","defecto",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna()));                        this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |botonA1:m          LIST_ATTSTART:h explicit:e CONTENIDOBoton:R        {: RESULT = parser.crearNodo("boton","boton",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);             this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |listadatosA1:m     LIST_ATTSTART:h explicit:e CONTENIDOListaDatos:R   {: RESULT = parser.crearNodo("listadatos","listadatos",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);   this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |enviarA1:m         LIST_ATTSTART:h explicit:e CONTENIDOEnviar:R       {: RESULT = parser.crearNodo("enviar","enviar",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);           this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |multimediaA1:m     LIST_ATTSTART:h explicit:e multimediaF1            {: RESULT = parser.crearNodo("multimedia","multimedia",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna()));                  this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |contenedorA1:m     LIST_ATTSTART:h explicit:e CONTENIDOContenedor:R   {: RESULT = parser.crearNodo("contenedor","contenedor",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);   this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
                     |error {:  RESULT = parser.crearNodo("#error","",0,0);  :}; 
 
 ETIQUETASforma1  ::= textoA2:m          LIST_ATTSTART:h explicit:e textoF1                 
                     {: 
+                        this.lineaA =m.getLinea(); this.columnaA =m.getColumna();
                         RESULT = parser.crearNodo("texto","texto",m.getLinea(),m.getColumna()); 
    
                         String cad = e.getCadena();
@@ -246,6 +261,7 @@ ETIQUETASforma1  ::= textoA2:m          LIST_ATTSTART:h explicit:e textoF1
                         RESULT.add(parser.crearNodo("explicit",cad,e.getLinea(),e.getColumna())); :}
                     |controlA2:m        LIST_ATTSTART:h explicit:e CONTENIDOControl:R      
                     {: 
+                        this.lineaA =m.getLinea(); this.columnaA =m.getColumna();
                         RESULT = parser.crearNodo("control","control",m.getLinea(),m.getColumna()); 
                             
                         String cad = e.getCadena();
@@ -264,13 +280,13 @@ ETIQUETASforma1  ::= textoA2:m          LIST_ATTSTART:h explicit:e textoF1
                         RESULT.add(parser.crearNodo("explicit",cad,e.getLinea(),e.getColumna())); 
                         RESULT.add(R); 
                     :}
-                    |datoA2:m           LIST_ATTSTART:h explicit:e datoF1                  {: RESULT = parser.crearNodo("dato","dato",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
-                    |defectoA2:m        LIST_ATTSTART:h explicit:e defectoF1               {: RESULT = parser.crearNodo("defecto","defecto",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
-                    |botonA2:m          LIST_ATTSTART:h explicit:e CONTENIDOBoton:R        {: RESULT = parser.crearNodo("boton","boton",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
-                    |listadatosA2:m     LIST_ATTSTART:h explicit:e CONTENIDOListaDatos:R   {: RESULT = parser.crearNodo("listadatos","listadatos",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
-                    |enviarA2:m         LIST_ATTSTART:h explicit:e CONTENIDOEnviar:R       {: RESULT = parser.crearNodo("enviar","enviar",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
-                    |multimediaA2:m     LIST_ATTSTART:h explicit:e multimediaF1            {: RESULT = parser.crearNodo("multimedia","multimedia",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); :}
-                    |contenedorA2:m     LIST_ATTSTART:h explicit:e CONTENIDOContenedor:R   {: RESULT = parser.crearNodo("contenedor","contenedor",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R); :}
+                    |datoA2:m           LIST_ATTSTART:h explicit:e datoF1                  {: RESULT = parser.crearNodo("dato","dato",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna()));                              this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |defectoA2:m        LIST_ATTSTART:h explicit:e defectoF1               {: RESULT = parser.crearNodo("defecto","defecto",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna()));                        this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |botonA2:m          LIST_ATTSTART:h explicit:e CONTENIDOBoton:R        {: RESULT = parser.crearNodo("boton","boton",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);             this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |listadatosA2:m     LIST_ATTSTART:h explicit:e CONTENIDOListaDatos:R   {: RESULT = parser.crearNodo("listadatos","listadatos",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);   this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |enviarA2:m         LIST_ATTSTART:h explicit:e CONTENIDOEnviar:R       {: RESULT = parser.crearNodo("enviar","enviar",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);           this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |multimediaA2:m     LIST_ATTSTART:h explicit:e multimediaF1            {: RESULT = parser.crearNodo("multimedia","multimedia",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna()));                  this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+                    |contenedorA2:m     LIST_ATTSTART:h explicit:e CONTENIDOContenedor:R   {: RESULT = parser.crearNodo("contenedor","contenedor",m.getLinea(),m.getColumna()); RESULT.add(h); RESULT.add(parser.crearNodo("explicit",e.getCadena(),e.getLinea(),e.getColumna())); RESULT.add(R);   this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
                     |error {:  RESULT = parser.crearNodo("#error","",0,0);  :}; 
  
 /*-----------------CONTENIDO DE ENVIAR --------------------------------*/
@@ -305,7 +321,7 @@ LIST_ATTS      ::= LIST_ATTS:m ATT:n
                   {:
                         if(n.nombre.equals("#error"))
                         {
-                            System.out.println("Error Sintactico en la linea:"+n.linea+" columna "+ n.columna);
+                            Template.reporteError_CJS.agregar("Sintactico", this.lineaA, this.columnaA, "Error Sintactico");  
                         }else
                         {
                             m.add(n);
@@ -318,7 +334,7 @@ LIST_ATTS      ::= LIST_ATTS:m ATT:n
                         RESULT = parser.crearNodo("atributos","",m.linea,m.columna); 
                         if(m.nombre.equals("#error"))
                         {
-                            System.out.println("Error Sintactico en la linea:"+m.linea+" columna "+ m.columna);
+                            Template.reporteError_CJS.agregar("Sintactico", this.lineaA, this.columnaA, "Error Sintactico");  
                         }else
                         {
                             RESULT.add(m); 
@@ -333,38 +349,38 @@ ATT            ::= ATRIBUTO:m   igual:v VALOR:n
                         if(n.nombre.equals("#error"))
                         {
                             n.nombre = "string_literal";
-                            System.out.println("Error Sintactico en la linea:"+v.getLinea()+" columna "+ v.getColumna());
+                            Template.reporteError_CJS.agregar("Sintactico", v.getLinea(), v.getColumna(), "Error Sintactico");
                         }
                         RESULT.add(n);
                    :};
 
-ATRIBUTO   ::= id:m                {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |tipo:m             {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |accionini:m        {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |accionfin:m        {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |x:m                {:  RESULT = parser.crearNodo("x",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |y:m                {:  RESULT = parser.crearNodo("y",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |alto:m             {:  RESULT = parser.crearNodo("alto",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |ancho:m            {:  RESULT = parser.crearNodo("ancho",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |borde:m            {:  RESULT = parser.crearNodo("borde",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |nombre:m           {:  RESULT = parser.crearNodo("nombre",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |fuente:m           {:  RESULT = parser.crearNodo("fuente",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |tam:m              {:  RESULT = parser.crearNodo("tam",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |color:m            {:  RESULT = parser.crearNodo("color",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |negrita:m          {:  RESULT = parser.crearNodo("negrita",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |cursiva:m          {:  RESULT = parser.crearNodo("cursiva",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |maximo:m           {:  RESULT = parser.crearNodo("maximo",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |minimo:m           {:  RESULT = parser.crearNodo("minimo",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |accion:m           {:  RESULT = parser.crearNodo("accion",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |referencia:m       {:  RESULT = parser.crearNodo("referencia",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |path:m             {:  RESULT = parser.crearNodo("path",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |autorepro:m        {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  :}
+ATRIBUTO   ::= id:m                {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |tipo:m             {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |accionini:m        {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |accionfin:m        {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |x:m                {:  RESULT = parser.crearNodo("x",m.getCadena(),m.getLinea(),m.getColumna());            this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |y:m                {:  RESULT = parser.crearNodo("y",m.getCadena(),m.getLinea(),m.getColumna());            this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |alto:m             {:  RESULT = parser.crearNodo("alto",m.getCadena(),m.getLinea(),m.getColumna());         this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |ancho:m            {:  RESULT = parser.crearNodo("ancho",m.getCadena(),m.getLinea(),m.getColumna());        this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |borde:m            {:  RESULT = parser.crearNodo("borde",m.getCadena(),m.getLinea(),m.getColumna());        this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |nombre:m           {:  RESULT = parser.crearNodo("nombre",m.getCadena(),m.getLinea(),m.getColumna());       this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |fuente:m           {:  RESULT = parser.crearNodo("fuente",m.getCadena(),m.getLinea(),m.getColumna());       this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |tam:m              {:  RESULT = parser.crearNodo("tam",m.getCadena(),m.getLinea(),m.getColumna());          this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |color:m            {:  RESULT = parser.crearNodo("color",m.getCadena(),m.getLinea(),m.getColumna());        this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |negrita:m          {:  RESULT = parser.crearNodo("negrita",m.getCadena(),m.getLinea(),m.getColumna());      this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |cursiva:m          {:  RESULT = parser.crearNodo("cursiva",m.getCadena(),m.getLinea(),m.getColumna());      this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |maximo:m           {:  RESULT = parser.crearNodo("maximo",m.getCadena(),m.getLinea(),m.getColumna());       this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |minimo:m           {:  RESULT = parser.crearNodo("minimo",m.getCadena(),m.getLinea(),m.getColumna());       this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |accion:m           {:  RESULT = parser.crearNodo("accion",m.getCadena(),m.getLinea(),m.getColumna());       this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |referencia:m       {:  RESULT = parser.crearNodo("referencia",m.getCadena(),m.getLinea(),m.getColumna());   this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |path:m             {:  RESULT = parser.crearNodo("path",m.getCadena(),m.getLinea(),m.getColumna());         this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
+               |autorepro:m        {:  RESULT = parser.crearNodo(m.getCadena(),m.getCadena(),m.getLinea(),m.getColumna());  this.lineaA =m.getLinea(); this.columnaA =m.getColumna(); :}
                |error              {:  RESULT = parser.crearNodo("#error","",0,0);  :};  
 
-VALOR      ::=  string_literal:m   {:  RESULT = parser.crearNodo("string_literal",m.getCadena().substring(1, m.getCadena().length()-1),m.getLinea(),m.getColumna());  :}
-               |int_literal:m      {:  RESULT = parser.crearNodo("int_literal",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |double_literal:m   {:  RESULT = parser.crearNodo("double_literal",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |bool_literal:m     {:  RESULT = parser.crearNodo("bool_literal",m.getCadena(),m.getLinea(),m.getColumna());  :}
-               |event:m            {:  RESULT = parser.crearNodo("event",m.getCadena(),m.getLinea(),m.getColumna());  :}
+VALOR      ::=  string_literal:m   {:  RESULT = parser.crearNodo("string_literal",m.getCadena().substring(1, m.getCadena().length()-1),m.getLinea(),m.getColumna());  this.lineaA =m.getLinea(); this.columnaA =m.getColumna();   :}
+               |int_literal:m      {:  RESULT = parser.crearNodo("int_literal",m.getCadena(),m.getLinea(),m.getColumna());                                            this.lineaA =m.getLinea(); this.columnaA =m.getColumna();   :}
+               |double_literal:m   {:  RESULT = parser.crearNodo("double_literal",m.getCadena(),m.getLinea(),m.getColumna());                                         this.lineaA =m.getLinea(); this.columnaA =m.getColumna();   :}
+               |bool_literal:m     {:  RESULT = parser.crearNodo("bool_literal",m.getCadena(),m.getLinea(),m.getColumna());                                           this.lineaA =m.getLinea(); this.columnaA =m.getColumna();   :}
+               |event:m            {:  RESULT = parser.crearNodo("event",m.getCadena(),m.getLinea(),m.getColumna());                                                  this.lineaA =m.getLinea(); this.columnaA =m.getColumna();   :}
                |error              {:  RESULT = parser.crearNodo("#error","",0,0);  :};  
  

@@ -157,4 +157,4 @@ comm_linea = ["/"] ["/"] [^\r\n]* [^\r\n]
 
 {LineTerminator} {/* ignorar */}
 {WhiteSpace} {/* ignorar */}
-. {Template.reporteError_CJS.agregar("Sintactico", yyline, yycolumn, "No se esperaba: " +yytext()+" - "+yychar); }
+. {Template.reporteError_CJS.agregar("Lexico", yyline, yycolumn, "Lexico : No se esperaba el token " +yytext()+" - "+yychar); }
