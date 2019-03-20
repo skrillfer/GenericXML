@@ -1,1 +1,1 @@
-/home/fernando/NetBeansProjects/GXMLProyecto/GenericXML/GXML/Entradas_Script
+/home/fernando/ENTRY/Archivos

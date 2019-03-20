@@ -20,9 +20,9 @@ WhiteSpace = {LineTerminator} | [ \t\f]|\t
 
 Numero = [:digit:][[:digit:]]* 
 Decimal = ([:digit:][[:digit:]]*)? ([.][:digit:][[:digit:]]*)?
-cadena = [\"] [^(\")]* [\"]
+cadena = [\"] [^\"]* [\"]
 
-Digito = [0-9]
+Digito = [0-9] 
 Letra  = [A-Za-z_]
 Alfanumerico = ({Letra}|{Digito})
 Id  = ({Letra})({Alfanumerico})*
@@ -33,6 +33,8 @@ comm_multilinea = "/*" ["/"]* [^/] ~"*/" | "/*" ["/"]* "*/"
 comm_linea = ["/"] ["/"] [^\r\n]* [^\r\n]
 
 %%
+<YYINITIAL> {cadena} {return new Symbol(sym.string_literal, new token(yycolumn, yyline, yytext()));}
+
 /* SIGNOS */
 
 /* OPERADORES ASIGNACION */
@@ -145,7 +147,6 @@ comm_linea = ["/"] ["/"] [^\r\n]* [^\r\n]
 
 <YYINITIAL> "verdadero"|"falso" {return new Symbol(sym.bool_literal, new token(yycolumn, yyline, yytext()));}
 
-<YYINITIAL> {cadena} {return new Symbol(sym.string_literal, new token(yycolumn, yyline, yytext()));}
 
 <YYINITIAL> {Id} {return new Symbol(sym.iden, new token(yycolumn, yyline, yytext()));}
 <YYINITIAL> {Numero} {return new Symbol(sym.int_literal, new token(yycolumn, yyline, yytext()));}

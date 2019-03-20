@@ -20,7 +20,7 @@ WhiteSpace = {LineTerminator} | [ \t\f]|\t
 Id = [:jletter:]["�"|"�"|"�"|"�"|"�"|[:jletterdigit:]|"_"|]*
 Numero = ([-])?[:digit:][[:digit:]]* 
 Decimal = ([-])?([:digit:][[:digit:]]*)? ([.][:digit:][[:digit:]]*)?
-cadena = [\"] [^(\")]* [\"]
+cadena = [\"] [^\"]* [\"]
 
 
 comm_multilinea = "#$" ["$"]* [^$] ~"$#" | "#$" ["$"]* "$#"
