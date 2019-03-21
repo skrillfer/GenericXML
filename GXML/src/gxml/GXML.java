@@ -99,20 +99,10 @@ public class GXML {
         //System.out.println(sss.esTipo(".3."));
     }
 
+    
+
+    
     public static void main(String[] args) {
-        double t =new GXML().invertirNumero(16.0);
-        System.out.println(t);
-    }
-
-    public double invertirNumero(double n) {
-        return n < 10 ? n : modulo(n, 10) + invertirNumero(n / 10) * 10;
-    }
-
-    public double modulo(double n, double p) {
-        return n < p ? n : modulo(n - p, p);
-    }
-
-    public void main1(String[] args) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

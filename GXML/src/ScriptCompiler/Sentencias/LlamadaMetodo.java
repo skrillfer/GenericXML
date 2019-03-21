@@ -1004,15 +1004,12 @@ public class LlamadaMetodo extends Compilador {
                                                 contenidoGDATO += "\t<principal>\n";
                                                 for (String string : lista) {
                                                     contenidoGDATO += string;
-                                                    JOptionPane.showMessageDialog(null, contenidoGDATO);
-                                                    JOptionPane.showMessageDialog(null, string);
-
                                                 }
                                                 contenidoGDATO += "\t</principal>\n";
                                                 contenidoGDATO += "</lista>\n";
 
                                             }
-                                            JOptionPane.showMessageDialog(null, rutaBuena);
+                                            System.err.println(rutaBuena);
                                             //Escribir Archivo gdato
                                             escribir(rutaBuena, contenidoGDATO);
                                         } else {
