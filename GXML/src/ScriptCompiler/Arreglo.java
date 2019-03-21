@@ -20,7 +20,8 @@ import javax.swing.JOptionPane;
  * @author fernando
  */
 public class Arreglo {
-    public  Nodo raiz_GXML = null;
+
+    public Nodo raiz_GXML = null;
     private Hashtable<String, ListaGenerica> VALORES;
     public ArrayList<Integer> dimensiones;
     private ArrayList<Object> datos;
@@ -39,14 +40,57 @@ public class Arreglo {
         datos = new ArrayList<>();
         VALORES = new Hashtable<>();
     }
-    
-    public void AGREGAR(Resultado r)
-    {
-        this.datos.add(r);
+
+    public void AGREGAR(Resultado resultado) {
+       
+        this.datos.add(resultado);
     }
-    
-    public void SETDIM()
-    {
+
+    public void SETDIM() {
+        Hashtable<String, String> hash = new Hashtable<>();
+
+        int total = 0;
+        for (Object dato : this.datos) {
+            Resultado resultado = (Resultado)dato;
+            if (!esNulo(resultado)) {
+
+                if (esClase(resultado.valor)) {
+                    Clase clase = (Clase) resultado.valor;
+                    clase.nombre = "";
+                    if (!clase.Inicializada) {
+                        clase.ejecutar(miTemplate);
+                    }
+
+                }
+
+                if (!hash.containsKey(resultado.tipo)) {
+                    type = resultado.tipo;
+                    hash.put(resultado.tipo, resultado.tipo);
+                    VALORES.put(resultado.tipo, new ListaGenerica());
+                }
+
+                switch (resultado.tipo) {
+                    case "String":
+                        VALORES.get(resultado.tipo).add(resultado.valor.toString(), 0.0, 0, total);
+                        break;
+                    case "Double":
+                        VALORES.get(resultado.tipo).add(resultado.valor.toString(), (Double) resultado.valor, 0, total);
+                        break;
+                    case "Integer":
+                        VALORES.get(resultado.tipo).add(resultado.valor.toString(), 0.0, (Integer) resultado.valor, total);
+                        break;
+                }
+
+                total++;
+                //datos.add(resultado);
+            }
+        }
+        
+        Homogeneo = !(hash.size() > 1);
+        esVacio = this.datos.isEmpty();
+        if (!Homogeneo) {
+            type = "";
+        }
         this.dimensiones.add(this.datos.size());
     }
 
@@ -144,11 +188,10 @@ public class Arreglo {
                 if (esClase(resultado.valor)) {
                     Clase clase = (Clase) resultado.valor;
                     clase.nombre = "";
-                    if(!clase.Inicializada)
-                    {
+                    if (!clase.Inicializada) {
                         clase.ejecutar(miTemplate);
                     }
-                    
+
                 }
 
                 if (!hash.containsKey(resultado.tipo)) {
@@ -279,7 +322,9 @@ public class Arreglo {
                 datosNuevo.add(datos.get(item.index));
             }
         }
-
+        for (Object object : datosNuevo) {
+            System.out.println("");
+        }
         if (!datosNuevo.isEmpty()) {
             datos = datosNuevo;
         }
@@ -427,8 +472,7 @@ public class Arreglo {
                     case "Double":
                     case "Integer":
                     case "Boolean":
-                        if(opcion.equalsIgnoreCase(res.valor.toString()))
-                        {
+                        if (opcion.equalsIgnoreCase(res.valor.toString())) {
                             return true;
                         }
                         break;

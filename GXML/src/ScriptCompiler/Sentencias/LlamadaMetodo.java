@@ -30,6 +30,10 @@ import WRAPERS.Reproductor;
 import WRAPERS.TextoGenerico;
 import WRAPERS.VentanaGenerica;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.ScrollPane;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -40,6 +44,9 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -232,6 +239,8 @@ public class LlamadaMetodo extends Compilador {
                     case "map":
                     case "filtrar":
                     case "buscar":
+                    case "alguno":
+                    case "todos":
                     case "reduce":
                         proceder = false;
                         boolean todosFlag = true;
@@ -763,6 +772,14 @@ public class LlamadaMetodo extends Compilador {
                                             }
                                             vt.setBounds(100, 10, maxWidth + 50, maxHeigth + 50);
                                         }
+                                        Rectangle dim = vt.getContentPane().getBounds();
+                                        vt.getContentPane().setPreferredSize(new Dimension(1500, 1500));
+                                        JScrollPane scroll = new JScrollPane(vt.getContentPane());
+                                        scroll.setBounds(dim);
+                                        //scroll.getViewport().setView(vt.getContentPane());
+                                        //scroll.setViewportView();
+                                        //vt.setPreferredSize(dim);
+                                        vt.setContentPane(scroll);
                                         /*for (Component component : vt.getContentPane().getComponents()) {
                                             System.out.println(component.getClass().getSimpleName());
                                         }*/
@@ -923,7 +940,8 @@ public class LlamadaMetodo extends Compilador {
                                         VentanaGenerica vt = (VentanaGenerica) clas.Componente;
                                         if (!vt.getName().equals("")) {
                                             ArrayList<String> lista = new ArrayList<>();
-                                            for (Object component : vt.getContentPane().getComponents()) {
+
+                                            for (Object component : vt.componentes) {
                                                 controlesRecursivos(lista, component, raiz);
                                             }
 
@@ -986,11 +1004,15 @@ public class LlamadaMetodo extends Compilador {
                                                 contenidoGDATO += "\t<principal>\n";
                                                 for (String string : lista) {
                                                     contenidoGDATO += string;
+                                                    JOptionPane.showMessageDialog(null, contenidoGDATO);
+                                                    JOptionPane.showMessageDialog(null, string);
+
                                                 }
                                                 contenidoGDATO += "\t</principal>\n";
                                                 contenidoGDATO += "</lista>\n";
-                                            }
 
+                                            }
+                                            JOptionPane.showMessageDialog(null, rutaBuena);
                                             //Escribir Archivo gdato
                                             escribir(rutaBuena, contenidoGDATO);
                                         } else {
@@ -1207,7 +1229,7 @@ public class LlamadaMetodo extends Compilador {
                 nuevaVentana.setAncho(ancho.valor.toString());
             }
             /*---------------------------------------------------------------------*/
-
+            Script.ULTIMAVT = nuevaVentana;
             listaVentanas.add(nuevaVentana);//Si se usara para cuando se haga la referencia en el boton
         }
 
@@ -1308,18 +1330,33 @@ public class LlamadaMetodo extends Compilador {
                 if (esClase(actualResultado.valor)) {
                     Clase clase = (Clase) actualResultado.valor;
                     if (clase.Componente != null) {
-
+                        JScrollPane scroll;
+                        Dimension dim;
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevoPanel.setLayout(null);
                                 nuevoPanel.setBounds(nuevoPanel.getLocation().x, nuevoPanel.getLocation().y, nuevoPanel.getPreferredSize().width, nuevoPanel.getPreferredSize().height);
-                                ((VentanaGenerica) clase.Componente).getContentPane().add(nuevoPanel);
+                                dim = nuevoPanel.getPreferredSize();
+                                nuevoPanel.setPreferredSize(new Dimension(1500, 15000));
+
+                                scroll = new JScrollPane(nuevoPanel);
+                                scroll.setBounds(nuevoPanel.getLocation().x, nuevoPanel.getLocation().y, dim.width, dim.height);
+                                scroll.setViewportView(nuevoPanel);
+
+                                ((VentanaGenerica) clase.Componente).getContentPane().add(scroll);
 
                                 break;
                             case "panel":
                                 nuevoPanel.setLayout(null);
                                 nuevoPanel.setBounds(nuevoPanel.getLocation().x, nuevoPanel.getLocation().y, nuevoPanel.getPreferredSize().width, nuevoPanel.getPreferredSize().height);
-                                ((PanelGenerico) clase.Componente).add(nuevoPanel);
+                                dim = nuevoPanel.getPreferredSize();
+                                nuevoPanel.setPreferredSize(new Dimension(1500, 15000));
+
+                                scroll = new JScrollPane(nuevoPanel);
+                                scroll.setBounds(nuevoPanel.getLocation().x, nuevoPanel.getLocation().y, dim.width, dim.height);
+                                scroll.setViewportView(nuevoPanel);
+
+                                ((PanelGenerico) clase.Componente).add(scroll);
                                 break;
                         }
 
@@ -1466,6 +1503,7 @@ public class LlamadaMetodo extends Compilador {
 
                                 break;
                             case "panel":
+
                                 nuevoBoton.setLayout(null);
                                 nuevoBoton.setBounds(nuevoBoton.getLocation().x, nuevoBoton.getLocation().y, nuevoBoton.getPreferredSize().width, nuevoBoton.getPreferredSize().height);
                                 ((PanelGenerico) clase.Componente).add(nuevoBoton);
@@ -1858,7 +1896,11 @@ public class LlamadaMetodo extends Compilador {
                 if (esClase(actualResultado.valor)) {
                     Clase clase = (Clase) actualResultado.valor;
                     if (clase.Componente != null) {
-
+                        try {
+                            Script.ULTIMAVT.componentes.add(nuevoDesple);
+                        } catch (Exception e) {
+                            System.err.println(e);
+                        }
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevoDesple.setDatos();
@@ -2007,7 +2049,11 @@ public class LlamadaMetodo extends Compilador {
                 if (esClase(actualResultado.valor)) {
                     Clase clase = (Clase) actualResultado.valor;
                     if (clase.Componente != null) {
-
+                        try {
+                            Script.ULTIMAVT.componentes.add(nuevaNumerica);
+                        } catch (Exception e) {
+                            System.err.println(e);
+                        }
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevaNumerica.setBounds(nuevaNumerica.getLocation().x, nuevaNumerica.getLocation().y, nuevaNumerica.getPreferredSize().width, nuevaNumerica.getPreferredSize().height);
@@ -2184,6 +2230,12 @@ public class LlamadaMetodo extends Compilador {
                     Clase clase = (Clase) actualResultado.valor;
                     if (clase.Componente != null) {
 
+                        try {
+                            Script.ULTIMAVT.componentes.add(nuevaCajaText);
+                        } catch (Exception e) {
+                            System.err.println(e);
+                        }
+
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevaCajaText.setBounds(nuevaCajaText.getLocation().x, nuevaCajaText.getLocation().y, nuevaCajaText.getPreferredSize().width, nuevaCajaText.getPreferredSize().height);
@@ -2191,6 +2243,7 @@ public class LlamadaMetodo extends Compilador {
 
                                 break;
                             case "panel":
+
                                 nuevaCajaText.setBounds(nuevaCajaText.getLocation().x, nuevaCajaText.getLocation().y, nuevaCajaText.getPreferredSize().width, nuevaCajaText.getPreferredSize().height);
                                 ((PanelGenerico) clase.Componente).add(nuevaCajaText);
                                 break;
@@ -2358,7 +2411,11 @@ public class LlamadaMetodo extends Compilador {
                 if (esClase(actualResultado.valor)) {
                     Clase clase = (Clase) actualResultado.valor;
                     if (clase.Componente != null) {
-
+                        try {
+                            Script.ULTIMAVT.componentes.add(nuevaAreaText);
+                        } catch (Exception e) {
+                            System.err.println(e);
+                        }
                         switch (clase.nombre.toLowerCase()) {
                             case "ventana":
                                 nuevaAreaText.setBounds(nuevaAreaText.getLocation().x, nuevaAreaText.getLocation().y, nuevaAreaText.getPreferredSize().width, nuevaAreaText.getPreferredSize().height);
@@ -2745,7 +2802,7 @@ public class LlamadaMetodo extends Compilador {
             case "cajatextogenerica":
                 CajaTextoGenerica cajaTxt = (CajaTextoGenerica) padre;
                 if (!cajaTxt.getName().equals("")) {
-                    str.add(generarGDato(cajaTxt.getText(), cajaTxt.getName()));
+                    str.add(generarGDato(cajaTxt.getText(), cajaTxt.getName(),true));
                 } else {
                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
                 }
@@ -2753,7 +2810,7 @@ public class LlamadaMetodo extends Compilador {
             case "areatextogenerica":
                 AreaTextoGenerica areaTxt = (AreaTextoGenerica) padre;
                 if (!areaTxt.getName().equals("")) {
-                    str.add(generarGDato(areaTxt.getText(), areaTxt.getName()));
+                    str.add(generarGDato(areaTxt.getText(), areaTxt.getName(),true));
                 } else {
                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
                 }
@@ -2761,7 +2818,7 @@ public class LlamadaMetodo extends Compilador {
             case "cajanumericagenerica":
                 CajaNumericaGenerica cajaNum = (CajaNumericaGenerica) padre;
                 if (!cajaNum.getName().equals("")) {
-                    str.add(generarGDato(cajaNum.getTexto(), cajaNum.getName()));
+                    str.add(generarGDato(cajaNum.getTexto(), cajaNum.getName(),false));
                 } else {
                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
                 }
@@ -2769,7 +2826,7 @@ public class LlamadaMetodo extends Compilador {
             case "desplegablegenerico":
                 DesplegableGenerico desple = (DesplegableGenerico) padre;
                 if (!desple.getName().equals("")) {
-                    str.add(generarGDato(desple.getSeleccionado(), desple.getName()));
+                    str.add(generarGDato(desple.getSeleccionado(), desple.getName(),true));
                 } else {
                     Template.reporteError_CJS.agregar("Semantico", raiz.linea, raiz.columna, "Generando GDATO, El nombre de " + tipo + " es nulo o vacio");
                 }
@@ -2779,8 +2836,15 @@ public class LlamadaMetodo extends Compilador {
 
     }
 
-    public String generarGDato(String texto, String name) {
-        return "\t\t<" + name + ">" + texto + "</" + name + ">\n";
+    public String generarGDato(String texto, String name,boolean string) {
+        if(string)
+        {
+            return "\t\t<" + name + ">\"" + texto + "\"</" + name + ">\n";
+        }else
+        {
+            return "\t\t<" + name + ">" + texto + "</" + name + ">\n";
+        }
+        
     }
 
     public boolean esArreglo(Object valor) {

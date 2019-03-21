@@ -19,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**
@@ -26,6 +27,7 @@ import javax.swing.JFrame;
  * @author fernando
  */
 public class VentanaGenerica extends JFrame {
+    public ArrayList<Object> componentes = new ArrayList<>();
     /*Solo tiene ID */
     public Clase classe;
     

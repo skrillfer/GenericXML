@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
  */
 public abstract class Compilador {
 
+    public static VentanaGenerica ULTIMAVT=null;
     public static Clase superClase;
     public static String PathRoot = "";
 
